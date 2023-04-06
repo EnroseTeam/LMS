@@ -4,13 +4,18 @@ import createHttpError, { isHttpError } from "http-errors";
 
 import courseLevelRoutes from "./routes/courseLevel";
 
+import courseCategoryRoutes from './routes/courseCategory';
+
 const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
 
 // Routes
+
+app.use('/api/courses/categories', courseCategoryRoutes);
 app.use("/api/courses/levels", courseLevelRoutes);
+
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));
