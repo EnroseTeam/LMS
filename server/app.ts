@@ -3,8 +3,8 @@ import cors from "cors";
 import createHttpError, { isHttpError } from "http-errors";
 
 import courseLevelRoutes from "./routes/courseLevel";
-
-import courseCategoryRoutes from './routes/courseCategory';
+import courseCategoryRoutes from "./routes/courseCategory";
+import userRoleRoutes from "./routes/userRole";
 
 const app: Express = express();
 
@@ -13,9 +13,9 @@ app.use(express.json());
 
 // Routes
 
-app.use('/api/courses/categories', courseCategoryRoutes);
+app.use("/api/courses/categories", courseCategoryRoutes);
 app.use("/api/courses/levels", courseLevelRoutes);
-
+app.use("/api/users/roles", userRoleRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));
