@@ -2,12 +2,15 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import createHttpError, { isHttpError } from 'http-errors';
 
+import courseCategoryRoutes from './routes/courseCategory';
+
 const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use('/api/courses/categories', courseCategoryRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError(404, 'Endpoint not found'));
