@@ -117,7 +117,6 @@ module.exports = {
           },
         ],
       },
-
       colors: {
         head: '#140342',
         text: '#4F547B',
