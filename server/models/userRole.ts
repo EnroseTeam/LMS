@@ -1,4 +1,4 @@
-import { Schema, Document, Types, model } from "mongoose";
+import { Schema, Document, Types, model } from 'mongoose';
 
 export interface IUserRole extends Document<Types.ObjectId> {
   role: string;
@@ -10,4 +10,4 @@ const UserRoleSchema = new Schema<IUserRole>({
   slug: { type: String, required: true, unique: true },
 });
 
-export default model<IUserRole>("User_Role", UserRoleSchema);
+export default model<IUserRole>('User_Role', UserRoleSchema);
