@@ -9,6 +9,8 @@ import courseLessonRoutes from "./routes/courseLesson";
 import userRoleRoutes from "./routes/userRole";
 import userRoutes from "./routes/user";
 import courseReviewRoutes from "./routes/courseReview";
+import courseRoute from './routes/course';
+
 
 const app: Express = express();
 
@@ -16,14 +18,15 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-
 app.use("/api/files", fileRoutes);
+app.use('/api/courses', courseRoute);
 app.use("/api/courses/categories", courseCategoryRoutes);
 app.use("/api/courses/levels", courseLevelRoutes);
 app.use("/api/courses/lessons", courseLessonRoutes);
 app.use("/api/users/roles", userRoleRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/courses/reviews", courseReviewRoutes);
+
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));

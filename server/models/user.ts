@@ -1,4 +1,4 @@
-import { Schema, Document, Types, model } from "mongoose";
+import { Schema, Document, Types, model } from 'mongoose';
 
 export interface IUser extends Document<Types.ObjectId> {
   firstName: string;
@@ -29,4 +29,4 @@ const UserSchema = new Schema<IUser>({
   },
 });
 
-export default model<IUser>("User", UserSchema);
+export default model<IUser>('User', UserSchema);
