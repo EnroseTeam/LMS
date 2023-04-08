@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import Header from './Header';
 import { Roboto } from 'next/font/google';
+import { Footer } from './Footer';
 
 interface LayoutProps {
   children: JSX.Element;
@@ -12,6 +13,7 @@ const Layout: FC<LayoutProps> = ({ children }) => (
   <div className={roboto.className}>
     <Header />
     <main>{children}</main>
+    <Footer />
   </div>
 );
 
