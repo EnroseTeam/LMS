@@ -1,3 +1,4 @@
+
 import HeroSection from '@/components/Home/HeroSection';
 import Head from 'next/head';
 import { FC } from 'react';
