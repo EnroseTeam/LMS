@@ -15,8 +15,8 @@ interface UserRoleParams {
 //GET ALL USER_ROLE
 export const getUserRoles: RequestHandler = async (req, res, next) => {
   try {
-    const useRoles = await UserRoleModel.find();
-    res.status(200).json({ message: "Амжилттай", body: useRoles });
+    const userRoles = await UserRoleModel.find();
+    res.status(200).json({ message: "Амжилттай", body: userRoles });
   } catch (error) {
     next(error);
   }
@@ -39,7 +39,7 @@ export const getSingleUserRole: RequestHandler = async (req, res, next) => {
   }
 };
 
-//CREATE USER_ROLE
+//CREATE AN USER_ROLE
 export const createUserRole: RequestHandler<
   unknown,
   unknown,
