@@ -8,6 +8,7 @@ import courseCategoryRoutes from './routes/courseCategory';
 import courseLessonRoutes from './routes/courseLesson';
 import userRoleRoutes from './routes/userRole';
 import userRole from './routes/user';
+import courseRoute from './routes/course';
 
 const app: Express = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 
 app.use('/api/files', fileRoutes);
+app.use('/api/courses', courseRoute);
 app.use('/api/courses/categories', courseCategoryRoutes);
 app.use('/api/courses/levels', courseLevelRoutes);
 app.use('/api/courses/lessons', courseLessonRoutes);
