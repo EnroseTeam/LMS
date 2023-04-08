@@ -2,7 +2,6 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
-import userRole from "../models/userRole";
 
 interface UserBody {
   firstName?: string;
@@ -84,6 +83,9 @@ export const createUser: RequestHandler<
 
     if (!password)
       throw createHttpError(400, "Хэрэглэгчийн нууц үг заавал шаардлагатай.");
+
+    if (!role)
+      throw createHttpError(400, "Хэрэглэгчийн Role заавал шаардлагатай.");
 
     const isEmailExist = await UserModel.findOne({ email });
 
@@ -183,6 +185,9 @@ export const updateUser: RequestHandler<
     if (!password)
       throw createHttpError(400, "Хэрэглэгчийн нууц үг заавал шаардлагатай.");
 
+    if (!role)
+      throw createHttpError(400, "Хэрэглэгчийн Role заавал шаардлагатай.");
+
     const isEmailExist = await UserModel.findOne({ email, _id: { $ne: id } });
 
     if (isEmailExist)
@@ -215,7 +220,7 @@ export const updateUser: RequestHandler<
       role,
     });
 
-    res.status(200).json({ message: "Амжилттай шинэчлэгдлээ." });
+    res.status(200).json({ message: "Амжилттай шинэчлээ" });
   } catch (error) {
     next(error);
   }
