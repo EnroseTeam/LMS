@@ -7,7 +7,7 @@ import { RiMenu4Fill } from 'react-icons/ri';
 import { FiShoppingBag, FiSearch } from 'react-icons/fi';
 
 const Header: FC = () => (
-  <div className="w-full bg-head text-white sticky top-0">
+  <div className="w-full bg-head text-white sticky top-0 z-[50]">
     <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
       <div className="flex items-center gap-7">
         <Link href="/">
