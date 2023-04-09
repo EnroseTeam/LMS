@@ -1,6 +1,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
 
-export interface IUser extends Document<Types.ObjectId> {
+interface IUser extends Document<Types.ObjectId> {
   firstName: string;
   lastName: string;
   birthDate: Date;
@@ -10,23 +10,28 @@ export interface IUser extends Document<Types.ObjectId> {
   avatar?: string;
   password: string;
   role: Schema.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const UserSchema = new Schema<IUser>({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  birthDate: { type: Date, required: true, select: false },
-  email: { type: String, required: true, unique: true, select: false },
-  phone: { type: String, required: true, unique: true, select: false },
-  address: { type: String, select: false },
-  avatar: { type: String },
-  password: { type: String, required: true, select: false },
-  role: {
-    type: Schema.Types.ObjectId,
-    ref: "User_Role",
-    required: true,
-    select: false,
+const UserSchema = new Schema<IUser>(
+  {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    birthDate: { type: Date, required: true, select: false },
+    email: { type: String, required: true, unique: true, select: false },
+    phone: { type: String, required: true, unique: true, select: false },
+    address: { type: String, select: false },
+    avatar: { type: String },
+    password: { type: String, required: true, select: false },
+    role: {
+      type: Schema.Types.ObjectId,
+      ref: 'User_Role',
+      required: true,
+      select: false,
+    },
   },
-});
+  { timestamps: true }
+);
 
 export default model<IUser>('User', UserSchema);
