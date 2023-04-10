@@ -1,7 +1,15 @@
 import { FC } from 'react';
 
 import { ICourseCategory } from '@/interfaces/courses';
-import CategoryCard from './CategoryCard';
+import CategoryCard from './subComponents/CategoryCard';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper';
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
 interface TopCategoriesProps {
   categories: ICourseCategory[];
@@ -14,11 +22,33 @@ const TopCategories: FC<TopCategoriesProps> = ({ categories }) => (
       <p className="text-text text-md-regular">Lorem ipsum dolor sit amet, consectetur.</p>
     </div>
 
-    <div className="grid grid-cols-6 gap-[30px]">
+    <Swiper
+      grabCursor={true}
+      spaceBetween={30}
+      slidesPerView={6}
+      navigation={{
+        nextEl: '.top-categories-next',
+        prevEl: '.top-categories-prev',
+      }}
+      pagination={{ clickable: true, el: '.top-categories-pagination' }}
+      modules={[Navigation, Pagination]}
+    >
       {categories.map((category) => (
-        <CategoryCard key={category._id} category={category} />
+        <SwiperSlide key={category._id}>
+          <CategoryCard category={category} />
+        </SwiperSlide>
       ))}
-    </div>
+
+      <div className="flex items-center justify-center gap-5 mt-[60px]">
+        <button className="top-categories-prev">
+          <BsArrowLeft />
+        </button>
+        <div className="top-categories-pagination" />
+        <button className="top-categories-next">
+          <BsArrowRight />
+        </button>
+      </div>
+    </Swiper>
   </div>
 );
 
