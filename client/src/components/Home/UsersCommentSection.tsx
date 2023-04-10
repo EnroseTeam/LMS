@@ -8,6 +8,7 @@ import { Navigation } from 'swiper';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import UserCommentCard from './subComponents/UserCommentCard';
 
+
 const UsersCommentSection: FC = () => (
   <div className="bg-color-1 pt-[120px] pb-[112px] text-white">
     <div className="container">
