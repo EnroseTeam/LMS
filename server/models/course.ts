@@ -15,6 +15,9 @@ interface ICourse extends Document<Schema.Types.ObjectId> {
   goals: string[];
   reviews: Schema.Types.ObjectId[];
   sections: Section[];
+  readCount: number;
+  purchaseCount: number;
+  isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,18 +55,32 @@ const CourseSchema = new Schema<ICourse>(
     reviews: {
       type: [Schema.Types.ObjectId],
       ref: 'Course_Review',
-      required: true,
+      default: [],
     },
-    sections: [
-      {
-        name: { type: String, required: true },
-        lessons: {
-          type: [Schema.Types.ObjectId],
-          ref: 'Course_Lesson',
+    sections: {
+      type: [
+        {
+          name: { type: String, required: true },
+          lessons: {
+            type: [Schema.Types.ObjectId],
+            ref: 'Course_Lesson',
+          },
         },
-        required: true,
-      },
-    ],
+      ],
+      default: [],
+    },
+    readCount: {
+      type: Number,
+      default: 0,
+    },
+    purchaseCount: {
+      type: Number,
+      default: 0,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
