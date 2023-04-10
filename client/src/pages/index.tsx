@@ -1,6 +1,7 @@
 import { AdvantageSection } from "@/components/Home/AdvantageSection";
 import HeroSection from "@/components/Home/HeroSection";
 import { Partner } from "@/components/Home/Partner";
+import { ResourcesNews } from "@/components/Home/ResourcesNews";
 import TopCategories from "@/components/Home/TopCategories";
 import { ICourseCategory } from "@/interfaces/courses";
 import axios from "axios";
@@ -31,6 +32,7 @@ const Home: FC<HomeProps> = ({ categories }) => (
 
     <TopCategories categories={categories} />
     <AdvantageSection />
+    <ResourcesNews />
   </>
 );
 
