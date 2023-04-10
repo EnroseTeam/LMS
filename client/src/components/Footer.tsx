@@ -4,8 +4,13 @@ import { BsInstagram } from 'react-icons/bs';
 import Link from 'next/link';
 import mainLogo from '../assets/logo-main.svg';
 import Image from 'next/image';
+import { ICourseCategory } from '@/interfaces/courses';
 
-export const Footer: FC = () => (
+interface FooterProps {
+  categories: ICourseCategory[];
+}
+
+export const Footer: FC<FooterProps> = ({ categories }) => (
   <div className="bg-head">
     <div className="container">
       <div className="py-[60px] text-white flex items-center  justify-between border-b border-b-white/[.15]">
@@ -58,28 +63,12 @@ export const Footer: FC = () => (
           </ul>
           <div className="grid grid-cols-2 col-span-2">
             <ul className="flex flex-col gap-4 text-md-regular">
-              <p className="uppercase mb-[26px] text-lg-medium">Categories</p>
-              <li className="hover:text-color-6">
-                <Link href="/">Development </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Business </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Finance & Accounting </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">IT & Software </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/"> Office Productivity </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Design </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Marketing</Link>
-              </li>
+              <p className="uppercase mb-[26px] text-lg-medium">Ангилалууд</p>
+              {categories.map((category) => (
+                <li key={category._id} className="hover:text-color-6 duration-300">
+                  <Link href="/">{category.name} </Link>
+                </li>
+              ))}
             </ul>
             <ul className="flex flex-col gap-4 text-md-regular">
               <p className="uppercase mb-[26px] invisible">Categories</p>
