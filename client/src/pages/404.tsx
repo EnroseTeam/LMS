@@ -5,11 +5,17 @@ import Button from '@/components/Button';
 
 const NotFoundPage: FC = () => (
   <div className="bg-[#fefbf4] py-[120px]">
-    <div className="container px-[100px] flex items-center gap-[140px]">
+    <div className="container px-[100px] grid grid-cols-1 lg:grid-cols-2 gap-[140px]">
       <div>
-        <Image src={errorImg} alt="404 Error" width={630} height={480} />
+        <Image
+          src={errorImg}
+          alt="404 Error"
+          width={630}
+          height={480}
+          className="aspect-[1.31/1]"
+        />
       </div>
-      <div>
+      <div className="flex flex-col items-center lg:block">
         <h1 className="text-[200px] font-bold text-color-2 leading-[234px]">
           40<span className="text-color-1">4</span>
         </h1>

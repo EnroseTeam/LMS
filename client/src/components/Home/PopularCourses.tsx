@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import placeHolderImg from '../../assets/placeholder.png';
-import Image from 'next/image';
+import CourseCard from './CourseCard';
 
 const PopularCourses: FC = () => (
   <div className="container mb-[120px] flex flex-col items-center">
@@ -44,17 +43,14 @@ const PopularCourses: FC = () => (
     </div>
 
     <div className="grid grid-cols-4 gap-[30px]">
-      <div>
-        <div className="rounded-lg overflow-hidden mb-[15px]">
-          <Image
-            src={placeHolderImg}
-            alt="Placeholder"
-            width={300}
-            height={210}
-            className="object-contain aspect-[1.42/1]"
-          />
-        </div>
-      </div>
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
+      <CourseCard />
     </div>
   </div>
 );
