@@ -4,16 +4,16 @@ import React from 'react';
 export const AdvantageSection: FC = () => (
   <>
     <div className="bg-color-2 py-[120px]">
-      <div className="container">
-        <h1 className="text-3xl-bold text-center text-white ">Why learn with our courses?</h1>
-        <p className="text-md-regular text-center text-white">
+      <div className="container text-white">
+        <h1 className="text-3xl-bold text-center mb-[9px]">Why learn with our courses?</h1>
+        <p className="text-md-regular text-center mb-[51px]">
           Lorem ipsum dolor sit amet, consectetur
         </p>
-        <div className="grid grid-cols-3 pt-[51px] text-white gap-[30px]">
-          <div className="border border-solid border-white/[0.25] rounded-lg text-center group hover:bg-white cursor-pointer">
-            <div className="flex justify-center pt-[64.2px]">
+        <div className="grid grid-cols-3 gap-[30px]">
+          <div className="border border-solid border-white/[0.25] px-[60px] pt-[60px] pb-[51px] rounded-lg text-center group hover:bg-white cursor-pointer duration-300 flex flex-col items-center ">
+            <div className="mb-[37px]">
               <svg
-                className="fill-color-6 group-hover:fill-color-2"
+                className="fill-color-6 group-hover:fill-color-2 duration-300"
                 width="80"
                 height="80"
                 viewBox="0 0 80 80"
@@ -25,16 +25,17 @@ export const AdvantageSection: FC = () => (
                 <path d="M40 72.6558C39.5892 72.6558 39.1858 72.8212 38.8953 73.1117C38.6047 73.4041 38.4375 73.8057 38.4375 74.2183C38.4375 74.629 38.6047 75.0325 38.8953 75.323C39.1858 75.6135 39.5892 75.7789 40 75.7789C40.4108 75.7789 40.8142 75.6135 41.1047 75.323C41.3953 75.0306 41.5625 74.629 41.5625 74.2183C41.5625 73.8075 41.3953 73.4041 41.1047 73.1117C40.8142 72.8212 40.4108 72.6558 40 72.6558Z" />
               </svg>
             </div>
-            <h1 className="text-2xl-bold pt-[41px] group-hover:text-head">01. Learn</h1>
-            <p className="text-md-regular pt-4 py-[60px] max-w-[290px] mx-auto text-white/[0.7] group-hover:text-head">
+            <h1 className="text-2xl-bold group-hover:text-head mb-4 duration-300">01. Learn</h1>
+            <p className="text-md-regular text-white/[0.7] max-w-[290px] group-hover:text-head duration-300">
               Lorem ipsum dolor sit amet, consectetur dolorili adipiscing elit. Felis donec massa
               aliqua.
             </p>
           </div>
-          <div className="border border-solid border-white/[0.25] rounded-lg text-center group hover:bg-white cursor-pointer">
-            <div className="flex justify-center pt-[64.2px]">
+
+          <div className="border border-solid border-white/[0.25] px-[60px] pt-[60px] pb-[51px] rounded-lg text-center group hover:bg-white cursor-pointer duration-300 flex flex-col items-center ">
+            <div className="mb-[37px]">
               <svg
-                className="fill-color-6 group-hover:fill-color-2"
+                className="fill-color-6 group-hover:fill-color-2 duration-300"
                 width="80"
                 height="76"
                 viewBox="0 0 80 76"
@@ -44,17 +45,17 @@ export const AdvantageSection: FC = () => (
                 <path d="M79.2588 24.6395L40.8213 0.889453C40.3178 0.578516 39.682 0.578516 39.1786 0.889453L26.273 8.86367C25.5389 9.31711 25.3114 10.2801 25.765 11.0143C26.2188 11.7485 27.1814 11.9755 27.9156 11.5221L40 4.05539L75.465 25.9687L40 47.882L20.8348 36.0401L37 26.4421C37.8136 27.1215 38.8597 27.5312 40 27.5312C42.5847 27.5312 44.6875 25.4284 44.6875 22.8437C44.6875 20.259 42.5847 18.1562 40 18.1562C37.4153 18.1562 35.3125 20.259 35.3125 22.8437C35.3125 23.156 35.3439 23.461 35.4023 23.7563L17.8353 34.1866L4.535 25.9687L16.8477 18.3609C17.5817 17.9074 17.8092 16.9446 17.3555 16.2102C16.902 15.4762 15.9392 15.249 15.205 15.7024L0.74125 24.6395C0.280469 24.924 0 25.4271 0 25.9687C0 26.5102 0.280469 27.0134 0.74125 27.2979L14.8036 35.9868L12.9911 37.063C10.1823 38.7307 8.4375 41.796 8.4375 45.0624V47.5304C6.66359 48.1718 5.39234 49.8724 5.39234 51.8649V54.5824C4.18656 55.773 3.4375 57.4254 3.4375 59.2499V73.7812C3.4375 74.644 4.13703 75.3437 5 75.3437H15C15.863 75.3437 16.5625 74.644 16.5625 73.7812V59.2499C16.5625 57.4254 15.8134 55.773 14.6077 54.5826V51.8651C14.6077 49.8727 13.3364 48.1721 11.5625 47.5305V45.0624C11.5625 42.8931 12.7212 40.8576 14.5866 39.7501L16.5625 38.5768V53.7274C16.5625 54.5902 17.262 55.2899 18.125 55.2899C25.9959 55.2899 33.3686 58.3852 38.8848 64.0056C39.1786 64.3049 39.5805 64.4735 40 64.4735C40.4195 64.4735 40.8212 64.3049 41.1152 64.0056C46.6316 58.3851 54.0042 55.2899 61.875 55.2899C62.738 55.2899 63.4375 54.5902 63.4375 53.7274V50.9687C63.4375 50.1059 62.738 49.4062 61.875 49.4062C61.012 49.4062 60.3125 50.1059 60.3125 50.9687V52.202C53.3944 52.5291 46.8875 55.0282 41.5625 59.3735V56.1141C41.5625 55.2513 40.863 54.5516 40 54.5516C39.137 54.5516 38.4375 55.2513 38.4375 56.1141V59.3735C33.1125 55.0282 26.6056 52.5291 19.6875 52.202V39.0046L39.1787 51.0479C39.4305 51.2034 39.7153 51.2812 40 51.2812C40.2847 51.2812 40.5697 51.2034 40.8213 51.0479L60.3125 39.0045V40.7604C60.3125 41.6232 61.012 42.3229 61.875 42.3229C62.738 42.3229 63.4375 41.6232 63.4375 40.7604V37.1185C63.4375 37.1038 63.4356 37.0896 63.4353 37.0749L79.2588 27.2977C79.7195 27.0132 80 26.5101 80 25.9685C80 25.427 79.7195 24.924 79.2588 24.6395ZM40 21.2812C40.8616 21.2812 41.5625 21.9821 41.5625 22.8437C41.5625 23.7052 40.8616 24.4062 40 24.4062C39.1384 24.4062 38.4375 23.7052 38.4375 22.8437C38.4375 21.9821 39.1384 21.2812 40 21.2812ZM8.51734 51.8649C8.51734 51.0474 9.1825 50.3823 10 50.3823C10.8175 50.3823 11.4827 51.0474 11.4827 51.8649V52.6874H8.51734V51.8649ZM13.4375 59.2499V72.2187H6.5625V59.2499C6.5625 57.3545 8.10453 55.8124 10 55.8124C11.8955 55.8124 13.4375 57.3545 13.4375 59.2499Z" />
               </svg>
             </div>
-            <h1 className="text-2xl-bold pt-[41px] group-hover:text-head">02. Graduate</h1>
-            <p className="text-md-regular pt-4 py-[60px] max-w-[290px] mx-auto text-white/[0.7] group-hover:text-head">
+            <h1 className="text-2xl-bold group-hover:text-head mb-4 duration-300">02. Graduate</h1>
+            <p className="text-md-regular text-white/[0.7] max-w-[290px] group-hover:text-head duration-300">
               Lorem ipsum dolor sit amet, consectetur dolorili adipiscing elit. Felis donec massa
               aliqua.
             </p>
           </div>
 
-          <div className="border border-solid border-white/[0.25] rounded-lg text-center group hover:bg-white cursor-pointer">
-            <div className="flex justify-center pt-[64.2px]">
+          <div className="border border-solid border-white/[0.25] px-[60px] pt-[60px] pb-[51px] rounded-lg text-center group hover:bg-white cursor-pointer duration-300 flex flex-col items-center ">
+            <div className="mb-[37px]">
               <svg
-                className="fill-color-6 group-hover:fill-color-2"
+                className="fill-color-6 group-hover:fill-color-2 duration-300"
                 width="80"
                 height="80"
                 viewBox="0 0 80 80"
@@ -68,8 +69,8 @@ export const AdvantageSection: FC = () => (
                 <path d="M64.5328 35.342C64.9453 35.342 65.3485 35.1764 65.6391 34.8858C65.9297 34.5936 66.0969 34.1922 66.0969 33.7795C66.0969 33.3686 65.9297 32.9672 65.6391 32.675C65.3469 32.3844 64.9453 32.2188 64.5328 32.2188C64.1219 32.2188 63.7188 32.3844 63.4281 32.675C63.1375 32.9672 62.9703 33.3686 62.9703 33.7795C62.9703 34.1922 63.1375 34.5936 63.4281 34.8858C63.7188 35.1766 64.1219 35.342 64.5328 35.342Z" />
               </svg>
             </div>
-            <h1 className="text-2xl-bold pt-[41px] group-hover:text-head">03. Work</h1>
-            <p className="text-md-regular pt-4 py-[60px] max-w-[290px] mx-auto text-white/[0.7] group-hover:text-head">
+            <h1 className="text-2xl-bold group-hover:text-head mb-4 duration-300">03. Work</h1>
+            <p className="text-md-regular text-white/[0.7] max-w-[290px] group-hover:text-head duration-300">
               Lorem ipsum dolor sit amet, consectetur dolorili adipiscing elit. Felis donec massa
               aliqua.
             </p>
