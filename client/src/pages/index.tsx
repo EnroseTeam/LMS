@@ -3,6 +3,7 @@ import HeroSection from '@/components/Home/HeroSection';
 import { Partner } from '@/components/Home/Partner';
 import PopularCourses from '@/components/Home/PopularCourses';
 import TopCategories from '@/components/Home/TopCategories';
+import UsersCommentSection from '@/components/Home/UsersCommentSection';
 import { ICourseCategory } from '@/interfaces/courses';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
@@ -31,6 +32,7 @@ const Home: FC<HomeProps> = ({ categories }) => (
     <Partner />
     <TopCategories categories={categories} />
     <PopularCourses />
+    <UsersCommentSection />
     <AdvantageSection />
   </>
 );
