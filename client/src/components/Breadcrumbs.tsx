@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-interface BreadcrumbItems {
+interface BreadcrumbItem {
   title: string;
   link: string;
 }
 
 interface BreadcrumbsProps {
   transparent?: boolean;
-  breadcrumbItems?: BreadcrumbItems[];
+  breadcrumbItems?: BreadcrumbItem[];
 }
 
 const Breadcrumbs: FC<BreadcrumbsProps> = ({ breadcrumbItems, transparent }) => (
