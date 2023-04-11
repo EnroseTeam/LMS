@@ -49,7 +49,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = () => (
         ]}
       />
 
-      <div className="absolute w-full top-8 bottom-[62px] pointer-events-none">
+      <div className="container absolute w-full top-8 bottom-[62px] right-0 left-0 pointer-events-none">
         <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
       </div>
 

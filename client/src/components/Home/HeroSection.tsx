@@ -77,7 +77,7 @@ const HeroSection: FC = () => (
     </div>
 
     {/* Background shapes */}
-    <div className="absolute top-8 bottom-[62px] pointer-events-none">
+    <div className="container absolute top-8 bottom-[62px] right-0 left-0  pointer-events-none">
       <Image src={bgShape} alt="Background shapes" className="w-full" />
     </div>
 
