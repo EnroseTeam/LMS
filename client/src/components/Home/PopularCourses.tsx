@@ -1,7 +1,12 @@
+import { ICourse } from '@/interfaces/courses';
 import { FC } from 'react';
 import CourseCard from '../CourseCard';
 
-const PopularCourses: FC = () => (
+interface PopularCoursesProps {
+  courses: ICourse[];
+}
+
+const PopularCourses: FC<PopularCoursesProps> = ({ courses }) => (
   <div className="container mb-[120px] flex flex-col items-center">
     <div className="text-center mb-[51px]">
       <h1 className="text-head text-3xl-bold mb-[9px]">Our Most Popular Courses</h1>
@@ -43,14 +48,9 @@ const PopularCourses: FC = () => (
     </div>
 
     <div className="grid grid-cols-4 gap-[30px]">
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
-      <CourseCard />
+      {courses.map((course) => (
+        <CourseCard key={course._id} course={course} />
+      ))}
     </div>
   </div>
 );

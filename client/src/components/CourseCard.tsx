@@ -5,11 +5,22 @@ import Image from 'next/image';
 import { BsFileEarmarkText, BsClock, BsBarChart } from 'react-icons/bs';
 import Link from 'next/link';
 import RatingStar from './RatingStar';
+import { ICourse } from '@/interfaces/courses';
 
-const CourseCard: FC = () => (
+interface CourseCardProps {
+  course: ICourse;
+}
+
+const CourseCard: FC<CourseCardProps> = ({ course }) => (
   <div className="flex flex-col gap-[15px]">
     <Link href="/" className="rounded-lg overflow-hidden w-full group relative">
-      <Image src={placeHolderImg} alt="Placeholder" className="w-full object-contain" />
+      <Image
+        src={course.picture}
+        width={300}
+        height={210}
+        alt="Placeholder"
+        className="w-full aspect-[1.42/1] object-cover"
+      />
       <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover:bg-head/50 duration-300" />
     </Link>
 
@@ -27,7 +38,7 @@ const CourseCard: FC = () => (
       </div>
 
       <Link href="/" className="text-head text-lg-medium hover:text-head/80 duration-300">
-        Learn Figma - UI/UX Design Essential Training
+        {course.name}
       </Link>
 
       <div className="flex items-center gap-[20px]">
@@ -43,7 +54,7 @@ const CourseCard: FC = () => (
 
         <span className="flex items-center gap-2 text-md text-icon">
           <BsBarChart />
-          <span className="text-sm-regular text-text">Beginner</span>
+          <span className="text-sm-regular text-text">{course.level.name}</span>
         </span>
       </div>
 
@@ -52,7 +63,9 @@ const CourseCard: FC = () => (
           <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
             <Image src={placeHolderImg} alt="Profile" className="object-cover w-full h-full" />
           </div>
-          <h1 className="text-text text-sm-regular">Ali Tufan</h1>
+          <h1 className="text-text text-sm-regular">
+            {course.instructor.firstName} {course.instructor.lastName}
+          </h1>
         </div>
 
         <div className="flex items-center gap-2">
