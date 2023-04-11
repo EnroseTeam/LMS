@@ -35,7 +35,10 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ breadcrumbItems, transparent }) => 
             {item.title}
           </Link>
           {index !== breadcrumbItems.length - 1 && (
-            <div className={`w-1 h-1 rounded-full ${transparent ? 'bg-icon' : 'bg-text'}`} />
+            <div
+              key={`separator-${index}`}
+              className={`w-1 h-1 rounded-full ${transparent ? 'bg-icon' : 'bg-text'}`}
+            />
           )}
         </>
       ))}
