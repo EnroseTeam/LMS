@@ -15,7 +15,7 @@ export interface ICourse {
   _id: string;
   name: string;
   picture: string;
-  description?: string;
+  description: string;
   instructor: IUser;
   level: ICourseLevel;
   category: string;

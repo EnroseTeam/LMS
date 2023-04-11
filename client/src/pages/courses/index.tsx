@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import { FC } from 'react';
 
 interface CoursesPageProps {
-  categories: ICourseCategory[];
+  categories?: ICourseCategory[];
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async () => {
