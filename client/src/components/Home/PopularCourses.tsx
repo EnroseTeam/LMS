@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import CourseCard from './subComponents/CourseCard';
+import CourseCard from '../CourseCard';
 
 const PopularCourses: FC = () => (
   <div className="container mb-[120px] flex flex-col items-center">

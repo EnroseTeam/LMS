@@ -13,7 +13,7 @@ const HeroSection: FC = () => (
     <div className="container grid grid-cols-2 gap-[139px]">
       <div className="my-auto text-white">
         <h1 className="select-none text-[55px] font-bold leading-[80px] mb-3">
-          Learn New Skills Online with Top
+          Learn New Skills Online with Top{' '}
           <span className="text-color-6 underline">IntelliSense</span>
         </h1>
         <p className="select-none text-lg-regular mb-[27px] w-[50ch]">
@@ -77,7 +77,7 @@ const HeroSection: FC = () => (
     </div>
 
     {/* Background shapes */}
-    <div className="absolute top-8 left-0 right-0 pointer-events-none">
+    <div className="absolute top-8 bottom-[62px] pointer-events-none">
       <Image src={bgShape} alt="Background shapes" className="w-full" />
     </div>
 
