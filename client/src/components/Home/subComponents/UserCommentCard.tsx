@@ -1,6 +1,7 @@
 import { FC } from 'react';
-import placeHolderImg from '@/assets/placeholder.png';
 import Image from 'next/image';
+
+import placeHolderImg from '@/assets/placeholder.png';
 
 const UserCommentCard: FC = () => (
   <div className="bg-white rounded-lg overflow-hidden p-[30px] pb-[20px]">

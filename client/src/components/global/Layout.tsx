@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import Header from './Header';
 import { Roboto } from 'next/font/google';
-import { Footer } from './Footer';
+
+import Header from './Header';
+import Footer from './Footer';
 import { ICourseCategory } from '@/interfaces/courses';
 
 interface LayoutProps {

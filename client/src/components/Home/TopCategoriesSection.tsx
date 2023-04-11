@@ -1,21 +1,20 @@
-import { FC } from 'react';
-
-import { ICourseCategory } from '@/interfaces/courses';
-import CategoryCard from './subComponents/CategoryCard';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+import { FC } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
+
+import CategoryCard from './subComponents/CategoryCard';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import { ICourseCategory } from '@/interfaces/courses';
 
 interface TopCategoriesProps {
   categories: ICourseCategory[];
 }
 
-const TopCategories: FC<TopCategoriesProps> = ({ categories }) => (
+const TopCategoriesSection: FC<TopCategoriesProps> = ({ categories }) => (
   <div className="container mb-[120px]">
     <div className="mb-[51px] text-center">
       <h1 className="text-head text-3xl-bold mb-[9px]">Top Categories</h1>
@@ -52,4 +51,4 @@ const TopCategories: FC<TopCategoriesProps> = ({ categories }) => (
   </div>
 );
 
-export default TopCategories;
+export default TopCategoriesSection;

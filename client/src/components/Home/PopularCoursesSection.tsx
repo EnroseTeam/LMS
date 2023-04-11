@@ -1,12 +1,13 @@
-import { ICourse } from '@/interfaces/courses';
 import { FC } from 'react';
-import CourseCard from '../CourseCard';
+
+import CourseCard from '../Courses/CourseCard';
+import { ICourse } from '@/interfaces/courses';
 
 interface PopularCoursesProps {
   courses: ICourse[];
 }
 
-const PopularCourses: FC<PopularCoursesProps> = ({ courses }) => (
+const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses }) => (
   <div className="container mb-[120px] flex flex-col items-center">
     <div className="text-center mb-[51px]">
       <h1 className="text-head text-3xl-bold mb-[9px]">Our Most Popular Courses</h1>
@@ -55,4 +56,4 @@ const PopularCourses: FC<PopularCoursesProps> = ({ courses }) => (
   </div>
 );
 
-export default PopularCourses;
+export default PopularCoursesSection;

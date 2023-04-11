@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import Button from '../Button';
 import Image from 'next/image';
 
 import { SlGraduation } from 'react-icons/sl';
 import { CgPlayButtonR } from 'react-icons/cg';
 import { BsLaptop, BsBriefcase } from 'react-icons/bs';
-import heroImage from '../../assets/hero-2.jpg';
+
+import Button from '../global/Button';
+import heroImage from '@/assets/hero-2.jpg';
 import bgShape from '@/assets/hero-shape.svg';
 
 const HeroSection: FC = () => (
