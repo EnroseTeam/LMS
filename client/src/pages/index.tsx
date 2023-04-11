@@ -1,17 +1,16 @@
-import AdvantageSection from "@/components/Home/AdvantageSection";
-import BestInstructorSection from "@/components/Home/BestInstructorSection";
-import HeroSection from "@/components/Home/HeroSection";
-import Partner from "@/components/Home/Partner";
-import PopularCourses from "@/components/Home/PopularCourses";
-import TopCategories from "@/components/Home/TopCategories";
-import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { ICourseCategory } from "@/interfaces/courses";
-import axios from "axios";
-import { GetServerSideProps } from "next";
-import Head from "next/head";
-import { FC } from "react";
-import ResourcesNews from "@/components/Home/ResourcesNews";
-
+import AdvantageSection from '@/components/Home/AdvantageSection';
+import BestInstructorSection from '@/components/Home/BestInstructorSection';
+import HeroSection from '@/components/Home/HeroSection';
+import Partner from '@/components/Home/Partner';
+import PopularCourses from '@/components/Home/PopularCourses';
+import TopCategories from '@/components/Home/TopCategories';
+import UsersCommentSection from '@/components/Home/UsersCommentSection';
+import { ICourse, ICourseCategory } from '@/interfaces/courses';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
+import { FC } from 'react';
+import ResourcesNews from '@/components/Home/ResourcesNews';
 
 interface HomeProps {
   categories: ICourseCategory[];
