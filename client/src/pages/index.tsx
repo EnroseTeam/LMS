@@ -10,7 +10,7 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { FC } from "react";
-import { ResourcesNews } from "@/components/Home/ResourcesNews";
+import ResourcesNews from "@/components/Home/ResourcesNews";
 
 interface HomeProps {
   categories: ICourseCategory[];

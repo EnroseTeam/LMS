@@ -3,7 +3,7 @@ import Image from "next/image";
 import bimage from "../../assets/backimg.svg";
 import ArrowButton from "../ArrowButton";
 
-export const ResourcesNews: FC = () => (
+const ResourcesNews: FC = () => (
   <div className="container">
     <div className="flex items-center justify-between pt-[120px] pb-[46px]">
       <div>
@@ -107,3 +107,5 @@ export const ResourcesNews: FC = () => (
     </div>
   </div>
 );
+
+export default ResourcesNews;
