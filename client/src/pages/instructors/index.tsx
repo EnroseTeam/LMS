@@ -5,7 +5,7 @@ import { BsChevronDown, BsSearch } from 'react-icons/bs';
 
 import { ICourseCategory } from '@/interfaces/courses';
 import Breadcrumbs from '@/components/global/Breadcrumbs';
-import { InstructorCard } from '@/components/Instructors/InstructorCard';
+import InstructorCard from '@/components/Instructors/InstructorCard';
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
