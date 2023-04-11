@@ -1,6 +1,6 @@
-import { Schema, Document, Types, model } from "mongoose";
+import { Schema, Document, Types, model } from 'mongoose';
 
-export interface ICourseLevel extends Document<Types.ObjectId> {
+interface ICourseLevel extends Document<Types.ObjectId> {
   name: string;
   slug: string;
   description?: string;
@@ -19,4 +19,4 @@ const CourseLevelSchema = new Schema<ICourseLevel>(
   { timestamps: true }
 );
 
-export default model<ICourseLevel>("Course_Level", CourseLevelSchema);
+export default model<ICourseLevel>('Course_Level', CourseLevelSchema);

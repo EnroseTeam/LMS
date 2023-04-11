@@ -1,6 +1,7 @@
 import { AdvantageSection } from "@/components/Home/AdvantageSection";
 import HeroSection from "@/components/Home/HeroSection";
 import { Partner } from "@/components/Home/Partner";
+import PopularCourses from "@/components/Home/PopularCourses";
 import { ResourcesNews } from "@/components/Home/ResourcesNews";
 import TopCategories from "@/components/Home/TopCategories";
 import { ICourseCategory } from "@/interfaces/courses";
@@ -29,8 +30,8 @@ const Home: FC<HomeProps> = ({ categories }) => (
     </Head>
     <HeroSection />
     <Partner />
-
     <TopCategories categories={categories} />
+    <PopularCourses />
     <AdvantageSection />
     <ResourcesNews />
   </>
