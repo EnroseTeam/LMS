@@ -1,11 +1,16 @@
-import { FC } from 'react';
-import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
-import { BsInstagram } from 'react-icons/bs';
-import Link from 'next/link';
-import mainLogo from '../assets/logo-main.svg';
-import Image from 'next/image';
+import { FC } from "react";
+import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
+import { BsInstagram } from "react-icons/bs";
+import Link from "next/link";
+import mainLogo from "../assets/logo-main.svg";
+import Image from "next/image";
+import { ICourseCategory } from "@/interfaces/courses";
 
-export const Footer: FC = () => (
+interface FooterProps {
+  categories: ICourseCategory[];
+}
+
+export const Footer: FC<FooterProps> = ({ categories }) => (
   <div className="bg-head">
     <div className="container">
       <div className="py-[60px] text-white flex items-center  justify-between border-b border-b-white/[.15]">
@@ -17,16 +22,28 @@ export const Footer: FC = () => (
         <div className="flex items-center gap-[30px]">
           <p className="text-lg-medium">Follow Us On Social Media</p>
           <div className="flex justify-between gap-4 text-sm">
-            <Link className="text-white p-4 rounded-full hover:bg-white/10 duration-300" href="/">
+            <Link
+              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              href="/"
+            >
               <ImFacebook />
             </Link>
-            <Link className="text-white p-4 rounded-full hover:bg-white/10 duration-300" href="/">
+            <Link
+              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              href="/"
+            >
               <ImTwitter />
             </Link>
-            <Link className="text-white p-4 rounded-full hover:bg-white/10 duration-300" href="/">
+            <Link
+              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              href="/"
+            >
               <BsInstagram />
             </Link>
-            <Link className="text-white p-4 rounded-full hover:bg-white/10 duration-300" href="/">
+            <Link
+              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              href="/"
+            >
               <ImLinkedin2 />
             </Link>
           </div>
@@ -58,28 +75,15 @@ export const Footer: FC = () => (
           </ul>
           <div className="grid grid-cols-2 col-span-2">
             <ul className="flex flex-col gap-4 text-md-regular">
-              <p className="uppercase mb-[26px] text-lg-medium">Categories</p>
-              <li className="hover:text-color-6">
-                <Link href="/">Development </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Business </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Finance & Accounting </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">IT & Software </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/"> Office Productivity </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Design </Link>
-              </li>
-              <li className="hover:text-color-6">
-                <Link href="/">Marketing</Link>
-              </li>
+              <p className="uppercase mb-[26px] text-lg-medium">Ангилалууд</p>
+              {categories.map((category) => (
+                <li
+                  key={category._id}
+                  className="hover:text-color-6 duration-300"
+                >
+                  <Link href="/">{category.name} </Link>
+                </li>
+              ))}
             </ul>
             <ul className="flex flex-col gap-4 text-md-regular">
               <p className="uppercase mb-[26px] invisible">Categories</p>
@@ -105,7 +109,9 @@ export const Footer: FC = () => (
           </div>
 
           <ul className="flex flex-col gap-4 text-md-regular">
-            <p className="uppercase mb-[26px] select-none text-lg-medium">Support</p>
+            <p className="uppercase mb-[26px] select-none text-lg-medium">
+              Support
+            </p>
             <li className="hover:text-color-6">
               <Link href="/">Documentation </Link>
             </li>
@@ -124,8 +130,12 @@ export const Footer: FC = () => (
           </ul>
         </div>
         <div className="col-span-3">
-          <p className="uppercase mb-[26px] select-none text-lg-medium">Get in touch</p>
-          <p className="mb-5 text-md-regular">We don’t send spam so don’t worry.</p>
+          <p className="uppercase mb-[26px] select-none text-lg-medium">
+            Get in touch
+          </p>
+          <p className="mb-5 text-md-regular">
+            We don’t send spam so don’t worry.
+          </p>
           <div className="relative bg-white w-full h-[60px] rounded-full pl-[30px] text-sm-regular focus-within:ring-4 focus-within:ring-color-1">
             <input
               type="text"

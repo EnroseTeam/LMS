@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import React from 'react';
 
-export const AdvantageSection: FC = () => (
+const AdvantageSection: FC = () => (
   <>
     <div className="bg-color-2 py-[120px]">
       <div className="container text-white">
@@ -80,3 +80,5 @@ export const AdvantageSection: FC = () => (
     </div>
   </>
 );
+
+export default AdvantageSection;
