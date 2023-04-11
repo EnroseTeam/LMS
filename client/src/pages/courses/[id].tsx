@@ -1,9 +1,8 @@
-import Breadcrumbs from '@/components/Breadcrumbs';
-import RatingStar from '@/components/RatingStar';
-import { ICourseCategory } from '@/interfaces/courses';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { FC } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import {
   BsPersonWorkspace,
@@ -19,33 +18,40 @@ import { HiOutlinePuzzle } from 'react-icons/hi';
 import { TfiMedall } from 'react-icons/tfi';
 import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
 
+import Breadcrumbs from '@/components/global/Breadcrumbs';
+import Button from '@/components/global/Button';
+import RatingStar from '@/components/global/RatingStar';
+import { ICourse, ICourseCategory } from '@/interfaces/courses';
+
 import placeholder from '@/assets/placeholder.png';
 import shape from '@/assets/hero-shape.svg';
-import Image from 'next/image';
-import Link from 'next/link';
-import Button from '@/components/Button';
 
 interface SingleCoursePageProps {
   categories: ICourseCategory[];
+  course: ICourse;
 }
 
-export const getServerSideProps: GetServerSideProps<SingleCoursePageProps> = async () => {
-  const res = await axios.get('http://localhost:5000/api/courses/categories');
+export const getServerSideProps: GetServerSideProps<SingleCoursePageProps> = async ({ params }) => {
+  const [categoryRes, courseRes] = await axios.all([
+    axios.get('http://localhost:5000/api/courses/categories'),
+    axios.get(`http://localhost:5000/api/courses/${params?.id}`),
+  ]);
   return {
     props: {
-      categories: res.data.body,
+      categories: categoryRes.data.body,
+      course: courseRes.data.body,
     },
   };
 };
 
-const SingleCoursePage: FC<SingleCoursePageProps> = () => (
+const SingleCoursePage: FC<SingleCoursePageProps> = ({ course }) => (
   <>
     <div className="bg-head pb-[60px] relative overflow-hidden">
       <Breadcrumbs
         transparent
         breadcrumbItems={[
           { title: 'Сургалтууд', link: '/courses' },
-          { title: 'ReactJS', link: '/courses/single' },
+          { title: course.name, link: '/courses/single' },
         ]}
       />
 
@@ -69,14 +75,9 @@ const SingleCoursePage: FC<SingleCoursePageProps> = () => (
               </div>
             </div>
 
-            <h1 className="text-3xl-bold text-white">
-              User Experience Design Essentials - Adobe XD UI UX Design
-            </h1>
+            <h1 className="text-3xl-bold text-white">{course.name}</h1>
 
-            <p className="text-icon text-md-regular">
-              Use XD to get a job in UI Design, User Interface, User Experience design, UX design &
-              Web Design
-            </p>
+            <p className="text-icon text-md-regular">{course.description}</p>
 
             <div className="flex items-center gap-7">
               <div className="flex items-center gap-[10px]">
@@ -149,7 +150,7 @@ const SingleCoursePage: FC<SingleCoursePageProps> = () => (
                 <h1>Skill level</h1>
               </span>
 
-              <h2>Beginner</h2>
+              <h2>{course.level.name}</h2>
             </div>
 
             <div className="flex items-center justify-between border-b border-b-white/[.15]">
@@ -211,7 +212,13 @@ const SingleCoursePage: FC<SingleCoursePageProps> = () => (
 
         <div className="flex flex-col gap-[30px]">
           <div className="rounded-lg overflow-hidden w-full relative">
-            <Image src={placeholder} alt="Video" className="w-full aspect-auto object-contain" />
+            <Image
+              src={course.picture}
+              width={513}
+              height={450}
+              alt="Video"
+              className="w-full aspect-auto object-contain"
+            />
 
             <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] p-5 bg-white rounded-full cursor-pointer">
               <BsPlay size={40} />

@@ -1,11 +1,11 @@
 import { FC } from 'react';
-import placeHolderImg from '@/assets/placeholder.png';
+import Link from 'next/link';
 import Image from 'next/image';
 
-import { BsFileEarmarkText, BsClock, BsBarChart } from 'react-icons/bs';
-import Link from 'next/link';
-import RatingStar from './RatingStar';
+import RatingStar from '../global/RatingStar';
 import { ICourse } from '@/interfaces/courses';
+import { BsFileEarmarkText, BsClock, BsBarChart } from 'react-icons/bs';
+import placeHolderImg from '@/assets/placeholder.png';
 
 interface CourseCardProps {
   course: ICourse;
@@ -13,7 +13,10 @@ interface CourseCardProps {
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => (
   <div className="flex flex-col gap-[15px]">
-    <Link href="/" className="rounded-lg overflow-hidden w-full group relative">
+    <Link
+      href={`/courses/${course._id}`}
+      className="rounded-lg overflow-hidden w-full group relative"
+    >
       <Image
         src={course.picture}
         width={300}
@@ -37,7 +40,10 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         <p className="text-text text-xs-regular">(1991)</p>
       </div>
 
-      <Link href="/" className="text-head text-lg-medium hover:text-head/80 duration-300">
+      <Link
+        href={`/courses/${course._id}`}
+        className="text-head text-lg-medium hover:text-head/80 duration-300"
+      >
         {course.name}
       </Link>
 

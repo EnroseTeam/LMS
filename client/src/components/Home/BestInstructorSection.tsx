@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import React from 'react';
 import Link from 'next/link';
 
-import ArrowButton from '../ArrowButton';
-import { InstructorCard } from './subComponents/InstructorCard';
+import ArrowButton from '../global/ArrowButton';
+import InstructorCard from '../Instructors/InstructorCard';
 
 const BestInstructorSection: FC = () => (
   <>

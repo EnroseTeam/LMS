@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import errorImg from '../assets/404.svg';
 import Image from 'next/image';
-import Button from '@/components/Button';
+
+import errorImg from '@/assets/404.svg';
+import Button from '@/components/global/Button';
 
 const NotFoundPage: FC = () => (
   <div className="bg-[#fefbf4] py-[120px]">

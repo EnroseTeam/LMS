@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import mainLogo from '../assets/logo-main.svg';
+import mainLogo from '@/assets/logo-main.svg';
 import { RiMenu4Fill } from 'react-icons/ri';
 import { FiShoppingBag, FiSearch } from 'react-icons/fi';
 

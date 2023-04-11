@@ -2,14 +2,15 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import placeholder from '../../../assets/placeholder.png';
 import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
-import RatingStar from '../../RatingStar';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BiRightArrow } from 'react-icons/bi';
 import { BsInstagram } from 'react-icons/bs';
 
-export const InstructorCard: FC = () => (
+import RatingStar from '../global/RatingStar';
+import placeholder from '@/assets/placeholder.png';
+
+const InstructorCard: FC = () => (
   <div className="flex flex-col gap-[20px]">
     <Link href="/" className="rounded-lg overflow-hidden group relative">
       <Image src={placeholder} alt="" className="w-full object-cover aspect-[.9/1]" />
@@ -56,3 +57,5 @@ export const InstructorCard: FC = () => (
     </div>
   </div>
 );
+
+export default InstructorCard;

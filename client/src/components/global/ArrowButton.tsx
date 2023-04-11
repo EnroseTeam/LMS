@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import { HiOutlineArrowUpRight } from 'react-icons/hi2';
 
 interface ArrowButtonProps {

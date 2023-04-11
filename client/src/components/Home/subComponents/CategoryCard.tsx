@@ -1,7 +1,8 @@
-import { ICourseCategory } from '@/interfaces/courses';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+
+import { ICourseCategory } from '@/interfaces/courses';
 
 interface CategoryCardProps {
   category: ICourseCategory;

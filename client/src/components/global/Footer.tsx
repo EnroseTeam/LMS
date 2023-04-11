@@ -1,16 +1,17 @@
 import { FC } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
 import { BsInstagram } from 'react-icons/bs';
-import Link from 'next/link';
-import mainLogo from '../assets/logo-main.svg';
-import Image from 'next/image';
+
 import { ICourseCategory } from '@/interfaces/courses';
+import mainLogo from '@/assets/logo-main.svg';
 
 interface FooterProps {
   categories?: ICourseCategory[];
 }
 
-export const Footer: FC<FooterProps> = ({ categories }) => (
+const Footer: FC<FooterProps> = ({ categories }) => (
   <div className="bg-head">
     <div className="container">
       <div className="py-[60px] text-white flex items-center  justify-between border-b border-b-white/[.15]">
@@ -155,3 +156,5 @@ export const Footer: FC<FooterProps> = ({ categories }) => (
     </div>
   </div>
 );
+
+export default Footer;

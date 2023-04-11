@@ -1,13 +1,12 @@
-import { FC } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
+
+import { FC } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import UserCommentCard from './subComponents/UserCommentCard';
-
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
 const UsersCommentSection: FC = () => (
   <div className="bg-color-1 pt-[120px] pb-[112px] text-white">

@@ -1,7 +1,10 @@
-import Layout from '@/components/Layout';
 import '@/styles/globals.css';
+
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import NextProgress from 'next-progress';
+
+import Layout from '@/components/global/Layout';
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
@@ -16,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NextProgress />
       <Layout props={pageProps}>
         <Component {...pageProps} />
       </Layout>
