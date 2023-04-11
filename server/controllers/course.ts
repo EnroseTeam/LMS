@@ -47,7 +47,7 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
 interface CourseBody {
   name?: string;
   description?: string;
-  thumbnail?: string;
+  picture?: string;
   instructor?: string;
   level?: string;
   category?: string;
@@ -61,23 +61,14 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
   res,
   next
 ) => {
-  const {
-    name,
-    description,
-    thumbnail,
-    instructor,
-    level,
-    category,
-    requirements,
-    goals,
-    sections,
-  } = req.body;
+  const { name, description, picture, instructor, level, category, requirements, goals, sections } =
+    req.body;
 
   const session = await mongoose.startSession();
 
   try {
     if (!name) throw createHttpError(400, 'Гарчиг заавал шаардлагатай');
-    if (!thumbnail) throw createHttpError(400, 'Зураг заавал шаардлагатай');
+    if (!picture) throw createHttpError(400, 'Зураг заавал шаардлагатай');
     if (!instructor) throw createHttpError(400, 'Багшийн мэдээлэл заавал шаардлагатай');
     if (!level) throw createHttpError(400, 'Хичээлийн түвшин заавал шаардлагатай');
     if (!category) throw createHttpError(400, 'Хичээлийн ангилал заавал шаардлагатай');
@@ -101,7 +92,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
         {
           name,
           description,
-          thumbnail,
+          picture,
           instructor,
           level,
           category,

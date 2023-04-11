@@ -8,7 +8,7 @@ interface Section {
 interface ICourse extends Document<Schema.Types.ObjectId> {
   name: string;
   description?: string;
-  thumbnail: string;
+  picture: string;
   instructor: Schema.Types.ObjectId;
   level: Schema.Types.ObjectId;
   category: Schema.Types.ObjectId;
@@ -30,9 +30,8 @@ const CourseSchema = new Schema<ICourse>(
       required: true,
     },
     description: String,
-    thumbnail: {
+    picture: {
       type: String,
-      required: true,
     },
     instructor: {
       type: Schema.Types.ObjectId,
