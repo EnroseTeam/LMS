@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import CourseModel from '../models/course';
+import CourseModel, { ICourse } from '../models/course';
 import CourseCategoryModel from '../models/courseCategory';
 import CourseLevelModel from '../models/courseLevel';
 import UserModel from '../models/user';
@@ -87,7 +87,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     const isCategoryExist = await CourseCategoryModel.findById(category, null, { session });
     if (!isCategoryExist) throw createHttpError(404, 'Хичээлийн ангилал олдсонгүй');
 
-    await CourseModel.create(
+    const [newCourse] = await CourseModel.create(
       [
         {
           name,
@@ -103,6 +103,9 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
       ],
       { session }
     );
+
+    isInstructorExist.ownCourses.push(newCourse._id);
+    await isInstructorExist.save({ session });
 
     isCategoryExist.courseCount += 1;
     await isCategoryExist.save({ session });

@@ -9,7 +9,8 @@ import courseLessonRoutes from './routes/courseLesson';
 import userRoleRoutes from './routes/userRole';
 import userRoutes from './routes/user';
 import courseReviewRoutes from './routes/courseReview';
-import courseRoute from './routes/course';
+import courseRoutes from './routes/course';
+import authRoutes from './routes/auth';
 
 const app: Express = express();
 
@@ -22,17 +23,18 @@ app.use('/api/courses/categories', courseCategoryRoutes);
 app.use('/api/courses/lessons', courseLessonRoutes);
 app.use('/api/courses/levels', courseLevelRoutes);
 app.use('/api/courses/reviews', courseReviewRoutes);
-app.use('/api/courses', courseRoute);
+app.use('/api/courses', courseRoutes);
 app.use('/api/users/roles', userRoleRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use((req, res, next) => {
-  next(createHttpError(404, 'Endpoint not found'));
+  next(createHttpError(404, 'Хүсэлт явуулсан хаяг олдсонгүй.'));
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-  let errorMessage = 'An unknown error occurred';
+  let errorMessage = 'Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.';
   let statusCode = 500;
   if (isHttpError(error)) {
     statusCode = error.status;

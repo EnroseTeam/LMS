@@ -1,6 +1,6 @@
 import { Schema, model, Types, Document } from 'mongoose';
 
-interface ICourseLesson extends Document<Types.ObjectId> {
+export interface ICourseLesson extends Document<Types.ObjectId> {
   name: string;
   description?: string;
   video?: string;

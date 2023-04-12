@@ -1,20 +1,21 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+import { ICourseLesson } from './courseLesson';
 
 interface Section {
   name: string;
-  lessons: Schema.Types.ObjectId[];
+  lessons: ICourseLesson['_id'][];
 }
 
-interface ICourse extends Document<Schema.Types.ObjectId> {
+export interface ICourse extends Document<Types.ObjectId> {
   name: string;
   description?: string;
   picture: string;
-  instructor: Schema.Types.ObjectId;
-  level: Schema.Types.ObjectId;
-  category: Schema.Types.ObjectId;
+  instructor: Types.ObjectId;
+  level: Types.ObjectId;
+  category: Types.ObjectId;
   requirements: string[];
   goals: string[];
-  reviews: Schema.Types.ObjectId[];
+  reviews: Types.ObjectId[];
   sections: Section[];
   readCount: number;
   purchaseCount: number;

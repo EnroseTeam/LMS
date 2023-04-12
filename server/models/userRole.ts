@@ -1,6 +1,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
 
-interface IUserRole extends Document<Types.ObjectId> {
+export interface IUserRole extends Document<Types.ObjectId> {
   role: string;
   slug: string;
   createdAt: Date;
