@@ -44,3 +44,11 @@
 .blob-1 {
   border-radius: 47% 53% 22% 78% / 73% 49% 51% 27%;
 }
+
+.text-fade {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    #ffffff 94.82%
+  );
+}

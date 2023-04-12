@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { GetServerSideProps } from 'next';
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import axios from "axios";
+import { GetServerSideProps } from "next";
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
   BsPersonWorkspace,
@@ -13,27 +13,29 @@ import {
   BsInfinity,
   BsInstagram,
   BsPlay,
-} from 'react-icons/bs';
-import { HiOutlinePuzzle } from 'react-icons/hi';
-import { TfiMedall } from 'react-icons/tfi';
-import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
+} from "react-icons/bs";
+import { HiOutlinePuzzle } from "react-icons/hi";
+import { TfiMedall } from "react-icons/tfi";
+import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
 
-import Breadcrumbs from '@/components/global/Breadcrumbs';
-import Button from '@/components/global/Button';
-import RatingStar from '@/components/global/RatingStar';
-import { ICourse, ICourseCategory } from '@/interfaces/courses';
+import Breadcrumbs from "@/components/global/Breadcrumbs";
+import Button from "@/components/global/Button";
+import RatingStar from "@/components/global/RatingStar";
+import { ICourse, ICourseCategory } from "@/interfaces/courses";
 
-import placeholder from '@/assets/placeholder.png';
-import shape from '@/assets/hero-shape.svg';
+import placeholder from "@/assets/placeholder.png";
+import shape from "@/assets/hero-shape.svg";
 
 interface SingleCoursePageProps {
   categories: ICourseCategory[];
   course: ICourse;
 }
 
-export const getServerSideProps: GetServerSideProps<SingleCoursePageProps> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<
+  SingleCoursePageProps
+> = async ({ params }) => {
   const [categoryRes, courseRes] = await axios.all([
-    axios.get('http://localhost:5000/api/courses/categories'),
+    axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(`http://localhost:5000/api/courses/${params?.id}`),
   ]);
   return {
@@ -50,13 +52,17 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ course }) => (
       <Breadcrumbs
         transparent
         breadcrumbItems={[
-          { title: 'Сургалтууд', link: '/courses' },
-          { title: course.name, link: '/courses/single' },
+          { title: "Сургалтууд", link: "/courses" },
+          { title: course.name, link: "/courses/single" },
         ]}
       />
 
       <div className="container absolute w-full top-8 bottom-[62px] right-0 left-0 pointer-events-none">
-        <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
+        <Image
+          src={shape}
+          alt="Shape"
+          className="w-full aspect-auto object-contain"
+        />
       </div>
 
       <div className="container grid grid-cols-2 gap-[145px] text-icon">
@@ -239,7 +245,9 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ course }) => (
             </Button>
           </div>
 
-          <p className="text-icon text-sm-regular">30-Day Money-Back Guarantee</p>
+          <p className="text-icon text-sm-regular">
+            30-Day Money-Back Guarantee
+          </p>
         </div>
       </div>
     </div>
@@ -247,7 +255,9 @@ const SingleCoursePage: FC<SingleCoursePageProps> = ({ course }) => (
       <div></div>
 
       <div className="col-span-2">
-        <h1 className="text-head text-xl font-medium leading-[23px]">Description</h1>
+        <h1 className="text-head text-xl font-medium leading-[23px]">
+          Description
+        </h1>
       </div>
     </div>
   </>
