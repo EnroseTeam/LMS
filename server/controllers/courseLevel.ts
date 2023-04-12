@@ -62,6 +62,7 @@ export const createCourseLevel: RequestHandler<unknown, unknown, CourseLevelBody
       slug,
       description,
     });
+
     res.status(201).json({
       message: `${name} нэртэй түвшин амжилттай нэмэгдлээ.`,
       body: newCourseLevel,

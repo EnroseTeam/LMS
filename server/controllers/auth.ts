@@ -84,7 +84,7 @@ export const logIn: RequestHandler<unknown, unknown, LogInBody, unknown> = async
     if (!email) throw createHttpError(400, 'Нэвтрэхийн тулд и-мэйл заавал шаардлагатай.');
     if (!password) throw createHttpError(400, 'Нэвтрэхийн тулд нууц үг заавал шаардлагатай.');
 
-    const user = await UserModel.findOne({ email }).select('password');
+    const user = await UserModel.findOne({ email }).select('+password');
     if (!user) throw createHttpError(400, 'Таны оруулсан мэдээлэл буруу байна.');
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);

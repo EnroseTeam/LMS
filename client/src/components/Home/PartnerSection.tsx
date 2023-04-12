@@ -10,9 +10,9 @@ import logitech from '@/assets/logitech-2-1-3-1.svg';
 import spotify from '@/assets/Spotify-2-2.svg';
 
 const PartnerSection: FC = () => (
-  <div className="container pt-11 pb-[130px] mx-auto ">
+  <div className="container pt-11 pb-[130px]">
     <p className="text-md-regular mb-[52.5px] text-center text-head">Trusted by the world’s best</p>
-    <div className="flex items-center gap-[150px]">
+    <div className="flex items-center gap-[150px] justify-between">
       <Link href="/">
         <Image src={amazon} alt="" />
       </Link>

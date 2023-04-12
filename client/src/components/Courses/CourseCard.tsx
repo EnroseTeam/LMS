@@ -70,7 +70,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
             <Image src={placeHolderImg} alt="Profile" className="object-cover w-full h-full" />
           </div>
           <h1 className="text-text text-sm-regular">
-            {course.instructor.firstName} {course.instructor.lastName}
+            {course.instructor?.firstName} {course.instructor?.lastName}
           </h1>
         </div>
 
