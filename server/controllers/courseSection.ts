@@ -11,6 +11,7 @@ export const getCourseSetions: RequestHandler = async (req, res, next) => {
     const courseSections = await CourseSectionModel.find().populate('lessons');
     res.status(200).json({ message: 'Амжилттай', body: courseSections });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -77,6 +78,7 @@ export const createCourseSection: RequestHandler<
 
     res.status(201).json({ message: 'Амжилттай', body: newCourseSection });
   } catch (error) {
+    console.log(error);
     await session.abortTransaction();
     next(error);
   }
@@ -139,14 +141,6 @@ export const deleteCourseSection: RequestHandler = async (req, res, next) => {
       );
       course.sections = updatedSections;
       await course.save({ session });
-    }
-
-    // Сургалтын сэдэвт бүртгэлтэй байгаа бүх хичээлийг устгах
-    if (courseSection.lessons.length > 0) {
-      courseSection.lessons.map(async (lesson): Promise<void> => {
-        const curLesson = await CourseLessonModel.findById(lesson, null, { session });
-        if (curLesson) await curLesson.deleteOne({ session });
-      });
     }
 
     // Сургалтын сэдвээ устгах

@@ -7,6 +7,7 @@ export const uploadFile: RequestHandler = async (req, res, next) => {
     const upload = await cloudinary.uploader.upload(file.path);
     res.status(201).json({ message: 'Амжилттай', body: upload.secure_url });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

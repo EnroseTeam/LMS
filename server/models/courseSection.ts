@@ -23,7 +23,7 @@ const CourseSectionSchema = new Schema<ICourseSection>(
     },
     lessons: {
       type: [Schema.Types.ObjectId],
-      ref: 'Course_Lessons',
+      ref: 'Course_Lesson',
       default: [],
     },
   },

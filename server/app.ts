@@ -11,11 +11,12 @@ import userRoutes from './routes/user';
 import courseReviewRoutes from './routes/courseReview';
 import courseRoutes from './routes/course';
 import authRoutes from './routes/auth';
+import courseSectionRoutes from './routes/courseSection';
 
 const app: Express = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
 
 // Routes
 app.use('/api/files', fileRoutes);
@@ -23,6 +24,7 @@ app.use('/api/courses/categories', courseCategoryRoutes);
 app.use('/api/courses/lessons', courseLessonRoutes);
 app.use('/api/courses/levels', courseLevelRoutes);
 app.use('/api/courses/reviews', courseReviewRoutes);
+app.use('/api/courses/sections', courseSectionRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/users/roles', userRoleRoutes);
 app.use('/api/users', userRoutes);

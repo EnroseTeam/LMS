@@ -174,6 +174,5 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
     await session.abortTransaction();
     next(error);
   }
-
   session.endSession();
 };
