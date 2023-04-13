@@ -6,37 +6,37 @@
   @apply max-w-[1390px] mx-auto;
 }
 
-/* Classes for User Comment Section Slider */
-.user-section-prev {
+/* Slider Navigation 1 */
+.slider-style-1-prev {
   @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
 }
 
-.user-section-next {
+.slider-style-1-next {
   @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
 }
 
-/* Classes for Top Categories Section Slider */
-.top-categories-prev {
+/* Slider Navigation 2 and Pagination */
+.slider-style-2-prev {
   @apply text-2xl text-color-2 hover:text-color-2/70 duration-300 disabled:text-gray-400 disabled:cursor-not-allowed;
 }
 
-.top-categories-next {
+.slider-style-2-next {
   @apply text-2xl text-color-2 hover:text-color-2/70 duration-300 disabled:text-gray-400 disabled:cursor-not-allowed;
 }
 
-.top-categories-pagination {
+.slider-style-pagination {
   @apply flex items-center gap-1;
 }
 
-.top-categories-pagination {
+.slider-style-pagination {
   width: auto !important;
 }
 
-.top-categories-pagination .swiper-pagination-bullet {
+.slider-style-pagination .swiper-pagination-bullet {
   @apply bg-icon;
 }
 
-.top-categories-pagination .swiper-pagination-bullet-active {
+.slider-style-pagination .swiper-pagination-bullet-active {
   @apply bg-color-1;
 }
 

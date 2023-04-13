@@ -21,8 +21,8 @@ const UsersCommentSection: FC = () => (
         spaceBetween={30}
         slidesPerView={3}
         navigation={{
-          nextEl: '.user-section-next',
-          prevEl: '.user-section-prev',
+          nextEl: '.slider-style-1-next',
+          prevEl: '.slider-style-1-prev',
         }}
         modules={[Navigation]}
         className="mb-[116px]"
@@ -44,10 +44,10 @@ const UsersCommentSection: FC = () => (
         </SwiperSlide>
 
         <div className="flex items-center justify-end gap-5 mt-[60px]">
-          <button className="user-section-prev">
+          <button className="slider-style-1-prev">
             <BsArrowLeft />
           </button>
-          <button className="user-section-next">
+          <button className="slider-style-1-next">
             <BsArrowRight />
           </button>
         </div>

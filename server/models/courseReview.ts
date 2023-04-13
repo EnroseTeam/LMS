@@ -1,5 +1,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { IUser } from './user';
+import { ICourse } from './course';
 
 export interface ICourseReview extends Document<Types.ObjectId> {
   title: string;
