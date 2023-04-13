@@ -36,6 +36,7 @@ export const getSingleUser: RequestHandler = async (req, res, next) => {
 
   try {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+
     const user = await UserModel.findById(id).populate('role');
     if (!user) throw createHttpError(404, 'Хэрэглэгч олдсонгүй.');
 
@@ -51,10 +52,11 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
   try {
+    // Хүсэлтээр ирсэн id зөв эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
 
+    // Хүсэлтээр орж ирсэн id-тай хэрэглэгч байгаа эсэхийг шалгана.
     const user = await UserModel.findById(id);
-
     if (!user) throw createHttpError(404, 'Хэрэглэгч олдсонгүй');
 
     await user.deleteOne();

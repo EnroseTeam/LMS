@@ -1,18 +1,13 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import { ICourseLesson } from './courseLesson';
 import { IUser } from './user';
 import { ICourseLevel } from './courseLevel';
 import { ICourseCategory } from './courseCategory';
 import { ICourseReview } from './courseReview';
-
-interface Section {
-  name: string;
-  lessons: ICourseLesson['_id'][];
-}
+import { ICourseSection } from './courseSection';
 
 export interface ICourse extends Document<Types.ObjectId> {
   name: string;
-  description?: string;
+  description: string;
   picture: string;
   instructor: IUser['_id'];
   level: ICourseLevel['_id'];
@@ -20,9 +15,11 @@ export interface ICourse extends Document<Types.ObjectId> {
   requirements: string[];
   goals: string[];
   reviews: ICourseReview['_id'][];
-  sections: Section[];
+  sections: ICourseSection['_id'][];
   readCount: number;
   purchaseCount: number;
+  price: number;
+  discountPrice: number;
   isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -34,7 +31,10 @@ const CourseSchema = new Schema<ICourse>(
       type: String,
       required: true,
     },
-    description: String,
+    description: {
+      type: String,
+      required: true,
+    },
     picture: {
       type: String,
     },
@@ -67,15 +67,8 @@ const CourseSchema = new Schema<ICourse>(
       default: [],
     },
     sections: {
-      type: [
-        {
-          name: { type: String, required: true },
-          lessons: {
-            type: [Schema.Types.ObjectId],
-            ref: 'Course_Lesson',
-          },
-        },
-      ],
+      type: [Schema.Types.ObjectId],
+      ref: 'Course_Section',
       default: [],
     },
     readCount: {
@@ -83,6 +76,14 @@ const CourseSchema = new Schema<ICourse>(
       default: 0,
     },
     purchaseCount: {
+      type: Number,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    discountPrice: {
       type: Number,
       default: 0,
     },
