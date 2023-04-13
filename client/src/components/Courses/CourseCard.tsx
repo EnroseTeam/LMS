@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { FC } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
-import RatingStar from '../global/RatingStar';
-import { ICourse } from '@/interfaces/courses';
-import { BsFileEarmarkText, BsClock, BsBarChart } from 'react-icons/bs';
-import placeHolderImg from '@/assets/placeholder.png';
+import RatingStar from "../global/RatingStar";
+import { ICourse } from "@/interfaces/courses";
+import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
+import placeHolderImg from "@/assets/placeholder.png";
 
 interface CourseCardProps {
   course: ICourse;
@@ -67,10 +67,15 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
       <div className="pt-[10px] flex items-center justify-between border-t border-t-border-1">
         <div className="flex items-center gap-[10px]">
           <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
-            <Image src={placeHolderImg} alt="Profile" className="object-cover w-full h-full" />
+            <Image
+              src={placeHolderImg}
+              alt="Profile"
+              className="object-cover w-full h-full"
+            />
           </div>
           <h1 className="text-text text-sm-regular">
             {course.instructor?.firstName} {course.instructor?.lastName}
+
           </h1>
         </div>
 
