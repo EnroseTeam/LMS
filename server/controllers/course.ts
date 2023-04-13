@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import CourseModel, { ICourse } from '../models/course';
+import CourseModel from '../models/course';
 import CourseCategoryModel from '../models/courseCategory';
 import CourseLevelModel from '../models/courseLevel';
 import UserModel from '../models/user';
@@ -53,7 +53,6 @@ interface CourseBody {
   category?: string;
   requirements?: string[];
   goals?: string[];
-  sections?: string[];
 }
 
 export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown> = async (
@@ -61,8 +60,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
   res,
   next
 ) => {
-  const { name, description, picture, instructor, level, category, requirements, goals, sections } =
-    req.body;
+  const { name, description, picture, instructor, level, category, requirements, goals } = req.body;
 
   const session = await mongoose.startSession();
 
@@ -98,7 +96,6 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
           category,
           requirements,
           goals,
-          sections,
         },
       ],
       { session }
@@ -109,6 +106,9 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
 
     isCategoryExist.courseCount += 1;
     await isCategoryExist.save({ session });
+
+    isLevelExist.courseCount += 1;
+    await isLevelExist.save({ session });
 
     await session.commitTransaction();
 

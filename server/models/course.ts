@@ -1,5 +1,9 @@
 import { Schema, model, Document, Types } from 'mongoose';
 import { ICourseLesson } from './courseLesson';
+import { IUser } from './user';
+import { ICourseLevel } from './courseLevel';
+import { ICourseCategory } from './courseCategory';
+import { ICourseReview } from './courseReview';
 
 interface Section {
   name: string;
@@ -10,12 +14,12 @@ export interface ICourse extends Document<Types.ObjectId> {
   name: string;
   description?: string;
   picture: string;
-  instructor: Types.ObjectId;
-  level: Types.ObjectId;
-  category: Types.ObjectId;
+  instructor: IUser['_id'];
+  level: ICourseLevel['_id'];
+  category: ICourseCategory['_id'];
   requirements: string[];
   goals: string[];
-  reviews: Types.ObjectId[];
+  reviews: ICourseReview['_id'][];
   sections: Section[];
   readCount: number;
   purchaseCount: number;

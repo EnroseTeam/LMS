@@ -1,7 +1,7 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { IUser } from './user';
 
-interface ICourseReview extends Document<Types.ObjectId> {
+export interface ICourseReview extends Document<Types.ObjectId> {
   title: string;
   text?: string;
   user: IUser['_id'];
