@@ -26,10 +26,10 @@ const TopCategoriesSection: FC<TopCategoriesProps> = ({ categories }) => (
       spaceBetween={30}
       slidesPerView={6}
       navigation={{
-        nextEl: '.top-categories-next',
-        prevEl: '.top-categories-prev',
+        nextEl: '.slider-style-2-next',
+        prevEl: '.slider-style-2-prev',
       }}
-      pagination={{ clickable: true, el: '.top-categories-pagination' }}
+      pagination={{ clickable: true, el: '.slider-style-2-pagination' }}
       modules={[Navigation, Pagination]}
     >
       {categories.map((category) => (
@@ -39,11 +39,11 @@ const TopCategoriesSection: FC<TopCategoriesProps> = ({ categories }) => (
       ))}
 
       <div className="flex items-center justify-center gap-5 mt-[60px]">
-        <button className="top-categories-prev">
+        <button className="slider-style-2-prev">
           <BsArrowLeft />
         </button>
-        <div className="top-categories-pagination" />
-        <button className="top-categories-next">
+        <div className="slider-style-2-pagination" />
+        <button className="slider-style-2-next">
           <BsArrowRight />
         </button>
       </div>

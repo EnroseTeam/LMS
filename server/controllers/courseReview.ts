@@ -113,7 +113,7 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
     const reviewCourse = await CourseModel.findOne({
       reviews: { $elemMatch: { $eq: review._id } },
     });
-    reviewCourse?.reviews.filter((curReview) => curReview._id !== review._id);
+    reviewCourse?.reviews.filter((curReview) => curReview?._id !== review._id);
     await reviewCourse?.save({ session });
 
     await review.deleteOne({ session });
