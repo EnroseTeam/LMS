@@ -4,11 +4,7 @@ import { IUser } from './user';
 import { ICourseLevel } from './courseLevel';
 import { ICourseCategory } from './courseCategory';
 import { ICourseReview } from './courseReview';
-
-interface Section {
-  name: string;
-  lessons: ICourseLesson['_id'][];
-}
+import { ICourseSection } from './courseSection';
 
 export interface ICourse extends Document<Types.ObjectId> {
   name: string;
@@ -20,7 +16,7 @@ export interface ICourse extends Document<Types.ObjectId> {
   requirements: string[];
   goals: string[];
   reviews: ICourseReview['_id'][];
-  sections: Section[];
+  sections: ICourseSection['_id'][];
   readCount: number;
   purchaseCount: number;
   isPublished: boolean;
@@ -67,15 +63,7 @@ const CourseSchema = new Schema<ICourse>(
       default: [],
     },
     sections: {
-      type: [
-        {
-          name: { type: String, required: true },
-          lessons: {
-            type: [Schema.Types.ObjectId],
-            ref: 'Course_Lesson',
-          },
-        },
-      ],
+      type: [Schema.Types.ObjectId],
       default: [],
     },
     readCount: {
