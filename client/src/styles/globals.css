@@ -46,9 +46,5 @@
 }
 
 .text-fade {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    #ffffff 94.82%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 94.82%);
 }

@@ -53,7 +53,6 @@ interface CourseBody {
   category?: string;
   requirements?: string[];
   goals?: string[];
-  sections?: string[];
 }
 
 export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown> = async (
@@ -61,8 +60,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
   res,
   next
 ) => {
-  const { name, description, picture, instructor, level, category, requirements, goals, sections } =
-    req.body;
+  const { name, description, picture, instructor, level, category, requirements, goals } = req.body;
 
   const session = await mongoose.startSession();
 
@@ -87,7 +85,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     const isCategoryExist = await CourseCategoryModel.findById(category, null, { session });
     if (!isCategoryExist) throw createHttpError(404, 'Хичээлийн ангилал олдсонгүй');
 
-    await CourseModel.create(
+    const [newCourse] = await CourseModel.create(
       [
         {
           name,
@@ -98,14 +96,19 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
           category,
           requirements,
           goals,
-          sections,
         },
       ],
       { session }
     );
 
+    isInstructorExist.ownCourses.push(newCourse._id);
+    await isInstructorExist.save({ session });
+
     isCategoryExist.courseCount += 1;
     await isCategoryExist.save({ session });
+
+    isLevelExist.courseCount += 1;
+    await isLevelExist.save({ session });
 
     await session.commitTransaction();
 

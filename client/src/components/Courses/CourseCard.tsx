@@ -74,8 +74,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
             />
           </div>
           <h1 className="text-text text-sm-regular">
-            {course.instructor?.firstName}
-            {course.instructor?.lastName}
+            {course.instructor?.firstName} {course.instructor?.lastName}
+
           </h1>
         </div>
 

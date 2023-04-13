@@ -1,15 +1,27 @@
 import { Schema, Document, Types, model } from 'mongoose';
+import { IUserRole } from './userRole';
+import { ICourse } from './course';
 
-interface IUser extends Document<Types.ObjectId> {
+interface UserAddress {
+  country: string;
+  city: string;
+  district: string;
+  apartment: string;
+}
+
+export interface IUser extends Document<Types.ObjectId> {
   firstName: string;
   lastName: string;
+  fullName: string;
   birthDate: Date;
   email: string;
   phone: string;
-  address?: string;
+  address?: UserAddress;
   avatar?: string;
   password: string;
-  role: Schema.Types.ObjectId;
+  role: IUserRole['_id'];
+  boughtCourses: ICourse['_id'][];
+  ownCourses: ICourse['_id'][];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,17 +30,40 @@ const UserSchema = new Schema<IUser>(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    birthDate: { type: Date, required: true, select: false },
-    email: { type: String, required: true, unique: true, select: false },
-    phone: { type: String, required: true, unique: true, select: false },
-    address: { type: String, select: false },
-    avatar: { type: String },
+    fullName: {
+      type: String,
+      default: function () {
+        return this.lastName + ' ' + this.firstName;
+      },
+    },
+    birthDate: { type: Date, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: { type: String, required: true, unique: true },
+    address: {
+      country: String,
+      city: String,
+      district: String,
+      apartment: String,
+      default: {},
+    },
+    avatar: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dvlgyc6gs/image/upload/v1681304314/r19akcxpmflykf6upmsc.png',
+    },
     password: { type: String, required: true, select: false },
     role: {
       type: Schema.Types.ObjectId,
       ref: 'User_Role',
       required: true,
-      select: false,
+    },
+    boughtCourses: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Course',
+    },
+    ownCourses: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Course',
     },
   },
   { timestamps: true }

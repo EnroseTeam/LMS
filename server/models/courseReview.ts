@@ -1,16 +1,20 @@
 import { Schema, Document, Types, model } from 'mongoose';
+import { IUser } from './user';
 
-interface ICourseReview extends Document<Types.ObjectId> {
+export interface ICourseReview extends Document<Types.ObjectId> {
+  title: string;
   text?: string;
-  user: Schema.Types.ObjectId;
-  createdAt: Date;
+  user: IUser['_id'];
   rating: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const CourseReviewSchema = new Schema<ICourseReview>(
   {
+    title: { type: String, required: true },
     text: { type: String },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     rating: { type: Number, required: true },
   },
   { timestamps: true }
