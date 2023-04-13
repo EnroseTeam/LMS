@@ -1,11 +1,11 @@
 import { Schema, model, Types, Document } from 'mongoose';
-import { ICourseLesson } from './courseLesson';
 import { ICourse } from './course';
+import { ICourseLesson } from './courseLesson';
 
-interface ICourseSection extends Document<Types.ObjectId> {
+export interface ICourseSection extends Document<Types.ObjectId> {
   title: string;
-  lessons: ICourseLesson['_id'][];
   course: ICourse['_id'];
+  lessons: ICourseLesson['_id'][];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,15 +16,15 @@ const CourseSectionSchema = new Schema<ICourseSection>(
       type: String,
       required: true,
     },
-    lessons: {
-      type: [Schema.Types.ObjectId],
-      ref: 'Course_Lesson',
-      default: [],
-    },
     course: {
       type: Schema.Types.ObjectId,
       ref: 'Course',
       required: true,
+    },
+    lessons: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Course_Lesson',
+      default: [],
     },
   },
   { timestamps: true }
