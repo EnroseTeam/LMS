@@ -16,7 +16,7 @@ import courseSectionRoutes from './routes/courseSection';
 const app: Express = express();
 
 app.use(cors());
-app.use(express.json({ limit: '100mb' }));
+app.use(express.json());
 
 // Routes
 app.use('/api/files', fileRoutes);
