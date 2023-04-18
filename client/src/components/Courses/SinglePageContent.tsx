@@ -6,6 +6,10 @@ import { BsPlayFill } from 'react-icons/bs';
 import Accordion from '../global/Accordion';
 import Link from 'next/link';
 
+import placeholder from '@/assets/placeholder.png';
+import Image from 'next/image';
+import RatingStar from '../global/RatingStar';
+
 interface SinglePageContentProps {
   course: ICourse;
 }
@@ -519,13 +523,218 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
     </div>
   );
 
+  const teacherContent = (
+    <div className="flex flex-col gap-[30px]">
+      <h1 className="text-head text-xl font-medium leading-[23px]">Instructor</h1>
+      <div className="flex items-center gap-5">
+        <div className="w-[120px] h-[120px] rounded-full overflow-hidden">
+          <Image
+            alt="Instructor"
+            src={placeholder}
+            width={120}
+            height={120}
+            className="object-cover w-full aspect-square"
+          />
+        </div>
+        <div>
+          <h2 className="text-head text-lg-medium mb-[5px]">Floyd Miles</h2>
+          <p className="text-text text-md-regular mb-[11px]">President of Sales</p>
+          <div className="flex items-center gap-5 text-text text-xs-regular">
+            <span>Instructor Rating</span>
+            <span>23.897 reviews</span>
+            <span>692 students</span>
+            <span>15 courses</span>
+          </div>
+        </div>
+      </div>
+      <p className="text-text text-md-regular">
+        Back in 2010, I started brainspin with a desire to design compelling and engaging apps. For
+        over 7 years, I have designed many high profile web and iPhone applications. The
+        applications range from 3D medical aided web applications to project management applications
+        for niche industries. I am also the founder of a large local design organization, Salt Lake
+        Designers, where I and other local influencers help cultivate the talents of up and coming
+        UX designers through workshops and panel discussions.
+      </p>
+    </div>
+  );
+
+  const reviewContent = (
+    <div>
+      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Student Feedback</h1>
+      <div className="flex items-center gap-[10px] mb-[60px]">
+        <div className="bg-bg-3 rounded-lg py-[50px] px-[94px] grid place-items-center">
+          <h3 className="text-head text-[60px] font-medium leading-[70px] mb-2">4.8</h3>
+          <div className="flex items-center gap-[10px] mb-[10px]">
+            <RatingStar className="fill-[#E59819]" />
+            <RatingStar className="fill-[#E59819]" />
+            <RatingStar className="fill-[#E59819]" />
+            <RatingStar className="fill-[#E59819]" />
+            <RatingStar className="fill-[#E59819]" />
+          </div>
+          <p className="text-text text-md-regular">Course Rating</p>
+        </div>
+
+        <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right">
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
+              <div className="absolute top-0 left-0 w-[70%] h-full rounded-[4px] bg-color-1" />
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+            </div>
+            <p className="text-head text-md-regular leading-[40px] w-[4ch]">70%</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
+              <div className="absolute top-0 left-0 w-[15%] h-full rounded-[4px] bg-color-1" />
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+            </div>
+            <p className="text-head text-md-regular leading-[40px] w-[4ch]">15%</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
+              <div className="absolute top-0 left-0 w-[10%] h-full rounded-[4px] bg-color-1" />
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+            </div>
+            <p className="text-head text-md-regular leading-[40px] w-[4ch]">10%</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
+              <div className="absolute top-0 left-0 w-[3%] h-full rounded-[4px] bg-color-1" />
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+            </div>
+            <p className="text-head text-md-regular leading-[40px] w-[4ch]">3%</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
+              <div className="absolute top-0 left-0 w-[2%] h-full rounded-[4px] bg-color-1" />
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+              <RatingStar className="fill-[#E59819]" />
+            </div>
+            <p className="text-head text-md-regular leading-[40px] w-[4ch]">2%</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Reviews</h2>
+        <div className="flex flex-col gap-[30px] mb-[30px]">
+          <div className="flex items-start gap-5 pb-[58px] border-b border-b-border-1">
+            <div className="w-[60px] h-[60px] rounded-full overflow-hidden">
+              <Image
+                alt="Review"
+                src={placeholder}
+                width={60}
+                height={60}
+                className="object-cover w-full aspect-square"
+              />
+            </div>
+
+            <div className="flex-1">
+              <div className="flex items-center gap-[5px] mb-[10px]">
+                <h2 className="text-head text-lg-medium">Ali Tufan</h2>
+                <span className="text-text text-xs-regular">3 days ago</span>
+              </div>
+              <div className="flex items-center gap-[5px] mb-[15px]">
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+              </div>
+              <h1 className="text-head text-lg-medium mb-[9px]">The best LMS Design</h1>
+              <p className="text-text text-md-regular">
+                This course is a very applicable. Professor Ng explains precisely each algorithm and
+                even tries to give an intuition for mathematical and statistic concepts behind each
+                algorithm. Thank you very much.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-5 pb-[58px] border-b border-b-border-1">
+            <div className="w-[60px] h-[60px] rounded-full overflow-hidden">
+              <Image
+                alt="Review"
+                src={placeholder}
+                width={60}
+                height={60}
+                className="object-cover w-full aspect-square"
+              />
+            </div>
+
+            <div className="flex-1">
+              <div className="flex items-center gap-[5px] mb-[10px]">
+                <h2 className="text-head text-lg-medium">Ali Tufan</h2>
+                <span className="text-text text-xs-regular">3 days ago</span>
+              </div>
+              <div className="flex items-center gap-[5px] mb-[15px]">
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+                <RatingStar className="fill-[#E59819]" />
+              </div>
+              <h1 className="text-head text-lg-medium mb-[9px]">The best LMS Design</h1>
+              <p className="text-text text-md-regular">
+                This course is a very applicable. Professor Ng explains precisely each algorithm and
+                even tries to give an intuition for mathematical and statistic concepts behind each
+                algorithm. Thank you very much.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full text-center">
+          <button className="underline text-color-1 text-md-medium mb-[60px]">
+            View all reviews
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   const tabs: string[] = [
     'Дэлгэрэнгүй мэдээлэл',
     'Хичээлийн сэдвүүд',
     'Багшийн мэдээлэл',
     'Сэтгэгдлүүд',
   ];
-  const tabContents: JSX.Element[] = [descriptionContent, sectionContent];
+  const tabContents: JSX.Element[] = [
+    descriptionContent,
+    sectionContent,
+    teacherContent,
+    reviewContent,
+  ];
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
