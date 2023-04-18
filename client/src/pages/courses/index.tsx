@@ -1,21 +1,22 @@
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
-import { ICourseCategory } from '@/interfaces/courses';
-import axios from 'axios';
+import { ICourseCategory } from "@/interfaces/courses";
+import axios from "axios";
 
-import { GetServerSideProps } from 'next';
-import { FC, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper';
-import Breadcrumbs from '@/components/global/Breadcrumbs';
+import { GetServerSideProps } from "next";
+import { FC, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper";
+import Breadcrumbs from "@/components/global/Breadcrumbs";
 
-import { BsArrowLeft, BsArrowRight, BsChevronDown } from 'react-icons/bs';
+import { BsArrowLeft, BsArrowRight, BsChevronDown } from "react-icons/bs";
 
-import CourseCard from '@/components/Courses/CourseCard';
-import { ICourse } from '@/interfaces/courses';
-import PopularInstructorCard from '@/components/Instructors/PopularInstructorCard.tsx';
-import CheckBoxFilter from '@/components/global/CheckBoxFilter';
+import CourseCard from "@/components/Courses/CourseCard";
+import { ICourse } from "@/interfaces/courses";
+import PopularInstructorCard from "@/components/Instructors/PopularInstructorCard.tsx";
+import CheckBoxFilter from "@/components/global/CheckBoxFilter";
+import RadioButtonFilter from "@/components/global/RadioButtonFilter";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
@@ -26,8 +27,8 @@ export const getServerSideProps: GetServerSideProps<
   CoursesPageProps
 > = async () => {
   const [resCategory, resCourses] = await axios.all([
-    axios.get('http://localhost:5000/api/courses/categories'),
-    axios.get('http://localhost:5000/api/courses'),
+    axios.get("http://localhost:5000/api/courses/categories"),
+    axios.get("http://localhost:5000/api/courses"),
   ]);
   return {
     props: {
@@ -44,10 +45,16 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
     setDropSort(!dropSort);
   };
 
+  const items = [
+    { content: "All", count: 12 },
+    { content: "Paid", count: 12 },
+    { content: "Free", count: 12 },
+  ];
+
   return (
     <div>
       <Breadcrumbs
-        breadcrumbItems={[{ title: 'Бүх сургалтууд', link: '/courses' }]}
+        breadcrumbItems={[{ title: "Бүх сургалтууд", link: "/courses" }]}
       />
       <div className="container mb-[136px]">
         <div className="mb-[147px]">
@@ -83,8 +90,8 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
             spaceBetween={30}
             slidesPerView={4}
             navigation={{
-              nextEl: '.slider-style-1-next',
-              prevEl: '.slider-style-1-prev',
+              nextEl: ".slider-style-1-next",
+              prevEl: ".slider-style-1-prev",
             }}
             modules={[Navigation]}
             className="mb-[107px] static"
@@ -123,10 +130,10 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
             spaceBetween={30}
             slidesPerView={5}
             navigation={{
-              nextEl: '.slider-style-2-next',
-              prevEl: '.slider-style-2-prev',
+              nextEl: ".slider-style-2-next",
+              prevEl: ".slider-style-2-prev",
             }}
-            pagination={{ clickable: true, el: '.slider-style-2-pagination' }}
+            pagination={{ clickable: true, el: ".slider-style-2-pagination" }}
             modules={[Navigation, Pagination]}
             className="flex justify-between"
           >
@@ -174,13 +181,13 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
                   Most Popular
                   <BsChevronDown
                     className={`duration-300 ${
-                      dropSort ? 'rotate-[-180deg]' : 'rotate-0'
+                      dropSort ? "rotate-[-180deg]" : "rotate-0"
                     }`}
                   />
                 </button>
                 <div
                   className={`${
-                    dropSort ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                    dropSort ? "opacity-100" : "opacity-0 pointer-events-none"
                   } absolute top-[60px] z-[10] bg-bg-4 rounded-lg py-[22px] pl-[30px] pr-[50px] duration-300 shadow-lg`}
                 >
                   <ul className="flex flex-col font-[400] text-[15px] leading-[35px] text-head ">
@@ -211,6 +218,7 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
           </div>
           <div className="flex flex-col gap-[30px]">
             <CheckBoxFilter title="Category" items={categories} />
+            <RadioButtonFilter title="Price" items={items} />
           </div>
         </div>
       </div>
