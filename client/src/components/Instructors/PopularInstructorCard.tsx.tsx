@@ -1,14 +1,14 @@
-import { FC } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { FC } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import placeholder from "../../assets/placeholder.png";
-import RatingStar from "../global/RatingStar";
+import placeholder from '../../assets/placeholder.png';
+import RatingStar from '../global/RatingStar';
 
-import { AiOutlineUser } from "react-icons/ai";
-import { BiRightArrow } from "react-icons/bi";
-import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
-import { BsInstagram } from "react-icons/bs";
+import { AiOutlineUser } from 'react-icons/ai';
+import { BiRightArrow } from 'react-icons/bi';
+import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
+import { BsInstagram } from 'react-icons/bs';
 const PopularInstructorCard: FC = () => (
   <div className="flex flex-col justify-center items-center">
     <Link
@@ -17,30 +17,18 @@ const PopularInstructorCard: FC = () => (
     >
       <Image src={placeholder} alt="" className="w-full h-full object-cover" />
       <div className="absolute w-full h-full top-0 right-0 left-0 bottom-0 bg-head/0 opacity-0 group-hover:bg-head/50 group-hover:opacity-100 duration-300 flex justify-center items-center">
-        <Link
-          className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm"
-          href="/"
-        >
+        <button className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm">
           <ImFacebook />
-        </Link>
-        <Link
-          className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm"
-          href="/"
-        >
+        </button>
+        <button className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm">
           <ImTwitter />
-        </Link>
-        <Link
-          className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm"
-          href="/"
-        >
+        </button>
+        <button className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm">
           <BsInstagram />
-        </Link>
-        <Link
-          className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm"
-          href="/"
-        >
+        </button>
+        <button className=" p-2 rounded-full hover:bg-white/10 hover:text-white duration-300 text-sm">
           <ImLinkedin2 />
-        </Link>
+        </button>
       </div>
     </Link>
     <span className="flex justify-center mb-[6px] gap-[5px]">
