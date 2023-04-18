@@ -21,7 +21,7 @@ export interface ICourse {
   category: string;
   requirements: string[];
   goals: string[];
-  reviews: string[];
+  reviews: ICourseReview[];
   sections: string[];
   readCount: number;
   purchaseCount: number;
@@ -38,6 +38,17 @@ export interface ICourseLevel {
   slug: string;
   description: string;
   courseCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICourseReview {
+  _id: string;
+  title: string;
+  text?: string;
+  user: IUser;
+  course: string;
+  rating: number;
   createdAt: string;
   updatedAt: string;
 }

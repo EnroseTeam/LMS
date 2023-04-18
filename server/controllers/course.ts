@@ -1,12 +1,10 @@
-import { Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import CourseModel from '../models/course';
 import CourseCategoryModel from '../models/courseCategory';
 import CourseLevelModel from '../models/courseLevel';
 import UserModel from '../models/user';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
-import CourseSectionModel from '../models/courseSection';
-import CourseLessonModel from '../models/courseLesson';
 
 export const getCourses: RequestHandler = async (req, res, next) => {
   try {
@@ -15,7 +13,7 @@ export const getCourses: RequestHandler = async (req, res, next) => {
       'instructor',
       'level',
       'category',
-      'reviews',
+      { path: 'reviews', populate: { path: 'user' } },
       'sections',
     ]);
 
@@ -38,7 +36,7 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
       'instructor',
       'level',
       'category',
-      'reviews',
+      { path: 'reviews', populate: { path: 'user' } },
       'sections',
     ]);
     if (!course) throw createHttpError(404, 'Цуврал хичээл олдсонгүй');
