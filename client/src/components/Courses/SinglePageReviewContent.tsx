@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useCallback } from 'react';
 import RatingStar from '../global/RatingStar';
 import ReviewCard from '../Reviews/ReviewCard';
 import { ICourseReview } from '@/interfaces/courses';
@@ -12,15 +12,15 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews }) 
   const [avgRating, setAvgRating] = useState<number>(0);
   const [ratingCount, setRatingCount] = useState<number[]>([0, 0, 0, 0, 0]);
 
-  const findAvgRating = (): void => {
+  const findAvgRating = useCallback(() => {
     let totalRating = 0;
     reviews.map((review): void => {
       totalRating += review.rating;
     });
     setAvgRating(totalRating / reviews.length);
-  };
+  }, [reviews]);
 
-  const findRatingCount = (): void => {
+  const findRatingCount = useCallback(() => {
     const newRatingCount: number[] = [];
 
     for (let i = 1; i <= 5; i++) {
@@ -31,14 +31,12 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews }) 
     }
 
     setRatingCount(newRatingCount.reverse());
-  };
+  }, [reviews]);
 
   useEffect(() => {
     findAvgRating();
     findRatingCount();
-  }, [reviews]);
-
-  console.log(ratingCount);
+  }, [reviews, findAvgRating, findRatingCount]);
 
   return (
     <div>
