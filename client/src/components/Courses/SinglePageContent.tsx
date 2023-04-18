@@ -9,6 +9,7 @@ import Link from 'next/link';
 import placeholder from '@/assets/placeholder.png';
 import Image from 'next/image';
 import RatingStar from '../global/RatingStar';
+import ReviewCard from '../Reviews/ReviewCard';
 
 interface SinglePageContentProps {
   course: ICourse;
@@ -16,6 +17,7 @@ interface SinglePageContentProps {
 
 const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
   const [descriptionHide, setDescriptionHide] = useState(true);
+  const [reviews, setReviews] = useState(course.reviews.slice(0, 2));
 
   const descriptionContent = (
     <div className="flex flex-col gap-[60px]">
@@ -613,64 +615,25 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
       <div>
         <h2 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Reviews</h2>
         <div className="flex flex-col gap-[30px] mb-[30px]">
-          <div className="flex items-start gap-5 pb-[58px] border-b border-b-border-1">
-            <div className="w-[60px] h-[60px] rounded-full overflow-hidden">
-              <Image
-                alt="Review"
-                src={placeholder}
-                width={60}
-                height={60}
-                className="object-cover w-full aspect-square"
-              />
-            </div>
-
-            <div className="flex-1">
-              <div className="flex items-center gap-[5px] mb-[10px]">
-                <h2 className="text-head text-lg-medium">Ali Tufan</h2>
-                <span className="text-text text-xs-regular">3 days ago</span>
-              </div>
-              <RatingStar gap={5} count={4.8} size={12} />
-              <h1 className="text-head text-lg-medium mb-[9px] mt-[15px]">The best LMS Design</h1>
-              <p className="text-text text-md-regular">
-                This course is a very applicable. Professor Ng explains precisely each algorithm and
-                even tries to give an intuition for mathematical and statistic concepts behind each
-                algorithm. Thank you very much.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-5 pb-[58px] border-b border-b-border-1">
-            <div className="w-[60px] h-[60px] rounded-full overflow-hidden">
-              <Image
-                alt="Review"
-                src={placeholder}
-                width={60}
-                height={60}
-                className="object-cover w-full aspect-square"
-              />
-            </div>
-
-            <div className="flex-1">
-              <div className="flex items-center gap-[5px] mb-[10px]">
-                <h2 className="text-head text-lg-medium">Ali Tufan</h2>
-                <span className="text-text text-xs-regular">3 days ago</span>
-              </div>
-              <RatingStar gap={5} count={4.8} size={12} />
-              <h1 className="text-head text-lg-medium mb-[9px] mt-[15px]">The best LMS Design</h1>
-              <p className="text-text text-md-regular">
-                This course is a very applicable. Professor Ng explains precisely each algorithm and
-                even tries to give an intuition for mathematical and statistic concepts behind each
-                algorithm. Thank you very much.
-              </p>
-            </div>
-          </div>
+          {reviews.map((review) => (
+            <ReviewCard key={review._id} review={review} />
+          ))}
         </div>
 
-        <div className="w-full text-center">
-          <button className="underline text-color-1 text-md-medium mb-[60px]">
-            View all reviews
-          </button>
-        </div>
+        {course.reviews.length > 2 && (
+          <div className="w-full text-center">
+            <button
+              onClick={(): void =>
+                reviews.length > 2
+                  ? setReviews(course.reviews.slice(0, 2))
+                  : setReviews(course.reviews)
+              }
+              className="underline text-color-1 text-md-medium mb-[60px] hover:text-color-1/70 duration-300"
+            >
+              {reviews.length > 2 ? 'Hide reviews' : 'View all reviews'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
