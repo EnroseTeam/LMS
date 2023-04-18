@@ -1,4 +1,4 @@
-import { IUser } from "./user";
+import { IUser } from './user';
 
 export interface ICourseCategory {
   _id: string;
@@ -25,6 +25,8 @@ export interface ICourse {
   sections: string[];
   readCount: number;
   purchaseCount: number;
+  price: number;
+  discountPrice: number;
   isPublished: boolean;
   createdAt: string;
   updatedAt: string;

@@ -564,14 +564,8 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
       <div className="flex items-center gap-[10px] mb-[60px]">
         <div className="bg-bg-3 rounded-lg py-[50px] px-[94px] grid place-items-center">
           <h3 className="text-head text-[60px] font-medium leading-[70px] mb-2">4.8</h3>
-          <div className="flex items-center gap-[10px] mb-[10px]">
-            <RatingStar className="fill-[#E59819]" />
-            <RatingStar className="fill-[#E59819]" />
-            <RatingStar className="fill-[#E59819]" />
-            <RatingStar className="fill-[#E59819]" />
-            <RatingStar className="fill-[#E59819]" />
-          </div>
-          <p className="text-text text-md-regular">Course Rating</p>
+          <RatingStar count={4.8} />
+          <p className="text-text text-md-regular mt-[10px]">Course Rating</p>
         </div>
 
         <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right">
@@ -579,13 +573,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
             <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
               <div className="absolute top-0 left-0 w-[70%] h-full rounded-[4px] bg-color-1" />
             </div>
-            <div className="flex items-center gap-[10px]">
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-            </div>
+            <RatingStar count={5 * 0.7} />
             <p className="text-head text-md-regular leading-[40px] w-[4ch]">70%</p>
           </div>
 
@@ -593,13 +581,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
             <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
               <div className="absolute top-0 left-0 w-[15%] h-full rounded-[4px] bg-color-1" />
             </div>
-            <div className="flex items-center gap-[10px]">
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-            </div>
+            <RatingStar count={5 * 0.15} />
             <p className="text-head text-md-regular leading-[40px] w-[4ch]">15%</p>
           </div>
 
@@ -607,13 +589,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
             <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
               <div className="absolute top-0 left-0 w-[10%] h-full rounded-[4px] bg-color-1" />
             </div>
-            <div className="flex items-center gap-[10px]">
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-            </div>
+            <RatingStar count={5 * 0.1} />
             <p className="text-head text-md-regular leading-[40px] w-[4ch]">10%</p>
           </div>
 
@@ -621,13 +597,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
             <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
               <div className="absolute top-0 left-0 w-[3%] h-full rounded-[4px] bg-color-1" />
             </div>
-            <div className="flex items-center gap-[10px]">
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-            </div>
+            <RatingStar count={5 * 0.03} />
             <p className="text-head text-md-regular leading-[40px] w-[4ch]">3%</p>
           </div>
 
@@ -635,13 +605,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
             <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">
               <div className="absolute top-0 left-0 w-[2%] h-full rounded-[4px] bg-color-1" />
             </div>
-            <div className="flex items-center gap-[10px]">
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-              <RatingStar className="fill-[#E59819]" />
-            </div>
+            <RatingStar count={5 * 0.02} />
             <p className="text-head text-md-regular leading-[40px] w-[4ch]">2%</p>
           </div>
         </div>
@@ -665,14 +629,8 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
                 <h2 className="text-head text-lg-medium">Ali Tufan</h2>
                 <span className="text-text text-xs-regular">3 days ago</span>
               </div>
-              <div className="flex items-center gap-[5px] mb-[15px]">
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-              </div>
-              <h1 className="text-head text-lg-medium mb-[9px]">The best LMS Design</h1>
+              <RatingStar gap={5} count={4.8} size={12} />
+              <h1 className="text-head text-lg-medium mb-[9px] mt-[15px]">The best LMS Design</h1>
               <p className="text-text text-md-regular">
                 This course is a very applicable. Professor Ng explains precisely each algorithm and
                 even tries to give an intuition for mathematical and statistic concepts behind each
@@ -697,14 +655,8 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
                 <h2 className="text-head text-lg-medium">Ali Tufan</h2>
                 <span className="text-text text-xs-regular">3 days ago</span>
               </div>
-              <div className="flex items-center gap-[5px] mb-[15px]">
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-              </div>
-              <h1 className="text-head text-lg-medium mb-[9px]">The best LMS Design</h1>
+              <RatingStar gap={5} count={4.8} size={12} />
+              <h1 className="text-head text-lg-medium mb-[9px] mt-[15px]">The best LMS Design</h1>
               <p className="text-text text-md-regular">
                 This course is a very applicable. Professor Ng explains precisely each algorithm and
                 even tries to give an intuition for mathematical and statistic concepts behind each
