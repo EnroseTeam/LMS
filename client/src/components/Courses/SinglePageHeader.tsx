@@ -68,13 +68,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
           <div className="flex items-center gap-7">
             <div className="flex items-center gap-[10px]">
               <p className="text-[#E59819] text-sm-medium mt-[2px]">4.5</p>
-              <div className="flex items-center gap-1">
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-                <RatingStar className="fill-[#E59819]" />
-              </div>
+              <RatingStar gap={4} count={4.5} />
               <p className="text-icon text-xs-regular">(1991)</p>
             </div>
 
