@@ -1,18 +1,21 @@
-import { FC } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import { FC } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
-import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
-import { AiOutlineUser } from "react-icons/ai";
-import { BiRightArrow } from "react-icons/bi";
-import { BsInstagram } from "react-icons/bs";
+import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
+import { AiOutlineUser } from 'react-icons/ai';
+import { BiRightArrow } from 'react-icons/bi';
+import { BsInstagram } from 'react-icons/bs';
 
-import RatingStar from "../global/RatingStar";
-import placeholder from "@/assets/placeholder.png";
+import RatingStar from '../global/RatingStar';
+import placeholder from '@/assets/placeholder.png';
 
 const InstructorCard: FC = () => (
   <div className="flex flex-col gap-[20px]">
-    <Link href="/" className="rounded-lg overflow-hidden group relative">
+    <Link
+      href="/instructors/instructor"
+      className="rounded-lg overflow-hidden group relative"
+    >
       <Image
         src={placeholder}
         alt=""
@@ -37,7 +40,7 @@ const InstructorCard: FC = () => (
     </Link>
     <div className="">
       <Link
-        href="/"
+        href="/instructors/instructor"
         className="block text-head text-lg-medium hover:text-head/80 duration-300 mb-[5px]"
       >
         Floyd Miles
