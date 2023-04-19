@@ -13,6 +13,13 @@ interface SignUpBody {
   avatar?: string;
   password?: string;
   role?: string;
+  socialAccounts?: {
+    facebook?: string;
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+  };
+  bio?: string;
 }
 
 interface LogInBody {
@@ -36,6 +43,8 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
     avatar,
     password: rawPassword,
     role,
+    socialAccounts,
+    bio,
   } = req.body;
   try {
     if (!firstName) throw createHttpError(400, 'Хэрэглэгчийн нэр заавал шаардлагатай.');
@@ -64,6 +73,8 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
       avatar,
       password: hashedPassword,
       role,
+      socialAccounts,
+      bio,
     });
 
     res.status(201).json({ message: 'Амжилттай бүртгэгдлээ', body: newUser });

@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { FC } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
-import RatingStar from '../global/RatingStar';
-import { ICourse } from '@/interfaces/courses';
-import { BsFileEarmarkText, BsClock, BsBarChart } from 'react-icons/bs';
-import placeHolderImg from '@/assets/placeholder.png';
+import RatingStar from "../global/RatingStar";
+import { ICourse } from "@/interfaces/courses";
+import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
+import placeHolderImg from "@/assets/placeholder.png";
 
 interface CourseCardProps {
   course: ICourse;
@@ -61,10 +61,16 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
       <div className="pt-[10px] flex items-center justify-between border-t border-t-border-1">
         <div className="flex items-center gap-[10px]">
           <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
-            <Image src={placeHolderImg} alt="Profile" className="object-cover w-full h-full" />
+            <Image
+              src={course.instructor.avatar}
+              alt="Profile"
+              width={30}
+              height={30}
+              className="object-cover w-full h-full"
+            />
           </div>
           {/* Backend зассаны дараа багшийн мэдээллийг энд харуулна */}
-          <h1 className="text-text text-sm-regular"></h1>
+          <h1 className="text-text text-sm-regular">{course.instructor.fullName}</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -72,7 +78,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
             <p className="text-text text-md-medium line-through">{course.price}</p>
           )}
           <p className="text-head text-md-medium">
-            ${course.discountPrice > 0 ? course.discountPrice : course.price}
+            ₮{course.discountPrice > 0 ? course.discountPrice : course.price}
           </p>
         </div>
       </div>

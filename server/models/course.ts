@@ -21,6 +21,7 @@ export interface ICourse extends Document<Types.ObjectId> {
   price: number;
   discountPrice: number;
   isPublished: boolean;
+  avgRating: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -90,6 +91,10 @@ const CourseSchema = new Schema<ICourse>(
     isPublished: {
       type: Boolean,
       default: false,
+    },
+    avgRating: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

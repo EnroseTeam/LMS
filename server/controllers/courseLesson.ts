@@ -1,8 +1,8 @@
-import CourseLessonModel from '../models/courseLesson';
-import CourseSectionModel from '../models/courseSection';
-import createHttpError from 'http-errors';
-import mongoose from 'mongoose';
-import { RequestHandler } from 'express';
+import CourseLessonModel from "../models/courseLesson";
+import CourseSectionModel from "../models/courseSection";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
+import { RequestHandler } from "express";
 
 interface CourseLessonBody {
   name?: string;
@@ -17,11 +17,21 @@ interface CourseLessonParams {
   id: string;
 }
 
+export const getLessonIds: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await CourseLessonModel.find().select({ _id: 1 });
+    const data = result.map((id) => id._id);
+    res.status(200).json({ message: "Амжилттай", body: data });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getCourseLessons: RequestHandler = async (req, res, next) => {
   try {
     // Бүртгэлтэй бүх хичээлээ олоод буцаана. Ирээдүйд энэ үйлдлийг устгаж магадгүй. Бүх хичээлийг нэг дор харах үйлдэл байхгүй байх. Сургалтанд хамаарагдах хичээлийг course хэсгээс populate хийгээд авах боломжтой.
-    const courseLessons = await CourseLessonModel.find();
-    res.status(200).json({ message: 'Амжилттай', body: courseLessons });
+    const courseLessons = await CourseLessonModel.find().populate("section");
+    res.status(200).json({ message: "Амжилттай", body: courseLessons });
   } catch (error) {
     next(error);
   }
@@ -32,13 +42,13 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     // Орж ирсэн id-тай хичээл байгаа эсэхийг шалгана. Байвал буцаана.
-    const courseLesson = await CourseLessonModel.findById(id);
-    if (!courseLesson) throw createHttpError(404, 'Хичээл олдсонгүй');
+    const courseLesson = await CourseLessonModel.findById(id).populate("section");
+    if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй");
 
-    res.status(200).json({ message: 'Амжилттай', body: courseLesson });
+    res.status(200).json({ message: "Амжилттай", body: courseLesson });
   } catch (error) {
     next(error);
   }
@@ -56,17 +66,17 @@ export const createCourseLesson: RequestHandler<
 
   try {
     // Хүсэлтээс ирж буй мэдээлэл бүрэн эсэхийг шалгана.
-    if (!name) throw createHttpError(400, 'Гарчиг заавал шаардлагатай.');
-    if (!length) throw createHttpError(400, 'Хичээлийн хугацаа заавал шаардлагатай.');
-    if (!type) throw createHttpError(400, 'Хичээлийн төрөл заавал шаардлагатай.');
-    if (!section) throw createHttpError(400, 'Сэдвийн id заавал шаардлагатай.');
-    if (!mongoose.isValidObjectId(section)) throw createHttpError(400, 'Сэдвийн id буруу байна.');
+    if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
+    if (!length) throw createHttpError(400, "Хичээлийн хугацаа заавал шаардлагатай.");
+    if (!type) throw createHttpError(400, "Хичээлийн төрөл заавал шаардлагатай.");
+    if (!section) throw createHttpError(400, "Сэдвийн id заавал шаардлагатай.");
+    if (!mongoose.isValidObjectId(section)) throw createHttpError(400, "Сэдвийн id буруу байна.");
 
     session.startTransaction();
 
     // Орж ирсэн сэдэвийн id-тай сэдэв бүртгэлтэй байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isSectionExist = await CourseSectionModel.findById(section, null, { session });
-    if (!isSectionExist) throw createHttpError(404, 'Хамаарах сэдэв олдсонгүй.');
+    if (!isSectionExist) throw createHttpError(404, "Хамаарах сэдэв олдсонгүй.");
 
     // Шинэ хичээлээ үүсгэнэ.
     const [newCourseLesson] = await CourseLessonModel.create(
@@ -111,14 +121,14 @@ export const updateCourseLesson: RequestHandler<
 
   try {
     // Хүсэлтээс ирж буй мэдээлэл бүрэн эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна');
-    if (!name) throw createHttpError(400, 'Гарчиг заавал шаардлагатай.');
-    if (!length) throw createHttpError(400, 'Хичээлийн хугацаа заавал шаардлагатай.');
-    if (!type) throw createHttpError(400, 'Хичээлийн төрөл заавал шаардлагатай.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна");
+    if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
+    if (!length) throw createHttpError(400, "Хичээлийн хугацаа заавал шаардлагатай.");
+    if (!type) throw createHttpError(400, "Хичээлийн төрөл заавал шаардлагатай.");
 
     // Орж ирсэн id-тай хичээл бүртгэлтэй эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const courseLesson = await CourseLessonModel.findById(id);
-    if (!courseLesson) throw createHttpError(404, 'Хичээл олдсонгүй.');
+    if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй.");
 
     // Хичээлийн мэдээллийг хүсэлтээс орж ирсэн мэдээллээр солино.
     courseLesson.name = name;
@@ -145,13 +155,13 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     session.startTransaction();
 
     // Орж ирсэн id-тай хичээл байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const courseLesson = await CourseLessonModel.findById(id, null, { session });
-    if (!courseLesson) throw createHttpError(404, 'Хичээл олдсонгүй.');
+    if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй.");
 
     // Хамааралтай сэдвийг id-р нь олоод устгах гэж буй хичээлийн id-г хасна.
     const courseSection = await CourseSectionModel.findById(courseLesson.section, null, {
