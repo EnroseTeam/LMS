@@ -1,28 +1,25 @@
-import { ICourse } from '@/interfaces/courses';
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { ICourse } from "@/interfaces/courses";
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
   BsPersonWorkspace,
   BsClock,
   BsCollectionPlay,
   BsBarChart,
-  BsTranslate,
   BsInfinity,
   BsInstagram,
   BsPlay,
-} from 'react-icons/bs';
-import { HiOutlinePuzzle } from 'react-icons/hi';
-import { TfiMedall } from 'react-icons/tfi';
-import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
+} from "react-icons/bs";
+import { HiOutlinePuzzle } from "react-icons/hi";
+import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
 
-import Breadcrumbs from '@/components/global/Breadcrumbs';
-import Button from '@/components/global/Button';
-import RatingStar from '@/components/global/RatingStar';
+import Breadcrumbs from "@/components/global/Breadcrumbs";
+import Button from "@/components/global/Button";
+import RatingStar from "@/components/global/RatingStar";
 
-import placeholder from '@/assets/placeholder.png';
-import shape from '@/assets/hero-shape.svg';
+import shape from "@/assets/hero-shape.svg";
 
 interface SinglePageHeaderProps {
   course: ICourse;
@@ -33,8 +30,9 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
     <Breadcrumbs
       transparent
       breadcrumbItems={[
-        { title: 'Сургалтууд', link: '/courses' },
-        { title: course.name, link: '/courses/single' },
+        { title: "Сургалтууд", link: "/courses" },
+        { title: course.category.name, link: `/courses?category=${course.category.slug}` },
+        { title: course.name, link: `/courses/${course._id}` },
       ]}
     />
 
@@ -62,36 +60,47 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
 
           <div
             className="text-icon text-md-regular"
-            dangerouslySetInnerHTML={{ __html: course.description.slice(0, 200) + '...' }}
+            dangerouslySetInnerHTML={{ __html: course.description.slice(0, 200) + "..." }}
           />
 
           <div className="flex items-center gap-7">
             <div className="flex items-center gap-[10px]">
-              <p className="text-[#E59819] text-sm-medium mt-[2px]">4.5</p>
-              <RatingStar gap={4} count={4.5} />
-              <p className="text-icon text-xs-regular">(1991)</p>
+              <p className="text-[#E59819] text-sm-medium mt-[2px]">
+                {course.avgRating.toFixed(1)}
+              </p>
+              <RatingStar gap={4} count={course.avgRating} />
+              <p className="text-icon text-xs-regular">({course.reviews.length})</p>
             </div>
 
             <div className="flex items-center gap-[10px]">
               <BsPersonWorkspace size={16} />
-              <p className=" text-sm-regular">853 enrolled on this course</p>
+              <p className=" text-sm-regular">{course.purchaseCount} сурагч элссэн</p>
             </div>
 
             <div className="flex items-center gap-[10px]">
               <BsClock size={16} />
-              <p className=" text-sm-regular">Last updated 11/2021</p>
+              <p className=" text-sm-regular">
+                Сүүлд{" "}
+                {new Date(course.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                })}
+                -нд шинэчлэгдсэн
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-[10px]">
             <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
               <Image
-                src={placeholder}
+                src={course.instructor.avatar}
                 alt="Ali Tufan"
+                width={30}
+                height={30}
                 className="w-full object-cover aspect-square"
               />
             </div>
-            <p className="text-sm-regular">Ali Tufan</p>
+            <p className="text-sm-regular">{course.instructor.fullName}</p>
           </div>
         </div>
 
@@ -100,16 +109,16 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
             <span className="flex items-center gap-[10px]">
               <BsCollectionPlay size={16} />
-              <h1>Lessons</h1>
+              <h1>Хичээлийн тоо</h1>
             </span>
 
-            <h2>20</h2>
+            <h2>{20}</h2>
           </div>
 
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
             <span className="flex items-center gap-[10px]">
               <HiOutlinePuzzle size={16} />
-              <h1>Quizzes</h1>
+              <h1>Шалгалтын тоо</h1>
             </span>
 
             <h2>3</h2>
@@ -118,7 +127,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
             <span className="flex items-center gap-[10px]">
               <BsClock size={16} />
-              <h1>Duration</h1>
+              <h1>Хугацаа</h1>
             </span>
 
             <h2>13 hours</h2>
@@ -127,7 +136,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
             <span className="flex items-center gap-[10px]">
               <BsBarChart size={16} />
-              <h1>Skill level</h1>
+              <h1>Түвшин</h1>
             </span>
 
             <h2>{course.level.name}</h2>
@@ -135,58 +144,52 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
 
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
             <span className="flex items-center gap-[10px]">
-              <BsTranslate size={16} />
-              <h1>Language</h1>
-            </span>
-
-            <h2>English</h2>
-          </div>
-
-          <div className="flex items-center justify-between border-b border-b-white/[.15]">
-            <span className="flex items-center gap-[10px]">
-              <TfiMedall size={16} />
-              <h1>Certificate</h1>
-            </span>
-
-            <h2>Yes</h2>
-          </div>
-
-          <div className="flex items-center justify-between border-b border-b-white/[.15]">
-            <span className="flex items-center gap-[10px]">
               <BsInfinity size={16} />
-              <h1>Full lifetime access</h1>
+              <h1>Насан туршийн эрх</h1>
             </span>
 
-            <h2>Yes</h2>
+            <h2>Тийм</h2>
           </div>
         </div>
 
         {/* Social Icons */}
         <div className="flex gap-0 text-sm text-icon">
-          <Link
-            className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
-            href="/"
-          >
-            <ImFacebook />
-          </Link>
-          <Link
-            className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
-            href="/"
-          >
-            <ImTwitter />
-          </Link>
-          <Link
-            className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
-            href="/"
-          >
-            <BsInstagram />
-          </Link>
-          <Link
-            className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
-            href="/"
-          >
-            <ImLinkedin2 />
-          </Link>
+          {course.instructor.socialAccounts.facebook && (
+            <Link
+              className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
+              href={course.instructor.socialAccounts.facebook}
+              target="_blank"
+            >
+              <ImFacebook />
+            </Link>
+          )}
+          {course.instructor.socialAccounts.twitter && (
+            <Link
+              className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
+              href={course.instructor.socialAccounts.twitter}
+              target="_blank"
+            >
+              <ImTwitter />
+            </Link>
+          )}
+          {course.instructor.socialAccounts.instagram && (
+            <Link
+              className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
+              href={course.instructor.socialAccounts.instagram}
+              target="_blank"
+            >
+              <BsInstagram />
+            </Link>
+          )}
+          {course.instructor.socialAccounts.linkedin && (
+            <Link
+              className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
+              href={course.instructor.socialAccounts.linkedin}
+              target="_blank"
+            >
+              <ImLinkedin2 />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -206,20 +209,22 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
         </div>
 
         <div className="flex items-center justify-between">
-          <h1 className="text-white text-2xl-medium">$96.00</h1>
-          <h3 className="text-icon text-md-medium">$76.00</h3>
+          <h1 className="text-white text-2xl-medium">₮{course.price}</h1>
+          {course.discountPrice > 0 && (
+            <h3 className="text-icon text-md-medium">₮{course.discountPrice}</h3>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-[35px]">
           <Button className="bg-color-1 text-white hover:bg-color-1/70 duration-300 ">
-            Add To Cart
+            Сагслах
           </Button>
           <Button className="border-2 border-color-6 text-color-6 hover:bg-color-6/90 hover:text-white duration-300 hover:border-transparent">
-            Buy Now
+            Худалдаж авах
           </Button>
         </div>
 
-        <p className="text-icon text-sm-regular">30-Day Money-Back Guarantee</p>
+        <p className="text-icon text-sm-regular">14 хоногын дотор мөнгөө буцааж авах боломжтой</p>
       </div>
     </div>
   </div>
