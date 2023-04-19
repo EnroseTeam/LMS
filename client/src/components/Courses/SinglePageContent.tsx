@@ -20,7 +20,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
   ];
   const tabContents: JSX.Element[] = [
     <SinglePageDescriptionContent key={`course-single-page-content-1`} course={course} />,
-    <SinglePageSectionContent key={`course-single-page-content-2`} />,
+    <SinglePageSectionContent key={`course-single-page-content-2`} course={course} />,
     <SinglePageInstructorContent
       key={`course-single-page-content-3`}
       instuctor={course.instructor}
