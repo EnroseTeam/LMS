@@ -22,6 +22,14 @@ export interface IUser extends Document<Types.ObjectId> {
   role: IUserRole['_id'];
   boughtCourses: ICourse['_id'][];
   ownCourses: ICourse['_id'][];
+  avgRating: number;
+  socialAccounts: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+    instagram: string;
+  };
+  bio: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -65,6 +73,17 @@ const UserSchema = new Schema<IUser>(
       type: [Schema.Types.ObjectId],
       ref: 'Course',
     },
+    avgRating: {
+      type: Number,
+      default: 0,
+    },
+    socialAccounts: {
+      facebook: String,
+      linkedin: String,
+      twitter: String,
+      instagram: String,
+    },
+    bio: String,
   },
   { timestamps: true }
 );
