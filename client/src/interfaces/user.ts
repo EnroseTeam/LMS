@@ -1,4 +1,4 @@
-import { ICourse } from './courses';
+import { ICourse } from "./courses";
 
 interface UserAddress {
   country: string;
@@ -24,7 +24,7 @@ export interface IUser {
   email: string;
   phone: string;
   address?: UserAddress;
-  avatar?: string;
+  avatar: string;
   role: IUserRole;
   boughtCourses: ICourse[];
   ownCourses: ICourse[];

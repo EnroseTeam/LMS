@@ -1,23 +1,23 @@
-import { RequestHandler } from 'express';
-import CourseModel from '../models/course';
-import CourseCategoryModel from '../models/courseCategory';
-import CourseLevelModel from '../models/courseLevel';
-import UserModel from '../models/user';
-import createHttpError from 'http-errors';
-import mongoose from 'mongoose';
+import { RequestHandler } from "express";
+import CourseModel from "../models/course";
+import CourseCategoryModel from "../models/courseCategory";
+import CourseLevelModel from "../models/courseLevel";
+import UserModel from "../models/user";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
 
 export const getCourses: RequestHandler = async (req, res, next) => {
   try {
     // Бүх сургалтыг олоод буцаана. Ирээдүйд ангилал, багш, үнэлгээ, хуудаслалт нэмнэ.
     const courses = await CourseModel.find().populate([
-      'instructor',
-      'level',
-      'category',
-      { path: 'reviews', populate: { path: 'user' } },
-      'sections',
+      "instructor",
+      "level",
+      "category",
+      { path: "reviews", populate: { path: "user" } },
+      { path: "sections", populate: { path: "lessons" } },
     ]);
 
-    res.status(200).json({ message: 'Амжилттай', body: courses });
+    res.status(200).json({ message: "Амжилттай", body: courses });
   } catch (error) {
     console.log(error);
     next(error);
@@ -29,19 +29,19 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээр орж ирсэн id зөв байгаа эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна");
 
     // Орж ирсэн id-тай сургалт байгаа эсэхийг шалгаад байвал буцаана.
     const course = await CourseModel.findById(id).populate([
-      'instructor',
-      'level',
-      'category',
-      { path: 'reviews', populate: { path: 'user' } },
-      'sections',
+      "instructor",
+      "level",
+      "category",
+      { path: "reviews", populate: { path: "user" } },
+      { path: "sections", populate: { path: "lessons" } },
     ]);
-    if (!course) throw createHttpError(404, 'Цуврал хичээл олдсонгүй');
+    if (!course) throw createHttpError(404, "Цуврал хичээл олдсонгүй");
 
-    res.status(200).json({ message: 'Амжилттай', body: course });
+    res.status(200).json({ message: "Амжилттай", body: course });
   } catch (error) {
     next(error);
   }
@@ -71,35 +71,35 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
 
   try {
     // Хүсэлтээс орж ирж байгаа мэдээлэл бүрэн байгаа эсэхийг шалгана.
-    if (!name) throw createHttpError(400, 'Гарчиг заавал шаардлагатай');
-    if (!description) throw createHttpError(400, 'Тайлбар заавал шаардлагатай');
-    if (!picture) throw createHttpError(400, 'Зураг заавал шаардлагатай');
-    if (!instructor) throw createHttpError(400, 'Багшийн мэдээлэл заавал шаардлагатай');
-    if (!level) throw createHttpError(400, 'Хичээлийн түвшин заавал шаардлагатай');
-    if (!price) throw createHttpError(400, 'Хичээлийн үнэ заавал шаардлагатай');
-    if (!category) throw createHttpError(400, 'Хичээлийн ангилал заавал шаардлагатай');
+    if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай");
+    if (!description) throw createHttpError(400, "Тайлбар заавал шаардлагатай");
+    if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай");
+    if (!instructor) throw createHttpError(400, "Багшийн мэдээлэл заавал шаардлагатай");
+    if (!level) throw createHttpError(400, "Хичээлийн түвшин заавал шаардлагатай");
+    if (!price) throw createHttpError(400, "Хичээлийн үнэ заавал шаардлагатай");
+    if (!category) throw createHttpError(400, "Хичээлийн ангилал заавал шаардлагатай");
     if (!requirements)
-      throw createHttpError(400, 'Хичээлд шаардагдах чадварууд заавал шаардлагатай');
-    if (!goals) throw createHttpError(400, 'Хичээлийн зорилго заавал шаардлагатай');
+      throw createHttpError(400, "Хичээлд шаардагдах чадварууд заавал шаардлагатай");
+    if (!goals) throw createHttpError(400, "Хичээлийн зорилго заавал шаардлагатай");
     if (!mongoose.isValidObjectId(instructor))
-      throw createHttpError(400, 'Багшийн id буруу байна.');
-    if (!mongoose.isValidObjectId(level)) throw createHttpError(400, 'Түвшингийн id буруу байна.');
+      throw createHttpError(400, "Багшийн id буруу байна.");
+    if (!mongoose.isValidObjectId(level)) throw createHttpError(400, "Түвшингийн id буруу байна.");
     if (!mongoose.isValidObjectId(category))
-      throw createHttpError(400, 'Ангилалын id буруу байна.');
+      throw createHttpError(400, "Ангилалын id буруу байна.");
 
     session.startTransaction();
 
     // Хүсэлтээр орж ирсэн багшийн id-тай багш бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isInstructorExist = await UserModel.findById(instructor, null, { session });
-    if (!isInstructorExist) throw createHttpError(404, 'Багш олдсонгүй');
+    if (!isInstructorExist) throw createHttpError(404, "Багш олдсонгүй");
 
     // Хүсэлтээр орж ирсэн түвшингийн id-тай түвшин бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isLevelExist = await CourseLevelModel.findById(level, null, { session });
-    if (!isLevelExist) throw createHttpError(404, 'Хичээлийн түвшин олдсонгүй');
+    if (!isLevelExist) throw createHttpError(404, "Хичээлийн түвшин олдсонгүй");
 
     // Хүсэлтээр орж ирсэн ангилалын id-тай ангилал бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isCategoryExist = await CourseCategoryModel.findById(category, null, { session });
-    if (!isCategoryExist) throw createHttpError(404, 'Хичээлийн ангилал олдсонгүй');
+    if (!isCategoryExist) throw createHttpError(404, "Хичээлийн ангилал олдсонгүй");
 
     // Орж ирсэн мэдээллийн дагуу шинэ сургалт үүсгэнэ.
     const [newCourse] = await CourseModel.create(
@@ -158,32 +158,32 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
 
   try {
     // Хүсэлтээс орж ирсэн мэдээлэл бүрэн байгаа эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
-    if (!name) throw createHttpError(400, 'Гарчиг заавал шаардлагатай');
-    if (!description) throw createHttpError(400, 'Тайлбар заавал шаардлагатай');
-    if (!picture) throw createHttpError(400, 'Зураг заавал шаардлагатай');
-    if (!level) throw createHttpError(400, 'Хичээлийн түвшин заавал шаардлагатай');
-    if (!category) throw createHttpError(400, 'Хичээлийн ангилал заавал шаардлагатай');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+    if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай");
+    if (!description) throw createHttpError(400, "Тайлбар заавал шаардлагатай");
+    if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай");
+    if (!level) throw createHttpError(400, "Хичээлийн түвшин заавал шаардлагатай");
+    if (!category) throw createHttpError(400, "Хичээлийн ангилал заавал шаардлагатай");
     if (!requirements)
-      throw createHttpError(400, 'Хичээлд шаардагдах чадварууд заавал шаардлагатай');
-    if (!goals) throw createHttpError(400, 'Хичээлийн зорилго заавал шаардлагатай');
-    if (!mongoose.isValidObjectId(level)) throw createHttpError(400, 'Түвшингийн id буруу байна.');
+      throw createHttpError(400, "Хичээлд шаардагдах чадварууд заавал шаардлагатай");
+    if (!goals) throw createHttpError(400, "Хичээлийн зорилго заавал шаардлагатай");
+    if (!mongoose.isValidObjectId(level)) throw createHttpError(400, "Түвшингийн id буруу байна.");
     if (!mongoose.isValidObjectId(category))
-      throw createHttpError(400, 'Ангилалын id буруу байна.');
+      throw createHttpError(400, "Ангилалын id буруу байна.");
 
     session.startTransaction();
 
     // Хүсэлтээс орж ирсэн түвшин байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isLevelExist = await CourseLevelModel.findById(level, null, { session });
-    if (!isLevelExist) throw createHttpError(404, 'Сонгосон түвшин олдсонгүй.');
+    if (!isLevelExist) throw createHttpError(404, "Сонгосон түвшин олдсонгүй.");
 
     // Хүсэлтээс орж ирсэн ангилал байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isCategoryExist = await CourseCategoryModel.findById(category, null, { session });
-    if (!isCategoryExist) throw createHttpError(404, 'Сонгосон ангилал олдсонгүй.');
+    if (!isCategoryExist) throw createHttpError(404, "Сонгосон ангилал олдсонгүй.");
 
     // Хүсэлтээс орж ирсэн id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const course = await CourseModel.findById(id, null, { session });
-    if (!course) throw createHttpError(404, 'Сургалт олдсонгүй.');
+    if (!course) throw createHttpError(404, "Сургалт олдсонгүй.");
 
     // Хүсэлтээр орж ирсэн түвшин болон ангилал, өмнө нь сургалтанд бүртгэлтэй байгаа түвшин болон ангилалтай адилхан байгаа эсэхийг шалгана.
     const isLevelSame = course.level?.toString() === level;
@@ -219,7 +219,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
 
     await session.commitTransaction();
 
-    res.status(200).json({ message: 'Амжилттай' });
+    res.status(200).json({ message: "Амжилттай" });
   } catch (error) {
     await session.abortTransaction();
     next(error);
@@ -235,13 +235,13 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     session.startTransaction();
 
     // Хүсэлтээр орж ирсэн id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const course = await CourseModel.findById(id, null, { session });
-    if (!course) throw createHttpError(404, 'Сургалт олдсонгүй.');
+    if (!course) throw createHttpError(404, "Сургалт олдсонгүй.");
 
     // Сургалтанд бүртгэлтэй байгаа багшийг олоод сургалтын жагсаалтаас устгах сургалтын id-г хасна.
     const instructor = await UserModel.findById(course.instructor, null, { session });

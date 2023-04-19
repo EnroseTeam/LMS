@@ -1,24 +1,16 @@
-import { FC, useState, useEffect, useCallback } from 'react';
-import RatingStar from '../global/RatingStar';
-import ReviewCard from '../Reviews/ReviewCard';
-import { ICourseReview } from '@/interfaces/courses';
+import { FC, useState, useEffect, useCallback } from "react";
+import RatingStar from "../global/RatingStar";
+import ReviewCard from "../Reviews/ReviewCard";
+import { ICourseReview } from "@/interfaces/courses";
 
 interface SinglePageReviewContentProps {
   reviews: ICourseReview[];
+  avgRating: number;
 }
 
-const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews }) => {
+const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, avgRating }) => {
   const [intitalReviews, setInitialReviews] = useState<ICourseReview[]>(reviews.slice(0, 2));
-  const [avgRating, setAvgRating] = useState<number>(0);
   const [ratingCount, setRatingCount] = useState<number[]>([0, 0, 0, 0, 0]);
-
-  const findAvgRating = useCallback(() => {
-    let totalRating = 0;
-    reviews.map((review): void => {
-      totalRating += review.rating;
-    });
-    setAvgRating(totalRating / reviews.length);
-  }, [reviews]);
 
   const findRatingCount = useCallback(() => {
     const newRatingCount: number[] = [];
@@ -34,9 +26,8 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews }) 
   }, [reviews]);
 
   useEffect(() => {
-    findAvgRating();
     findRatingCount();
-  }, [reviews, findAvgRating, findRatingCount]);
+  }, [reviews, findRatingCount]);
 
   return (
     <div>
@@ -86,7 +77,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews }) 
               }
               className="underline text-color-1 text-md-medium mb-[60px] hover:text-color-1/70 duration-300"
             >
-              {intitalReviews.length > 2 ? 'Hide reviews' : 'View all reviews'}
+              {intitalReviews.length > 2 ? "Hide reviews" : "View all reviews"}
             </button>
           </div>
         )}
