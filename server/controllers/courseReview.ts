@@ -9,7 +9,7 @@ interface CourseReviewBody {
   title?: string;
   text?: string;
   user?: string;
-  rating?: number;
+  rating?: string;
   course?: string;
 }
 
@@ -75,6 +75,21 @@ export const createCourseReview: RequestHandler<
     // Хүсэлтээс орж ирсэн сургалтын id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isCourseExist = await CourseModel.findById(course, null, { session });
     if (!isCourseExist) throw createHttpError(400, `${course} id-тай сургалт олдсонгүй.`);
+
+    // Сургалтын дундаж үнэлгээг шинэчлэнэ.
+    const totalRating = isCourseExist.avgRating * isCourseExist.reviews.length;
+    isCourseExist.avgRating = (totalRating + Number(rating)) / (isCourseExist.reviews.length + 1);
+    await isCourseExist.save({ session });
+
+    // Сургалтыг заасан багшийн дундаж үнэлгээг шинэчлэнэ.
+    let totalReviewLength = 0;
+    for (let i = 0; i < isUserExist.ownCourses.length; i++) {
+      const course = await CourseModel.findById(isUserExist.ownCourses[i], null, { session });
+      if (course) totalReviewLength += course.reviews.length;
+    }
+    const totalUserRating = isUserExist.avgRating * totalReviewLength;
+    isUserExist.avgRating = (totalUserRating + Number(rating)) / (totalReviewLength + 1);
+    await isUserExist.save({ session });
 
     // Орж ирсэн мэдээллийн дагуу шинэ сэтгэгдэл үүсгэнэ.
     const [newReview] = await CourseReviewModel.create(
