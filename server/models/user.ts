@@ -1,6 +1,6 @@
-import { Schema, Document, Types, model } from 'mongoose';
-import { IUserRole } from './userRole';
-import { ICourse } from './course';
+import { Schema, Document, Types, model } from "mongoose";
+import { IUserRole } from "./userRole";
+import { ICourse } from "./course";
 
 interface UserAddress {
   country: string;
@@ -19,9 +19,9 @@ export interface IUser extends Document<Types.ObjectId> {
   address?: UserAddress;
   avatar?: string;
   password: string;
-  role: IUserRole['_id'];
-  boughtCourses: ICourse['_id'][];
-  ownCourses: ICourse['_id'][];
+  role: IUserRole;
+  boughtCourses: ICourse["_id"][];
+  ownCourses: ICourse["_id"][];
   avgRating: number;
   socialAccounts: {
     facebook: string;
@@ -41,7 +41,7 @@ const UserSchema = new Schema<IUser>(
     fullName: {
       type: String,
       default: function () {
-        return this.lastName + ' ' + this.firstName;
+        return this.lastName + " " + this.firstName;
       },
     },
     birthDate: { type: Date, required: true },
@@ -57,21 +57,21 @@ const UserSchema = new Schema<IUser>(
     avatar: {
       type: String,
       default:
-        'https://res.cloudinary.com/dvlgyc6gs/image/upload/v1681304314/r19akcxpmflykf6upmsc.png',
+        "https://res.cloudinary.com/dvlgyc6gs/image/upload/v1681304314/r19akcxpmflykf6upmsc.png",
     },
     password: { type: String, required: true, select: false },
     role: {
       type: Schema.Types.ObjectId,
-      ref: 'User_Role',
+      ref: "User_Role",
       required: true,
     },
     boughtCourses: {
       type: [Schema.Types.ObjectId],
-      ref: 'Course',
+      ref: "Course",
     },
     ownCourses: {
       type: [Schema.Types.ObjectId],
-      ref: 'Course',
+      ref: "Course",
     },
     avgRating: {
       type: Number,
@@ -88,4 +88,4 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-export default model<IUser>('User', UserSchema);
+export default model<IUser>("User", UserSchema);
