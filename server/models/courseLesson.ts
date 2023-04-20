@@ -1,13 +1,19 @@
-import { Schema, model, Types, Document } from 'mongoose';
-import { ICourseSection } from './courseSection';
+import { Schema, model, Types, Document } from "mongoose";
+import { ICourseSection } from "./courseSection";
+
+export interface LessonLength {
+  hour: number;
+  minute: number;
+  second: number;
+}
 
 export interface ICourseLesson extends Document<Types.ObjectId> {
   name: string;
   description?: string;
   video?: string;
-  length: string;
+  length: LessonLength;
   type: string;
-  section: ICourseSection['_id'];
+  section: ICourseSection["_id"];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,20 +27,30 @@ const CourseLessonSchema = new Schema<ICourseLesson>(
     description: String,
     video: String,
     length: {
-      type: String,
-      required: true,
+      hour: {
+        type: Number,
+        default: 0,
+      },
+      minute: {
+        type: Number,
+        default: 0,
+      },
+      second: {
+        type: Number,
+        default: 0,
+      },
     },
     type: {
       type: String,
-      enum: ['Lesson', 'Quiz', 'Assignment'],
+      enum: ["Lesson", "Quiz", "Assignment"],
     },
     section: {
       type: Schema.Types.ObjectId,
-      ref: 'Course_Section',
+      ref: "Course_Section",
       required: true,
     },
   },
   { timestamps: true }
 );
 
-export default model<ICourseLesson>('Course_Lesson', CourseLessonSchema);
+export default model<ICourseLesson>("Course_Lesson", CourseLessonSchema);

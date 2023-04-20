@@ -1,5 +1,6 @@
-import CourseLessonModel from "../models/courseLesson";
+import CourseLessonModel, { LessonLength } from "../models/courseLesson";
 import CourseSectionModel from "../models/courseSection";
+import CourseModel from "../models/course";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
@@ -8,7 +9,7 @@ interface CourseLessonBody {
   name?: string;
   description?: string;
   video?: string;
-  length?: string;
+  length?: LessonLength;
   type?: string;
   section?: string;
 }
@@ -96,6 +97,31 @@ export const createCourseLesson: RequestHandler<
     // Үүссэн шинэ хичээлийн id-г хамааралтай сэдэврүү нэмнэ.
     isSectionExist.lessons.push(newCourseLesson._id);
     await isSectionExist.save({ session });
+
+    // Сургалтан дээр байгаа хичээлийн тоог нэмэх
+    const course = await CourseModel.findById(isSectionExist.course, null, { session });
+    if (course) {
+      if (type === "Lesson") course.lessonCount += 1;
+      if (type === "Assignment") course.assignmentCount += 1;
+      if (type === "Quiz") course.quizCount += 1;
+      await course.save({ session });
+    }
+
+    // Сургалтан дээр байгаа нийт хичээлийн уртыг нэмэх
+    if (course) {
+      course.totalLessonLength.second += length.second;
+      course.totalLessonLength.minute += length.minute;
+      course.totalLessonLength.hour += length.hour;
+      if (course.totalLessonLength.second >= 60) {
+        course.totalLessonLength.second -= 60;
+        course.totalLessonLength.minute += 1;
+      }
+      if (course.totalLessonLength.minute >= 60) {
+        course.totalLessonLength.minute -= 60;
+        course.totalLessonLength.hour += 1;
+      }
+      await course.save({ session });
+    }
 
     await session.commitTransaction();
 
