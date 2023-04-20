@@ -7,15 +7,21 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
 export const getCourses: RequestHandler = async (req, res, next) => {
+  const { category } = req.query;
+
   try {
     // Бүх сургалтыг олоод буцаана. Ирээдүйд ангилал, багш, үнэлгээ, хуудаслалт нэмнэ.
-    const courses = await CourseModel.find().populate([
+    let courses = await CourseModel.find().populate([
       "instructor",
       "level",
       "category",
       { path: "reviews", populate: { path: "user" } },
       { path: "sections", populate: { path: "lessons" } },
     ]);
+
+    if (category) {
+      courses = courses.filter((course) => course.category.slug === category);
+    }
 
     res.status(200).json({ message: "Амжилттай", body: courses });
   } catch (error) {
