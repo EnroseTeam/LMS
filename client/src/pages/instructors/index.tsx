@@ -6,23 +6,29 @@ import { BsChevronDown, BsSearch } from "react-icons/bs";
 import { ICourseCategory } from "@/interfaces/courses";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import InstructorCard from "@/components/Instructors/InstructorCard";
+import { IUser } from "@/interfaces/user";
 
-interface CoursesPageProps {
+interface InstructorsPageProps {
   categories: ICourseCategory[];
+  instructors: IUser[];
 }
 
 export const getServerSideProps: GetServerSideProps<
-  CoursesPageProps
+  InstructorsPageProps
 > = async () => {
-  const res = await axios.get("http://localhost:5000/api/courses/categories");
+  const [categoryRes, instructorsRes] = await axios.all([
+    axios.get("http://localhost:5000/api/courses/categories"),
+    axios.get("http://localhost:5000/api/users/instructors"),
+  ]);
   return {
     props: {
-      categories: res.data.body,
+      categories: categoryRes.data.body,
+      instructors: instructorsRes.data.body,
     },
   };
 };
 
-const InstructorsPage: FC<CoursesPageProps> = () => {
+const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
   const [dropCategory, setDropCategory] = useState(false);
   const [dropSort, setDropSort] = useState(false);
 
@@ -147,18 +153,9 @@ const InstructorsPage: FC<CoursesPageProps> = () => {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-[30px] mb-[60px]">
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
+          {instructors.map((instructor) => (
+            <InstructorCard instructor={instructor} />
+          ))}
         </div>
       </div>
     </>
