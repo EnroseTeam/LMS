@@ -29,6 +29,10 @@ export interface ICourse {
   discountPrice: number;
   isPublished: boolean;
   avgRating: number;
+  lessonCount: number;
+  quizCount: number;
+  assignmentCount: number;
+  totalLessonLength: LessonLength;
   createdAt: string;
   updatedAt: string;
 }
@@ -73,4 +77,10 @@ export interface ICourseLesson {
   section: ICourseSection;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface LessonLength {
+  hour: number;
+  minute: number;
+  second: number;
 }
