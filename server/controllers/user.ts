@@ -21,11 +21,17 @@ interface UserParams {
   id: string;
 }
 
-//GET ALL USER
+//GET ALL INSTRUCTORS
 
 export const getInstructors: RequestHandler = async (req, res, next) => {
   try {
-    const users: IUser[] = await UserModel.find().populate("role");
+    const { q: search = "" } = req.query;
+    const users: IUser[] = await UserModel.find({
+      $or: [
+        { firstName: new RegExp("^" + search, "i") },
+        { lastName: new RegExp("^" + search, "i") },
+      ],
+    }).populate("role");
     const instructors = users.filter((user) => (user.role.slug = "instructor"));
     res.status(200).json({ message: "Амжилттай", body: instructors });
   } catch (error) {
