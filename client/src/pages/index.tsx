@@ -23,9 +23,9 @@ interface HomeProps {
 export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
   const { category = "" } = query;
   const [categoryRes, coursesRes, instructorRes] = await axios.all([
-    axios.get("/api/courses/categories"),
-    axios.get(`/api/courses?category=${category}`),
-    axios.get("/api/users/instructors"),
+    axios.get("http://localhost:5000/api/courses/categories"),
+    axios.get(`http://localhost:5000/api/courses?category=${category}`),
+    axios.get("http://localhost:5000/api/users/instructors"),
   ]);
 
   return {
