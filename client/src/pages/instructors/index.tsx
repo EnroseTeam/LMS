@@ -15,8 +15,8 @@ interface InstructorsPageProps {
 
 export const getServerSideProps: GetServerSideProps<InstructorsPageProps> = async () => {
   const [categoryRes, instructorsRes] = await axios.all([
-    axios.get("/api/courses/categories"),
-    axios.get("/api/users/instructors"),
+    axios.get("http://localhost:5000/api/courses/categories"),
+    axios.get("http://localhost:5000/api/users/instructors"),
   ]);
   return {
     props: {
