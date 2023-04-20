@@ -14,20 +14,18 @@ import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
 import { IUser } from "@/interfaces/user";
 
-
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
   instructors: IUser[];
 }
 
-
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({query}) => {
-const { category = "" } = query;
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
+  const { category = "" } = query;
   const [categoryRes, coursesRes, instructorRes] = await axios.all([
-    axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(`http://localhost:5000/api/courses?category=${category}`),
-    axios.get("http://localhost:5000/api/users/instructors"),
+    axios.get("/api/courses/categories"),
+    axios.get(`/api/courses?category=${category}`),
+    axios.get("/api/users/instructors"),
   ]);
 
   return {

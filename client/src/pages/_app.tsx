@@ -1,13 +1,16 @@
-import '@/styles/globals.css';
+import "@/styles/globals.css";
 
-import type { AppProps } from 'next/app';
-import Head from 'next/head';
-import NextProgress from 'next-progress';
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import NextProgress from "next-progress";
 
-import Layout from '@/components/global/Layout';
-import logo from '../assets/logo-main.svg';
+import Layout from "@/components/global/Layout";
+import logo from "../assets/logo-main.svg";
+import axios from "axios";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
+  axios.defaults.baseURL = "http://localhost:5000";
+
   return (
     <>
       <Head>
