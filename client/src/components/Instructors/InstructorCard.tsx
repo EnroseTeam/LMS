@@ -8,7 +8,6 @@ import { BiRightArrow } from "react-icons/bi";
 import { BsInstagram } from "react-icons/bs";
 
 import RatingStar from "../global/RatingStar";
-import placeholder from "@/assets/placeholder.png";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 
@@ -70,10 +69,8 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
         <p className="text-text mb-[11px]">President of Sales</p>
         <div className="flex items-center gap-[20px]">
           <span className="flex items-center  gap-2 text-md">
-            <RatingStar />
-            <p className="text-[#E59819] text-sm-medium mt-[2px]">
-              {instructor.avgRating}
-            </p>
+            <RatingStar count={1} rating={1} />
+            <p className="text-[#E59819] text-sm-medium mt-[2px]">{instructor.avgRating}</p>
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <AiOutlineUser />
@@ -82,9 +79,7 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <BiRightArrow />
-            <span className="text-text text-sm-regular">
-              {instructor.ownCourses.length}
-            </span>
+            <span className="text-text text-sm-regular">{instructor.ownCourses.length} хичээл</span>
           </span>
         </div>
       </div>

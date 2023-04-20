@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
-import placeholder from '../../assets/placeholder.png';
-import RatingStar from '../global/RatingStar';
+import placeholder from "../../assets/placeholder.png";
+import RatingStar from "../global/RatingStar";
 
-import { AiOutlineUser } from 'react-icons/ai';
-import { BiRightArrow } from 'react-icons/bi';
-import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
-import { BsInstagram } from 'react-icons/bs';
+import { AiOutlineUser } from "react-icons/ai";
+import { BiRightArrow } from "react-icons/bi";
+import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
+import { BsInstagram } from "react-icons/bs";
 const PopularInstructorCard: FC = () => (
   <div className="flex flex-col justify-center items-center">
     <Link
@@ -32,7 +32,7 @@ const PopularInstructorCard: FC = () => (
       </div>
     </Link>
     <span className="flex justify-center mb-[6px] gap-[5px]">
-      <RatingStar className="fill-[#E59819]" />
+      <RatingStar count={1} rating={1} />
       <p className="text-[#E59819] text-sm-medium">4.5</p>
     </span>
     <Link
