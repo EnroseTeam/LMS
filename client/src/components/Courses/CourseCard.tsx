@@ -29,7 +29,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
     <div className="flex flex-col gap-[10px]">
       <div className="flex items-center gap-[10px]">
         <p className="text-[#E59819] text-sm-medium">{course.avgRating.toFixed(1)}</p>
-        <RatingStar count={course.avgRating} gap={5} />
+        <RatingStar count={5} rating={course.avgRating} gap={5} />
         <p className="text-text text-xs-regular">({course.reviews.length})</p>
       </div>
 

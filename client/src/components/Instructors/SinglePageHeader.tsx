@@ -14,11 +14,7 @@ const SinglePageHeader: FC = () => (
   <div className="container relative bg-color-1 pt-[69px] rounded-lg text-white mb-[30px]">
     <div className="px-[325px]">
       <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px]">
-        <Image
-          src={placeholder}
-          alt=""
-          className="w-full h-full object-cover"
-        />
+        <Image src={placeholder} alt="" className="w-full h-full object-cover" />
       </div>
 
       <h1 className="font-[700] text-[30px] leading-[45px]">Ali Tufan</h1>
@@ -26,7 +22,7 @@ const SinglePageHeader: FC = () => (
 
       <div className="flex items-center gap-4 pb-[30px]">
         <span className="flex items-center gap-[5px]">
-          <RatingStar className="fill-[#E59819]" />
+          <RatingStar rating={1} count={1} />
           <p className="text-[#E59819] text-sm-medium">4.5</p>
           <span className="text-xs-regular">Instructors Rating</span>
         </span>
@@ -48,9 +44,7 @@ const SinglePageHeader: FC = () => (
       </div>
 
       <div className="flex items-center pb-[76px]">
-        <Button className="bg-color-6 text-color-2 text-base-medium">
-          Send Message
-        </Button>
+        <Button className="bg-color-6 text-color-2 text-base-medium">Send Message</Button>
         <div className="flex items-center gap-6 ml-[30px]">
           <Link
             className=" p-4 rounded-full hover:bg-white/10 hover:text-white duration-300"
