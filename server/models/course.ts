@@ -12,7 +12,7 @@ export interface ICourse extends Document<Types.ObjectId> {
   picture: string;
   instructor: IUser["_id"];
   level: ICourseLevel["_id"];
-  category: ICourseCategory["_id"];
+  category: ICourseCategory;
   requirements: string[];
   goals: string[];
   reviews: ICourseReview["_id"][];
