@@ -12,28 +12,34 @@ import PartnerSection from "@/components/Home/PartnerSection";
 import PopularCoursesSection from "@/components/Home/PopularCoursesSection";
 import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
+import { IUser } from "@/interfaces/user";
+
 
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
+  instructors: IUser[];
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
-  const { category = "" } = query;
-  const [categoryRes, coursesRes] = await axios.all([
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({query}) => {
+const { category = "" } = query;
+  const [categoryRes, coursesRes, instructorRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(`http://localhost:5000/api/courses?category=${category}`),
+    axios.get("http://localhost:5000/api/users/instructors"),
   ]);
 
   return {
     props: {
       categories: categoryRes.data.body,
       courses: coursesRes.data.body,
+      instructors: instructorRes.data.body,
     },
   };
 };
 
-const Home: FC<HomeProps> = ({ categories, courses }) => (
+const Home: FC<HomeProps> = ({ categories, courses, instructors }) => (
   <>
     <Head>
       <title key="title">Нүүр хуудас | IntelliSense</title>
@@ -43,7 +49,7 @@ const Home: FC<HomeProps> = ({ categories, courses }) => (
     <TopCategoriesSection categories={categories} />
     <PopularCoursesSection courses={courses} categories={categories} />
     <UsersCommentSection />
-    <BestInstructorSection />
+    <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
     <ResourcesNewsSection />
   </>

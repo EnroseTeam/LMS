@@ -82,6 +82,7 @@ const UserSchema = new Schema<IUser>(
       linkedin: String,
       twitter: String,
       instagram: String,
+      default: {},
     },
     bio: String,
   },
