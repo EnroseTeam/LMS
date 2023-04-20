@@ -13,8 +13,8 @@ interface SingleCoursePageProps {
 
 export const getServerSideProps: GetServerSideProps<SingleCoursePageProps> = async ({ params }) => {
   const [categoryRes, courseRes] = await axios.all([
-    axios.get("/api/courses/categories"),
-    axios.get(`/api/courses/${params?.id}`),
+    axios.get("http://localhost:5000/api/courses/categories"),
+    axios.get(`http://localhost:5000/api/courses/${params?.id}`),
   ]);
   return {
     props: {
