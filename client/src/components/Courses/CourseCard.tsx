@@ -5,7 +5,6 @@ import Image from "next/image";
 import RatingStar from "../global/RatingStar";
 import { ICourse } from "@/interfaces/courses";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
-import placeHolderImg from "@/assets/placeholder.png";
 
 interface CourseCardProps {
   course: ICourse;
@@ -21,7 +20,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         src={course.picture}
         width={300}
         height={210}
-        alt="Placeholder"
+        alt={course.name}
         className="w-full aspect-[1.42/1] object-cover"
       />
       <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover:bg-head/50 duration-300" />
@@ -29,9 +28,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
 
     <div className="flex flex-col gap-[10px]">
       <div className="flex items-center gap-[10px]">
-        <p className="text-[#E59819] text-sm-medium">4.5</p>
-        <RatingStar count={4.5} gap={5} />
-        <p className="text-text text-xs-regular">(1991)</p>
+        <p className="text-[#E59819] text-sm-medium">{course.avgRating.toFixed(1)}</p>
+        <RatingStar count={5} rating={course.avgRating} gap={5} />
+        <p className="text-text text-xs-regular">({course.reviews.length})</p>
       </div>
 
       <Link
@@ -44,12 +43,15 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
       <div className="flex items-center gap-[20px]">
         <span className="flex items-center gap-2 text-md text-icon">
           <BsFileEarmarkText />
-          <span className="text-sm-regular text-text">6 lessons</span>
+          <span className="text-sm-regular text-text">{course.lessonCount} хичээл</span>
         </span>
 
         <span className="flex items-center gap-2 text-md text-icon">
           <BsClock />
-          <span className="text-sm-regular text-text">3h 56m</span>
+          <span className="text-sm-regular text-text">
+            {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг`}
+            {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
+          </span>
         </span>
 
         <span className="flex items-center gap-2 text-md text-icon">
@@ -69,7 +71,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
               className="object-cover w-full h-full"
             />
           </div>
-          {/* Backend зассаны дараа багшийн мэдээллийг энд харуулна */}
+
           <h1 className="text-text text-sm-regular">{course.instructor.fullName}</h1>
         </div>
 

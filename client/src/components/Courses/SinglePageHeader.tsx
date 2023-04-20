@@ -14,6 +14,7 @@ import {
 } from "react-icons/bs";
 import { HiOutlinePuzzle } from "react-icons/hi";
 import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
+import { MdOutlineAssignment } from "react-icons/md";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Button from "@/components/global/Button";
@@ -68,7 +69,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
               <p className="text-[#E59819] text-sm-medium mt-[2px]">
                 {course.avgRating.toFixed(1)}
               </p>
-              <RatingStar gap={4} count={course.avgRating} />
+              <RatingStar gap={4} rating={course.avgRating} />
               <p className="text-icon text-xs-regular">({course.reviews.length})</p>
             </div>
 
@@ -112,7 +113,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
               <h1>Хичээлийн тоо</h1>
             </span>
 
-            <h2>{20}</h2>
+            <h2>{course.lessonCount}</h2>
           </div>
 
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
@@ -121,7 +122,16 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
               <h1>Шалгалтын тоо</h1>
             </span>
 
-            <h2>3</h2>
+            <h2>{course.quizCount}</h2>
+          </div>
+
+          <div className="flex items-center justify-between border-b border-b-white/[.15]">
+            <span className="flex items-center gap-[10px]">
+              <MdOutlineAssignment size={16} />
+              <h1>Даалгаварын тоо</h1>
+            </span>
+
+            <h2>{course.assignmentCount}</h2>
           </div>
 
           <div className="flex items-center justify-between border-b border-b-white/[.15]">
@@ -130,7 +140,10 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
               <h1>Хугацаа</h1>
             </span>
 
-            <h2>13 hours</h2>
+            <h2>
+              {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг`}
+              {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
+            </h2>
           </div>
 
           <div className="flex items-center justify-between border-b border-b-white/[.15]">

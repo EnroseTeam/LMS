@@ -1,27 +1,32 @@
-import { Schema, model, Document, Types } from 'mongoose';
-import { IUser } from './user';
-import { ICourseLevel } from './courseLevel';
-import { ICourseCategory } from './courseCategory';
-import { ICourseReview } from './courseReview';
-import { ICourseSection } from './courseSection';
+import { Schema, model, Document, Types } from "mongoose";
+import { IUser } from "./user";
+import { ICourseLevel } from "./courseLevel";
+import { ICourseCategory } from "./courseCategory";
+import { ICourseReview } from "./courseReview";
+import { ICourseSection } from "./courseSection";
+import { LessonLength } from "./courseLesson";
 
 export interface ICourse extends Document<Types.ObjectId> {
   name: string;
   description: string;
   picture: string;
-  instructor: IUser['_id'];
-  level: ICourseLevel['_id'];
-  category: ICourseCategory['_id'];
+  instructor: IUser["_id"];
+  level: ICourseLevel["_id"];
+  category: ICourseCategory;
   requirements: string[];
   goals: string[];
-  reviews: ICourseReview['_id'][];
-  sections: ICourseSection['_id'][];
+  reviews: ICourseReview["_id"][];
+  sections: ICourseSection["_id"][];
   readCount: number;
   purchaseCount: number;
   price: number;
   discountPrice: number;
   isPublished: boolean;
   avgRating: number;
+  lessonCount: number;
+  quizCount: number;
+  assignmentCount: number;
+  totalLessonLength: LessonLength;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,17 +46,17 @@ const CourseSchema = new Schema<ICourse>(
     },
     instructor: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     level: {
       type: Schema.Types.ObjectId,
-      ref: 'Course_Level',
+      ref: "Course_Level",
       required: true,
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'Course_Category',
+      ref: "Course_Category",
       required: true,
     },
     requirements: {
@@ -64,12 +69,12 @@ const CourseSchema = new Schema<ICourse>(
     },
     reviews: {
       type: [Schema.Types.ObjectId],
-      ref: 'Course_Review',
+      ref: "Course_Review",
       default: [],
     },
     sections: {
       type: [Schema.Types.ObjectId],
-      ref: 'Course_Section',
+      ref: "Course_Section",
       default: [],
     },
     readCount: {
@@ -96,8 +101,34 @@ const CourseSchema = new Schema<ICourse>(
       type: Number,
       default: 0,
     },
+    lessonCount: {
+      type: Number,
+      default: 0,
+    },
+    quizCount: {
+      type: Number,
+      default: 0,
+    },
+    assignmentCount: {
+      type: Number,
+      default: 0,
+    },
+    totalLessonLength: {
+      hour: {
+        type: Number,
+        default: 0,
+      },
+      minute: {
+        type: Number,
+        default: 0,
+      },
+      second: {
+        type: Number,
+        default: 0,
+      },
+    },
   },
   { timestamps: true }
 );
 
-export default model<ICourse>('Course', CourseSchema);
+export default model<ICourse>("Course", CourseSchema);

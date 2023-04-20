@@ -19,7 +19,7 @@ interface SingleLessonPageProps {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get(`http://localhost:5000/api/courses/lessons/ids`);
+  const res = await axios.get(`/api/courses/lessons/ids`);
   const paths = res.data.body.map((id: string) => ({ params: { id } }));
   return {
     paths,
@@ -28,10 +28,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({ params }) => {
-  const res = await axios.get(`http://localhost:5000/api/courses/lessons/${params?.id}`);
-  const courseRes = await axios.get(
-    `http://localhost:5000/api/courses/${res.data.body.section.course}`
-  );
+  const res = await axios.get(`/api/courses/lessons/${params?.id}`);
+  const courseRes = await axios.get(`/api/courses/${res.data.body.section.course}`);
 
   return {
     props: {

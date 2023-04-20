@@ -6,23 +6,27 @@ import { BsChevronDown, BsSearch } from "react-icons/bs";
 import { ICourseCategory } from "@/interfaces/courses";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import InstructorCard from "@/components/Instructors/InstructorCard";
+import { IUser } from "@/interfaces/user";
 
-interface CoursesPageProps {
+interface InstructorsPageProps {
   categories: ICourseCategory[];
+  instructors: IUser[];
 }
 
-export const getServerSideProps: GetServerSideProps<
-  CoursesPageProps
-> = async () => {
-  const res = await axios.get("http://localhost:5000/api/courses/categories");
+export const getServerSideProps: GetServerSideProps<InstructorsPageProps> = async () => {
+  const [categoryRes, instructorsRes] = await axios.all([
+    axios.get("/api/courses/categories"),
+    axios.get("/api/users/instructors"),
+  ]);
   return {
     props: {
-      categories: res.data.body,
+      categories: categoryRes.data.body,
+      instructors: instructorsRes.data.body,
     },
   };
 };
 
-const InstructorsPage: FC<CoursesPageProps> = () => {
+const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
   const [dropCategory, setDropCategory] = useState(false);
   const [dropSort, setDropSort] = useState(false);
 
@@ -38,23 +42,17 @@ const InstructorsPage: FC<CoursesPageProps> = () => {
 
   return (
     <>
-      <Breadcrumbs
-        breadcrumbItems={[{ title: "Багш, сургагч нар", link: "/instructors" }]}
-      />
+      <Breadcrumbs breadcrumbItems={[{ title: "Багш, сургагч нар", link: "/instructors" }]} />
       <div className="container mb-[150px]">
         <div className="text-center">
-          <h1 className="font-[700] text-[40px] leading-[47px] text-head mb-1">
-            Instructors
-          </h1>
+          <h1 className="font-[700] text-[40px] leading-[47px] text-head mb-1">Instructors</h1>
           <p className="text-lg-regular text-text mb-[90px]">
-            We’re on a mission to deliver engaging, curated courses at a
-            reasonable price.
+            We’re on a mission to deliver engaging, curated courses at a reasonable price.
           </p>
         </div>
         <div className="flex justify-between items-center mb-[30px]">
           <p className="text-text text-sm-regular">
-            Showing <span className="text-head text-sm-medium">250</span> total
-            results
+            Showing <span className="text-head text-sm-medium">250</span> total results
           </p>
           <div className="flex justify-between gap-[23px]">
             <div className="flex items-center gap-[20px] text-icon bg-bg-4 rounded-lg px-[18px] w-[340px] focus-within:ring-2 focus-within:ring-color-1 duration-300">
@@ -79,9 +77,7 @@ const InstructorsPage: FC<CoursesPageProps> = () => {
               >
                 Category
                 <BsChevronDown
-                  className={`duration-300 ${
-                    dropCategory ? "rotate-[-180deg]" : "rotate-0"
-                  }`}
+                  className={`duration-300 ${dropCategory ? "rotate-[-180deg]" : "rotate-0"}`}
                 />
               </button>
               <div
@@ -115,9 +111,7 @@ const InstructorsPage: FC<CoursesPageProps> = () => {
               >
                 Sort by: Default
                 <BsChevronDown
-                  className={`duration-300 ${
-                    dropSort ? "rotate-[-180deg]" : "rotate-0"
-                  }`}
+                  className={`duration-300 ${dropSort ? "rotate-[-180deg]" : "rotate-0"}`}
                 />
               </button>
               <div
@@ -147,18 +141,9 @@ const InstructorsPage: FC<CoursesPageProps> = () => {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-[30px] mb-[60px]">
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
-          <InstructorCard />
+          {instructors.map((instructor) => (
+            <InstructorCard key={instructor._id} instructor={instructor} />
+          ))}
         </div>
       </div>
     </>
