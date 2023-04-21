@@ -16,10 +16,11 @@ interface InstructorsPageProps {
 
 export const getServerSideProps: GetServerSideProps<
   InstructorsPageProps
-> = async () => {
+> = async ({ query }) => {
+  const { q: search = "" } = query;
   const [categoryRes, instructorsRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get("http://localhost:5000/api/users/instructors"),
+    axios.get(`http://localhost:5000/api/users/instructors?q=${search}`),
   ]);
   return {
     props: {
@@ -63,8 +64,11 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
         </div>
         <div className="flex justify-between items-center mb-[30px]">
           <p className="text-text text-sm-regular">
-            Showing <span className="text-head text-sm-medium">250</span> total
-            results
+            Showing{" "}
+            <span className="text-head text-sm-medium">
+              {instructors.length}
+            </span>{" "}
+            total results
           </p>
           <div className="flex justify-between gap-[23px]">
             <div className="flex items-center gap-[20px] text-icon bg-bg-4 rounded-lg px-[18px] w-[340px] focus-within:ring-2 focus-within:ring-color-1 duration-300">
@@ -79,14 +83,22 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
                 type="text"
                 className=" placeholder:text-text text-sm-regular bg-inherit w-full h-full focus:outline-none"
                 placeholder="Search Instructors"
-                onChange={(e)=> {
-                  e.target.value = input
+                value={input}
+                onChange={(e): void => {
+                  setInput(e.target.value);
                 }}
                 onKeyDown={(e): void => {
                   if (e.key === "Enter") {
-                    router.push({
-                      query: { ...router.query, q: },
-                    });
+                    if (input !== "") {
+                      router.push({
+                        query: { ...router.query, q: input },
+                      });
+                    } else {
+                      delete router.query.q;
+                      router.push({
+                        query: router.query,
+                      });
+                    }
                   }
                 }}
               />
@@ -167,9 +179,13 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-[30px] mb-[60px]">
-          {instructors.map((instructor) => (
-            <InstructorCard key={instructor._id} instructor={instructor} />
-          ))}
+          {instructors.length > 0 &&
+            instructors.map((instructor) => (
+              <InstructorCard key={instructor._id} instructor={instructor} />
+            ))}
+          {instructors.length === 0 && (
+            <p className="text-center col-span-4">Илэрц олдсонгүй</p>
+          )}
         </div>
       </div>
     </>
