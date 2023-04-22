@@ -7,6 +7,38 @@ import { RiMenu4Fill } from "react-icons/ri";
 import { FiShoppingBag, FiSearch } from "react-icons/fi";
 import NavbarDroprown from "./NavbarDroprown";
 
+const links = [
+  { name: "Home" },
+  {
+    name: "Courses",
+    submenu: true,
+    sublinks: [
+      {
+        Head: "Courses",
+        sublinks: [
+          { name: "Menu1", link: "/" },
+          { name: "Menu2", link: "/" },
+          { name: "Menu3", link: "/" },
+          { name: "Menu4", link: "/" },
+          { name: "Menu5", link: "/" },
+        ],
+      },
+      {
+        Head: "Courses2",
+        sublinks: [
+          { name: "Menu1", link: "/" },
+          { name: "Menu2", link: "/" },
+          { name: "Menu3", link: "/" },
+          { name: "Menu4", link: "/" },
+          { name: "Menu5", link: "/" },
+        ],
+      },
+    ],
+  },
+  { name: "Blog" },
+  { name: "Contact" },
+];
+
 const Header: FC = () => {
   const [open, setOpen] = useState(false);
 
@@ -26,19 +58,15 @@ const Header: FC = () => {
 
           <nav className="">
             <ul className="flex items-center gap-10 text-md-regular">
-              <li className="hover:text-white/70 duration-300">
-                {/* <Link href="/">Home</Link> */}
-                <NavbarDroprown />
-              </li>
-              {/* <li className="hover:text-white/70 duration-300">
-                <Link href="/">Courses</Link>
-              </li>
-              <li className="hover:text-white/70 duration-300">
-                <Link href="/">Blog</Link>
-              </li>
-              <li className="hover:text-white/70 duration-300">
-                <Link href="/">Contact</Link>
-              </li> */}
+              {links.map((link, index) => (
+                <li
+                  key={`navbar-menu-item-${index}`}
+                  className="hover:text-white/70 duration-300 group"
+                >
+                  {link.name}
+                  {link.submenu && <NavbarDroprown links={link.sublinks} />}
+                </li>
+              ))}
             </ul>
           </nav>
 
