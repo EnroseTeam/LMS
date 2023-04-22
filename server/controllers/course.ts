@@ -13,6 +13,7 @@ interface CoursesQueries {
   instructor?: string;
   price?: string;
   level?: string;
+  length?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -27,9 +28,12 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
     instructor,
     price = "0-10000000",
     level,
+    length = "0-10000",
   } = req.query;
 
   try {
+    const [minLength, maxLength] = length.split("-").map((length) => Number(length));
+
     let searchLevels: string[] | RegExp[] = [""];
     if (level) {
       searchLevels = level.split(",");
@@ -81,6 +85,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       instructor: { $in: searchInstructors },
       price: { $gte: minPrice, $lte: maxPrice },
       level: { $in: levels },
+      "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
     })
       .sort(order)
       .populate([

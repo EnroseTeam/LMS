@@ -9,7 +9,7 @@ import CourseCard from "@/components/Courses/CourseCard";
 import { ICourse } from "@/interfaces/courses";
 import CheckBoxFilter from "@/components/global/CheckBoxFilter";
 import RadioButtonFilter from "@/components/global/RadioButtonFilter";
-import { IRadioButtonFilterItem } from "@/interfaces/components";
+import { ICheckBoxFilterItem, IRadioButtonFilterItem } from "@/interfaces/components";
 import RatingStar from "@/components/global/RatingStar";
 import SortDropDown from "@/components/global/SortDropDown";
 import { IUser } from "@/interfaces/user";
@@ -29,11 +29,12 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
     instructor = "",
     price = "0-10000000",
     level = "",
+    length = "0-10000",
   } = query;
   const [resCategory, resCourses, instructorRes, levelRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
-      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}`
+      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}`
     ),
     axios.get(`http://localhost:5000/api/users/instructors`),
     axios.get(`http://localhost:5000/api/courses/levels`),
@@ -49,7 +50,9 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
 };
 
 const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, levels }) => {
-  const items: IRadioButtonFilterItem[] = [
+  console.log(courses);
+
+  const priceItems: IRadioButtonFilterItem[] = [
     { content: "Бүгд", slug: "0-10000000", count: 12 },
     { content: "Үнэтэй", slug: "1-10000000", count: 12 },
     { content: "Үнэгүй", slug: "0-0", count: 12 },
@@ -98,6 +101,13 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, l
     },
   ];
 
+  const lengthItems: ICheckBoxFilterItem[] = [
+    { title: "3-аас бага цаг", slug: "0-3", count: 0 },
+    { title: "4 - 7 цаг", slug: "4-7", count: 0 },
+    { title: "8 - 18 цаг", slug: "8-18", count: 0 },
+    { title: "20-оос дээш цаг", slug: "20-10000", count: 0 },
+  ];
+
   return (
     <div>
       <Breadcrumbs breadcrumbItems={[{ title: "Сургалтууд", link: "/courses" }]} />
@@ -142,7 +152,7 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, l
               }))}
               title={{ name: "Багш", slug: "instructor" }}
             />
-            <RadioButtonFilter title={{ name: "Үнэ", slug: "price" }} items={items} />
+            <RadioButtonFilter title={{ name: "Үнэ", slug: "price" }} items={priceItems} />
             <CheckBoxFilter
               title={{ name: "Түвшин", slug: "level" }}
               items={levels.map((level) => ({
@@ -151,6 +161,7 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, l
                 count: level.courseCount,
               }))}
             />
+            <CheckBoxFilter title={{ name: "Хугацаа", slug: "length" }} items={lengthItems} />
           </div>
         </div>
       </div>
