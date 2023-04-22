@@ -8,6 +8,7 @@ import Breadcrumbs from "@/components/global/Breadcrumbs";
 import InstructorCard from "@/components/Instructors/InstructorCard";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
+import SortDropDown from "@/components/global/SortDropDown";
 
 interface InstructorsPageProps {
   categories: ICourseCategory[];
@@ -17,10 +18,13 @@ interface InstructorsPageProps {
 export const getServerSideProps: GetServerSideProps<
   InstructorsPageProps
 > = async ({ query }) => {
-  const { q: search = "" } = query;
+  const { q: search = "", sort = "popular" } = query;
+
   const [categoryRes, instructorsRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(`http://localhost:5000/api/users/instructors?q=${search}`),
+    axios.get(
+      `http://localhost:5000/api/users/instructors?q=${search}&sort=${sort}`
+    ),
   ]);
   return {
     props: {
@@ -30,19 +34,16 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
+const InstructorsPage: FC<InstructorsPageProps> = ({
+  instructors,
+  categories,
+}) => {
   const [dropCategory, setDropCategory] = useState(false);
-  const [dropSort, setDropSort] = useState(false);
+
   const [input, setInput] = useState("");
 
   const dropCategoryHandler = (): void => {
     setDropCategory(!dropCategory);
-    setDropSort(false);
-  };
-
-  const dropSortHandler = (): void => {
-    setDropSort(!dropSort);
-    setDropCategory(false);
   };
 
   const router = useRouter();
@@ -103,6 +104,7 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
                 }}
               />
             </div>
+            <SortDropDown />
 
             <div className="relative">
               <button
@@ -122,57 +124,14 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
                 } absolute top-[60px] z-[10] bg-bg-4 rounded-lg py-[22px] pl-[30px] pr-[50px] duration-300 shadow-lg`}
               >
                 <ul className="flex flex-col font-[400] text-[15px] leading-[35px] text-head ">
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Web Designer
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Marketing Coordinator
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Medical Assistant
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Dog Trainer
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Chief
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="relative">
-              <button
-                onClick={dropSortHandler}
-                className="bg-bg-4 rounded-lg py-4 px-[15px] flex items-center gap-[46px] text-text text-sm-regular"
-              >
-                Sort by: Default
-                <BsChevronDown
-                  className={`duration-300 ${
-                    dropSort ? "rotate-[-180deg]" : "rotate-0"
-                  }`}
-                />
-              </button>
-              <div
-                className={`${
-                  dropSort ? "opacity-100" : "opacity-0 pointer-events-none"
-                } absolute top-[60px] z-[10] bg-bg-4 rounded-lg py-[22px] pl-[30px] pr-[50px] duration-300 shadow-lg`}
-              >
-                <ul className="flex flex-col font-[400] text-[15px] leading-[35px] text-head ">
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline ">
-                    Popular
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Newest
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    A - Z
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Z - A
-                  </li>
-                  <li className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline">
-                    Chief
-                  </li>
+                  {categories.map((category) => (
+                    <li
+                      className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline"
+                      key={category._id}
+                    >
+                      {category.name}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
