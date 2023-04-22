@@ -1,4 +1,4 @@
-import { ICourseCategory } from "@/interfaces/courses";
+import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import axios from "axios";
 
 import { GetServerSideProps } from "next";
@@ -18,6 +18,7 @@ interface CoursesPageProps {
   categories: ICourseCategory[];
   courses: ICourse[];
   instructors: IUser[];
+  levels: ICourseLevel[];
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
@@ -27,24 +28,27 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
     sort = "popular",
     instructor = "",
     price = "0-10000000",
+    level = "",
   } = query;
-  const [resCategory, resCourses, instructorRes] = await axios.all([
+  const [resCategory, resCourses, instructorRes, levelRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
-      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}`
+      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}`
     ),
     axios.get(`http://localhost:5000/api/users/instructors`),
+    axios.get(`http://localhost:5000/api/courses/levels`),
   ]);
   return {
     props: {
       categories: resCategory.data.body,
       courses: resCourses.data.body,
       instructors: instructorRes.data.body,
+      levels: levelRes.data.body,
     },
   };
 };
 
-const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors }) => {
+const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, levels }) => {
   const items: IRadioButtonFilterItem[] = [
     { content: "Бүгд", slug: "0-10000000", count: 12 },
     { content: "Үнэтэй", slug: "1-10000000", count: 12 },
@@ -139,6 +143,14 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors })
               title={{ name: "Багш", slug: "instructor" }}
             />
             <RadioButtonFilter title={{ name: "Үнэ", slug: "price" }} items={items} />
+            <CheckBoxFilter
+              title={{ name: "Түвшин", slug: "level" }}
+              items={levels.map((level) => ({
+                title: level.name,
+                slug: level.slug,
+                count: level.courseCount,
+              }))}
+            />
           </div>
         </div>
       </div>
