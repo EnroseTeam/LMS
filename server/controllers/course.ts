@@ -10,6 +10,7 @@ interface CoursesQueries {
   category?: string;
   rating?: string;
   sort?: string;
+  instructor?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -17,7 +18,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
   res,
   next
 ) => {
-  const { category, rating = "0", sort = "popular" } = req.query;
+  const { category, rating = "0", sort = "popular", instructor } = req.query;
 
   try {
     let order = "";
@@ -36,6 +37,13 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
         break;
     }
 
+    let searchInstructors: string[] = [];
+    if (instructor) {
+      searchInstructors = instructor.split(",");
+    } else {
+      const instructors = await UserModel.find().select({ _id: 1 });
+      searchInstructors = instructors.map((instructor) => instructor._id.toString());
+    }
     // Query-ээр орж ирсэн ангилалуудын id-г олж авна.
     let searchCategories: string[] | RegExp[] = [""];
     if (category) {
@@ -49,6 +57,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
     const courses = await CourseModel.find({
       category: { $in: categories },
       avgRating: { $gte: Number(rating) },
+      instructor: { $in: searchInstructors },
     })
       .sort(order)
       .populate([
