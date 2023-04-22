@@ -8,6 +8,8 @@ import mongoose from "mongoose";
 
 interface CoursesQueries {
   category?: string;
+  rating?: string;
+  sort?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -15,9 +17,25 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
   res,
   next
 ) => {
-  const { category } = req.query;
+  const { category, rating = "0", sort = "popular" } = req.query;
 
   try {
+    let order = "";
+    switch (sort) {
+      case "newest":
+        order = "-createdAt";
+        break;
+      case "nameAsc":
+        order = "name";
+        break;
+      case "nameDesc":
+        order = "-name";
+        break;
+      default:
+        order = "-avgRating";
+        break;
+    }
+
     // Query-ээр орж ирсэн ангилалуудын id-г олж авна.
     let searchCategories: string[] | RegExp[] = [""];
     if (category) {
@@ -28,13 +46,18 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
     const categories = await CourseCategoryModel.find({ slug: { $in: searchCategories } });
 
     // Орж ирсэн ангилалын дагуу сургалтуудыг шүүгээд буцаана. Хэрэв ангилал байхгүй бол бүх сургалтыг буцаана.
-    const courses = await CourseModel.find({ category: { $in: categories } }).populate([
-      "instructor",
-      "level",
-      "category",
-      { path: "reviews", populate: { path: "user" } },
-      { path: "sections", populate: { path: "lessons" } },
-    ]);
+    const courses = await CourseModel.find({
+      category: { $in: categories },
+      avgRating: { $gte: Number(rating) },
+    })
+      .sort(order)
+      .populate([
+        "instructor",
+        "level",
+        "category",
+        { path: "reviews", populate: { path: "user" } },
+        { path: "sections", populate: { path: "lessons" } },
+      ]);
 
     res.status(200).json({ message: "Амжилттай", body: courses });
   } catch (error) {

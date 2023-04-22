@@ -3,3 +3,9 @@ export interface ICheckBoxFilterItem {
   slug: string;
   count: number;
 }
+
+export interface IRadioButtonFilterItem {
+  content: string | JSX.Element;
+  slug: string;
+  count: number;
+}
