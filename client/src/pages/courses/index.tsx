@@ -12,29 +12,33 @@ import RadioButtonFilter from "@/components/global/RadioButtonFilter";
 import { IRadioButtonFilterItem } from "@/interfaces/components";
 import RatingStar from "@/components/global/RatingStar";
 import SortDropDown from "@/components/global/SortDropDown";
+import { IUser } from "@/interfaces/user";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
   courses: ICourse[];
+  instructors: IUser[];
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
-  const { category = "", rating = "0", sort = "popular" } = query;
-  const [resCategory, resCourses] = await axios.all([
+  const { category = "", rating = "0", sort = "popular", instructor = "" } = query;
+  const [resCategory, resCourses, instructorRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
-      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}`
+      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}`
     ),
+    axios.get(`http://localhost:5000/api/users/instructors`),
   ]);
   return {
     props: {
       categories: resCategory.data.body,
       courses: resCourses.data.body,
+      instructors: instructorRes.data.body,
     },
   };
 };
 
-const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
+const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors }) => {
   const items = [
     { content: "All", count: 12 },
     { content: "Paid", count: 12 },
@@ -120,6 +124,14 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
               title={{ name: "Ангилал", slug: "category" }}
             />
             <RadioButtonFilter title={{ name: "Үнэлгээ", slug: "rating" }} items={ratingItems} />
+            <CheckBoxFilter
+              items={instructors.map((instructor) => ({
+                title: instructor.fullName,
+                slug: instructor._id,
+                count: instructor.ownCourses.length,
+              }))}
+              title={{ name: "Багш", slug: "instructor" }}
+            />
             {/* <RadioButtonFilter title="Price" items={items} /> */}
           </div>
         </div>
