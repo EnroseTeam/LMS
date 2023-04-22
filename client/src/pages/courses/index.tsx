@@ -19,6 +19,24 @@ interface CoursesPageProps {
   courses: ICourse[];
   instructors: IUser[];
   levels: ICourseLevel[];
+  courseCount: {
+    ratingCount: {
+      rating: number;
+      count: number;
+    }[];
+    priceCount: {
+      label: string;
+      minPrice: number;
+      maxPrice: number;
+      count: number;
+    }[];
+    lengthCount: {
+      label: string;
+      minLength: number;
+      maxLength: number;
+      count: number;
+    }[];
+  };
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
@@ -31,13 +49,14 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
     level = "",
     length = "0-10000",
   } = query;
-  const [resCategory, resCourses, instructorRes, levelRes] = await axios.all([
+  const [resCategory, resCourses, instructorRes, levelRes, courseCountRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
       `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}`
     ),
     axios.get(`http://localhost:5000/api/users/instructors`),
     axios.get(`http://localhost:5000/api/courses/levels`),
+    axios.get(`http://localhost:5000/api/courses/counts`),
   ]);
   return {
     props: {
@@ -45,78 +64,66 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
       courses: resCourses.data.body,
       instructors: instructorRes.data.body,
       levels: levelRes.data.body,
+      courseCount: courseCountRes.data,
     },
   };
 };
 
-const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, levels }) => {
-  console.log(courses);
+const CoursesPage: FC<CoursesPageProps> = ({
+  courses,
+  categories,
+  instructors,
+  levels,
+  courseCount,
+}) => {
+  const categoryItems: ICheckBoxFilterItem[] = categories.map((category) => ({
+    title: category.name,
+    slug: category.slug,
+    count: category.courseCount,
+  }));
 
-  const priceItems: IRadioButtonFilterItem[] = [
-    { content: "Бүгд", slug: "0-10000000", count: 12 },
-    { content: "Үнэтэй", slug: "1-10000000", count: 12 },
-    { content: "Үнэгүй", slug: "0-0", count: 12 },
-  ];
+  const ratingItems: IRadioButtonFilterItem[] = courseCount.ratingCount.map((rCount) => ({
+    content: (
+      <span className="flex items-center gap-[10px]">
+        <RatingStar count={5} rating={rCount.rating} gap={4} />
+        <h5 className="text-head text-sm-regular">{rCount.rating} ба дээш</h5>
+      </span>
+    ),
+    slug: rCount.rating.toString(),
+    count: rCount.count,
+  }));
 
-  const ratingItems: IRadioButtonFilterItem[] = [
-    {
-      content: (
-        <span className="flex items-center gap-[10px]">
-          <RatingStar count={5} rating={4.5} gap={4} />
-          <h5 className="text-head text-sm-regular">4.5 ба дээш</h5>
-        </span>
-      ),
-      slug: "4.5",
-      count: 100,
-    },
-    {
-      content: (
-        <span className="flex items-center gap-[10px]">
-          <RatingStar count={5} rating={4.0} gap={4} />
-          <h5 className="text-head text-sm-regular">4.0 ба дээш</h5>
-        </span>
-      ),
-      slug: "4.0",
-      count: 100,
-    },
-    {
-      content: (
-        <span className="flex items-center gap-[10px]">
-          <RatingStar count={5} rating={3.5} gap={4} />
-          <h5 className="text-head text-sm-regular">3.5 ба дээш</h5>
-        </span>
-      ),
-      slug: "3.5",
-      count: 100,
-    },
-    {
-      content: (
-        <span className="flex items-center gap-[10px]">
-          <RatingStar count={5} rating={3} gap={4} />
-          <h5 className="text-head text-sm-regular">3.0 ба дээш</h5>
-        </span>
-      ),
-      slug: "3",
-      count: 100,
-    },
-  ];
+  const instructorItems: ICheckBoxFilterItem[] = instructors.map((instructor) => ({
+    title: instructor.fullName,
+    slug: instructor._id,
+    count: instructor.ownCourses.length,
+  }));
 
-  const lengthItems: ICheckBoxFilterItem[] = [
-    { title: "3-аас бага цаг", slug: "0-3", count: 0 },
-    { title: "4 - 7 цаг", slug: "4-7", count: 0 },
-    { title: "8 - 18 цаг", slug: "8-18", count: 0 },
-    { title: "20-оос дээш цаг", slug: "20-10000", count: 0 },
-  ];
+  const priceItems: IRadioButtonFilterItem[] = courseCount.priceCount.map((pCount) => ({
+    content: pCount.label,
+    slug: `${pCount.minPrice}-${pCount.maxPrice}`,
+    count: pCount.count,
+  }));
+
+  const levelItems: ICheckBoxFilterItem[] = levels.map((level) => ({
+    title: level.name,
+    slug: level.slug,
+    count: level.courseCount,
+  }));
+
+  const lengthItems: ICheckBoxFilterItem[] = courseCount.lengthCount.map((lCount) => ({
+    title: lCount.label,
+    slug: `${lCount.minLength}-${lCount.maxLength}`,
+    count: lCount.count,
+  }));
 
   return (
     <div>
       <Breadcrumbs breadcrumbItems={[{ title: "Сургалтууд", link: "/courses" }]} />
       <div className="container mb-[136px]">
-        <div className="mb-[147px]">
+        <div className="mb-[90px]">
           <h1 className="text-head font-[700] text-[40px] leading-[47px] mb-1">Сургалтууд</h1>
-          <p className="text-lg-regular text-text">
-            Write an introductory description of the category.
-          </p>
+          <p className="text-lg-regular text-text">Бүх төрлийн сургалтуудыг нэг дороос үз.</p>
         </div>
 
         <div id="courses" className="grid grid-cols-4 gap-[60px]">
@@ -135,33 +142,12 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors, l
             </div>
           </div>
           <div className="flex flex-col gap-[30px]">
-            <CheckBoxFilter
-              items={categories.map((category) => ({
-                title: category.name,
-                slug: category.slug,
-                count: category.courseCount,
-              }))}
-              title={{ name: "Ангилал", slug: "category" }}
-            />
-            <RadioButtonFilter title={{ name: "Үнэлгээ", slug: "rating" }} items={ratingItems} />
-            <CheckBoxFilter
-              items={instructors.map((instructor) => ({
-                title: instructor.fullName,
-                slug: instructor._id,
-                count: instructor.ownCourses.length,
-              }))}
-              title={{ name: "Багш", slug: "instructor" }}
-            />
-            <RadioButtonFilter title={{ name: "Үнэ", slug: "price" }} items={priceItems} />
-            <CheckBoxFilter
-              title={{ name: "Түвшин", slug: "level" }}
-              items={levels.map((level) => ({
-                title: level.name,
-                slug: level.slug,
-                count: level.courseCount,
-              }))}
-            />
-            <CheckBoxFilter title={{ name: "Хугацаа", slug: "length" }} items={lengthItems} />
+            <CheckBoxFilter items={categoryItems} title={{ name: "Ангилал", slug: "category" }} />
+            <RadioButtonFilter items={ratingItems} title={{ name: "Үнэлгээ", slug: "rating" }} />
+            <CheckBoxFilter items={instructorItems} title={{ name: "Багш", slug: "instructor" }} />
+            <RadioButtonFilter items={priceItems} title={{ name: "Үнэ", slug: "price" }} />
+            <CheckBoxFilter items={levelItems} title={{ name: "Түвшин", slug: "level" }} />
+            <CheckBoxFilter items={lengthItems} title={{ name: "Хугацаа", slug: "length" }} />
           </div>
         </div>
       </div>

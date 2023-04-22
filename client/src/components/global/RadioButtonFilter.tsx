@@ -90,7 +90,7 @@ const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) =>
                   : setDisplayItems(items)
               }
             >
-              {displayItems.length > 5 ? "Show Less" : "Show More"}
+              {displayItems.length > 5 ? "Хураангуй" : "Дэлгэрэнгүй"}
             </button>
           )}
           <button

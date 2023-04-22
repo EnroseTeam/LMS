@@ -6,6 +6,58 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
+export const getCourseCounts: RequestHandler = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find();
+
+    const ratingCount = [
+      { rating: 4.5, count: 0 },
+      { rating: 4, count: 0 },
+      { rating: 3.5, count: 0 },
+      { rating: 3, count: 0 },
+    ];
+
+    const priceCount = [
+      { label: "Бүгд", minPrice: 0, maxPrice: 10000000, count: 0 },
+      { label: "Үнэтэй", minPrice: 1, maxPrice: 10000000, count: 0 },
+      { label: "Үнэгүй", minPrice: 0, maxPrice: 0, count: 0 },
+    ];
+
+    const lengthCount = [
+      { label: "3-аас бага цаг", minLength: 0, maxLength: 3, count: 0 },
+      { label: "4 - 7 цаг", minLength: 4, maxLength: 7, count: 0 },
+      { label: "8 - 18 цаг", minLength: 8, maxLength: 18, count: 0 },
+      { label: "20-оос дээш цаг", minLength: 20, maxLength: 10000, count: 0 },
+    ];
+
+    ratingCount.map((rCount) => {
+      courses.map((course) => {
+        if (course.avgRating >= rCount.rating) rCount.count = rCount.count + 1;
+      });
+    });
+
+    priceCount.map((pCount) => {
+      courses.map((course) => {
+        if (course.price >= pCount.minPrice && course.price <= pCount.maxPrice) pCount.count += 1;
+      });
+    });
+
+    lengthCount.map((lCount) => {
+      courses.map((course) => {
+        if (
+          course.totalLessonLength.hour >= lCount.minLength &&
+          course.totalLessonLength.hour <= lCount.maxLength
+        )
+          lCount.count += 1;
+      });
+    });
+
+    res.status(200).json({ ratingCount, priceCount, lengthCount });
+  } catch (error) {
+    next(error);
+  }
+};
+
 interface CoursesQueries {
   category?: string;
   rating?: string;
