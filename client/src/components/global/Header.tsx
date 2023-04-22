@@ -1,4 +1,3 @@
-
 import { FC } from "react";
 
 import Image from "next/image";
@@ -73,21 +72,41 @@ const Header: FC = () => (
         <button className="text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group">
           <RiMenu4Fill size={24} />
           <span>Explore</span>
-          <ul>
-            <DropdownLarge items={links} />
-          </ul>
+          <DropdownLarge items={links} />
         </button>
       </div>
-
-
-            <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
-              Sign Up
-            </button>
-          </div>
-        </div>
+      <nav className="">
+        <ul className="flex items-center gap-10 text-md-regular">
+          <li className="hover:text-white/70 duration-300">
+            <Link href="/">Home</Link>
+          </li>
+          <li className="hover:text-white/70 duration-300">
+            <Link href="/">Courses</Link>
+          </li>
+          <li className="hover:text-white/70 duration-300">
+            <Link href="/">Blog</Link>
+          </li>
+          <li className="hover:text-white/70 duration-300">
+            <Link href="/">Contact</Link>
+          </li>
+        </ul>
+      </nav>
+      <div className="flex items-center gap-7">
+        <button className="text-xl hover:opacity-70 duration-300">
+          <FiSearch />
+        </button>
+        <button className="text-xl hover:opacity-70 duration-300">
+          <FiShoppingBag />
+        </button>
+        <button className="text-white text-md-regular hover:text-white/70 duration-300">
+          Log In
+        </button>
+        <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
+          Sign Up
+        </button>
       </div>
-    </>
-  );
-};
+    </div>
+  </div>
+);
 
 export default Header;
