@@ -25,13 +25,32 @@ interface UserParams {
 
 export const getInstructors: RequestHandler = async (req, res, next) => {
   try {
-    const { q: search = "" } = req.query;
+    const { q: search = "", sort = "popular" } = req.query;
+
+    let order = "";
+    switch (sort) {
+      case "newest":
+        order = "-createdAt";
+        break;
+      case "nameAsc":
+        order = "fullName";
+        break;
+      case "nameDesc":
+        order = "-fullName";
+        break;
+      default:
+        order = "-avgRating";
+        break;
+    }
+
     const users: IUser[] = await UserModel.find({
       $or: [
         { firstName: new RegExp("^" + search, "i") },
         { lastName: new RegExp("^" + search, "i") },
       ],
-    }).populate("role");
+    })
+      .populate("role")
+      .sort(order);
     const instructors = users.filter((user) => (user.role.slug = "instructor"));
     res.status(200).json({ message: "Амжилттай", body: instructors });
   } catch (error) {

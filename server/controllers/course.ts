@@ -6,22 +6,147 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
-export const getCourses: RequestHandler = async (req, res, next) => {
-  const { category } = req.query;
+export const getCourseCounts: RequestHandler = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find();
+
+    const ratingCount = [
+      { rating: 4.5, count: 0 },
+      { rating: 4, count: 0 },
+      { rating: 3.5, count: 0 },
+      { rating: 3, count: 0 },
+    ];
+
+    const priceCount = [
+      { label: "Бүгд", minPrice: 0, maxPrice: 10000000, count: 0 },
+      { label: "Үнэтэй", minPrice: 1, maxPrice: 10000000, count: 0 },
+      { label: "Үнэгүй", minPrice: 0, maxPrice: 0, count: 0 },
+    ];
+
+    const lengthCount = [
+      { label: "3-аас бага цаг", minLength: 0, maxLength: 3, count: 0 },
+      { label: "4 - 7 цаг", minLength: 4, maxLength: 7, count: 0 },
+      { label: "8 - 18 цаг", minLength: 8, maxLength: 18, count: 0 },
+      { label: "20-оос дээш цаг", minLength: 20, maxLength: 10000, count: 0 },
+    ];
+
+    ratingCount.map((rCount) => {
+      courses.map((course) => {
+        if (course.avgRating >= rCount.rating) rCount.count = rCount.count + 1;
+      });
+    });
+
+    priceCount.map((pCount) => {
+      courses.map((course) => {
+        if (course.price >= pCount.minPrice && course.price <= pCount.maxPrice) pCount.count += 1;
+      });
+    });
+
+    lengthCount.map((lCount) => {
+      courses.map((course) => {
+        if (
+          course.totalLessonLength.hour >= lCount.minLength &&
+          course.totalLessonLength.hour <= lCount.maxLength
+        )
+          lCount.count += 1;
+      });
+    });
+
+    res.status(200).json({ ratingCount, priceCount, lengthCount });
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface CoursesQueries {
+  category?: string;
+  rating?: string;
+  sort?: string;
+  instructor?: string;
+  price?: string;
+  level?: string;
+  length?: string;
+}
+
+export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
+  req,
+  res,
+  next
+) => {
+  const {
+    category,
+    rating = "0",
+    sort = "popular",
+    instructor,
+    price = "0-10000000",
+    level,
+    length = "0-10000",
+  } = req.query;
 
   try {
-    // Бүх сургалтыг олоод буцаана. Ирээдүйд ангилал, багш, үнэлгээ, хуудаслалт нэмнэ.
-    let courses = await CourseModel.find().populate([
-      "instructor",
-      "level",
-      "category",
-      { path: "reviews", populate: { path: "user" } },
-      { path: "sections", populate: { path: "lessons" } },
-    ]);
+    const [minLength, maxLength] = length.split("-").map((length) => Number(length));
 
-    if (category) {
-      courses = courses.filter((course) => course.category.slug === category);
+    let searchLevels: string[] | RegExp[] = [""];
+    if (level) {
+      searchLevels = level.split(",");
     }
+
+    searchLevels = searchLevels.map((level) => new RegExp("^" + level, "i"));
+    const levels = await CourseLevelModel.find({ slug: { $in: searchLevels } });
+
+    let order = "";
+    switch (sort) {
+      case "newest":
+        order = "-createdAt";
+        break;
+      case "nameAsc":
+        order = "name";
+        break;
+      case "nameDesc":
+        order = "-name";
+        break;
+      default:
+        order = "-avgRating";
+        break;
+    }
+
+    // Хүсэлтээс ирж буй үнийн хамгийн бага болон хамгийн их дүнг салгаж тоон утга болгон массивд хадгална.
+    const [minPrice, maxPrice] = price.split("-").map((price) => Number(price));
+
+    // Багшийн нэрээр шүүх
+    let searchInstructors: string[] = [];
+    if (instructor) {
+      searchInstructors = instructor.split(",");
+    } else {
+      const instructors = await UserModel.find().select({ _id: 1 });
+      searchInstructors = instructors.map((instructor) => instructor._id.toString());
+    }
+    // Query-ээр орж ирсэн ангилалуудын id-г олж авна.
+    let searchCategories: string[] | RegExp[] = [""];
+    if (category) {
+      searchCategories = category.split(",");
+    }
+
+    searchCategories = searchCategories.map((search) => new RegExp("^" + search, "i"));
+    const categories = await CourseCategoryModel.find({ slug: { $in: searchCategories } });
+
+    // Орж ирсэн ангилалын дагуу сургалтуудыг шүүгээд буцаана. Хэрэв ангилал байхгүй бол бүх сургалтыг буцаана.
+    const courses = await CourseModel.find({
+      category: { $in: categories },
+      avgRating: { $gte: Number(rating) },
+      instructor: { $in: searchInstructors },
+      price: { $gte: minPrice, $lte: maxPrice },
+      level: { $in: levels },
+      "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
+    })
+      .sort(order)
+      .populate([
+        "instructor",
+        "level",
+        "category",
+        { path: "reviews", populate: { path: "user" } },
+        { path: "sections", populate: { path: "lessons" } },
+      ]);
 
     res.status(200).json({ message: "Амжилттай", body: courses });
   } catch (error) {
