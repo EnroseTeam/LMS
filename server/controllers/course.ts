@@ -1,27 +1,40 @@
 import { RequestHandler } from "express";
-import CourseModel from "../models/course";
+import CourseModel, { ICourse } from "../models/course";
 import CourseCategoryModel from "../models/courseCategory";
 import CourseLevelModel from "../models/courseLevel";
 import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
-export const getCourses: RequestHandler = async (req, res, next) => {
+interface CoursesQueries {
+  category?: string;
+}
+
+export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
+  req,
+  res,
+  next
+) => {
   const { category } = req.query;
 
   try {
-    // Бүх сургалтыг олоод буцаана. Ирээдүйд ангилал, багш, үнэлгээ, хуудаслалт нэмнэ.
-    let courses = await CourseModel.find().populate([
+    // Query-ээр орж ирсэн ангилалуудын id-г олж авна.
+    let searchCategories: string[] | RegExp[] = [""];
+    if (category) {
+      searchCategories = category.split(",");
+    }
+
+    searchCategories = searchCategories.map((search) => new RegExp("^" + search, "i"));
+    const categories = await CourseCategoryModel.find({ slug: { $in: searchCategories } });
+
+    // Орж ирсэн ангилалын дагуу сургалтуудыг шүүгээд буцаана. Хэрэв ангилал байхгүй бол бүх сургалтыг буцаана.
+    const courses = await CourseModel.find({ category: { $in: categories } }).populate([
       "instructor",
       "level",
       "category",
       { path: "reviews", populate: { path: "user" } },
       { path: "sections", populate: { path: "lessons" } },
     ]);
-
-    if (category) {
-      courses = courses.filter((course) => course.category.slug === category);
-    }
 
     res.status(200).json({ message: "Амжилттай", body: courses });
   } catch (error) {
