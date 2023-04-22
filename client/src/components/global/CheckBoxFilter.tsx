@@ -83,7 +83,7 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
               displayItems.length > 5 ? setDisplayItems(items.slice(0, 5)) : setDisplayItems(items)
             }
           >
-            {displayItems.length > 5 ? "Show Less" : "Show More"}
+            {displayItems.length > 5 ? "Хураангуй" : "Дэлгэрэнгүй"}
           </button>
         )}
       </div>

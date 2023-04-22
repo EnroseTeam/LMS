@@ -1,11 +1,24 @@
-import express from 'express';
-import { createCourse, getCourses, getSingleCourse } from '../controllers/course';
+import express from "express";
+import {
+  createCourse,
+  deleteCourse,
+  getCourseCounts,
+  getCourses,
+  getSingleCourse,
+  updateCourse,
+} from "../controllers/course";
 
 const courseRouter = express.Router();
 
-courseRouter.get('/', getCourses);
-courseRouter.get('/:id', getSingleCourse);
+courseRouter.get("/counts", getCourseCounts);
 
-courseRouter.post('/', createCourse);
+courseRouter.get("/", getCourses);
+courseRouter.get("/:id", getSingleCourse);
+
+courseRouter.post("/", createCourse);
+
+courseRouter.patch("/:id", updateCourse);
+
+courseRouter.delete("/:id", deleteCourse);
 
 export default courseRouter;
