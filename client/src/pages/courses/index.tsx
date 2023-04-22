@@ -23,10 +23,11 @@ interface CoursesPageProps {
   courses: ICourse[];
 }
 
-export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
+  const { category = "" } = query;
   const [resCategory, resCourses] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get("http://localhost:5000/api/courses"),
+    axios.get(`http://localhost:5000/api/courses?category=${category}`),
   ]);
   return {
     props: {
@@ -61,7 +62,7 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
             Write an introductory description of the category.
           </p>
         </div>
-        <div className="flex items-center justify-between mb-[36px]">
+        {/* <div className="flex items-center justify-between mb-[36px]">
           <h2 className="text-head text-2xl-bold">Courses to get you started</h2>
           <div className="flex items-center gap-2 text-text text-md-regular">
             <button className="rounded-lg whitespace-nowrap hover:text-color-1 hover:bg-color-1/[.07] py-2 px-3 duration-300">
@@ -160,8 +161,9 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
             </SwiperSlide>
           </Swiper>
         </div>
-        <div className="flex gap-[60px]">
-          <div>
+         */}
+        <div id="courses" className="grid grid-cols-4 gap-[60px]">
+          <div className="col-span-3">
             <div className="flex justify-between items-center mb-[22px]">
               <p className="text-text text-sm-regular">
                 Showing <span className="text-head text-sm-medium">250 </span>
@@ -209,7 +211,14 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories }) => {
             </div>
           </div>
           <div className="flex flex-col gap-[30px]">
-            <CheckBoxFilter title="Category" items={categories} />
+            <CheckBoxFilter
+              items={categories.map((category) => ({
+                title: category.name,
+                slug: category.slug,
+                count: category.courseCount,
+              }))}
+              title={{ name: "Ангилал", slug: "category" }}
+            />
             <RadioButtonFilter title="Price" items={items} />
           </div>
         </div>
