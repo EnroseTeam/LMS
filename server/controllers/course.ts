@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import CourseModel, { ICourse } from "../models/course";
+import CourseModel from "../models/course";
 import CourseCategoryModel from "../models/courseCategory";
 import CourseLevelModel from "../models/courseLevel";
 import UserModel from "../models/user";
@@ -12,6 +12,7 @@ interface CoursesQueries {
   sort?: string;
   instructor?: string;
   price?: string;
+  level?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -19,9 +20,24 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
   res,
   next
 ) => {
-  const { category, rating = "0", sort = "popular", instructor, price = "0-10000000" } = req.query;
+  const {
+    category,
+    rating = "0",
+    sort = "popular",
+    instructor,
+    price = "0-10000000",
+    level,
+  } = req.query;
 
   try {
+    let searchLevels: string[] | RegExp[] = [""];
+    if (level) {
+      searchLevels = level.split(",");
+    }
+
+    searchLevels = searchLevels.map((level) => new RegExp("^" + level, "i"));
+    const levels = await CourseLevelModel.find({ slug: { $in: searchLevels } });
+
     let order = "";
     switch (sort) {
       case "newest":
@@ -64,6 +80,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       avgRating: { $gte: Number(rating) },
       instructor: { $in: searchInstructors },
       price: { $gte: minPrice, $lte: maxPrice },
+      level: { $in: levels },
     })
       .sort(order)
       .populate([
