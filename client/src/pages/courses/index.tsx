@@ -21,11 +21,17 @@ interface CoursesPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
-  const { category = "", rating = "0", sort = "popular", instructor = "" } = query;
+  const {
+    category = "",
+    rating = "0",
+    sort = "popular",
+    instructor = "",
+    price = "0-10000000",
+  } = query;
   const [resCategory, resCourses, instructorRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
-      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}`
+      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}`
     ),
     axios.get(`http://localhost:5000/api/users/instructors`),
   ]);
@@ -39,10 +45,10 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
 };
 
 const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors }) => {
-  const items = [
-    { content: "All", count: 12 },
-    { content: "Paid", count: 12 },
-    { content: "Free", count: 12 },
+  const items: IRadioButtonFilterItem[] = [
+    { content: "Бүгд", slug: "0-10000000", count: 12 },
+    { content: "Үнэтэй", slug: "1-10000000", count: 12 },
+    { content: "Үнэгүй", slug: "0-0", count: 12 },
   ];
 
   const ratingItems: IRadioButtonFilterItem[] = [
@@ -132,7 +138,7 @@ const CoursesPage: FC<CoursesPageProps> = ({ courses, categories, instructors })
               }))}
               title={{ name: "Багш", slug: "instructor" }}
             />
-            {/* <RadioButtonFilter title="Price" items={items} /> */}
+            <RadioButtonFilter title={{ name: "Үнэ", slug: "price" }} items={items} />
           </div>
         </div>
       </div>
