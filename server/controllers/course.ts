@@ -11,6 +11,7 @@ interface CoursesQueries {
   rating?: string;
   sort?: string;
   instructor?: string;
+  price?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -18,7 +19,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
   res,
   next
 ) => {
-  const { category, rating = "0", sort = "popular", instructor } = req.query;
+  const { category, rating = "0", sort = "popular", instructor, price = "0-10000000" } = req.query;
 
   try {
     let order = "";
@@ -37,6 +38,10 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
         break;
     }
 
+    // Хүсэлтээс ирж буй үнийн хамгийн бага болон хамгийн их дүнг салгаж тоон утга болгон массивд хадгална.
+    const [minPrice, maxPrice] = price.split("-").map((price) => Number(price));
+
+    // Багшийн нэрээр шүүх
     let searchInstructors: string[] = [];
     if (instructor) {
       searchInstructors = instructor.split(",");
@@ -58,6 +63,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       category: { $in: categories },
       avgRating: { $gte: Number(rating) },
       instructor: { $in: searchInstructors },
+      price: { $gte: minPrice, $lte: maxPrice },
     })
       .sort(order)
       .populate([
