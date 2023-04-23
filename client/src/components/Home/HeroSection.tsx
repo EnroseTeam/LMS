@@ -12,11 +12,11 @@ const HeroSection: FC = () => (
   <div className="relative overflow-hidden w-full bg-head pt-[55px] pb-[136px] hero">
     <div className="container grid grid-cols-1 lg:grid-cols-2 gap-[29px lg:gap-[139px]]">
       <div className="my-auto text-white">
-        <h1 className="select-none text-[30px] font-bold leading-[43px] mb-3 lg:text-[55px] lg:leading-[80px]">
+        <h1 className="select-none text-[28px] font-bold leading-[43px] mb-3 lg:text-[55px] lg:leading-[80px]">
           Онлайнаар хүссэн чадвараа эзэмших газар{" "}
           <span className="text-color-6 underline">IntelliSense</span>
         </h1>
-        <p className="select-none text-md-regular  mb-[27px] w-full lg:w-[50ch] lg:text-lg-regular">
+        <p className="select-none text-md-regular  mb-[27px] w-full lg:w-[60ch] lg:text-lg-regular">
           Олон улсын шаардлага хангасан сургалтуудын тусламжтайгаар өөрийн чадвараа хөгжүүлээрэй.
         </p>
 
