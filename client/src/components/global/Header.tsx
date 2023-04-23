@@ -108,7 +108,7 @@ const Header: FC = () => (
           <DropdownLarge items={links} />
         </button>
       </div>
-      <nav className="">
+      <nav className="hidden lg:block">
         <ul className="flex items-center gap-10 text-md-regular">
           {navbarLinks.map((link, index) => (
             <li
@@ -121,7 +121,7 @@ const Header: FC = () => (
           ))}
         </ul>
       </nav>
-      <div className="flex items-center gap-7">
+      <div className="hidden items-center gap-7 lg:flex">
         <button className="text-xl hover:opacity-70 duration-300">
           <FiSearch />
         </button>
