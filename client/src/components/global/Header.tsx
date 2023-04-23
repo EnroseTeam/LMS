@@ -8,6 +8,7 @@ import { RiMenu4Fill } from "react-icons/ri";
 import { FiShoppingBag, FiSearch } from "react-icons/fi";
 
 import DropdownLarge from "./DropdownLarge";
+import NavbarDroprown from "./NavbarDroprown";
 
 const links = [
   {
@@ -62,6 +63,38 @@ const links = [
   },
 ];
 
+const navbarLinks = [
+  { name: "Home" },
+  {
+    name: "Courses",
+    submenu: true,
+    sublinks: [
+      {
+        Head: "Courses",
+        sublinks: [
+          { name: "Menu1", link: "/" },
+          { name: "Menu2", link: "/" },
+          { name: "Menu3", link: "/" },
+          { name: "Menu4", link: "/" },
+          { name: "Menu5", link: "/" },
+        ],
+      },
+      {
+        Head: "Courses2",
+        sublinks: [
+          { name: "Menu1", link: "/" },
+          { name: "Menu2", link: "/" },
+          { name: "Menu3", link: "/" },
+          { name: "Menu4", link: "/" },
+          { name: "Menu5", link: "/" },
+        ],
+      },
+    ],
+  },
+  { name: "Blog" },
+  { name: "Contact" },
+];
+
 const Header: FC = () => (
   <div className="w-full bg-head text-white sticky top-0 z-[50]">
     <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
@@ -77,18 +110,15 @@ const Header: FC = () => (
       </div>
       <nav className="">
         <ul className="flex items-center gap-10 text-md-regular">
-          <li className="hover:text-white/70 duration-300">
-            <Link href="/">Home</Link>
-          </li>
-          <li className="hover:text-white/70 duration-300">
-            <Link href="/">Courses</Link>
-          </li>
-          <li className="hover:text-white/70 duration-300">
-            <Link href="/">Blog</Link>
-          </li>
-          <li className="hover:text-white/70 duration-300">
-            <Link href="/">Contact</Link>
-          </li>
+          {navbarLinks.map((link, index) => (
+            <li
+              key={`navbar-menu-item-${index}`}
+              className="hover:text-white/70 duration-300 group"
+            >
+              {link.name}
+              {link.submenu && <NavbarDroprown links={link.sublinks} />}
+            </li>
+          ))}
         </ul>
       </nav>
       <div className="flex items-center gap-7">
