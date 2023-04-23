@@ -30,19 +30,19 @@
   @apply text-2xl text-color-2 hover:text-color-2/70 duration-300 disabled:text-gray-400 disabled:cursor-not-allowed;
 }
 
-.slider-style-pagination {
+.slider-style-2-pagination {
   @apply flex items-center gap-1;
 }
 
-.slider-style-pagination {
-  width: auto !important;
+.slider-style-2-pagination {
+  width: max-content !important;
 }
 
-.slider-style-pagination .swiper-pagination-bullet {
+.slider-style-2-pagination .swiper-pagination-bullet {
   @apply bg-icon;
 }
 
-.slider-style-pagination .swiper-pagination-bullet-active {
+.slider-style-2-pagination .swiper-pagination-bullet-active {
   @apply bg-color-1;
 }
 
