@@ -34,24 +34,40 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           className="w-full object-cover aspect-[.9/1]"
         />
         <div className="absolute w-full h-full top-0 right-0 left-0 bottom-0 bg-head/0 opacity-0 group-hover:bg-head/50 group-hover:opacity-100 duration-300 ">
-          <div className="flex justify-center gap-5 items-center w-full h-full text-white">
+          <div className="flex justify-center items-center w-full h-full text-white">
             {instructor.socialAccounts.facebook && (
-              <Link target="_blank" href={instructor.socialAccounts.facebook}>
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.facebook}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
                 <ImFacebook />
               </Link>
             )}
             {instructor.socialAccounts.twitter && (
-              <Link target="_blank" href={instructor.socialAccounts.twitter}>
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.twitter}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
                 <ImTwitter />
               </Link>
             )}
             {instructor.socialAccounts.instagram && (
-              <Link target="_blank" href={instructor.socialAccounts.instagram}>
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.instagram}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
                 <BsInstagram />
               </Link>
             )}
             {instructor.socialAccounts.linkedin && (
-              <Link target="_blank" href={instructor.socialAccounts.linkedin}>
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.linkedin}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
                 <ImLinkedin2 />
               </Link>
             )}
@@ -70,7 +86,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
         <div className="flex items-center gap-[20px]">
           <span className="flex items-center  gap-2 text-md">
             <RatingStar count={1} rating={1} />
-            <p className="text-[#E59819] text-sm-medium mt-[2px]">{instructor.avgRating}</p>
+            <p className="text-[#E59819] text-sm-medium mt-[2px]">
+              {instructor.avgRating}
+            </p>
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <AiOutlineUser />
@@ -79,7 +97,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <BiRightArrow />
-            <span className="text-text text-sm-regular">{instructor.ownCourses.length} хичээл</span>
+            <span className="text-text text-sm-regular">
+              {instructor.ownCourses.length} хичээл
+            </span>
           </span>
         </div>
       </div>
