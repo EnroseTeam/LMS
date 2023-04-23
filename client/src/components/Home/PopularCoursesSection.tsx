@@ -19,7 +19,7 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories })
         <p className="text-text text-md-regular">10,000+ unique online course list designs</p>
       </div>
 
-      <div className="flex items-center gap-4 mb-[60px] text-text text-md-regular">
+      <div className="hidden items-center gap-4 mb-[60px] text-text text-md-regular lg:flex">
         <button
           onClick={(): void => {
             delete router.query.category;

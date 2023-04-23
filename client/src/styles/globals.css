@@ -6,6 +6,12 @@
   @apply max-w-[1390px] mx-auto;
 }
 
+@media screen and (max-width: 1400px) {
+  .container {
+    @apply max-w-[1390px] mx-auto px-5;
+  }
+}
+
 /* Slider Navigation 1 */
 .slider-style-1-prev {
   @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
