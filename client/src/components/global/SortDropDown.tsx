@@ -27,13 +27,16 @@ const SortDropDown: FC = () => {
 
   return (
     <div className="relative">
-      <button
-        onClick={dropSortHandler}
-        className="bg-bg-4 whitespace-nowrap rounded-lg py-4 px-[15px] flex items-center justify-between text-text text-sm-regular w-[25ch]"
-      >
-        Эрэмбэ: {sort.title}
-        <BsChevronDown className={`duration-300 ${dropSort ? "rotate-[-180deg]" : "rotate-0"}`} />
-      </button>
+      <div className="flex items-center gap-5">
+        <span className="text-head text-sm-medium">Эрэмбэ: </span>
+        <button
+          onClick={dropSortHandler}
+          className="bg-bg-4 whitespace-nowrap rounded-lg py-4 px-[15px] flex items-center justify-between text-text text-sm-regular w-[25ch]"
+        >
+          {sort.title}
+          <BsChevronDown className={`duration-300 ${dropSort ? "rotate-[-180deg]" : "rotate-0"}`} />
+        </button>
+      </div>
       <div
         className={`${
           dropSort ? "opacity-100" : "opacity-0 pointer-events-none"
