@@ -13,6 +13,7 @@ import { ICheckBoxFilterItem, IRadioButtonFilterItem } from "@/interfaces/compon
 import RatingStar from "@/components/global/RatingStar";
 import SortDropDown from "@/components/global/SortDropDown";
 import { IUser } from "@/interfaces/user";
+import Pagination from "@/components/global/Pagination";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
@@ -37,6 +38,8 @@ interface CoursesPageProps {
       count: number;
     }[];
   };
+  totalPages: number;
+  totalCourses: number;
 }
 
 export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
@@ -48,11 +51,13 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
     price = "0-10000000",
     level = "",
     length = "0-10000",
+    page = "1",
+    pageSize = "12",
   } = query;
   const [resCategory, resCourses, instructorRes, levelRes, courseCountRes] = await axios.all([
     axios.get("http://localhost:5000/api/courses/categories"),
     axios.get(
-      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}`
+      `http://localhost:5000/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}&page=${page}&pageSize=${pageSize}`
     ),
     axios.get(`http://localhost:5000/api/users/instructors`),
     axios.get(`http://localhost:5000/api/courses/levels`),
@@ -65,6 +70,8 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
       instructors: instructorRes.data.body,
       levels: levelRes.data.body,
       courseCount: courseCountRes.data,
+      totalPages: resCourses.data.totalPages,
+      totalCourses: resCourses.data.totalCourses,
     },
   };
 };
@@ -75,6 +82,8 @@ const CoursesPage: FC<CoursesPageProps> = ({
   instructors,
   levels,
   courseCount,
+  totalPages,
+  totalCourses,
 }) => {
   const categoryItems: ICheckBoxFilterItem[] = categories.map((category) => ({
     title: category.name,
@@ -130,16 +139,22 @@ const CoursesPage: FC<CoursesPageProps> = ({
           <div className="col-span-3">
             <div className="flex justify-between items-center mb-[22px]">
               <p className="text-text text-sm-regular">
-                Нийт <span className="text-head text-sm-medium">{courses.length} </span>
+                Нийт <span className="text-head text-sm-medium">{totalCourses} </span>
                 үр дүн
               </p>
               <SortDropDown />
             </div>
-            <div className="grid grid-cols-3 gap-[30px] mb-[77px]">
-              {courses.map((course) => (
-                <CourseCard course={course} key={course._id} />
-              ))}
-            </div>
+            {totalCourses > 0 && (
+              <div className="grid grid-cols-3 gap-[30px] mb-[77px]">
+                {courses.map((course) => (
+                  <CourseCard course={course} key={course._id} />
+                ))}
+              </div>
+            )}
+            {totalCourses === 0 && (
+              <p className="text-center mt-10 text-text text-md-medium">Илэрц олдсонгүй</p>
+            )}
+            {totalCourses > 0 && <Pagination totalPage={totalPages} />}
           </div>
           <div className="flex flex-col gap-[30px]">
             <CheckBoxFilter items={categoryItems} title={{ name: "Ангилал", slug: "category" }} />

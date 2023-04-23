@@ -66,6 +66,8 @@ interface CoursesQueries {
   price?: string;
   level?: string;
   length?: string;
+  pageSize?: string;
+  page?: string;
 }
 
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
@@ -81,6 +83,8 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
     price = "0-10000000",
     level,
     length = "0-10000",
+    pageSize = "12",
+    page = "1",
   } = req.query;
 
   try {
@@ -140,6 +144,8 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
     })
       .sort(order)
+      .limit(Number(pageSize))
+      .skip((Number(page) - 1) * Number(pageSize))
       .populate([
         "instructor",
         "level",
@@ -148,7 +154,25 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
         { path: "sections", populate: { path: "lessons" } },
       ]);
 
-    res.status(200).json({ message: "Амжилттай", body: courses });
+    const totalCourses = await CourseModel.find({
+      category: { $in: categories },
+      avgRating: { $gte: Number(rating) },
+      instructor: { $in: searchInstructors },
+      price: { $gte: minPrice, $lte: maxPrice },
+      level: { $in: levels },
+      "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
+    }).count();
+
+    const totalPages = Math.ceil(totalCourses / Number(pageSize));
+
+    res.status(200).json({
+      message: "Амжилттай",
+      page: Number(page),
+      pageSize: Number(pageSize),
+      totalCourses,
+      totalPages,
+      body: courses,
+    });
   } catch (error) {
     console.log(error);
     next(error);
