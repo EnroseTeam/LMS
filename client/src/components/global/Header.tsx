@@ -7,7 +7,7 @@ import mainLogo from "@/assets/logo-main.svg";
 import { RiMenu4Fill } from "react-icons/ri";
 import { FiShoppingBag, FiSearch } from "react-icons/fi";
 
-import DropdownLarge from "./DropdownLarge";
+import NavbarDropdownLarge from "./NavbarDropdownLarge";
 import NavbarDroprown from "./NavbarDroprown";
 
 const Header: FC = () => (
@@ -20,7 +20,7 @@ const Header: FC = () => (
         <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer">
           <RiMenu4Fill size={24} />
           <span>Explore</span>
-          <DropdownLarge />
+          <NavbarDropdownLarge />
         </div>
       </div>
       <nav className="hidden lg:block">
