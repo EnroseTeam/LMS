@@ -77,7 +77,10 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => (
                       </div>
                       <h3 className="text-text text-md-regular">{lesson.name}</h3>
                     </span>
-                    <p className="text-text text-md-regular underline">{lesson.length}</p>
+                    <p className="text-text text-md-regular underline">
+                      {lesson.length.hour > 0 && `${lesson.length.hour} цаг`}
+                      {lesson.length.minute > 0 && `${lesson.length.minute} минут`}
+                    </p>
                   </Link>
                 ))}
               </div>

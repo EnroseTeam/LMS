@@ -72,7 +72,11 @@ export interface ICourseLesson {
   name: string;
   description: string;
   video?: string;
-  length: string;
+  length: {
+    hour: number;
+    minute: number;
+    second: number;
+  };
   type: string;
   section: ICourseSection;
   createdAt: string;

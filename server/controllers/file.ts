@@ -1,13 +1,55 @@
-import { RequestHandler } from 'express';
-import cloudinary from '../configs/cloudinary';
+import { RequestHandler } from "express";
+import { s3UploadImage, s3UploadSvg, s3UploadVideo } from "../services/s3Service";
+import createHttpError from "http-errors";
 
-export const uploadFile: RequestHandler = async (req, res, next) => {
+export const uploadImage: RequestHandler = async (req, res, next) => {
   try {
-    const file = req.file as Express.Multer.File;
-    const upload = await cloudinary.uploader.upload(file.path);
-    res.status(201).json({ message: 'Амжилттай', body: upload.secure_url });
+    if (!req.file) throw createHttpError(400, "Файл байхгүй байна!");
+    const file: Express.Multer.File = req.file;
+
+    if (file.mimetype.includes("video") || file.mimetype.includes("svg+xml"))
+      throw createHttpError(
+        400,
+        "Файлын өргөтгөл буруу байна. Зөвхөн зурган файл хуулах боломжтой."
+      );
+
+    const result = await s3UploadImage(file);
+    res.status(201).json({ message: "Зураг амжилттай хуулагдлаа.", body: result.Location });
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+};
+
+export const uploadVideo: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.file) throw createHttpError(400, "Файл байхгүй байна!");
+    const file: Express.Multer.File = req.file;
+
+    if (!file.mimetype.includes("video"))
+      throw createHttpError(
+        400,
+        "Файлын өргөтгөл буруу байна. Зөвхөн видео файл хуулах боломжтой."
+      );
+
+    const result = await s3UploadVideo(file);
+    res.status(201).json({ message: "Бичлэг амжилттай хуулагдлаа.", body: result.Location });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const uploadSvg: RequestHandler = async (req, res, next) => {
+  try {
+    if (!req.file) throw createHttpError(400, "Файл байхгүй байна!");
+    const file: Express.Multer.File = req.file;
+
+    if (!file.mimetype.includes("svg+xml"))
+      throw createHttpError(400, "Файлын өргөтгөл буруу байна. Зөвхөн SVG файл хуулах боломжтой.");
+
+    const result = await s3UploadSvg(file);
+    res.status(201).json({ message: "SVG файл амжилттай хуулагдлаа.", body: result.Location });
+  } catch (error) {
     next(error);
   }
 };
