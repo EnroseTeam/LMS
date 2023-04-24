@@ -37,7 +37,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, av
           <h3 className="text-head text-[60px] font-medium leading-[70px] mb-2">
             {avgRating.toFixed(1)}
           </h3>
-          <RatingStar count={avgRating} />
+          <RatingStar count={5} rating={avgRating} />
           <p className="text-text text-md-regular mt-[10px]">Course Rating</p>
         </div>
 
@@ -52,7 +52,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, av
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <RatingStar count={5 - index} />
+                <RatingStar count={5} rating={5 - index} gap={5} />
                 <p className="text-head text-md-regular leading-[40px] w-[4ch]">{percentage}%</p>
               </div>
             );

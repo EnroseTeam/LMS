@@ -72,13 +72,15 @@ const HeroSection: FC = () => (
           </div>
 
           {/* Hero Picture */}
-          <Image
-            src="https://res.cloudinary.com/dvlgyc6gs/image/upload/v1682238571/kggh1orkww0rmvvkc53q.jpg"
-            alt="hero"
-            width={920}
-            height={920}
-            className="aspect-square object-cover"
-          />
+          <div className="w-[630px] h-[630px]">
+            <Image
+              src="https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/YcQVaabWSum6FrWkPTJlE-hero-picture.jpg"
+              alt="hero"
+              width={800}
+              height={800}
+              className="aspect-square object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -54,12 +54,18 @@ const Header: FC = () => (
         <button className="text-xl hover:opacity-70 duration-300">
           <FiShoppingBag />
         </button>
-        <button className="text-white text-md-regular hover:text-white/70 duration-300">
+        <Link
+          href="/auth/login"
+          className="text-white text-md-regular hover:text-white/70 duration-300"
+        >
           Нэвтрэх
-        </button>
-        <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
+        </Link>
+        <Link
+          href="/auth/register"
+          className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300"
+        >
           Бүртгүүлэх
-        </button>
+        </Link>
       </div>
     </div>
   </div>

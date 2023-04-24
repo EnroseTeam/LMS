@@ -4,9 +4,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        pathname: '/dvlgyc6gs/**',
+        protocol: "https",
+        hostname: "team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com",
+        pathname: "/images/**",
       },
     ],
   },
