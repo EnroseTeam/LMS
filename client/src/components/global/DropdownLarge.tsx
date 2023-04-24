@@ -1,49 +1,150 @@
 import Link from "next/link";
 import React, { FC } from "react";
 
-interface SubLinks {
-  name: string;
-  link: string;
-}
+const DropdownLarge: FC = () => (
+  <div className="absolute top-11 left-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto whitespace-nowrap">
+    <div className="px-10">
+      <div className="w-[10px] h-[10px] rotate-45 bg-white" />
+    </div>
+    <div className="w-screen fixed left-0 right-0 -mt-[5px]">
+      <div className="grid grid-cols-6 gap-[60px] bg-white w-[1399px] mx-auto rounded-lg shadow-shadow-4 p-[30px] text-head">
+        <div className="text-left">
+          <h2 className="mb-5 text-lg-medium">Course List Layouts</h2>
+          <ul className="text-md-regular leading-[35px]">
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+          </ul>
+        </div>
 
-interface DropDownLargeItem {
-  Head: string;
-  sublinks: SubLinks[];
-}
+        <div className="text-left">
+          <h2 className="mb-5 text-lg-medium">Course List Layouts</h2>
+          <ul className="text-md-regular leading-[35px]">
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+          </ul>
+        </div>
 
-interface DropdownLargeProps {
-  items: DropDownLargeItem[];
-}
+        <div className="text-left">
+          <h2 className="mb-5 text-lg-medium">Course List Layouts</h2>
+          <ul className="text-md-regular leading-[35px]">
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+          </ul>
+        </div>
 
-const DropdownLarge: FC<DropdownLargeProps> = ({ items }) => (
-  <>
-    <div>
-      <div className="absolute top-15 hidden group-hover:block hover:block w-[1390px] left-[50%] -translate-x-[50%] rounded-lg">
-        {/* <div className="py-3">
-          <div className="w-4 h-4 left-3 absolute mt-1 bg-white rotate-45" />
-        </div> */}
-        <ul className="bg-white/95 text-head p-3.5 grid grid-cols-5 gap-10 mt-10">
-          {items.map((mysublinks, index) => (
-            <div key={`dropdown-${index}`}>
-              <h1 className="hover:text-head duration-300 text-left pb-5 uppercase">
-                {mysublinks.Head}
-              </h1>
-              {mysublinks.sublinks.map((slink, index) => (
-                <li
-                  className="hover:text-head duration-300 text-left pb-3"
-                  key={`mysublinks-${index}`}
-                >
-                  <Link href={slink.link} className="hover:text-head">
-                    {slink.name}
-                  </Link>
-                </li>
-              ))}
-            </div>
-          ))}
-        </ul>
+        <div className="text-left">
+          <h2 className="mb-5 text-lg-medium">Course List Layouts</h2>
+          <ul className="text-md-regular leading-[35px]">
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="text-left">
+          <h2 className="mb-5 text-lg-medium">Course List Layouts</h2>
+          <ul className="text-md-regular leading-[35px]">
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+            <li className="hover:text-color-1 hover:underline duration-300">
+              <Link href="/">Course List</Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </>
+  </div>
 );
 
 export default DropdownLarge;
