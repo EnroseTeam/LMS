@@ -1,7 +1,8 @@
-import UserModel from '../models/user';
-import createHttpError from 'http-errors';
-import { RequestHandler } from 'express';
-import bcrypt from 'bcrypt';
+import UserModel from "../models/user";
+import createHttpError from "http-errors";
+import { RequestHandler } from "express";
+import bcrypt from "bcrypt";
+import UserRoleModel from "../models/userRole";
 
 interface SignUpBody {
   firstName?: string;
@@ -28,80 +29,89 @@ interface LogInBody {
 }
 
 //CREATE AN USER
-export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = async (
-  req,
-  res,
-  next
-) => {
-  const {
-    firstName,
-    lastName,
-    birthDate,
-    email,
-    phone,
-    address,
-    avatar,
-    password: rawPassword,
-    role,
-    socialAccounts,
-    bio,
-  } = req.body;
+export const signUp: RequestHandler<
+  unknown,
+  unknown,
+  SignUpBody,
+  unknown
+> = async (req, res, next) => {
+  const { firstName, lastName, email, phone, password: rawPassword } = req.body;
   try {
-    if (!firstName) throw createHttpError(400, 'Хэрэглэгчийн нэр заавал шаардлагатай.');
-    if (!lastName) throw createHttpError(400, 'Хэрэглэгчийн оврг заавал шаардлагатай.');
-    if (!birthDate) throw createHttpError(400, 'Хэрэглэгчийн төрсөн огноо заавал шаардлагатай.');
-    if (!email) throw createHttpError(400, 'Хэрэглэгчийн и-мэйл заавал шаардлагатай.');
-    if (!phone) throw createHttpError(400, 'Хэрэглэгчийн утас заавал шаардлагатай.');
-    if (!rawPassword) throw createHttpError(400, 'Хэрэглэгчийн нууц үг заавал шаардлагатай.');
-    if (!role) throw createHttpError(400, 'Хэрэглэгчийн Role заавал шаардлагатай.');
+    if (!firstName)
+      throw createHttpError(400, "Хэрэглэгчийн нэр заавал шаардлагатай.");
+    if (!lastName)
+      throw createHttpError(400, "Хэрэглэгчийн оврг заавал шаардлагатай.");
+    if (!email)
+      throw createHttpError(400, "Хэрэглэгчийн и-мэйл заавал шаардлагатай.");
+    if (!phone)
+      throw createHttpError(400, "Хэрэглэгчийн утас заавал шаардлагатай.");
+    if (!rawPassword)
+      throw createHttpError(400, "Хэрэглэгчийн нууц үг заавал шаардлагатай.");
 
     const isEmailExist = await UserModel.findOne({ email });
-    if (isEmailExist) throw createHttpError(400, `${email} хаягтай хэрэглэгч бүртгэлтэй байна.`);
+    if (isEmailExist)
+      throw createHttpError(
+        400,
+        `${email} хаягтай хэрэглэгч бүртгэлтэй байна.`
+      );
 
     const isPhoneExist = await UserModel.findOne({ phone });
-    if (isPhoneExist) throw createHttpError(400, `${phone} утастай хэрэглэгч бүртгэлтэй байна.`);
+    if (isPhoneExist)
+      throw createHttpError(
+        400,
+        `${phone} утастай хэрэглэгч бүртгэлтэй байна.`
+      );
 
     const hashedPassword = await bcrypt.hash(rawPassword, 12);
+
+    const studentRole = await UserRoleModel.findOne({ slug: "student" });
 
     const newUser = await UserModel.create({
       firstName,
       lastName,
-      birthDate,
       email,
       phone,
-      address,
-      avatar,
       password: hashedPassword,
-      role,
-      socialAccounts,
-      bio,
+      role: studentRole?._id,
     });
 
-    res.status(201).json({ message: 'Амжилттай бүртгэгдлээ', body: newUser });
+    req.session.userId = newUser._id;
+
+    res.status(201).json({ message: "Амжилттай бүртгэгдлээ", body: newUser });
   } catch (error) {
     console.log(error);
     next(error);
   }
 };
 
-export const logIn: RequestHandler<unknown, unknown, LogInBody, unknown> = async (
-  req,
-  res,
-  next
-) => {
+export const logIn: RequestHandler<
+  unknown,
+  unknown,
+  LogInBody,
+  unknown
+> = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    if (!email) throw createHttpError(400, 'Нэвтрэхийн тулд и-мэйл заавал шаардлагатай.');
-    if (!password) throw createHttpError(400, 'Нэвтрэхийн тулд нууц үг заавал шаардлагатай.');
+    if (!email)
+      throw createHttpError(400, "Нэвтрэхийн тулд и-мэйл заавал шаардлагатай.");
+    if (!password)
+      throw createHttpError(
+        400,
+        "Нэвтрэхийн тулд нууц үг заавал шаардлагатай."
+      );
 
-    const user = await UserModel.findOne({ email }).select('+password');
-    if (!user) throw createHttpError(400, 'Таны оруулсан мэдээлэл буруу байна.');
+    const user = await UserModel.findOne({ email }).select("+password");
+    if (!user)
+      throw createHttpError(400, "Таны оруулсан мэдээлэл буруу байна.");
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) throw createHttpError(400, 'Таны оруулсан мэдээлэл буруу байна.');
+    if (!isPasswordMatch)
+      throw createHttpError(400, "Таны оруулсан мэдээлэл буруу байна.");
 
-    res.status(200).json({ message: 'Амжилттай нэвтэрлээ', body: user });
+    req.session.userId = user._id;
+
+    res.status(200).json({ message: "Амжилттай нэвтэрлээ", body: user });
   } catch (error) {
     next(error);
   }

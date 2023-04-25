@@ -13,7 +13,7 @@ export interface IUser extends Document<Types.ObjectId> {
   firstName: string;
   lastName: string;
   fullName: string;
-  birthDate: Date;
+  birthDate?: Date;
   email: string;
   phone: string;
   address?: UserAddress;
@@ -44,7 +44,7 @@ const UserSchema = new Schema<IUser>(
         return this.lastName + " " + this.firstName;
       },
     },
-    birthDate: { type: Date, required: true },
+    birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
     address: {
@@ -57,7 +57,7 @@ const UserSchema = new Schema<IUser>(
     avatar: {
       type: String,
       default:
-        "https://res.cloudinary.com/dvlgyc6gs/image/upload/v1681304314/r19akcxpmflykf6upmsc.png",
+        "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/T_Rpl0_PKsXMrHoPphE91-default-profile.jpg",
     },
     password: { type: String, required: true, select: false },
     role: {

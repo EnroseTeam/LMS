@@ -1,6 +1,10 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import createHttpError, { isHttpError } from "http-errors";
+import { MulterError } from "multer";
+import session from "express-session";
+
+import env from "./configs/validateEnv";
 
 import fileRoutes from "./routes/file";
 import courseLevelRoutes from "./routes/courseLevel";
@@ -12,12 +16,26 @@ import courseReviewRoutes from "./routes/courseReview";
 import courseRoutes from "./routes/course";
 import authRoutes from "./routes/auth";
 import courseSectionRoutes from "./routes/courseSection";
-import { MulterError } from "multer";
+import MongoStore from "connect-mongo";
 
 const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(
+  session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60 * 60 * 1000,
+    },
+    rolling: true,
+    store: MongoStore.create({
+      mongoUrl: env.MONGO_CONNECTION_STRING,
+    }),
+  })
+);
 
 // Routes
 app.use("/api/files", fileRoutes);
@@ -47,9 +65,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 
   if (error instanceof MulterError) {
     statusCode = 400;
-    if (error.code === "LIMIT_UNEXPECTED_FILE") errorMessage = "Буруу өргөтгөлтэй файл байна.";
+    if (error.code === "LIMIT_UNEXPECTED_FILE")
+      errorMessage = "Буруу өргөтгөлтэй файл байна.";
     if (error.code === "LIMIT_FILE_SIZE")
-      errorMessage = "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
+      errorMessage =
+        "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
   }
 
   res.status(statusCode).json({ error: errorMessage });
