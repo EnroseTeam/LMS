@@ -9,4 +9,5 @@ export default cleanEnv(process.env, {
   AWS_SECRET_ACCESS_KEY: str(),
   AWS_REGION: str(),
   AWS_BUCKET_NAME: str(),
+  SESSION_SECRET: str(),
 });
