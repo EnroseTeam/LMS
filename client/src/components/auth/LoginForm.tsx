@@ -60,7 +60,10 @@ const LoginForm: FC = () => (
         </Link>
       </div>
 
-      <button className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 hover:bg-color-6/70 duration-300">
+      <button
+        type="submit"
+        className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 hover:bg-color-6/70 duration-300"
+      >
         Нэвтрэх
       </button>
 
