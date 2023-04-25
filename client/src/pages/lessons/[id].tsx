@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({ pa
 const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => (
   <>
     <HeaderAlternate title={lesson.name} courseId={lesson.section.course} />
-    <div className="container grid grid-cols-4 gap-[30px] mt-[30px]">
+    <main className="container grid grid-cols-4 gap-[30px] mt-[30px]">
       <div className="col-span-3">
         <video className="w-full rounded-lg mb-[41px]" controls>
           <source src={lesson.video} type="video/mp4" />
@@ -88,7 +88,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => (
           />
         ))}
       </div>
-    </div>
+    </main>
     <FooterAlternate />
   </>
 );

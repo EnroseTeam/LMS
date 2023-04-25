@@ -2,6 +2,7 @@ import { FC, useState, useEffect, useCallback } from "react";
 import RatingStar from "../global/RatingStar";
 import ReviewCard from "../Reviews/ReviewCard";
 import { ICourseReview } from "@/interfaces/courses";
+import ReviewForm from "../Reviews/ReviewForm";
 
 interface SinglePageReviewContentProps {
   reviews: ICourseReview[];
@@ -31,14 +32,14 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, av
 
   return (
     <div>
-      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Student Feedback</h1>
+      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Сурагчдын үнэлгээ</h1>
       <div className="flex items-center gap-[10px] mb-[60px]">
         <div className="bg-bg-3 rounded-lg py-[50px] px-[94px] grid place-items-center">
           <h3 className="text-head text-[60px] font-medium leading-[70px] mb-2">
             {avgRating.toFixed(1)}
           </h3>
           <RatingStar count={5} rating={avgRating} />
-          <p className="text-text text-md-regular mt-[10px]">Course Rating</p>
+          <p className="text-text text-md-regular mt-[10px]">Дундаж үнэлгээ</p>
         </div>
 
         <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right">
@@ -59,8 +60,8 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, av
           })}
         </div>
       </div>
-      <div>
-        <h2 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Reviews</h2>
+      <div className="mb-[59px]">
+        <h2 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Сэтгэгдлүүд</h2>
         <div className="flex flex-col gap-[30px] mb-[30px]">
           {intitalReviews.map((review) => (
             <ReviewCard key={review._id} review={review} />
@@ -77,11 +78,12 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ reviews, av
               }
               className="underline text-color-1 text-md-medium mb-[60px] hover:text-color-1/70 duration-300"
             >
-              {intitalReviews.length > 2 ? "Hide reviews" : "View all reviews"}
+              {intitalReviews.length > 2 ? "Хураангуй" : "Дэлгэрэнгүй"}
             </button>
           </div>
         )}
       </div>
+      <ReviewForm />
     </div>
   );
 };
