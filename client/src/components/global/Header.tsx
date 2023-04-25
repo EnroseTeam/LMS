@@ -61,6 +61,7 @@ const Header: FC = () => {
           <button className="text-xl hover:opacity-70 duration-300" onClick={showSearchBar}>
             <FiSearch />
           </button>
+
           <button
             onClick={(): void => {
               setOpenCartShow(!openCartShow);
@@ -68,8 +69,9 @@ const Header: FC = () => {
             className="text-xl hover:text-white/70 duration-300 relative"
           >
             <FiShoppingBag />
-            <OpenCart />
+            <OpenCart openCartShow={openCartShow} setOpenCartShow={setOpenCartShow} />
           </button>
+
           <Link
             href="/auth/login"
             className="text-white text-md-regular hover:text-white/70 duration-300"
