@@ -69,7 +69,7 @@ const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) =>
                 className="w-[15px] h-[15px] border-2 border-2-icon text-black"
                 name={title.slug}
               />
-              <label htmlFor={`button-${index}`} className="select-none w-[20ch]">
+              <label htmlFor={`button-${index}`} className="select-none w-[20ch] whitespace-nowrap">
                 {item.content}
               </label>
             </div>

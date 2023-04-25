@@ -7,17 +7,17 @@ import Image from "next/image";
 
 interface OpenCartProps {
   openCartShow: boolean;
-  setOpenCartShow: (state: boolean) => void;
+  closeOpenCart: () => void;
 }
 
-const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => (
+const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
   <div
     className={`absolute -right-7 top-7  ${
       openCartShow ? "opacity-100" : "opacity-0 pointer-events-none"
     } duration-300`}
   >
     <div className="bg-white w-[10px] h-[10px] rotate-45 ml-[367px]" />
-    <div className="bg-white rounded-lg shadow-shadow-4 w-[410px] -mt-[6px] text-head cursor-default">
+    <div className="bg-white rounded-lg shadow-shadow-4 w-[410px] -mt-[6px] text-head">
       <div className="flex flex-col gap-5 px-[30px] pt-[30px] mb-[30px]">
         <div className="flex items-center gap-[10px] relative">
           <button className="text-md text-color-1 absolute top-0 right-0">
@@ -45,12 +45,7 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => (
         </div>
 
         <div className="flex items-center gap-[10px] relative">
-          <button
-            onClick={(): void => {
-              setOpenCartShow(false);
-            }}
-            className="text-md text-color-1 absolute top-0 right-0"
-          >
+          <button onClick={closeOpenCart} className="text-md text-color-1 absolute top-0 right-0">
             <AiOutlineClose />
           </button>
           <div className="w-20 h-20 rounded-lg overflow-hidden">
