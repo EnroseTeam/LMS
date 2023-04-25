@@ -3,52 +3,80 @@ import { FC } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
 const LoginForm: FC = () => (
-  <div className="py-[50px] px-[50px] bg-white">
-    <h1 className="text-head text-3xl-bold ">Login</h1>
-    <p className="text-head text-base-medium pt-[30px] pb-[9px]">
-      Username Or Email
-    </p>
-    <input
-      type="text"
-      placeholder="Ali"
-      className="pl-3 border border-spacing-1 w-[420px] h-[55px] pt-[9px] rounded-xl"
-    />
-    <p className="text-head text-base-medium pt-[30px] pb-[9px]">Password</p>
-    <input
-      type="password"
-      placeholder="********************** "
-      className="pl-3 border border-spacing-1 w-[420px] h-[55px] pt-[9px] rounded-xl"
-    />
-
-    <div className="flex items-center justify-between mt-[20px] pb-5">
-      <div className="flex items-center ">
-        <input type="checkbox" className="border border-2 mr-3" />
-        <p>Remember me</p>
+  <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard">
+    <div className="mb-[30px]">
+      <h1 className="text-head text-[30px] font-bold leading-9 mb-2">
+        Нэвтрэх
+      </h1>
+      <p className="text-text text-md-regular">
+        Манай сайтад бүртгэлгүй юу?{" "}
+        <Link href="/auth/register" className="text-color-1">
+          Үнэгүй бүртгүүлэх
+        </Link>
+      </p>
+    </div>
+    <form className="text-head">
+      <div className="mb-5 w-full">
+        <label className="block mb-2 text-lg-medium" htmlFor="email">
+          И-мэйл
+        </label>
+        <input
+          type="email"
+          id="email"
+          className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+          placeholder="И-мэйл"
+        />
       </div>
 
-      <Link href="/" className="text-color-1">
-        Forgot your password?
-      </Link>
-    </div>
+      <div className="mb-5 w-full">
+        <label className="block mb-2 text-lg-medium" htmlFor="password">
+          Нууц үг
+        </label>
+        <input
+          type="password"
+          id="password"
+          className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+          placeholder="Нууц үг"
+        />
+      </div>
 
-    <button className="bg-color-6 w-[420px] h-[60px] py-5 rounded-lg text-head text-base-medium">
-      Login
-    </button>
-    <p className="text-center py-5">Or sign in using</p>
-    <div className="flex gap-5">
-      <button className="flex flex-row items-center justify-center border-2 rounded-md border-[#1967D2]  w-[200px] h-[45px] text-head">
-        <p className="w-[2px] h-[15.6px] pr-[9px]">
+      <div className="flex items-center justify-between text-sm-regular mb-5">
+        <div className="flex items-center gap-[10px]">
+          <input
+            type="checkbox"
+            id="remember"
+            className="w-[15px] h-[15px] border-2 border-icon"
+          />
+          <label className="text-text" htmlFor="remember">
+            Намайг санах
+          </label>
+        </div>
+
+        <Link
+          className="text-color-1 underline hover:text-color-1/70 duration-300"
+          href="/"
+        >
+          Нууц үгээ мартсан уу?
+        </Link>
+      </div>
+
+      <button className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 hover:bg-color-6/70 duration-300">
+        Нэвтрэх
+      </button>
+
+      <p className="text-center text-md-medium mb-5">Эсвэл</p>
+
+      <div className="flex items-center gap-5">
+        <button className="flex items-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300">
           <FaFacebookF />
-        </p>
-        <p className="pl-[9px]">Log In via Facebook</p>
-      </button>
-      <button className="flex flex-row items-center justify-center border-2 rounded-md border-[#D93025] text-[#D93025] w-[200px] h-[45px] text-head">
-        <p className="w-[2px] h-[15.6px] pr-[9px]">
+          Facebook-ээр нэвтрэх
+        </button>
+        <button className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300">
           <FaGoogle />
-        </p>
-        <p className="pl-[9px]">Log In via Google+</p>
-      </button>
-    </div>
+          Google-ээр нэвтрэх
+        </button>
+      </div>
+    </form>
   </div>
 );
 

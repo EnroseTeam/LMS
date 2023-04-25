@@ -29,7 +29,7 @@ const Header: FC = () => {
   };
 
   return (
-    <div className="w-full bg-head text-white sticky top-0 z-[50]">
+    <header className="w-full bg-head text-white sticky top-0 z-[50]">
       <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
         <div className="flex items-center gap-7">
           <Link href="/">
@@ -96,7 +96,7 @@ const Header: FC = () => {
         </div>
       </div>
       <SearchBar searchBarShow={searchBarShow} setSearchBarShow={setSearchBarShow} />
-    </div>
+    </header>
   );
 };
 

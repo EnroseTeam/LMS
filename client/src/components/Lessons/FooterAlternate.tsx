@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { FC } from 'react';
+import Link from "next/link";
+import { FC } from "react";
 
 const FooterAlternate: FC = () => (
-  <div className="border-t border-t-border-1 py-12">
+  <footer className="border-t border-t-border-1 py-12">
     <div className="container flex items-center justify-between">
       <p className="text-text text-xs-regular">© 2023 IntelliSense. All Right Reserved.</p>
       <ul className="flex items-center gap-[10px] text-text text-xs-regular">
@@ -33,7 +33,7 @@ const FooterAlternate: FC = () => (
         </li>
       </ul>
     </div>
-  </div>
+  </footer>
 );
 
 export default FooterAlternate;
