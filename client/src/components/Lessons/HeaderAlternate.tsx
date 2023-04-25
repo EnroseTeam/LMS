@@ -10,7 +10,7 @@ interface HeaderAlternateProps {
 }
 
 const HeaderAlternate: FC<HeaderAlternateProps> = ({ title, courseId }) => (
-  <div className="bg-head text-white py-5 sticky top-0 z-[999]">
+  <header className="bg-head text-white py-5 sticky top-0 z-[999]">
     <div className="container flex items-center justify-between">
       <Link href="/">
         <Image alt="Logo" src={logo} />
@@ -23,7 +23,7 @@ const HeaderAlternate: FC<HeaderAlternateProps> = ({ title, courseId }) => (
         Сургалтруу буцах
       </Link>
     </div>
-  </div>
+  </header>
 );
 
 export default HeaderAlternate;
