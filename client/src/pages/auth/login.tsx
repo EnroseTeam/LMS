@@ -3,10 +3,10 @@ import { FC } from "react";
 import AuthLayout from "@/components/auth/AuthLayout";
 import LoginForm from "@/components/auth/LoginForm";
 
-const Login: FC = () => (
+const LoginPage: FC = () => (
   <AuthLayout>
     <LoginForm />
   </AuthLayout>
 );
 
-export default Login;
+export default LoginPage;
