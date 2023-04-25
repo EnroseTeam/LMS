@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { FiShoppingBag, FiSearch } from "react-icons/fi";
 
 import DropdownLarge from "./DropdownLarge";
 import NavbarDroprown from "./NavbarDroprown";
+import SearchBar from "../Search/SearchBar";
 
 const links = [
   {
@@ -95,48 +96,63 @@ const navbarLinks = [
   { name: "Contact" },
 ];
 
-const Header: FC = () => (
-  <div className="w-full bg-head text-white sticky top-0 z-[50]">
-    <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
-      <div className="flex items-center gap-7">
-        <Link href="/">
-          <Image src={mainLogo} alt="IntelliSense" />
-        </Link>
-        <button className="text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group">
-          <RiMenu4Fill size={24} />
-          <span>Explore</span>
-          <DropdownLarge items={links} />
-        </button>
+const Header: FC = () => {
+  const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
+
+  const showSearchBar = (): void => {
+    setSearchBarShow(true);
+  };
+
+  return (
+    <div className="w-full bg-head text-white sticky top-0 z-[50]">
+      <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
+        <div className="flex items-center gap-7">
+          <Link href="/">
+            <Image src={mainLogo} alt="IntelliSense" />
+          </Link>
+          <button className="text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group">
+            <RiMenu4Fill size={24} />
+            <span>Explore</span>
+            <DropdownLarge items={links} />
+          </button>
+        </div>
+        <nav className="">
+          <ul className="flex items-center gap-10 text-md-regular">
+            {navbarLinks.map((link, index) => (
+              <li
+                key={`navbar-menu-item-${index}`}
+                className="hover:text-white/70 duration-300 group"
+              >
+                {link.name}
+                {link.submenu && <NavbarDroprown links={link.sublinks} />}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="flex items-center gap-7">
+          <button
+            className="text-xl hover:opacity-70 duration-300"
+            onClick={showSearchBar}
+          >
+            <FiSearch />
+          </button>
+          <button className="text-xl hover:opacity-70 duration-300">
+            <FiShoppingBag />
+          </button>
+          <button className="text-white text-md-regular hover:text-white/70 duration-300">
+            Log In
+          </button>
+          <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
+            Sign Up
+          </button>
+        </div>
       </div>
-      <nav className="">
-        <ul className="flex items-center gap-10 text-md-regular">
-          {navbarLinks.map((link, index) => (
-            <li
-              key={`navbar-menu-item-${index}`}
-              className="hover:text-white/70 duration-300 group"
-            >
-              {link.name}
-              {link.submenu && <NavbarDroprown links={link.sublinks} />}
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="flex items-center gap-7">
-        <button className="text-xl hover:opacity-70 duration-300">
-          <FiSearch />
-        </button>
-        <button className="text-xl hover:opacity-70 duration-300">
-          <FiShoppingBag />
-        </button>
-        <button className="text-white text-md-regular hover:text-white/70 duration-300">
-          Log In
-        </button>
-        <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
-          Sign Up
-        </button>
-      </div>
+      <SearchBar
+        searchBarShow={searchBarShow}
+        setSearchBarShow={setSearchBarShow}
+      />
     </div>
-  </div>
-);
+  );
+};
 
 export default Header;
