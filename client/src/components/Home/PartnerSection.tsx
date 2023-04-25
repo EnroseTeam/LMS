@@ -1,37 +1,36 @@
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import "swiper/css";
 
-import amazon from '@/assets/amazon-4.svg';
-import amd from '@/assets/amd-logo-1-2.svg';
-import cisco from '@/assets/cisco-2-1-2.svg';
-import dropcam from '@/assets/dropcam.svg';
-import logitech from '@/assets/logitech-2-1-3-1.svg';
-import spotify from '@/assets/Spotify-2-2.svg';
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import amazon from "@/assets/amazon-4.svg";
+import amd from "@/assets/amd-logo-1-2.svg";
+import cisco from "@/assets/cisco-2-1-2.svg";
+import dropcam from "@/assets/dropcam.svg";
+import logitech from "@/assets/logitech-2-1-3-1.svg";
+import spotify from "@/assets/Spotify-2-2.svg";
+
+const partners = [amazon, amd, cisco, dropcam, logitech, spotify];
 
 const PartnerSection: FC = () => (
-  <div className="container pt-11 pb-[130px]">
-    <p className="text-md-regular mb-[52.5px] text-center text-head">Trusted by the world’s best</p>
-    <div className="flex items-center gap-[150px] justify-between">
-      <Link href="/">
-        <Image src={amazon} alt="" />
-      </Link>
-      <Link href="/">
-        <Image src={amd} alt="" />
-      </Link>
-      <Link href="/">
-        <Image src={cisco} alt="" />
-      </Link>
-      <Link href="/">
-        <Image src={dropcam} alt="" />
-      </Link>
-      <Link href="/">
-        <Image src={logitech} alt="" />
-      </Link>
-      <Link href="/">
-        <Image src={spotify} alt="" />
-      </Link>
-    </div>
+  <div className="container mt-11 mb-[120px]">
+    <p className="text-md-regular mb-[51px] text-center text-head">Trusted by the world’s best</p>
+    <Swiper
+      grabCursor={true}
+      slidesPerView={3}
+      spaceBetween={30}
+      breakpoints={{ 1024: { slidesPerView: 6, spaceBetween: 150 } }}
+    >
+      {partners.map((partner, index) => (
+        <SwiperSlide key={`partner-${index}`}>
+          <Link target="_blank" href="/">
+            <Image src={partner} alt="" />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
   </div>
 );
 

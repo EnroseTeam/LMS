@@ -7,94 +7,9 @@ import mainLogo from "@/assets/logo-main.svg";
 import { RiMenu4Fill } from "react-icons/ri";
 import { FiShoppingBag, FiSearch } from "react-icons/fi";
 
-import DropdownLarge from "./DropdownLarge";
+import NavbarDropdownLarge from "./NavbarDropdownLarge";
 import NavbarDroprown from "./NavbarDroprown";
 import SearchBar from "../Search/SearchBar";
-
-const links = [
-  {
-    Head: "Course List Layouts",
-    sublinks: [
-      { name: "Course List v1", link: "/" },
-      { name: "Course List v2", link: "/" },
-      { name: "Course List v3", link: "/" },
-      { name: "Course List v4", link: "/" },
-      { name: "Course List v5", link: "/" },
-    ],
-  },
-  {
-    Head: "Course Single Layouts",
-    sublinks: [
-      { name: "Course Single v1", link: "/" },
-      { name: "Course Single v2", link: "/" },
-      { name: "Course Single v3", link: "/" },
-      { name: "Course Single v4", link: "/" },
-      { name: "Course Single v5", link: "/" },
-    ],
-  },
-  {
-    Head: "About Courses",
-    sublinks: [
-      { name: "Lesson Page v1", link: "/" },
-      { name: "Lesson Page v2", link: "/" },
-      { name: "Lesson Page v3", link: "/" },
-      { name: "Lesson Page v4", link: "/" },
-      { name: "Lesson Page v5", link: "/" },
-    ],
-  },
-  {
-    Head: "Dashboard Pages",
-    sublinks: [
-      { name: "Dashboard ", link: "/" },
-      { name: "My Courses ", link: "/" },
-      { name: "Bookmarks ", link: "/" },
-      { name: "Add Listing ", link: "/" },
-      { name: "Reviews", link: "/" },
-    ],
-  },
-  {
-    Head: "Popular Courses",
-    sublinks: [
-      { name: "Web Developer ", link: "/" },
-      { name: "Mobile Developer ", link: "/" },
-      { name: "Digital Marketing ", link: "/" },
-      { name: "Development ", link: "/" },
-      { name: "Finance & Accounting", link: "/" },
-    ],
-  },
-];
-
-const navbarLinks = [
-  { name: "Home" },
-  {
-    name: "Courses",
-    submenu: true,
-    sublinks: [
-      {
-        Head: "Courses",
-        sublinks: [
-          { name: "Menu1", link: "/" },
-          { name: "Menu2", link: "/" },
-          { name: "Menu3", link: "/" },
-          { name: "Menu4", link: "/" },
-          { name: "Menu5", link: "/" },
-        ],
-      },
-      {
-        Head: "Courses2",
-        sublinks: [
-          { name: "Menu1", link: "/" },
-          { name: "Menu2", link: "/" },
-          { name: "Menu3", link: "/" },
-          { name: "Menu4", link: "/" },
-          { name: "Menu5", link: "/" },
-        ],
-      },
-    ],
-  },
-  { name: "Blog" },
-  { name: "Contact" },
-];
 
 const Header: FC = () => {
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
@@ -110,25 +25,36 @@ const Header: FC = () => {
           <Link href="/">
             <Image src={mainLogo} alt="IntelliSense" />
           </Link>
-          <button className="text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group">
-            <RiMenu4Fill size={24} />
-            <span>Explore</span>
-            <DropdownLarge items={links} />
-          </button>
+          <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 flex items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer">
+          <RiMenu4Fill size={24} />
+          <span>Explore</span>
+          <NavbarDropdownLarge />
         </div>
-        <nav className="">
-          <ul className="flex items-center gap-10 text-md-regular">
-            {navbarLinks.map((link, index) => (
-              <li
-                key={`navbar-menu-item-${index}`}
-                className="hover:text-white/70 duration-300 group"
-              >
-                {link.name}
-                {link.submenu && <NavbarDroprown links={link.sublinks} />}
-              </li>
-            ))}
-          </ul>
-        </nav>
+        </div>
+         <nav className="hidden lg:block">
+        <ul className="flex items-center gap-1 text-md-regular">
+          <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
+            <Link href="/">Нүүр хуудас</Link>
+            <NavbarDroprown />
+          </li>
+          <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
+            <Link href="/">Сургалт</Link>
+            <NavbarDroprown />
+          </li>
+          <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
+            <Link href="/">Багш, сургагч</Link>
+            <NavbarDroprown />
+          </li>
+          <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
+            <Link href="/">Мэдээ</Link>
+            <NavbarDroprown />
+          </li>
+          <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
+            <Link href="/">Бидний тухай</Link>
+            <NavbarDroprown />
+          </li>
+        </ul>
+      </nav>
         <div className="flex items-center gap-7">
           <button
             className="text-xl hover:opacity-70 duration-300"
@@ -139,13 +65,20 @@ const Header: FC = () => {
           <button className="text-xl hover:opacity-70 duration-300">
             <FiShoppingBag />
           </button>
-          <button className="text-white text-md-regular hover:text-white/70 duration-300">
-            Log In
-          </button>
-          <button className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300">
-            Sign Up
-          </button>
+            <Link
+          href="/auth/login"
+          className="text-white text-md-regular hover:text-white/70 duration-300"
+        >
+          Нэвтрэх
+        </Link>
+        <Link
+          href="/auth/register"
+          className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300"
+        >
+          Бүртгүүлэх
+        </Link>
         </div>
+
       </div>
       <SearchBar
         searchBarShow={searchBarShow}
