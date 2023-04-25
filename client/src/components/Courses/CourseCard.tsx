@@ -5,16 +5,17 @@ import Image from "next/image";
 import RatingStar from "../global/RatingStar";
 import { ICourse } from "@/interfaces/courses";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
+import HoverCourseCard from "./HoverCourseCard";
 
 interface CourseCardProps {
   course: ICourse;
 }
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => (
-  <div className="flex flex-col gap-[15px]">
+  <div className="flex flex-col gap-[15px] relative group">
     <Link
       href={`/courses/${course._id}`}
-      className="rounded-lg overflow-hidden w-full group relative"
+      className="w-full overflow-hidden rounded-lg block relative group/picture"
     >
       <Image
         src={course.picture}
@@ -23,7 +24,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         alt={course.name}
         className="w-full aspect-[1.42/1] object-cover"
       />
-      <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover:bg-head/50 duration-300" />
+      <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover/picture:bg-head/50 duration-300 " />
     </Link>
 
     <div className="flex flex-col gap-[10px]">
@@ -85,6 +86,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         </div>
       </div>
     </div>
+
+    <HoverCourseCard course={course} />
   </div>
 );
 

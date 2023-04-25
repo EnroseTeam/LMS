@@ -16,6 +16,14 @@ const Header: FC = () => {
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
 
+  const closeOpenCart = (): void => {
+    setOpenCartShow(false);
+  };
+
+  const toggleOpenCart = (): void => {
+    setOpenCartShow(!openCartShow);
+  };
+
   const showSearchBar = (): void => {
     setSearchBarShow(true);
   };
@@ -62,15 +70,16 @@ const Header: FC = () => {
             <FiSearch />
           </button>
 
-          <button
-            onClick={(): void => {
-              setOpenCartShow(!openCartShow);
-            }}
-            className="text-xl hover:text-white/70 duration-300 relative"
-          >
-            <FiShoppingBag />
-            <OpenCart openCartShow={openCartShow} setOpenCartShow={setOpenCartShow} />
-          </button>
+          <div className="relative">
+            <button
+              onClick={toggleOpenCart}
+              className="text-xl hover:text-white/70 duration-300 block"
+            >
+              <FiShoppingBag />
+            </button>
+
+            <OpenCart openCartShow={openCartShow} closeOpenCart={closeOpenCart} />
+          </div>
 
           <Link
             href="/auth/login"
