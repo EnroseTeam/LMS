@@ -145,18 +145,22 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
                 className="w-full aspect-square object-cover "
               />
             </div>
-            <div className="absolute"></div>
+            <div className="absolute flex flex-col p-[40px] bg-white right-[10px] bottom-0">
+              <div className="">FEATURED TEACHER</div>
+            </div>
           </div>
-          <div>
-            <h1 className="text-4xl-bold text-head">
+          <div className="w-[50%]">
+            <h1 className="text-4xl-bold text-head mb-[25px] w-[80%]">
               Become an Instructor <span className="text-color-1">Today</span>
             </h1>
-            <p>
+            <p className="text-md-regular text-head mb-[30px]  w-[60%]">
               Use the list below to bring attention to your product’s key
               differentiator.
             </p>
+            <button className="bg-color-2 rounded-lg py-[21px] px-[55px] text-[#FFFFFF] text-base-medium">
+              Join Our Team{" "}
+            </button>
           </div>
-          <button>Join Our Team </button>
         </div>
       </div>
       <BestInstructorSection instructors={instructors} />

@@ -51,7 +51,7 @@ export const getInstructors: RequestHandler = async (req, res, next) => {
     })
       .populate("role")
       .sort(order);
-    const instructors = users.filter((user) => (user.role.slug = "instructor"));
+    const instructors = users.filter((user) => user.role.slug === "instructor");
     res.status(200).json({ message: "Амжилттай", body: instructors });
   } catch (error) {
     next(error);
