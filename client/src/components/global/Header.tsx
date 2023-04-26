@@ -29,7 +29,7 @@ const Header: FC = () => {
   };
 
   return (
-    <header className="w-full bg-head text-white sticky top-0 z-[50]">
+    <header className="w-full bg-head text-white sticky top-0 z-[9999]">
       <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
         <div className="flex items-center gap-7">
           <Link href="/">
@@ -66,7 +66,10 @@ const Header: FC = () => {
           </ul>
         </nav>
         <div className="flex items-center gap-7">
-          <button className="text-xl hover:opacity-70 duration-300" onClick={showSearchBar}>
+          <button
+            className="text-xl hover:opacity-70 duration-300"
+            onClick={showSearchBar}
+          >
             <FiSearch />
           </button>
 
@@ -78,7 +81,10 @@ const Header: FC = () => {
               <FiShoppingBag />
             </button>
 
-            <OpenCart openCartShow={openCartShow} closeOpenCart={closeOpenCart} />
+            <OpenCart
+              openCartShow={openCartShow}
+              closeOpenCart={closeOpenCart}
+            />
           </div>
 
           <Link
@@ -95,7 +101,10 @@ const Header: FC = () => {
           </Link>
         </div>
       </div>
-      <SearchBar searchBarShow={searchBarShow} setSearchBarShow={setSearchBarShow} />
+      <SearchBar
+        searchBarShow={searchBarShow}
+        setSearchBarShow={setSearchBarShow}
+      />
     </header>
   );
 };
