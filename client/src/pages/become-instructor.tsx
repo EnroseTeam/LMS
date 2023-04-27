@@ -92,7 +92,7 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
           <div className="rounded-lg flex flex-col items-center px-[34px] py-[42px] hover:bg-[#FFFFFF] hover:shadow-shadow-4 cursor-pointer">
             <Image src={online} alt="" className="mb-5" />
             <h1 className="text-xl-medium text-head text-center mb-[9px]">
-              Уян хатан суралцах
+              Багш нарыг дэмжих арга зам
             </h1>
             <p className="text-center text-text font-[400] text-[14px] leading-[24px]">
               Grursus mal suada faci lisis that ipsum ameti consecte.
@@ -136,7 +136,7 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
         </div>
       </div>
       <div className="bg-bg-1 w-screen">
-        <div className="container pt-[120px] pb-[183px] flex gap-[140px] items-center">
+        <div className="container pt-[120px] pb-[183px] flex gap-[174px] items-center">
           <div className="relative">
             <div className="w-[600px] h-[600px] rounded-full overflow-hidden bg-color-1">
               <Image
@@ -145,20 +145,33 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
                 className="w-full aspect-square object-cover "
               />
             </div>
-            <div className="absolute flex flex-col p-[40px] bg-white right-[10px] bottom-0">
-              <div className="">FEATURED TEACHER</div>
+            <div className="absolute flex flex-col p-[40px] bg-white right-[-60px] bottom-[-70px] rounded-lg w-[360px] gap-[30px] text-head shadow-shadow-4">
+              <div className="bg-[#E8543E] rounded-[60px] text-white font-[500] leading-[13px] text-[11px] px-[17px] py-[8px] w-[50%] text-center">
+                ОНЦЛОХ БАГШ
+              </div>
+              <p className="font-[500] leading-[30px] text-[18px]">
+                “Teaching on Intellisense platform has been an amazing
+                experience”
+              </p>
+              <div>
+                <p className="text-md-medium">Ali Tufan</p>
+                <span className="text-sm-regular text-texts">
+                  Designer, Apple Inc
+                </span>
+              </div>
             </div>
           </div>
           <div className="w-[50%]">
             <h1 className="text-4xl-bold text-head mb-[25px] w-[80%]">
-              Become an Instructor <span className="text-color-1">Today</span>
+              <span className="text-color-1">Яг Одоо </span> <br />
+              Багш болцгооё
             </h1>
             <p className="text-md-regular text-head mb-[30px]  w-[60%]">
               Use the list below to bring attention to your product’s key
               differentiator.
             </p>
             <button className="bg-color-2 rounded-lg py-[21px] px-[55px] text-[#FFFFFF] text-base-medium">
-              Join Our Team{" "}
+              Манай Багт Нэгдээрэй
             </button>
           </div>
         </div>
