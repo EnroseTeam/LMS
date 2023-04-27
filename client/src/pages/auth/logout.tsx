@@ -19,7 +19,7 @@ const LogoutPage: FC = () => {
         setUser(null);
         setLoggedIn(false);
         localStorage.setItem("loggedIn", JSON.stringify(false));
-        router.push("/");
+        router.back();
       } catch (error) {
         console.log(error);
       }

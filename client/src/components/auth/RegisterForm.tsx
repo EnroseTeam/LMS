@@ -1,9 +1,15 @@
 import axios from "axios";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { BsCheckCircle, BsXCircle } from "react-icons/bs";
+import { UserContext } from "@/contexts/UserContext";
+import { useRouter } from "next/router";
 
 const RegisterForm: FC = () => {
+  const { setLoggedIn } = useContext(UserContext);
+  const router = useRouter();
+
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
@@ -11,7 +17,58 @@ const RegisterForm: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
 
+  const [isPasswordRequirementMet, setIsPasswordRequirementMet] =
+    useState<boolean>(false);
+
+  const [passwordRequirements, setPasswordRequirements] = useState([
+    {
+      title: "Хамгийн багадаа 8 тэмдэгттэй байх",
+      state: false,
+      regex: new RegExp("(?=.{8,})"),
+    },
+    {
+      title: "Дор хаяж 1 том үсэг орсон байх",
+      state: false,
+      regex: new RegExp("(?=.*[A-Z])"),
+    },
+    {
+      title: "Дор хаяж 1 жижиг үсэг орсон байх",
+      state: false,
+      regex: new RegExp("(?=.*[a-z])"),
+    },
+    {
+      title: "Дор хаяж 1 тоо орсон байх",
+      state: false,
+      regex: new RegExp("(?=.*[0-9])"),
+    },
+    {
+      title: "Дор хаяж 1 тусгай тэмдэгт орсон байх",
+      state: false,
+      regex: new RegExp("(?=.*[^A-Za-z0-9])"),
+    },
+  ]);
+
+  useEffect(() => {
+    for (const req of passwordRequirements) {
+      if (!req.state) return setIsPasswordRequirementMet(false);
+    }
+
+    setIsPasswordRequirementMet(true);
+  }, [passwordRequirements]);
+
+  useEffect(() => {
+    const newPasswordRequirements = [...passwordRequirements];
+    for (const req of newPasswordRequirements) {
+      if (req.regex.test(password)) req.state = true;
+      else req.state = false;
+    }
+
+    setPasswordRequirements(newPasswordRequirements);
+  }, [password]);
+
   const registerUser = async (): Promise<void> => {
+    if (!isPasswordRequirementMet) return;
+
     try {
       const res = await axios.post(
         "http://localhost:5000/api/auth/signup",
@@ -26,7 +83,9 @@ const RegisterForm: FC = () => {
         { withCredentials: true }
       );
 
-      console.log(res);
+      setLoggedIn(true);
+      localStorage.setItem("loggedIn", JSON.stringify(true));
+      router.back();
     } catch (error) {
       console.log(error);
     }
@@ -148,6 +207,23 @@ const RegisterForm: FC = () => {
               placeholder="Нууц үг давтах"
             />
           </div>
+        </div>
+
+        <div className="mb-7">
+          <ul className="flex flex-col gap-1 text-md-regular">
+            {passwordRequirements.map((requirement, index) => (
+              <li
+                key={`password-requirement-${index}`}
+                className={`flex items-center gap-2 ${
+                  requirement.state ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {requirement.state && <BsCheckCircle size={15} />}
+                {!requirement.state && <BsXCircle size={15} />}
+                {requirement.title}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="flex items-center gap-[10px] text-sm-regular mb-5">
