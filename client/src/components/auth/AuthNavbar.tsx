@@ -9,18 +9,20 @@ const AuthNavbar: FC = () => {
   const router = useRouter();
 
   return (
-    <header className="flex items-center justify-between fixed top-5 left-0 right-0 mx-[60px] z-[999]">
-      <Link href="/">
-        <Image
-          src={mainLogo}
-          width={135}
-          height={50}
-          className="w-full aspect-auto object-contain"
-          alt="Main Logo"
-        />
-      </Link>
+    <header className="grid grid-cols-3 z-[999]">
+      <div className="col-span-1 bg-head pt-5">
+        <Link href="/" className="block w-[200px] ml-[60px]">
+          <Image
+            src={mainLogo}
+            width={135}
+            height={50}
+            className="w-full aspect-auto object-contain"
+            alt="Main Logo"
+          />
+        </Link>
+      </div>
 
-      <nav className="flex items-center gap-[45px]">
+      <nav className="flex items-center justify-end gap-[45px] col-span-2 bg-bg-5">
         <ul className="flex items-center gap-3 text-md-regular text-head">
           <li className="py-2 px-4 hover:text-head/70 duration-300">
             <Link href="/">Нүүр хуудас</Link>
@@ -41,7 +43,7 @@ const AuthNavbar: FC = () => {
 
         {router.pathname === "/auth/register" && (
           <Link
-            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300"
+            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300 mr-[60px]"
             href="/auth/login"
           >
             Нэвтрэх
@@ -49,7 +51,7 @@ const AuthNavbar: FC = () => {
         )}
         {router.pathname === "/auth/login" && (
           <Link
-            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300"
+            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300 mr-[60px]"
             href="/auth/register"
           >
             Бүртгүүлэх
