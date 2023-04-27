@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -11,10 +11,23 @@ import NavbarDropdownLarge from "./NavbarDropdownLarge";
 import NavbarDroprown from "./NavbarDroprown";
 import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
+import { UserContext } from "@/contexts/UserContext";
+import UserDropdown from "../User/UserDropdown";
 
 const Header: FC = () => {
+  const { user } = useContext(UserContext);
+
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
+  const [userDropdown, setUserDropdown] = useState<boolean>(false);
+
+  const toggleUserDropdown = (): void => {
+    setUserDropdown(!userDropdown);
+  };
+
+  const closeUserDropdown = (): void => {
+    setUserDropdown(false);
+  };
 
   const closeOpenCart = (): void => {
     setOpenCartShow(false);
@@ -68,14 +81,21 @@ const Header: FC = () => {
         <div className="flex items-center gap-7">
           <button
             className="text-xl hover:opacity-70 duration-300"
-            onClick={showSearchBar}
+            onClick={(): void => {
+              closeOpenCart();
+              closeUserDropdown();
+              showSearchBar();
+            }}
           >
             <FiSearch />
           </button>
 
           <div className="relative">
             <button
-              onClick={toggleOpenCart}
+              onClick={(): void => {
+                closeUserDropdown();
+                toggleOpenCart();
+              }}
               className="text-xl hover:text-white/70 duration-300 block"
             >
               <FiShoppingBag />
@@ -87,18 +107,37 @@ const Header: FC = () => {
             />
           </div>
 
-          <Link
-            href="/auth/login"
-            className="text-white text-md-regular hover:text-white/70 duration-300"
-          >
-            Нэвтрэх
-          </Link>
-          <Link
-            href="/auth/register"
-            className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300"
-          >
-            Бүртгүүлэх
-          </Link>
+          {!user && (
+            <>
+              <Link
+                href="/auth/login"
+                className="text-white text-md-regular hover:text-white/70 duration-300"
+              >
+                Нэвтрэх
+              </Link>
+              <Link
+                href="/auth/register"
+                className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300"
+              >
+                Бүртгүүлэх
+              </Link>
+            </>
+          )}
+
+          {user && (
+            <div className="relative">
+              <button
+                onClick={(): void => {
+                  closeOpenCart();
+                  toggleUserDropdown();
+                }}
+                className="hover:text-white/70 duration-300 block"
+              >
+                {user.fullName}
+              </button>
+              <UserDropdown user={user} userDropdown={userDropdown} />
+            </div>
+          )}
         </div>
       </div>
       <SearchBar
