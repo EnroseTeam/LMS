@@ -43,7 +43,7 @@ const AuthNavbar: FC = () => {
 
         {router.pathname === "/auth/register" && (
           <Link
-            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300 mr-[60px]"
+            className="text-md-regular py-3 px-[34px] rounded-[60px] btn-3 mr-[60px]"
             href="/auth/login"
           >
             Нэвтрэх
@@ -51,7 +51,7 @@ const AuthNavbar: FC = () => {
         )}
         {router.pathname === "/auth/login" && (
           <Link
-            className="text-md-regular text-white py-3 px-[34px] bg-head rounded-[60px] border border-transparent hover:bg-transparent hover:text-head  hover:border-head duration-300 mr-[60px]"
+            className="text-md-regular py-3 px-[34px] rounded-[60px] btn-3 mr-[60px]"
             href="/auth/register"
           >
             Бүртгүүлэх

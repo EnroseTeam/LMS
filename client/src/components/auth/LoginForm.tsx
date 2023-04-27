@@ -149,7 +149,7 @@ const LoginForm: FC = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 border-2 border-transparent hover:border-color-6 hover:text-color-6 hover:bg-transparent duration-300 disabled:bg-color-6/50 disabled:cursor-not-allowed disabled:hover:bg-color-6/50 disabled:hover:text-head disabled:hover:border-transparent"
+          className="block w-full py-4 btn-2 mb-5"
         >
           Нэвтрэх
         </button>
