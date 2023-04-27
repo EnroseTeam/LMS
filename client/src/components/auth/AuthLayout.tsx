@@ -15,12 +15,12 @@ interface AuthLayoutProps {
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => (
   <>
     <AuthNavbar />
-    <main className="w-screen h-screen grid grid-cols-3">
+    <main className="min-w-screen min-h-screen grid grid-cols-3">
       <div className="col-span-1 bg-head relative overflow-hidden grid place-items-center">
         <Image
           src={authShapes}
           alt="Background shape"
-          className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-none z-[1]"
+          className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-none z-[1] w-[450px] h-[450px]"
         />
         <div className="relative">
           <div className="w-[400px] h-[400px] bg-color-1 rounded-full overflow-hidden">
