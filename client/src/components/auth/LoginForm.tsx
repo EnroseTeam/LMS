@@ -1,10 +1,12 @@
+import { UserContext } from "@/contexts/UserContext";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
 const LoginForm: FC = () => {
+  const { setLoggedIn } = useContext(UserContext);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -20,7 +22,9 @@ const LoginForm: FC = () => {
         },
         { withCredentials: true }
       );
-      console.log(res);
+      setLoggedIn(true);
+      localStorage.setItem("loggedIn", JSON.stringify(true));
+      router.back();
     } catch (error) {
       console.log(error);
     }

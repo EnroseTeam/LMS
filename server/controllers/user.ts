@@ -21,6 +21,16 @@ interface UserParams {
   id: string;
 }
 
+// Get authenticated user info
+export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.session.userId).populate("role");
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 //GET ALL INSTRUCTORS
 
 export const getInstructors: RequestHandler = async (req, res, next) => {
