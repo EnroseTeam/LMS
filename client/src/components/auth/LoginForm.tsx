@@ -1,9 +1,10 @@
 import { UserContext } from "@/contexts/UserContext";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useContext, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import MessageBox from "../global/MessageBox";
 
 const LoginForm: FC = () => {
   const { setLoggedIn } = useContext(UserContext);
@@ -12,8 +13,23 @@ const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
+  const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
+
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const loginUser = async (): Promise<void> => {
     try {
+      setIsSubmitting(true);
+
+      if (!email || !password) {
+        if (!email) setEmailCorrect(false);
+        if (!password) setPasswordCorrect(false);
+        return;
+      }
+
       const res = await axios.post(
         "http://localhost:5000/api/auth/login",
         {
@@ -26,7 +42,14 @@ const LoginForm: FC = () => {
       localStorage.setItem("loggedIn", JSON.stringify(true));
       router.back();
     } catch (error) {
-      console.log(error);
+      if (isAxiosError(error))
+        setErrorMsg(
+          error.response?.data.error ||
+            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+        );
+      else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -43,6 +66,9 @@ const LoginForm: FC = () => {
           </Link>
         </p>
       </div>
+      {errorMsg && (
+        <MessageBox className="mb-5" type="Error" message={errorMsg} />
+      )}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -58,12 +84,21 @@ const LoginForm: FC = () => {
             value={email}
             onChange={(e): void => {
               setEmail(e.target.value);
+              setEmailCorrect(true);
+              setErrorMsg("");
             }}
             type="email"
             id="email"
-            className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+            className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+              !emailCorrect ? "ring ring-red-500" : ""
+            }`}
             placeholder="И-мэйл"
           />
+          {!emailCorrect && (
+            <p className="text-red-500 text-md-medium mt-2">
+              И-мэйл заавал шаардлагатай.
+            </p>
+          )}
         </div>
 
         <div className="mb-5 w-full">
@@ -74,12 +109,21 @@ const LoginForm: FC = () => {
             value={password}
             onChange={(e): void => {
               setPassword(e.target.value);
+              setPasswordCorrect(true);
+              setErrorMsg("");
             }}
             type="password"
             id="password"
-            className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+            className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+              !passwordCorrect ? "ring ring-red-500" : ""
+            }`}
             placeholder="Нууц үг"
           />
+          {!passwordCorrect && (
+            <p className="text-red-500 text-md-medium mt-2">
+              Нууц үг заавал шаардлагатай.
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-between text-sm-regular mb-5">
@@ -104,7 +148,8 @@ const LoginForm: FC = () => {
 
         <button
           type="submit"
-          className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 hover:bg-color-6/70 duration-300"
+          disabled={isSubmitting}
+          className="block w-full py-4 bg-color-6 text-head rounded-lg mb-5 border-2 border-transparent hover:border-color-6 hover:text-color-6 hover:bg-transparent duration-300 disabled:bg-color-6/50 disabled:cursor-not-allowed disabled:hover:bg-color-6/50 disabled:hover:text-head disabled:hover:border-transparent"
         >
           Нэвтрэх
         </button>
