@@ -17,16 +17,17 @@ const HeroSection: FC = () => (
           <span className="text-color-6 underline">IntelliSense</span>
         </h1>
         <p className="select-none text-md-regular  mb-[27px] w-full lg:w-[60ch] lg:text-lg-regular">
-          Олон улсын шаардлага хангасан сургалтуудын тусламжтайгаар өөрийн чадвараа хөгжүүлээрэй.
+          Олон улсын шаардлага хангасан сургалтуудын тусламжтайгаар өөрийн
+          чадвараа хөгжүүлээрэй.
         </p>
 
         <div className="flex flex-col items-center gap-5 text-base-medium mb-[84px] lg:flex-row">
-          <Button className="bg-color-1 hover:bg-color-1/70 duration-300 whitespace-nowrap w-full lg:w-fit">
+          <button className="btn-1 whitespace-nowrap w-full lg:w-fit">
             Үнэгүй элсэх
-          </Button>
-          <Button className="text-color-6 border-2 border-color-6 hover:bg-color-6/90 hover:text-white hover:border-transparent duration-300 whitespace-nowrap w-full lg:w-fit">
+          </button>
+          <button className="btn-2-outline whitespace-nowrap w-full lg:w-fit">
             Сургалтууд үзэх
-          </Button>
+          </button>
         </div>
 
         <div className=" hidden gap-6 lg:flex">
@@ -54,7 +55,9 @@ const HeroSection: FC = () => (
             <div className="w-[60px] h-[60px] bg-color-6 rounded-full" />
 
             <div>
-              <h1 className="text-color-2 text-base-medium mb-[2px]">У.Ганболд</h1>
+              <h1 className="text-color-2 text-base-medium mb-[2px]">
+                У.Ганболд
+              </h1>
               <p className="text-text text-md-regular">Программист</p>
             </div>
           </div>

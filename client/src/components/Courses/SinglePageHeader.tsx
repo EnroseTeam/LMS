@@ -17,7 +17,6 @@ import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
 import { MdOutlineAssignment } from "react-icons/md";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
-import Button from "@/components/global/Button";
 import RatingStar from "@/components/global/RatingStar";
 
 import shape from "@/assets/hero-shape.svg";
@@ -32,13 +31,20 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
       transparent
       breadcrumbItems={[
         { title: "Сургалтууд", link: "/courses" },
-        { title: course.category.name, link: `/courses?category=${course.category.slug}` },
+        {
+          title: course.category.name,
+          link: `/courses?category=${course.category.slug}`,
+        },
         { title: course.name, link: `/courses/${course._id}` },
       ]}
     />
 
     <div className="container absolute w-full top-8 bottom-[62px] right-0 left-0 pointer-events-none">
-      <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
+      <Image
+        src={shape}
+        alt="Shape"
+        className="w-full aspect-auto object-contain"
+      />
     </div>
 
     <div className="container grid grid-cols-2 gap-[145px] text-icon">
@@ -61,7 +67,9 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
 
           <div
             className="text-icon text-md-regular"
-            dangerouslySetInnerHTML={{ __html: course.description.slice(0, 200) + "..." }}
+            dangerouslySetInnerHTML={{
+              __html: course.description.slice(0, 200) + "...",
+            }}
           />
 
           <div className="flex items-center gap-7">
@@ -70,12 +78,16 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
                 {course.avgRating.toFixed(1)}
               </p>
               <RatingStar gap={4} rating={course.avgRating} />
-              <p className="text-icon text-xs-regular">({course.reviews.length})</p>
+              <p className="text-icon text-xs-regular">
+                ({course.reviews.length})
+              </p>
             </div>
 
             <div className="flex items-center gap-[10px]">
               <BsPersonWorkspace size={16} />
-              <p className=" text-sm-regular">{course.purchaseCount} сурагч элссэн</p>
+              <p className=" text-sm-regular">
+                {course.purchaseCount} сурагч элссэн
+              </p>
             </div>
 
             <div className="flex items-center gap-[10px]">
@@ -141,8 +153,10 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
             </span>
 
             <h2>
-              {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг`}
-              {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
+              {course.totalLessonLength.hour > 0 &&
+                `${course.totalLessonLength.hour} цаг`}
+              {course.totalLessonLength.minute > 0 &&
+                `${course.totalLessonLength.minute} минут`}
             </h2>
           </div>
 
@@ -224,20 +238,20 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => (
         <div className="flex items-center justify-between">
           <h1 className="text-white text-2xl-medium">₮{course.price}</h1>
           {course.discountPrice > 0 && (
-            <h3 className="text-icon text-md-medium">₮{course.discountPrice}</h3>
+            <h3 className="text-icon text-md-medium">
+              ₮{course.discountPrice}
+            </h3>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-[35px]">
-          <Button className="bg-color-1 text-white hover:bg-color-1/70 duration-300 ">
-            Сагслах
-          </Button>
-          <Button className="border-2 border-color-6 text-color-6 hover:bg-color-6/90 hover:text-white duration-300 hover:border-transparent">
-            Худалдаж авах
-          </Button>
+          <button className="btn-1">Сагслах</button>
+          <button className="btn-2-outline">Худалдаж авах</button>
         </div>
 
-        <p className="text-icon text-sm-regular">14 хоногын дотор мөнгөө буцааж авах боломжтой</p>
+        <p className="text-icon text-sm-regular">
+          14 хоногын дотор мөнгөө буцааж авах боломжтой
+        </p>
       </div>
     </div>
   </div>

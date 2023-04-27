@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import RatingStar from "../global/RatingStar";
-import Button from "../global/Button";
 
 const ReviewForm: FC = () => {
   const router = useRouter();
@@ -12,7 +11,10 @@ const ReviewForm: FC = () => {
       <h1 className="text-xl font-medium leading-[23px]">Сэтгэгдэл бичих</h1>
 
       <div>
-        <label htmlFor="rating" className="mb-[9px] inline-block text-base-medium">
+        <label
+          htmlFor="rating"
+          className="mb-[9px] inline-block text-base-medium"
+        >
           Үнэлгээ
         </label>
         <div className="flex items-center gap-4">
@@ -33,7 +35,10 @@ const ReviewForm: FC = () => {
       </div>
 
       <div>
-        <label htmlFor="title" className="mb-[9px] inline-block text-base-medium">
+        <label
+          htmlFor="title"
+          className="mb-[9px] inline-block text-base-medium"
+        >
           Гарчиг
         </label>
         <input
@@ -45,7 +50,10 @@ const ReviewForm: FC = () => {
       </div>
 
       <div>
-        <label htmlFor="description" className="mb-[9px] inline-block text-base-medium">
+        <label
+          htmlFor="description"
+          className="mb-[9px] inline-block text-base-medium"
+        >
           Тайлбар
         </label>
         <textarea
@@ -55,12 +63,9 @@ const ReviewForm: FC = () => {
         />
       </div>
 
-      <Button
-        type="submit"
-        className="bg-color-1 text-white self-start hover:bg-color-1/70 duration-300"
-      >
+      <button type="submit" className="btn-1 self-start">
         Сэтгэгдэл нэмэх
-      </Button>
+      </button>
     </form>
   );
 };
