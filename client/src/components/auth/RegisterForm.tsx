@@ -1,14 +1,17 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import Link from "next/link";
 import { FC, useContext, useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import { UserContext } from "@/contexts/UserContext";
 import { useRouter } from "next/router";
+import MessageBox from "../global/MessageBox";
 
 const RegisterForm: FC = () => {
   const { setLoggedIn } = useContext(UserContext);
   const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -16,6 +19,17 @@ const RegisterForm: FC = () => {
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
+  const [agreement, setAgreement] = useState<boolean>(false);
+
+  const [emailExist, setEmailExist] = useState<boolean>(true);
+  const [phoneExist, setPhoneExist] = useState<boolean>(true);
+  const [firstNameExist, setFirstNameExist] = useState<boolean>(true);
+  const [lastNameExist, setLastNameExist] = useState<boolean>(true);
+  const [passwordExist, setPasswordExist] = useState<boolean>(true);
+  const [rePasswordExist, setRePasswordExist] = useState<boolean>(true);
+  const [rePasswordMatch, setRePasswordMatch] = useState<boolean>(true);
+
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   const [isPasswordRequirementMet, setIsPasswordRequirementMet] =
     useState<boolean>(false);
@@ -66,10 +80,44 @@ const RegisterForm: FC = () => {
     setPasswordRequirements(newPasswordRequirements);
   }, [password]);
 
-  const registerUser = async (): Promise<void> => {
-    if (!isPasswordRequirementMet) return;
+  useEffect(() => {
+    if (password && rePassword) {
+      if (password !== rePassword) setRePasswordMatch(false);
+      else setRePasswordMatch(true);
+    } else {
+      setRePasswordMatch(true);
+    }
+  }, [password, rePassword]);
 
+  const registerUser = async (): Promise<void> => {
     try {
+      setIsSubmitting(true);
+
+      if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !phone ||
+        !password ||
+        !rePassword ||
+        !rePasswordMatch ||
+        !isPasswordRequirementMet ||
+        !agreement
+      ) {
+        if (!firstName) setFirstNameExist(false);
+        if (!lastName) setLastNameExist(false);
+        if (!email) setEmailExist(false);
+        if (!phone) setPhoneExist(false);
+        if (!password) setPasswordExist(false);
+        if (!rePassword) setRePasswordExist(false);
+        if (!agreement)
+          setErrorMsg("Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай.");
+        if (!isPasswordRequirementMet)
+          setErrorMsg("Нууц үг шаардлага хангахгүй байна");
+
+        return;
+      }
+
       const res = await axios.post(
         "http://localhost:5000/api/auth/signup",
         {
@@ -87,7 +135,13 @@ const RegisterForm: FC = () => {
       localStorage.setItem("loggedIn", JSON.stringify(true));
       router.back();
     } catch (error) {
-      console.log(error);
+      if (isAxiosError(error))
+        setErrorMsg(
+          error.response?.data.error ||
+            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+        );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -99,11 +153,14 @@ const RegisterForm: FC = () => {
         </h1>
         <p className="text-text text-md-regular">
           Манай сайтад бүртгэлтэй юу?{" "}
-          <Link href="/auth/register" className="text-color-1">
+          <Link href="/auth/login" className="text-color-1">
             Нэвтрэх
           </Link>
         </p>
       </div>
+      {errorMsg && (
+        <MessageBox type="Error" message={errorMsg} className="mb-5" />
+      )}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -120,12 +177,20 @@ const RegisterForm: FC = () => {
               value={firstName}
               onChange={(e): void => {
                 setFirstName(e.target.value);
+                setFirstNameExist(true);
               }}
               type="text"
               id="firstName"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !firstNameExist ? "ring ring-red-500" : ""
+              }`}
               placeholder="Нэр"
             />
+            {!firstNameExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Нэр заавал шаардлагатай.
+              </p>
+            )}
           </div>
 
           <div className="w-full">
@@ -136,12 +201,20 @@ const RegisterForm: FC = () => {
               value={lastName}
               onChange={(e): void => {
                 setLastName(e.target.value);
+                setLastNameExist(true);
               }}
               type="text"
               id="lastName"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !lastNameExist ? "ring ring-red-500" : ""
+              }`}
               placeholder="Овог"
             />
+            {!lastNameExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Овог заавал шаардлагатай.
+              </p>
+            )}
           </div>
 
           <div className="w-full">
@@ -152,12 +225,20 @@ const RegisterForm: FC = () => {
               value={email}
               onChange={(e): void => {
                 setEmail(e.target.value);
+                setEmailExist(true);
               }}
               type="email"
               id="email"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !emailExist ? "ring ring-red-500" : ""
+              }`}
               placeholder="И-мэйл"
             />
+            {!emailExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                И-мэйл заавал шаардлагатай.
+              </p>
+            )}
           </div>
 
           <div className="w-full">
@@ -168,12 +249,20 @@ const RegisterForm: FC = () => {
               value={phone}
               onChange={(e): void => {
                 setPhone(e.target.value);
+                setPhoneExist(true);
               }}
               type="text"
               id="phone"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !phoneExist ? "ring ring-red-500" : ""
+              }`}
               placeholder="Утасны дугаар"
             />
+            {!phoneExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Утасны дугаар заавал шаардлагатай.
+              </p>
+            )}
           </div>
 
           <div className="w-[300px]">
@@ -184,12 +273,20 @@ const RegisterForm: FC = () => {
               value={password}
               onChange={(e): void => {
                 setPassword(e.target.value);
+                setPasswordExist(true);
               }}
               type="password"
               id="password"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !passwordExist ? "ring ring-red-500" : ""
+              }`}
               placeholder="Нууц үг"
             />
+            {!passwordExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Нууц үг заавал шаардлагатай.
+              </p>
+            )}
           </div>
 
           <div className="w-[300px]">
@@ -200,12 +297,25 @@ const RegisterForm: FC = () => {
               value={rePassword}
               onChange={(e): void => {
                 setRePassword(e.target.value);
+                setRePasswordExist(true);
               }}
               type="password"
               id="repassword"
-              className="border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular"
+              className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
+                !rePasswordExist || !rePasswordMatch ? "ring ring-red-500" : ""
+              }`}
               placeholder="Нууц үг давтах"
             />
+            {!rePasswordExist && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Давтан нууц үг заавал шаардлагатай.
+              </p>
+            )}
+            {!rePasswordMatch && (
+              <p className="text-red-500 text-md-medium mt-2">
+                Давтан нууц үг таарахгүй байна.
+              </p>
+            )}
           </div>
         </div>
 
@@ -228,6 +338,11 @@ const RegisterForm: FC = () => {
 
         <div className="flex items-center gap-[10px] text-sm-regular mb-5">
           <input
+            checked={agreement}
+            onChange={(e): void => {
+              if (e.target.checked) setAgreement(true);
+              else setAgreement(false);
+            }}
             type="checkbox"
             id="accept"
             className="w-[15px] h-[15px] border-2 border-icon"
@@ -237,7 +352,11 @@ const RegisterForm: FC = () => {
           </label>
         </div>
 
-        <button type="submit" className="w-full btn-2 block mb-5">
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          className="w-full btn-2 block mb-5"
+        >
           Бүртгүүлэх
         </button>
 
