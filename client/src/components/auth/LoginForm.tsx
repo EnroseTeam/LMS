@@ -85,7 +85,6 @@ const LoginForm: FC = () => {
             onChange={(e): void => {
               setEmail(e.target.value);
               setEmailCorrect(true);
-              setErrorMsg("");
             }}
             type="email"
             id="email"
@@ -110,7 +109,6 @@ const LoginForm: FC = () => {
             onChange={(e): void => {
               setPassword(e.target.value);
               setPasswordCorrect(true);
-              setErrorMsg("");
             }}
             type="password"
             id="password"

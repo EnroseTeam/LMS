@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import NextProgress from "next-progress";
 
-import Layout from "@/components/global/Layout";
+import Layout from "@/layouts/Layout";
 import logo from "../assets/logo-main.svg";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
