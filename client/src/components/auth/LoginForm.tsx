@@ -1,13 +1,11 @@
-import { UserContext } from "@/contexts/UserContext";
 import axios, { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "../global/MessageBox";
 
 const LoginForm: FC = () => {
-  const { setLoggedIn } = useContext(UserContext);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -30,7 +28,7 @@ const LoginForm: FC = () => {
         return;
       }
 
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/auth/login",
         {
           email,
@@ -38,9 +36,8 @@ const LoginForm: FC = () => {
         },
         { withCredentials: true }
       );
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
-      router.back();
+
+      router.push("/auth/login-success");
     } catch (error) {
       if (isAxiosError(error))
         setErrorMsg(

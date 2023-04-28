@@ -1,14 +1,12 @@
 import axios, { isAxiosError } from "axios";
 import Link from "next/link";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
-import { UserContext } from "@/contexts/UserContext";
 import { useRouter } from "next/router";
 import MessageBox from "../global/MessageBox";
 
 const RegisterForm: FC = () => {
-  const { setLoggedIn } = useContext(UserContext);
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -118,7 +116,7 @@ const RegisterForm: FC = () => {
         return;
       }
 
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/auth/signup",
         {
           email,
@@ -131,9 +129,7 @@ const RegisterForm: FC = () => {
         { withCredentials: true }
       );
 
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
-      router.back();
+      router.push("/auth/login-success");
     } catch (error) {
       if (isAxiosError(error))
         setErrorMsg(
