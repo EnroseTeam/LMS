@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { Roboto } from "next/font/google";
 
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "@/components/global/Header";
+import Footer from "@/components/global/Footer";
 import { ICourseCategory } from "@/interfaces/courses";
 import { useRouter } from "next/router";
 import UserProvider from "@/contexts/UserContext";
+import DashboardLayout from "./DashboardLayout";
 
 interface LayoutProps {
   children: JSX.Element;
@@ -26,6 +27,16 @@ const Layout: FC<LayoutProps> = ({ children, props }) => {
     return (
       <UserProvider>
         <div className={roboto.className}>{children}</div>
+      </UserProvider>
+    );
+  }
+
+  if (router.pathname.includes("instructors/dashboard")) {
+    return (
+      <UserProvider>
+        <div className={roboto.className}>
+          <DashboardLayout>{children}</DashboardLayout>
+        </div>
       </UserProvider>
     );
   }

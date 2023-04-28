@@ -1,5 +1,5 @@
 import { FC } from "react";
-import AuthNavbar from "./AuthNavbar";
+import AuthNavbar from "../components/auth/AuthNavbar";
 import Image from "next/image";
 
 import authShapes from "@/assets/authShapes.svg";

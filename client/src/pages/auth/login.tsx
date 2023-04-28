@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import LoginForm from "@/components/auth/LoginForm";
 import { useRouter } from "next/router";
 
