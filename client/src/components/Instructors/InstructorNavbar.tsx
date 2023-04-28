@@ -7,13 +7,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
 
-const InstructorNavbar: FC = () => {
+interface InstructorNavbarProps {
+  setSidebarShow: (state: boolean) => void;
+  sidebarShow: boolean;
+}
+
+const InstructorNavbar: FC<InstructorNavbarProps> = ({
+  setSidebarShow,
+  sidebarShow,
+}) => {
   const { user } = useContext(UserContext);
 
   return (
     <header className="bg-white py-5 px-[30px] flex items-center justify-between">
       <div className="flex items-center gap-[14px]">
-        <button className="text-head text-xl p-4 hover:bg-bg-1 rounded-full duration-300 ">
+        <button
+          onClick={(): void => {
+            setSidebarShow(!sidebarShow);
+          }}
+          className="text-head text-xl p-4 hover:bg-bg-1 rounded-full duration-300 "
+        >
           <RiMenu4Fill />
         </button>
         <Link href="/instructors/dashboard" className="w-[171px] h-[50px]">

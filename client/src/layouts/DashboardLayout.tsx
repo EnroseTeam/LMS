@@ -1,4 +1,5 @@
 import InstructorNavbar from "@/components/Instructors/InstructorNavbar";
+import InstructorSidebar from "@/components/Instructors/InstructorSidebar";
 import { UserContext } from "@/contexts/UserContext";
 import { useRouter } from "next/router";
 import { FC, useContext, useEffect, useState } from "react";
@@ -12,6 +13,8 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
 
+  const [sidebarShow, setSidebarShow] = useState<boolean>(true);
+
   useEffect(() => {
     if (!user || user.role.slug === "student") {
       router.back();
@@ -24,8 +27,16 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     <>
       {!isLoading && (
         <>
-          <InstructorNavbar />
-          <main className="bg-[#f7f8fb] min-h-screen">{children}</main>
+          <InstructorNavbar
+            setSidebarShow={setSidebarShow}
+            sidebarShow={sidebarShow}
+          />
+          <div className="flex">
+            <InstructorSidebar sidebarShow={sidebarShow} />
+            <main className="bg-[#f7f8fb] min-h-screen flex-1 rounded-2xl">
+              {children}
+            </main>
+          </div>
         </>
       )}
     </>
