@@ -1,8 +1,7 @@
-import { FC } from 'react';
-import Image from 'next/image';
+import { FC } from "react";
+import Image from "next/image";
 
-import errorImg from '@/assets/404.svg';
-import Button from '@/components/global/Button';
+import errorImg from "@/assets/404.svg";
 
 const NotFoundPage: FC = () => (
   <div className="bg-[#fefbf4] py-[120px]">
@@ -24,11 +23,9 @@ const NotFoundPage: FC = () => (
           Oops! It looks like youre lost.
         </h3>
         <p className="text-text text-base-regular leading-[26px] mb-[20px]">
-          The page youre looking for isnt available. Try to search again or use the go to.
+          The page youre looking for isnt available. Try to search again or use
+          the go to.
         </p>
-        <Button className="bg-color-1 text-white hover:bg-color-1/80 duration-300">
-          Go Back To Homepage
-        </Button>
       </div>
     </div>
   </div>
