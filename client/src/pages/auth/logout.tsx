@@ -5,7 +5,7 @@ import { FC, useContext, useEffect } from "react";
 
 const LogoutPage: FC = () => {
   const router = useRouter();
-  const { setUser, setLoggedIn } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
@@ -17,9 +17,7 @@ const LogoutPage: FC = () => {
         );
 
         setUser(null);
-        setLoggedIn(false);
-        localStorage.setItem("loggedIn", JSON.stringify(false));
-        router.back();
+        router.push("/");
       } catch (error) {
         console.log(error);
       }
