@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
