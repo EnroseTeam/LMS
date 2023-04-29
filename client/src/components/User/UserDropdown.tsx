@@ -1,10 +1,10 @@
-import { IUser } from "@/interfaces/user";
+import { ICurrentUser } from "@/interfaces/user";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 
 interface UserDropDownProps {
-  user: IUser;
+  user: ICurrentUser;
   userDropdown: boolean;
 }
 

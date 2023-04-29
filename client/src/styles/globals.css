@@ -17,6 +17,10 @@
   @apply rounded-lg text-white bg-color-1 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
 }
 
+.btn-1-outline {
+  @apply rounded-lg text-color-1 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-1 hover:border-color-1 hover:text-white hover:bg-color-1 duration-300 disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
+}
+
 .btn-2 {
   @apply rounded-lg text-color-2 bg-color-6 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-6 hover:text-color-6 hover:bg-transparent duration-300 disabled:bg-color-6/50 disabled:cursor-not-allowed disabled:hover:bg-color-6/50 disabled:hover:border-transparent disabled:hover:text-color-2;
 }

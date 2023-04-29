@@ -13,6 +13,7 @@ import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
 import UserDropdown from "../User/UserDropdown";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import UserSkeleton from "@/utils/UserSkeleton";
 
 const Header: FC = () => {
   const { user, isLoading } = useAuthenticate();
@@ -112,6 +113,8 @@ const Header: FC = () => {
               closeOpenCart={closeOpenCart}
             />
           </div>
+
+          {!isReady && <UserSkeleton />}
 
           {!user && isReady && (
             <>
