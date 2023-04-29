@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import { IUser } from "../models/user";
+import UserRoleModel from "../models/userRole";
 
 interface UserBody {
   firstName?: string;
@@ -230,6 +231,21 @@ export const updateUserPassword: RequestHandler<
     await user.save();
 
     res.status(200).json({ message: "Нууц үг амжилттай шинэчлэгдлээ." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const becomeInstructor: RequestHandler = async (req, res, next) => {
+  const userId = req.session.userId;
+
+  try {
+    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
+    await UserModel.findByIdAndUpdate(userId, {
+      role: instructorRole?._id,
+    });
+
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }

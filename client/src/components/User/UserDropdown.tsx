@@ -45,13 +45,23 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
             Миний сагс
           </Link>
         </li>
-        {user.role.slug === "instructor" && (
+        {user.role.slug !== "student" && (
           <li>
             <Link
               className="hover:text-text/70 duration-300"
               href="/instructors/dashboard"
             >
               Багшийн булан
+            </Link>
+          </li>
+        )}
+        {user.role.slug === "student" && (
+          <li>
+            <Link
+              className="hover:text-text/70 duration-300"
+              href="/become-instructor"
+            >
+              Багш болох
             </Link>
           </li>
         )}

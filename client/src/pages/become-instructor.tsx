@@ -11,6 +11,8 @@ import science from "../assets/instructor-2.svg";
 import online from "../assets/instructor-3.svg";
 import certificate from "../assets/instructor-4.svg";
 import main from "../assets/instructor-5.svg";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { useRouter } from "next/router";
 
 interface BecomeInstructorPageProps {
   instructors: IUser[];
@@ -50,6 +52,30 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
   const tabContents: JSX.Element[] = [tabOne];
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
+
+  const { user, isLoading, mutate } = useAuthenticate();
+  const router = useRouter();
+
+  const submitHandler = (): void => {
+    if (!user && !isLoading) {
+      router.push("/auth/login");
+    }
+
+    if (user && !isLoading) {
+      axios
+        .post(
+          `http://localhost:5000/api/users/becomeInstructor`,
+          {},
+          { withCredentials: true }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            mutate({ ...user, role: { ...user.role, slug: "instructor" } });
+            router.push("/instructors/dashboard");
+          }
+        });
+    }
+  };
 
   return (
     <>
@@ -170,7 +196,7 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
               Use the list below to bring attention to your product’s key
               differentiator.
             </p>
-            <button className="bg-color-2 rounded-lg py-[21px] px-[55px] text-[#FFFFFF] text-base-medium">
+            <button onClick={submitHandler} className="btn-3">
               Манай Багт Нэгдээрэй
             </button>
           </div>

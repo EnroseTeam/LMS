@@ -1,6 +1,6 @@
 import { IUser } from "@/interfaces/user";
 import axios from "axios";
-import useSwr from "swr";
+import useSwr, { KeyedMutator } from "swr";
 import { useState } from "react";
 
 interface useAuthenticateTypes {
@@ -10,6 +10,7 @@ interface useAuthenticateTypes {
   loggedIn: boolean;
   setLoggedIn: (state: boolean) => void;
   isLoading: boolean;
+  mutate: KeyedMutator<IUser>;
 }
 
 export const useAuthenticate = (): useAuthenticateTypes => {
@@ -26,6 +27,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     data: user,
     error,
     isLoading,
+    mutate,
   } = useSwr(loggedIn && "http://localhost:5000/api/users/current", fetcher, {
     errorRetryCount: 0,
     revalidateOnFocus: true,
@@ -33,5 +35,5 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     revalidateOnReconnect: true,
   });
 
-  return { user, error, loggedIn, setLoggedIn, isLoading };
+  return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };
