@@ -16,6 +16,7 @@ import courseReviewRoutes from "./routes/courseReview";
 import courseRoutes from "./routes/course";
 import authRoutes from "./routes/auth";
 import courseSectionRoutes from "./routes/courseSection";
+import searchRoutes from "./routes/search";
 import MongoStore from "connect-mongo";
 
 const app: Express = express();
@@ -53,6 +54,7 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/users/roles", userRoleRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/search", searchRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Хүсэлт явуулсан хаяг олдсонгүй."));
