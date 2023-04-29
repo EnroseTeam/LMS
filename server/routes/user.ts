@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  becomeInstructor,
   deleteUser,
   getAuthenticatedUser,
   getInstructors,
@@ -16,6 +17,8 @@ userRouter.get("/current", authenticateUser, getAuthenticatedUser);
 userRouter.get("/instructors", getInstructors);
 userRouter.get("/", getUsers);
 userRouter.get("/:id", getSingleUser);
+
+userRouter.post("/becomeInstructor", authenticateUser, becomeInstructor);
 
 userRouter.delete("/:id", deleteUser);
 

@@ -25,7 +25,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     if (user && !isLoading && user.role.slug !== "student") {
       setIsReady(true);
     }
-  }, [router.pathname, isLoading]);
+  }, [router, isLoading, user]);
 
   if (!isReady) return <div>Loading...</div>;
 
