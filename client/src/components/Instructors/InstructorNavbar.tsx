@@ -1,11 +1,11 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
 import { BiBell, BiMessageSquareDetail } from "react-icons/bi";
 
 import logoDark from "@/assets/logo-dark.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { UserContext } from "@/contexts/UserContext";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 interface InstructorNavbarProps {
   setSidebarShow: (state: boolean) => void;
@@ -16,7 +16,7 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({
   setSidebarShow,
   sidebarShow,
 }) => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuthenticate();
 
   return (
     <header className="bg-white py-5 px-[30px] flex items-center justify-between">
