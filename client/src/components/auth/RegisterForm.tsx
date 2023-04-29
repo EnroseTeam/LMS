@@ -134,7 +134,7 @@ const RegisterForm: FC = () => {
       setLoggedIn(true);
       localStorage.setItem("loggedIn", JSON.stringify(true));
 
-      router.push("/");
+      router.back();
     } catch (error) {
       if (isAxiosError(error))
         setErrorMsg(
