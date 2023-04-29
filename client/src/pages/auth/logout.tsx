@@ -1,11 +1,12 @@
-import { UserContext } from "@/contexts/UserContext";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { FC, useContext, useEffect } from "react";
+import { FC, useEffect } from "react";
 
 const LogoutPage: FC = () => {
   const router = useRouter();
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
+  const { setLoggedIn } = useAuthenticate();
 
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
@@ -16,7 +17,8 @@ const LogoutPage: FC = () => {
           { withCredentials: true }
         );
 
-        setUser(null);
+        setLoggedIn(false);
+        localStorage.setItem("loggedIn", JSON.stringify(false));
         router.push("/");
       } catch (error) {
         console.log(error);

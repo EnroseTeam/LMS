@@ -5,9 +5,11 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import { useRouter } from "next/router";
 import MessageBox from "../global/MessageBox";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 const RegisterForm: FC = () => {
   const router = useRouter();
+  const { setLoggedIn } = useAuthenticate();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -129,7 +131,10 @@ const RegisterForm: FC = () => {
         { withCredentials: true }
       );
 
-      router.push("/auth/login-success");
+      setLoggedIn(true);
+      localStorage.setItem("loggedIn", JSON.stringify(true));
+
+      router.push("/");
     } catch (error) {
       if (isAxiosError(error))
         setErrorMsg(

@@ -1,6 +1,8 @@
 import InstructorNavbar from "@/components/Instructors/InstructorNavbar";
 import InstructorSidebar from "@/components/Instructors/InstructorSidebar";
-import { FC, useState } from "react";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { useRouter } from "next/router";
+import { FC, useState, useEffect } from "react";
 
 interface DashboardLayoutProps {
   children: JSX.Element | JSX.Element[];
@@ -8,6 +10,24 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const [sidebarShow, setSidebarShow] = useState<boolean>(true);
+  const { user, isLoading } = useAuthenticate();
+  const router = useRouter();
+  const [isReady, setIsReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!user && !isLoading) {
+      router.push("/");
+    }
+    if (user && !isLoading && user.role.slug === "student") {
+      router.push("/");
+    }
+
+    if (user && !isLoading && user.role.slug !== "student") {
+      setIsReady(true);
+    }
+  }, [router.pathname, isLoading]);
+
+  if (!isReady) return <div>Loading...</div>;
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -11,15 +11,21 @@ import NavbarDropdownLarge from "./NavbarDropdownLarge";
 import NavbarDroprown from "./NavbarDroprown";
 import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
-import { UserContext } from "@/contexts/UserContext";
 import UserDropdown from "../User/UserDropdown";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 const Header: FC = () => {
-  const { user } = useContext(UserContext);
+  const { user, isLoading } = useAuthenticate();
+
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
   const [userDropdown, setUserDropdown] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isLoading) setIsReady(true);
+  }, [isLoading]);
 
   const toggleUserDropdown = (): void => {
     setUserDropdown(!userDropdown);
@@ -107,7 +113,7 @@ const Header: FC = () => {
             />
           </div>
 
-          {!user && (
+          {!user && isReady && (
             <>
               <Link
                 href="/auth/login"
@@ -124,7 +130,7 @@ const Header: FC = () => {
             </>
           )}
 
-          {user && (
+          {user && isReady && (
             <div className="relative">
               <button
                 onClick={(): void => {

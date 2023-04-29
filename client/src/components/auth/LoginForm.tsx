@@ -4,8 +4,10 @@ import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "../global/MessageBox";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 const LoginForm: FC = () => {
+  const { setLoggedIn } = useAuthenticate();
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -37,7 +39,10 @@ const LoginForm: FC = () => {
         { withCredentials: true }
       );
 
-      router.push("/auth/login-success");
+      setLoggedIn(true);
+      localStorage.setItem("loggedIn", JSON.stringify(true));
+
+      router.push("/");
     } catch (error) {
       if (isAxiosError(error))
         setErrorMsg(

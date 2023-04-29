@@ -5,7 +5,6 @@ import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 import { ICourseCategory } from "@/interfaces/courses";
 import { useRouter } from "next/router";
-import UserProvider from "@/contexts/UserContext";
 import DashboardLayout from "./DashboardLayout";
 
 interface LayoutProps {
@@ -24,31 +23,23 @@ const Layout: FC<LayoutProps> = ({ children, props }) => {
   const router = useRouter();
 
   if (router.pathname.includes("lessons") || router.pathname.includes("auth")) {
-    return (
-      <UserProvider>
-        <div className={roboto.className}>{children}</div>
-      </UserProvider>
-    );
+    return <div className={roboto.className}>{children}</div>;
   }
 
   if (router.pathname.includes("instructors/dashboard")) {
     return (
-      <UserProvider>
-        <div className={roboto.className}>
-          <DashboardLayout>{children}</DashboardLayout>
-        </div>
-      </UserProvider>
+      <div className={roboto.className}>
+        <DashboardLayout>{children}</DashboardLayout>
+      </div>
     );
   }
 
   return (
-    <UserProvider>
-      <div className={roboto.className}>
-        <Header />
-        <main>{children}</main>
-        <Footer categories={props.categories} />
-      </div>
-    </UserProvider>
+    <div className={roboto.className}>
+      <Header />
+      <main>{children}</main>
+      <Footer categories={props.categories} />
+    </div>
   );
 };
 
