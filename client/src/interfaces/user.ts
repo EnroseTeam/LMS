@@ -39,28 +39,3 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface ICurrentUser {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  birthDate: string;
-  email: string;
-  phone: string;
-  address?: UserAddress;
-  avatar: string;
-  role: IUserRole;
-  boughtCourses: string[];
-  ownCourses: string[];
-  avgRating: number;
-  socialAccounts: {
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    instagram: string;
-  };
-  bio: string;
-  createdAt: string;
-  updatedAt: string;
-}

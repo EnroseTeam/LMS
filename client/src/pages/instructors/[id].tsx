@@ -6,8 +6,6 @@ import { GetServerSideProps } from "next";
 import { ICourse } from "@/interfaces/courses";
 import SinglePageHeader from "@/components/Instructors/SinglePageHeader";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
-import BgShape from "../../assets/hero-shape.svg";
-import Image from "next/image";
 import SinglePageContent from "@/components/Instructors/SinglePageContent";
 import { IUser } from "@/interfaces/user";
 
@@ -48,9 +46,6 @@ const SingleInstructorPage: FC<SingleInstructorPageProps> = ({
 
     <SinglePageHeader instructor={instructor} />
 
-    <div className="absolute container top-8 right-0 left-0 pointer-events-none ">
-      <Image src={BgShape} alt="" className="w-full" />
-    </div>
     <SinglePageContent courses={courses} />
   </div>
 );

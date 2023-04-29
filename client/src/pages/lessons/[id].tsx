@@ -56,9 +56,14 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
       router.push(`/auth/login`);
     }
     if (user && !isLoading) {
+      const ownCourses: string[] = user.ownCourses.map((course) => course._id);
+      const boughtCourses: string[] = user.boughtCourses.map(
+        (course) => course._id
+      );
+
       if (
-        !user.ownCourses.includes(course._id) &&
-        !user.boughtCourses.includes(course._id)
+        !ownCourses.includes(course._id) &&
+        !boughtCourses.includes(course._id)
       ) {
         router.push(`/courses/${course._id}`);
       } else setIsReady(true);

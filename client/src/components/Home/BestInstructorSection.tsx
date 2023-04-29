@@ -1,9 +1,9 @@
 import { FC } from "react";
 import Link from "next/link";
 
-import ArrowButton from "../global/ArrowButton";
 import InstructorCard from "../Instructors/InstructorCard";
 import { IUser } from "@/interfaces/user";
+import { HiOutlineArrowUpRight } from "react-icons/hi2";
 
 interface BestInstructorSectionProps {
   instructors: IUser[];
@@ -19,13 +19,14 @@ const BestInstructorSection: FC<BestInstructorSectionProps> = ({
       </h1>
       <div className="flex justify-between items-center mb-[43px]">
         <p className="text-text">Lorem ipsum dolor sit amet, consectetur.</p>
-        <ArrowButton className="bg-color-1/[.07] text-color-1">
+        <Link href="/" className="arrow-btn-1">
           View All Instructors
-        </ArrowButton>
+          <HiOutlineArrowUpRight size={20} />
+        </Link>
       </div>
       <div className="grid grid-cols-4 gap-[22px] mb-[60px]">
         {instructors.map((instructor) => (
-          <InstructorCard instructor={instructor} />
+          <InstructorCard key={instructor._id} instructor={instructor} />
         ))}
       </div>
       <p className="text-text flex justify-center">

@@ -25,9 +25,14 @@ interface UserParams {
 // Get authenticated user info
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.session.userId).populate("role");
+    const user = await UserModel.findById(req.session.userId).populate([
+      "role",
+      "boughtCourses",
+      "ownCourses",
+    ]);
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
