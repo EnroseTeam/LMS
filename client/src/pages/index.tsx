@@ -4,7 +4,7 @@ import Head from "next/head";
 import { FC } from "react";
 
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
-import ResourcesNewsSection from "@/components/Home/ResourcesNewsSection";
+import NewsSection from "@/components/Home/NewsSection";
 import AdvantageSection from "@/components/Home/AdvantageSection";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import HeroSection from "@/components/Home/HeroSection";
@@ -51,7 +51,7 @@ const Home: FC<HomeProps> = ({ categories, courses, instructors }) => (
     <UsersCommentSection />
     <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
-    <ResourcesNewsSection />
+    <NewsSection />
   </>
 );
 
