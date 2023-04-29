@@ -1,9 +1,9 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Button from "@/components/global/Button";
 
 import RatingStar from "@/components/global/RatingStar";
+import BgShape from "../../assets/hero-shape.svg";
 
 import { AiOutlineComment, AiOutlineUser } from "react-icons/ai";
 import { BiRightArrow } from "react-icons/bi";
@@ -17,6 +17,10 @@ interface SinglePageHeaderProps {
 
 const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
   <div className="container relative bg-color-1 pt-[69px] rounded-lg text-white mb-[30px]">
+    <div className="absolute container top-0 right-0 left-0 bottom-0 pointer-events-none w-full h-full">
+      <Image src={BgShape} alt="" className="w-full h-full object-cover" />
+    </div>
+
     <div className="px-[325px]">
       <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px]">
         <Image
@@ -67,9 +71,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
       </div>
 
       <div className="flex items-center pb-[76px]">
-        <Button className="bg-color-6 text-color-2 text-base-medium">
-          Мессеж илгээх
-        </Button>
+        <button className="btn-2">Мессеж илгээх</button>
         <div className="flex items-center ml-[30px] ">
           {instructor.socialAccounts.facebook && (
             <Link

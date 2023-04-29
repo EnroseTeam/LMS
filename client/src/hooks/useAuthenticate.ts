@@ -1,16 +1,16 @@
-import { ICurrentUser } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import axios from "axios";
 import useSwr, { KeyedMutator } from "swr";
 import { useState } from "react";
 
 interface useAuthenticateTypes {
-  user: ICurrentUser | undefined;
+  user: IUser | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any;
   loggedIn: boolean;
   setLoggedIn: (state: boolean) => void;
   isLoading: boolean;
-  mutate: KeyedMutator<ICurrentUser>;
+  mutate: KeyedMutator<IUser>;
 }
 
 export const useAuthenticate = (): useAuthenticateTypes => {
@@ -20,7 +20,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
       : false
   );
 
-  const fetcher = (url: string): Promise<ICurrentUser> =>
+  const fetcher = (url: string): Promise<IUser> =>
     axios.get(url, { withCredentials: true }).then((res) => res.data);
 
   const {

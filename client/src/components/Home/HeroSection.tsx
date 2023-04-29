@@ -5,7 +5,6 @@ import { SlGraduation } from "react-icons/sl";
 import { CgPlayButtonR } from "react-icons/cg";
 import { BsLaptop, BsBriefcase } from "react-icons/bs";
 
-import Button from "../global/Button";
 import bgShape from "@/assets/hero-shape.svg";
 
 const HeroSection: FC = () => (

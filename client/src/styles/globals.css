@@ -37,6 +37,18 @@
   @apply rounded-lg text-color-1 bg-color-1/[.07] text-base-medium py-[22px] px-[55px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-color-1;
 }
 
+.arrow-btn-1 {
+  @apply bg-color-1/[.07] text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-color-1/[.05] disabled:text-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/[.05] disabled:hover:text-color-1/50;
+}
+
+.arrow-btn-2 {
+  @apply bg-color-1 text-white rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:cursor-not-allowed disabled:bg-color-1/50  disabled:hover:bg-color-1/50 disabled:hover:text-white;
+}
+
+.arrow-btn-3 {
+  @apply bg-transparent text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium border-2 border-color-1 flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:cursor-not-allowed disabled:border-color-1/50 disabled:text-color-1/50 disabled:hover:bg-transparent disabled:hover:text-color-1/50 disabled:hover:border-color-1/50;
+}
+
 /* Slider Navigation 1 */
 .slider-style-1-prev {
   @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
