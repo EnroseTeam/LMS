@@ -6,6 +6,7 @@ import {
   getSingleCourseReview,
   updateCourseReview,
 } from "../controllers/courseReview";
+import { authenticateUser } from "../middlewares/auth";
 
 const courseReviewRouter = express.Router();
 
@@ -13,7 +14,7 @@ courseReviewRouter.get("/", getCourseReviews);
 
 courseReviewRouter.get("/:id", getSingleCourseReview);
 
-courseReviewRouter.post("/", createCourseReview);
+courseReviewRouter.post("/", authenticateUser, createCourseReview);
 
 courseReviewRouter.delete("/:id", deleteCourseReview);
 

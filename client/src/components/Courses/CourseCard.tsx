@@ -25,6 +25,11 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         className="w-full aspect-[1.42/1] object-cover group-hover/picture:scale-110 duration-300"
       />
       <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover/picture:bg-head/50 duration-300 " />
+      {course.discountPrice > 0 && (
+        <div className="absolute top-[10px] left-[5px] uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
+          Хямдралтай
+        </div>
+      )}
     </Link>
 
     <div className="flex flex-col gap-[10px]">

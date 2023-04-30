@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import { FC, useState } from "react";
-import { BsChevronDown, BsSearch } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 
 import { ICourseCategory } from "@/interfaces/courses";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
@@ -9,7 +9,6 @@ import InstructorCard from "@/components/Instructors/InstructorCard";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import SortDropDown from "@/components/global/SortDropDown";
-import { ICheckBoxFilterItem } from "@/interfaces/components";
 
 interface InstructorsPageProps {
   categories: ICourseCategory[];
@@ -35,25 +34,9 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const InstructorsPage: FC<InstructorsPageProps> = ({
-  instructors,
-  categories,
-}) => {
-  const [dropCategory, setDropCategory] = useState(false);
-
+const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
   const [input, setInput] = useState("");
-
-  const dropCategoryHandler = (): void => {
-    setDropCategory(!dropCategory);
-  };
-
   const router = useRouter();
-
-  const categoryItems: ICheckBoxFilterItem[] = categories.map((category) => ({
-    title: category.name,
-    slug: category.slug,
-    count: category.courseCount,
-  }));
 
   return (
     <>

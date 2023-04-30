@@ -27,12 +27,12 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => (
             className="w-full h-full py-[19px] focus:outline-none text-xl-medium placeholder:text-head"
           />
           <button
-            className="absolute right-0 text-icon"
+            className="absolute right-0 text-icon p-3 rounded-full bg-color-1/[.07]"
             onClick={(): void => {
               setSearchBarShow(false);
             }}
           >
-            <RxCross2 size={25} />
+            <RxCross2 size={16} />
           </button>
         </div>
         <h1 className="text-lg-medium mb-5">Яг одоо эрэлттэй</h1>
