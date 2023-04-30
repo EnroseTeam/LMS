@@ -22,14 +22,16 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         width={300}
         height={210}
         alt={course.name}
-        className="w-full aspect-[1.42/1] object-cover"
+        className="w-full aspect-[1.42/1] object-cover group-hover/picture:scale-110 duration-300"
       />
       <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover/picture:bg-head/50 duration-300 " />
     </Link>
 
     <div className="flex flex-col gap-[10px]">
       <div className="flex items-center gap-[10px]">
-        <p className="text-[#E59819] text-sm-medium">{course.avgRating.toFixed(1)}</p>
+        <p className="text-[#E59819] text-sm-medium">
+          {course.avgRating.toFixed(1)}
+        </p>
         <RatingStar count={5} rating={course.avgRating} gap={5} />
         <p className="text-text text-xs-regular">({course.reviews.length})</p>
       </div>
@@ -44,14 +46,18 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
       <div className="flex items-center gap-[20px]">
         <span className="flex items-center gap-2 text-md text-icon">
           <BsFileEarmarkText />
-          <span className="text-sm-regular text-text">{course.lessonCount} хичээл</span>
+          <span className="text-sm-regular text-text">
+            {course.lessonCount} хичээл
+          </span>
         </span>
 
         <span className="flex items-center gap-2 text-md text-icon">
           <BsClock />
           <span className="text-sm-regular text-text">
-            {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг`}
-            {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
+            {course.totalLessonLength.hour > 0 &&
+              `${course.totalLessonLength.hour} цаг`}
+            {course.totalLessonLength.minute > 0 &&
+              `${course.totalLessonLength.minute} минут`}
           </span>
         </span>
 
@@ -73,12 +79,16 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
             />
           </div>
 
-          <h1 className="text-text text-sm-regular">{course.instructor.fullName}</h1>
+          <h1 className="text-text text-sm-regular">
+            {course.instructor.fullName}
+          </h1>
         </div>
 
         <div className="flex items-center gap-2">
           {course.discountPrice > 0 && (
-            <p className="text-text text-md-medium line-through">{course.price}</p>
+            <p className="text-text text-md-medium line-through">
+              {course.price}
+            </p>
           )}
           <p className="text-head text-md-medium">
             ₮{course.discountPrice > 0 ? course.discountPrice : course.price}

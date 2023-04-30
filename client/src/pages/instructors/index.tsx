@@ -9,6 +9,7 @@ import InstructorCard from "@/components/Instructors/InstructorCard";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import SortDropDown from "@/components/global/SortDropDown";
+import { ICheckBoxFilterItem } from "@/interfaces/components";
 
 interface InstructorsPageProps {
   categories: ICourseCategory[];
@@ -48,6 +49,12 @@ const InstructorsPage: FC<InstructorsPageProps> = ({
 
   const router = useRouter();
 
+  const categoryItems: ICheckBoxFilterItem[] = categories.map((category) => ({
+    title: category.name,
+    slug: category.slug,
+    count: category.courseCount,
+  }));
+
   return (
     <>
       <Breadcrumbs
@@ -56,7 +63,7 @@ const InstructorsPage: FC<InstructorsPageProps> = ({
       <div className="container mb-[150px]">
         <div className="text-center">
           <h1 className="font-[700] text-[40px] leading-[47px] text-head mb-1">
-            Instructors
+            Багш, сургагчид
           </h1>
           <p className="text-lg-regular text-text mb-[90px]">
             We’re on a mission to deliver engaging, curated courses at a
@@ -65,11 +72,11 @@ const InstructorsPage: FC<InstructorsPageProps> = ({
         </div>
         <div className="flex justify-between items-center mb-[30px]">
           <p className="text-text text-sm-regular">
-            Showing{" "}
+            Нийт{" "}
             <span className="text-head text-sm-medium">
               {instructors.length}
             </span>{" "}
-            total results
+            үр дүн
           </p>
           <div className="flex justify-between gap-[23px]">
             <div className="flex items-center gap-[20px] text-icon bg-bg-4 rounded-lg px-[18px] w-[340px] focus-within:ring-2 focus-within:ring-color-1 duration-300">
@@ -83,7 +90,7 @@ const InstructorsPage: FC<InstructorsPageProps> = ({
                 id="instructorSearch"
                 type="text"
                 className=" placeholder:text-text text-sm-regular bg-inherit w-full h-full focus:outline-none"
-                placeholder="Search Instructors"
+                placeholder="Хайх"
                 value={input}
                 onChange={(e): void => {
                   setInput(e.target.value);
@@ -105,36 +112,6 @@ const InstructorsPage: FC<InstructorsPageProps> = ({
               />
             </div>
             <SortDropDown />
-
-            <div className="relative">
-              <button
-                onClick={dropCategoryHandler}
-                className="bg-bg-4 rounded-lg py-4 px-[15px] flex items-center gap-[46px] text-text text-sm-regular"
-              >
-                Category
-                <BsChevronDown
-                  className={`duration-300 ${
-                    dropCategory ? "rotate-[-180deg]" : "rotate-0"
-                  }`}
-                />
-              </button>
-              <div
-                className={`${
-                  dropCategory ? "opacity-100" : "opacity-0 pointer-events-none"
-                } absolute top-[60px] z-[10] bg-bg-4 rounded-lg py-[22px] pl-[30px] pr-[50px] duration-300 shadow-lg`}
-              >
-                <ul className="flex flex-col font-[400] text-[15px] leading-[35px] text-head ">
-                  {categories.map((category) => (
-                    <li
-                      className="hover:text-color-1 whitespace-nowrap cursor-pointer hover:underline"
-                      key={category._id}
-                    >
-                      {category.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
         <div className="grid grid-cols-4 gap-[30px] mb-[60px]">

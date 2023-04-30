@@ -12,7 +12,7 @@ interface OpenCartProps {
 
 const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
   <div
-    className={`absolute -right-7 top-7  ${
+    className={`absolute -right-7 top-full mt-5  ${
       openCartShow ? "opacity-100" : "opacity-0 pointer-events-none"
     } duration-300`}
   >
@@ -38,14 +38,19 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
               The Ultimate Drawing Course Beginner to Advanced...
             </h1>
             <div className="flex items-center gap-[7px]">
-              <span className="text-text line-through text-md-medium">$179</span>
+              <span className="text-text line-through text-md-medium">
+                $179
+              </span>
               <span className="text-xl-medium">$79</span>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-[10px] relative">
-          <button onClick={closeOpenCart} className="text-md text-color-1 absolute top-0 right-0">
+          <button
+            onClick={closeOpenCart}
+            className="text-md text-color-1 absolute top-0 right-0"
+          >
             <AiOutlineClose />
           </button>
           <div className="w-20 h-20 rounded-lg overflow-hidden">
@@ -63,7 +68,9 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
               The Ultimate Drawing Course Beginner to Advanced...
             </h1>
             <div className="flex items-center gap-[7px]">
-              <span className="text-text line-through text-md-medium">$179</span>
+              <span className="text-text line-through text-md-medium">
+                $179
+              </span>
               <span className="text-xl-medium">$79</span>
             </div>
           </div>
@@ -75,10 +82,16 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
           <p>₮25,000</p>
         </div>
         <div className="flex items-center justify-between text-base-regular">
-          <Link href="/" className="text-white bg-head py-2 px-[35px] rounded-lg">
+          <Link
+            href="/"
+            className="text-white bg-head py-2 px-[35px] rounded-lg"
+          >
             Сагс үзэх
           </Link>
-          <Link href="/" className="text-white bg-color-1 py-2 px-[35px] rounded-lg">
+          <Link
+            href="/"
+            className="text-white bg-color-1 py-2 px-[35px] rounded-lg"
+          >
             Худалдаж авах
           </Link>
         </div>

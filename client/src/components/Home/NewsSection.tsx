@@ -28,7 +28,7 @@ const NewsSection: FC = () => (
           <Image
             src={bimage}
             alt="News"
-            className="w-full aspect-[1.2/1] object-cover"
+            className="w-full aspect-[1.2/1] object-cover group-hover:scale-110 duration-300"
           />
 
           <div className="absolute top-0 right-0 left-0 w-full h-full group-hover:bg-head/50 duration-300" />
@@ -55,7 +55,7 @@ const NewsSection: FC = () => (
           <Image
             src={bimage}
             alt="News"
-            className="w-full aspect-[1.2/1] object-cover"
+            className="w-full aspect-[1.2/1] object-cover group-hover:scale-110 duration-300"
           />
 
           <div className="absolute top-0 right-0 left-0 w-full h-full group-hover:bg-head/50 duration-300" />
@@ -83,7 +83,7 @@ const NewsSection: FC = () => (
             <Image
               alt="News"
               src={bimage}
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover group-hover:scale-110 duration-300"
             />
 
             <div className="absolute top-0 right-0 left-0 w-full h-full group-hover:bg-head/50 duration-300" />
@@ -113,7 +113,7 @@ const NewsSection: FC = () => (
             <Image
               alt="News"
               src={bimage}
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover group-hover:scale-110 duration-300"
             />
 
             <div className="absolute top-0 right-0 left-0 w-full h-full group-hover:bg-head/50 duration-300" />
@@ -143,7 +143,7 @@ const NewsSection: FC = () => (
             <Image
               alt="News"
               src={bimage}
-              className="w-full aspect-square object-cover"
+              className="w-full aspect-square object-cover group-hover:scale-110 duration-300"
             />
 
             <div className="absolute top-0 right-0 left-0 w-full h-full group-hover:bg-head/50 duration-300" />
