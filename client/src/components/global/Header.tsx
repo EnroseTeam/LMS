@@ -68,11 +68,11 @@ const Header: FC = () => {
               <NavbarDroprown />
             </li>
             <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
-              <Link href="/">Сургалт</Link>
+              <Link href="/courses">Сургалт</Link>
               <NavbarDroprown />
             </li>
             <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
-              <Link href="/">Багш, сургагч</Link>
+              <Link href="/instructors">Багш, сургагч</Link>
               <NavbarDroprown />
             </li>
             <li className="py-2 px-4 hover:text-color-6 hover:bg-white/[.15] rounded-lg duration-300 group relative">
@@ -126,7 +126,7 @@ const Header: FC = () => {
               </Link>
               <Link
                 href="/auth/register"
-                className="text-head bg-white rounded-lg px-[34px] py-2 text-md-regular hover:bg-white/70 duration-300"
+                className="text-head bg-white rounded-lg border-2 border-transparent px-[34px] py-2 text-md-regular hover:border-white hover:text-white hover:bg-transparent duration-300"
               >
                 Бүртгүүлэх
               </Link>
