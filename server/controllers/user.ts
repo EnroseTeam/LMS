@@ -65,7 +65,7 @@ export const getInstructors: RequestHandler = async (req, res, next) => {
         { lastName: new RegExp("^" + search, "i") },
       ],
     })
-      .populate("role")
+      .populate(["role", "boughtCourses", "ownCourses"])
       .sort(order);
     const instructors = users.filter((user) => user.role.slug === "instructor");
     res.status(200).json({ message: "Амжилттай", body: instructors });
@@ -92,7 +92,11 @@ export const getSingleUser: RequestHandler = async (req, res, next) => {
     if (!mongoose.isValidObjectId(id))
       throw createHttpError(400, "Id буруу байна.");
 
-    const user = await UserModel.findById(id).populate("role");
+    const user = await UserModel.findById(id).populate([
+      "role",
+      { path: "boughtCourses", populate: ["instructor", "level"] },
+      { path: "ownCourses", populate: ["instructor", "level"] },
+    ]);
     if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: user });

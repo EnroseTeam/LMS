@@ -37,6 +37,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           <div className="flex justify-center items-center w-full h-full text-white">
             {instructor.socialAccounts.facebook && (
               <Link
+                onClick={(e): void => {
+                  e.stopPropagation();
+                }}
                 target="_blank"
                 href={instructor.socialAccounts.facebook}
                 className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
@@ -46,6 +49,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
             )}
             {instructor.socialAccounts.twitter && (
               <Link
+                onClick={(e): void => {
+                  e.stopPropagation();
+                }}
                 target="_blank"
                 href={instructor.socialAccounts.twitter}
                 className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
@@ -55,6 +61,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
             )}
             {instructor.socialAccounts.instagram && (
               <Link
+                onClick={(e): void => {
+                  e.stopPropagation();
+                }}
                 target="_blank"
                 href={instructor.socialAccounts.instagram}
                 className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
@@ -64,6 +73,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
             )}
             {instructor.socialAccounts.linkedin && (
               <Link
+                onClick={(e): void => {
+                  e.stopPropagation();
+                }}
                 target="_blank"
                 href={instructor.socialAccounts.linkedin}
                 className="text-white p-4 rounded-full hover:bg-white/10 duration-300"

@@ -65,7 +65,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
         <span className="flex items-center gap-[10px]">
           <BiRightArrow />
           <span className="text-xs-regular">
-            {instructor.ownCourses.length}
+            {instructor.ownCourses.length} хичээл
           </span>
         </span>
       </div>

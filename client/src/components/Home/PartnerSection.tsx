@@ -16,7 +16,9 @@ const partners = [amazon, amd, cisco, dropcam, logitech, spotify];
 
 const PartnerSection: FC = () => (
   <div className="container mt-11 mb-[120px]">
-    <p className="text-md-regular mb-[51px] text-center text-head">Trusted by the world’s best</p>
+    <p className="text-md-regular mb-[51px] text-center text-head">
+      Манай хамтрагчид
+    </p>
     <Swiper
       grabCursor={true}
       slidesPerView={3}

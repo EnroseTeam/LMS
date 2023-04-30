@@ -9,17 +9,27 @@ interface PopularCoursesProps {
   categories: ICourseCategory[];
 }
 
-const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories }) => {
+const PopularCoursesSection: FC<PopularCoursesProps> = ({
+  courses,
+  categories,
+}) => {
   const router = useRouter();
 
   return (
-    <div className="container mb-[120px] flex flex-col items-center" id="popular-courses">
+    <div
+      className="container mb-[120px] flex flex-col items-center"
+      id="popular-courses"
+    >
       <div className="text-center mb-[51px]">
-        <h1 className="text-head text-3xl-bold mb-[9px]">Хамгийн Эрэлттэй Сургалтууд</h1>
-        <p className="text-text text-md-regular">10,000+ unique online course list designs</p>
+        <h1 className="text-head text-3xl-bold mb-[9px]">
+          Хамгийн Эрэлттэй Сургалтууд
+        </h1>
+        <p className="text-text text-md-regular">
+          10,000+ unique online course list designs
+        </p>
       </div>
 
-      <div className="hidden items-center gap-4 mb-[60px] text-text text-md-regular lg:flex">
+      <div className="hidden items-center gap-4 mb-[60px] text-text text-md-regular lg:flex flex-wrap justify-center">
         <button
           onClick={(): void => {
             delete router.query.category;
@@ -45,7 +55,9 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories })
             }}
             key={category._id}
             className={`py-2 px-3 whitespace-nowrap rounded-lg hover:text-color-1 hover:bg-color-1/[.07] duration-300 ${
-              router.query.category === category.slug ? "text-color-1 bg-color-1/[.07]" : ""
+              router.query.category === category.slug
+                ? "text-color-1 bg-color-1/[.07]"
+                : ""
             }`}
           >
             {category.name}
