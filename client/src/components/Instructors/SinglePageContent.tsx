@@ -1,13 +1,13 @@
 import { FC, useState } from "react";
 
 import CourseCard from "../../components/Courses/CourseCard";
-import { ICourse } from "@/interfaces/courses";
+import { IUser } from "@/interfaces/user";
 
 interface SinglePageContentProps {
-  courses: ICourse[];
+  instructor: IUser;
 }
 
-const SinglePageContent: FC<SinglePageContentProps> = ({ courses }) => {
+const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   const [descriptionHide, setDescriptionHide] = useState(true);
 
   const data = `Phasellus enim magna, varius et commodo ut, ultricies vitae velit. Ut nulla tellus, eleifend euismod pellentesque vel, sagittis vel justo. In libero urna, venenatis sit amet ornare non, suscipit nec risus. Sed consequat justo non mauris pretium at tempor justo sodales. Quisque tincidunt laoreet malesuada. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur.
@@ -45,9 +45,15 @@ First, we will go over the differences between UX and UI Design. We will look at
 
   const courseContent = (
     <div className="grid grid-cols-2 gap-[30px]">
-      {courses.map((course) => (
-        <CourseCard key={course._id} course={course} />
-      ))}
+      {instructor.ownCourses.length > 0 &&
+        instructor.ownCourses.map((course) => (
+          <CourseCard key={course._id} course={course} />
+        ))}
+      {instructor.ownCourses.length === 0 && (
+        <p className="col-span-2 text-center text-text text-md-medium">
+          Сургалт байхгүй байна.
+        </p>
+      )}
     </div>
   );
 

@@ -14,13 +14,11 @@ const BestInstructorSection: FC<BestInstructorSectionProps> = ({
 }) => (
   <>
     <div className="container mb-[111px] mt-[120px]">
-      <h1 className="text-3xl-bold text-head">
-        Learn from the best instructors
-      </h1>
+      <h1 className="text-3xl-bold text-head">Шилдэг багш, сургагч нар</h1>
       <div className="flex justify-between items-center mb-[43px]">
         <p className="text-text">Lorem ipsum dolor sit amet, consectetur.</p>
-        <Link href="/" className="arrow-btn-1">
-          View All Instructors
+        <Link href="/instructors" className="arrow-btn-1">
+          Бүх багш, сургагчид
           <HiOutlineArrowUpRight size={20} />
         </Link>
       </div>
@@ -30,9 +28,9 @@ const BestInstructorSection: FC<BestInstructorSectionProps> = ({
         ))}
       </div>
       <p className="text-text flex justify-center">
-        Want to help people learn, grow and achieve more in life?
-        <Link href="/" className="text-color-1 ml-1 underline">
-          Become an instructor
+        Өөрийн мэдлэгээ бусдад түгээж, нэмэлт орлоготой болмоор байна уу?
+        <Link href="/become-instructor" className="text-color-1 ml-1 underline">
+          Багш болох
         </Link>
       </p>
     </div>
