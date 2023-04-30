@@ -31,8 +31,18 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const { user, isLoading } = useAuthenticate();
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  const [boughtCourses, setBoughtCourses] = useState<string[]>([]);
+  const [ownCourses, setOwnCourses] = useState<string[]>([]);
+
   useEffect(() => {
-    if (!isLoading) setIsReady(true);
+    if (!isLoading) {
+      if (user) {
+        setBoughtCourses(user.boughtCourses.map((course) => course._id));
+        setOwnCourses(user.ownCourses.map((course) => course._id));
+      }
+
+      setIsReady(true);
+    }
   }, [isLoading]);
 
   return (
@@ -61,17 +71,19 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
         <div className="flex flex-col gap-[30px]">
           {/* Course Head */}
           <div className="flex flex-col gap-5">
-            {/* <div className="flex items-center gap-3">
-              <div className="uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
-                Best Seller
-              </div>
-              <div className="uppercase py-2 px-4 bg-color-4 text-white text-[11px] font-medium leading-[13px] rounded-[60px]">
+            <div className="flex items-center gap-3">
+              {course.discountPrice > 0 && (
+                <div className="uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
+                  Хямдралтай
+                </div>
+              )}
+              {/* <div className="uppercase py-2 px-4 bg-color-4 text-white text-[11px] font-medium leading-[13px] rounded-[60px]">
                 New
               </div>
               <div className="uppercase py-2 px-4 bg-color-1 text-white text-[11px] font-medium leading-[13px] rounded-[60px]">
                 Popular
-              </div>
-            </div> */}
+              </div> */}
+            </div>
 
             <h1 className="text-3xl-bold text-white">{course.name}</h1>
 
@@ -262,12 +274,24 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               <button className="btn-2-outline">Худалдаж авах</button>
             </div>
           )}
-          {user && isReady && (
-            <div className="grid grid-cols-2 gap-[35px]">
-              <button className="btn-1">Үзэж эхлэх</button>
-              <button className="btn-2-outline">Сургалтуудруу буцах</button>
-            </div>
-          )}
+          {user &&
+            !ownCourses.includes(course._id) &&
+            !boughtCourses.includes(course._id) &&
+            isReady && (
+              <div className="grid grid-cols-2 gap-[35px]">
+                <button className="btn-1">Сагслах</button>
+                <button className="btn-2-outline">Худалдаж авах</button>
+              </div>
+            )}
+          {user &&
+            (ownCourses.includes(course._id) ||
+              boughtCourses.includes(course._id)) &&
+            isReady && (
+              <div className="grid grid-cols-2 gap-[35px]">
+                <button className="btn-1">Үзэж эхлэх</button>
+                <button className="btn-2-outline">Сургалтуудруу буцах</button>
+              </div>
+            )}
 
           <p className="text-icon text-sm-regular">
             14 хоногын дотор мөнгөө буцааж авах боломжтой
