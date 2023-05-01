@@ -7,6 +7,7 @@ import { Types } from "mongoose";
 interface SearchItem {
   _id: Types.ObjectId;
   name: string;
+  image: string;
   type: "Course" | "Instructor";
   updatedAt: Date;
 }
@@ -33,6 +34,7 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
       result.push({
         _id: user._id,
         name: user.fullName,
+        image: user.avatar,
         type: "Instructor",
         updatedAt: user.updatedAt,
       });
@@ -42,16 +44,17 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
       result.push({
         _id: course._id,
         name: course.name,
+        image: course.picture,
         type: "Course",
         updatedAt: course.updatedAt,
       });
-
-      result.sort((a, b) => {
-        return +b.updatedAt - +a.updatedAt;
-      });
-
-      res.status(200).json({ message: "Амжилттай", body: result });
     });
+
+    result.sort((a, b) => {
+      return +b.updatedAt - +a.updatedAt;
+    });
+
+    res.status(200).json({ message: "Амжилттай", body: result });
   } catch (error) {
     next(error);
   }
