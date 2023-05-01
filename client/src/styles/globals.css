@@ -18,7 +18,7 @@
 }
 
 .btn-1-outline {
-  @apply rounded-lg text-color-1 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-1 hover:border-color-1 hover:text-white hover:bg-color-1 duration-300 disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
+  @apply rounded-lg text-color-1 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-1 hover:border-color-1 hover:text-white hover:bg-color-1 duration-300 disabled:border-transparent disabled:text-white disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
 }
 
 .btn-2 {
