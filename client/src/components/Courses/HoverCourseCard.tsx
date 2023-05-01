@@ -40,9 +40,11 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => (
         </span>
       </div>
 
-      <div className="mb-[15px] w-fit uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
-        Хямдралтай
-      </div>
+      {course.discountPrice > 0 && (
+        <div className="mb-[15px] w-fit uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
+          Хямдралтай
+        </div>
+      )}
 
       <div
         className="text-base-regular leading-[26px] mb-[15px] w-[35ch]"
