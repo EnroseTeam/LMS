@@ -170,7 +170,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
               <h2>
                 {course.totalLessonLength.hour > 0 &&
-                  `${course.totalLessonLength.hour} цаг`}
+                  `${course.totalLessonLength.hour} цаг `}
                 {course.totalLessonLength.minute > 0 &&
                   `${course.totalLessonLength.minute} минут`}
               </h2>

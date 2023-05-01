@@ -12,7 +12,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({
   course,
 }) => {
   const [intitalReviews, setInitialReviews] = useState<ICourseReview[]>(
-    course.reviews.slice(0, 2)
+    course.reviews.reverse().slice(0, 2)
   );
   const [ratingCount, setRatingCount] = useState<number[]>([0, 0, 0, 0, 0]);
 
