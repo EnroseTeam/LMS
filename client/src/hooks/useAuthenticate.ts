@@ -1,7 +1,8 @@
 import { IUser } from "@/interfaces/user";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import useSwr, { KeyedMutator } from "swr";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 interface useAuthenticateTypes {
   user: IUser | undefined;
@@ -14,6 +15,8 @@ interface useAuthenticateTypes {
 }
 
 export const useAuthenticate = (): useAuthenticateTypes => {
+  const router = useRouter();
+
   const [loggedIn, setLoggedIn] = useState<boolean>(
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("loggedIn") as string)
@@ -34,6 +37,16 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     revalidateIfStale: true,
     revalidateOnReconnect: true,
   });
+
+  if (
+    error &&
+    isAxiosError(error) &&
+    !isLoading &&
+    error.response?.status === 401
+  ) {
+    localStorage.setItem("loggedIn", JSON.stringify(false));
+    router.reload();
+  }
 
   return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };
