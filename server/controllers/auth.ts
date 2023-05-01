@@ -16,6 +16,7 @@ interface SignUpBody {
 interface LogInBody {
   email?: string;
   password?: string;
+  remember?: boolean;
 }
 
 //CREATE AN USER
@@ -102,7 +103,7 @@ export const logIn: RequestHandler<
   LogInBody,
   unknown
 > = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
 
   try {
     if (!email)
@@ -122,6 +123,7 @@ export const logIn: RequestHandler<
       throw createHttpError(400, "Таны оруулсан мэдээлэл буруу байна.");
 
     req.session.userId = user._id;
+    if (remember) req.session.cookie.maxAge = 60 * 60 * 1000 * 24;
 
     res.status(200).json({ message: "Амжилттай нэвтэрлээ" });
   } catch (error) {

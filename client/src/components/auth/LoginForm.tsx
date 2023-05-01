@@ -12,6 +12,7 @@ const LoginForm: FC = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [remember, setRemember] = useState<boolean>(false);
 
   const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
   const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
@@ -35,6 +36,7 @@ const LoginForm: FC = () => {
         {
           email,
           password,
+          remember,
         },
         { withCredentials: true }
       );
@@ -129,6 +131,11 @@ const LoginForm: FC = () => {
         <div className="flex items-center justify-between text-sm-regular mb-5">
           <div className="flex items-center gap-[10px]">
             <input
+              checked={remember}
+              onChange={(e): void => {
+                if (e.target.checked) setRemember(true);
+                else setRemember(false);
+              }}
               type="checkbox"
               id="remember"
               className="w-[15px] h-[15px] border-2 border-icon"
