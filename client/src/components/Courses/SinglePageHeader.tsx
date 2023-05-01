@@ -43,7 +43,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
       setIsReady(true);
     }
-  }, [isLoading]);
+  }, [isLoading, user]);
 
   return (
     <div className="bg-head pb-[60px] relative overflow-hidden">
@@ -77,12 +77,6 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
                   Хямдралтай
                 </div>
               )}
-              {/* <div className="uppercase py-2 px-4 bg-color-4 text-white text-[11px] font-medium leading-[13px] rounded-[60px]">
-                New
-              </div>
-              <div className="uppercase py-2 px-4 bg-color-1 text-white text-[11px] font-medium leading-[13px] rounded-[60px]">
-                Popular
-              </div> */}
             </div>
 
             <h1 className="text-3xl-bold text-white">{course.name}</h1>
@@ -292,10 +286,6 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
                 <button className="btn-2-outline">Сургалтуудруу буцах</button>
               </div>
             )}
-
-          <p className="text-icon text-sm-regular">
-            14 хоногын дотор мөнгөө буцааж авах боломжтой
-          </p>
         </div>
       </div>
     </div>

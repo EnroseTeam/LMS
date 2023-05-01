@@ -31,7 +31,12 @@ const ReviewCard: FC<ReviewCardProps> = ({ review }) => (
           })}
         </span>
       </div>
-      <RatingStar gap={5} count={5} rating={review.rating} size={12} />
+      <div className="flex items-center gap-[10px]">
+        <p className="text-[#E59819] text-sm-medium mt-[2px]">
+          {review.rating.toFixed(1)}
+        </p>
+        <RatingStar gap={5} count={5} rating={review.rating} size={12} />
+      </div>
       <h1 className="text-head text-lg-medium mb-[9px] mt-[15px]">
         {review.title}
       </h1>
