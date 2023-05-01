@@ -17,7 +17,7 @@ export interface IUser extends Document<Types.ObjectId> {
   email: string;
   phone: string;
   address?: UserAddress;
-  avatar?: string;
+  avatar: string;
   password: string;
   role: IUserRole;
   boughtCourses: ICourse["_id"][];

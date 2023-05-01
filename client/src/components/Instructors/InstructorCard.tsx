@@ -33,7 +33,7 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           height={368}
           className="w-full object-cover aspect-[.9/1]"
         />
-        <div className="absolute w-full h-full top-0 right-0 left-0 bottom-0 bg-head/0 opacity-0 group-hover:bg-head/50 group-hover:opacity-100 g duration-300 ">
+        <div className="absolute w-full h-full top-0 right-0 left-0 bottom-0 bg-head/0 opacity-0 group-hover:bg-head/50 group-hover:opacity-100 duration-300 ">
           <div className="flex justify-center items-center w-full h-full text-white absolute -bottom-full group-hover:bottom-0 duration-300">
             {instructor.socialAccounts.facebook && (
               <Link
