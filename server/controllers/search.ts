@@ -14,7 +14,8 @@ interface SearchItem {
 
 export const searchEverything: RequestHandler = async (req, res, next) => {
   try {
-    const { q: search = "" } = req.query;
+    let { q: search = "", pageSize = "9", page = "1" } = req.query;
+
     const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
 
     const users = await UserModel.find({
@@ -54,7 +55,24 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
       return +b.updatedAt - +a.updatedAt;
     });
 
-    res.status(200).json({ message: "Амжилттай", body: result });
+    const totalSearch = result.length;
+    const totalPage = Math.ceil(totalSearch / Number(pageSize));
+
+    const slicedResult = result.splice(
+      (Number(page) - 1) * Number(pageSize),
+      Number(page) * Number(pageSize)
+    );
+
+    res
+      .status(200)
+      .json({
+        message: "Амжилттай",
+        body: slicedResult,
+        page: Number(page),
+        pageSize: Number(pageSize),
+        totalSearch,
+        totalPage,
+      });
   } catch (error) {
     next(error);
   }
