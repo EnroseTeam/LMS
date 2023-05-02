@@ -26,7 +26,6 @@ const RegisterForm: FC = () => {
   const [firstNameExist, setFirstNameExist] = useState<boolean>(true);
   const [lastNameExist, setLastNameExist] = useState<boolean>(true);
   const [passwordExist, setPasswordExist] = useState<boolean>(true);
-  const [rePasswordExist, setRePasswordExist] = useState<boolean>(true);
   const [rePasswordMatch, setRePasswordMatch] = useState<boolean>(true);
 
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -78,15 +77,11 @@ const RegisterForm: FC = () => {
     }
 
     setPasswordRequirements(newPasswordRequirements);
-  }, [password]);
+  }, [password, passwordRequirements]);
 
   useEffect(() => {
-    if (password && rePassword) {
-      if (password !== rePassword) setRePasswordMatch(false);
-      else setRePasswordMatch(true);
-    } else {
-      setRePasswordMatch(true);
-    }
+    if (password !== rePassword) setRePasswordMatch(false);
+    else setRePasswordMatch(true);
   }, [password, rePassword]);
 
   const registerUser = async (): Promise<void> => {
@@ -99,7 +94,6 @@ const RegisterForm: FC = () => {
         !email ||
         !phone ||
         !password ||
-        !rePassword ||
         !rePasswordMatch ||
         !isPasswordRequirementMet ||
         !agreement
@@ -109,7 +103,6 @@ const RegisterForm: FC = () => {
         if (!email) setEmailExist(false);
         if (!phone) setPhoneExist(false);
         if (!password) setPasswordExist(false);
-        if (!rePassword) setRePasswordExist(false);
         if (!agreement)
           setErrorMsg("Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай.");
         if (!isPasswordRequirementMet)
@@ -303,15 +296,10 @@ const RegisterForm: FC = () => {
               type="password"
               id="repassword"
               className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
-                !rePasswordExist || !rePasswordMatch ? "ring ring-red-500" : ""
+                !rePasswordMatch ? "ring ring-red-500" : ""
               }`}
               placeholder="Нууц үг давтах"
             />
-            {!rePasswordExist && (
-              <p className="text-red-500 text-md-medium mt-2">
-                Давтан нууц үг заавал шаардлагатай.
-              </p>
-            )}
             {!rePasswordMatch && (
               <p className="text-red-500 text-md-medium mt-2">
                 Давтан нууц үг таарахгүй байна.

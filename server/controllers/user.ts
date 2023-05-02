@@ -205,16 +205,16 @@ interface UserPasswordBody {
 }
 
 export const updateUserPassword: RequestHandler<
-  UserParams,
+  unknown,
   unknown,
   UserPasswordBody,
   unknown
 > = async (req, res, next) => {
-  const { id } = req.params;
+  const userId = req.session.userId;
   const { newPassword, reNewPassword, oldPassword } = req.body;
 
   try {
-    if (!mongoose.isValidObjectId(id))
+    if (!mongoose.isValidObjectId(userId))
       throw createHttpError(400, "Id буруу байна.");
     if (!newPassword) throw createHttpError(400, "Шинэ нууц үг шаардлагатай.");
     if (!reNewPassword)
@@ -227,7 +227,7 @@ export const updateUserPassword: RequestHandler<
         "Шинэ нууц үг давтан оруулсан нууц үгтэй таарахгүй байна."
       );
 
-    const user = await UserModel.findById(id).select("password");
+    const user = await UserModel.findById(userId).select("password");
     if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
