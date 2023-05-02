@@ -291,7 +291,6 @@ const RegisterForm: FC = () => {
               value={rePassword}
               onChange={(e): void => {
                 setRePassword(e.target.value);
-                setRePasswordExist(true);
               }}
               type="password"
               id="repassword"
