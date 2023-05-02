@@ -58,21 +58,19 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
     const totalSearch = result.length;
     const totalPage = Math.ceil(totalSearch / Number(pageSize));
 
-    const slicedResult = result.splice(
+    const slicedResult = result.slice(
       (Number(page) - 1) * Number(pageSize),
       Number(page) * Number(pageSize)
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Амжилттай",
-        body: slicedResult,
-        page: Number(page),
-        pageSize: Number(pageSize),
-        totalSearch,
-        totalPage,
-      });
+    res.status(200).json({
+      message: "Амжилттай",
+      body: slicedResult,
+      page: Number(page),
+      pageSize: Number(pageSize),
+      totalSearch,
+      totalPage,
+    });
   } catch (error) {
     next(error);
   }
