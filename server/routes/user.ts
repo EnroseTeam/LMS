@@ -6,8 +6,9 @@ import {
   getInstructors,
   getSingleUser,
   getUsers,
-  updateUser,
+  updateUserPersonalInfo,
   updateUserPassword,
+  updateUserSocialAccounts,
 } from "../controllers/user";
 import { authenticateUser } from "../middlewares/auth";
 
@@ -20,9 +21,14 @@ userRouter.get("/:id", getSingleUser);
 
 userRouter.post("/becomeInstructor", authenticateUser, becomeInstructor);
 
-userRouter.delete("/:id", deleteUser);
-
 userRouter.patch("/password", authenticateUser, updateUserPassword);
-userRouter.patch("/:id", updateUser);
+userRouter.patch("/personal-info", authenticateUser, updateUserPersonalInfo);
+userRouter.patch(
+  "/social-accounts",
+  authenticateUser,
+  updateUserSocialAccounts
+);
+
+userRouter.delete("/delete-account", authenticateUser, deleteUser);
 
 export default userRouter;

@@ -18,10 +18,6 @@ interface UserBody {
   role?: string;
 }
 
-interface UserParams {
-  id: string;
-}
-
 // Get authenticated user info
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
@@ -33,6 +29,21 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+};
+
+export const becomeInstructor: RequestHandler = async (req, res, next) => {
+  const userId = req.session.userId;
+
+  try {
+    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
+    await UserModel.findByIdAndUpdate(userId, {
+      role: instructorRole?._id,
+    });
+
+    res.sendStatus(200);
+  } catch (error) {
     next(error);
   }
 };
@@ -105,47 +116,15 @@ export const getSingleUser: RequestHandler = async (req, res, next) => {
   }
 };
 
-//DELETE USER BY ID
-
-export const deleteUser: RequestHandler = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    // Хүсэлтээр ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id))
-      throw createHttpError(400, "Id буруу байна.");
-
-    // Хүсэлтээр орж ирсэн id-тай хэрэглэгч байгаа эсэхийг шалгана.
-    const user = await UserModel.findById(id);
-    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй");
-
-    await user.deleteOne();
-
-    res.sendStatus(204);
-  } catch (error) {
-    next(error);
-  }
-};
-
-//UPDATE AN USER BY ID
-
-export const updateUser: RequestHandler<
-  UserParams,
+export const updateUserPersonalInfo: RequestHandler<
+  unknown,
   unknown,
   UserBody,
   unknown
 > = async (req, res, next) => {
-  const { id } = req.params;
-  const {
-    firstName,
-    lastName,
-    birthDate,
-    email,
-    phone,
-    address,
-    avatar,
-    role,
-  } = req.body;
+  const userId = req.session.userId;
+  const { firstName, lastName, birthDate, email, phone, address, avatar } =
+    req.body;
   try {
     if (!firstName)
       throw createHttpError(400, "Хэрэглэгчийн нэр заавал шаардлагатай.");
@@ -160,24 +139,28 @@ export const updateUser: RequestHandler<
       throw createHttpError(400, "Хэрэглэгчийн и-мэйл заавал шаардлагатай.");
     if (!phone)
       throw createHttpError(400, "Хэрэглэгчийн утас заавал шаардлагатай.");
-    if (!role)
-      throw createHttpError(400, "Хэрэглэгчийн Role заавал шаардлагатай.");
 
-    const isEmailExist = await UserModel.findOne({ email, _id: { $ne: id } });
+    const isEmailExist = await UserModel.findOne({
+      email,
+      _id: { $ne: userId },
+    });
     if (isEmailExist)
       throw createHttpError(
         400,
         `${email} хаягтай хэрэглэгч бүртгэлтэй байна.`
       );
 
-    const isPhoneExist = await UserModel.findOne({ phone, _id: { $ne: id } });
+    const isPhoneExist = await UserModel.findOne({
+      phone,
+      _id: { $ne: userId },
+    });
     if (isPhoneExist)
       throw createHttpError(
         400,
         `${phone} утастай хэрэглэгч бүртгэлтэй байна.`
       );
 
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(userId);
     if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     await user.updateOne({
@@ -189,10 +172,11 @@ export const updateUser: RequestHandler<
       phone,
       address,
       avatar,
-      role,
     });
 
-    res.status(200).json({ message: "Амжилттай шинэчлээ" });
+    res
+      .status(200)
+      .json({ message: "Хэрэглэгчийн хувийн мэдээлэл амжилттай шинэчлэгдлээ" });
   } catch (error) {
     next(error);
   }
@@ -245,17 +229,86 @@ export const updateUserPassword: RequestHandler<
   }
 };
 
-export const becomeInstructor: RequestHandler = async (req, res, next) => {
+interface UserSocialAccountsBody {
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+  linkedin?: string;
+}
+
+export const updateUserSocialAccounts: RequestHandler<
+  unknown,
+  unknown,
+  UserSocialAccountsBody,
+  unknown
+> = async (req, res, next) => {
   const userId = req.session.userId;
+  const { facebook, instagram, twitter, linkedin } = req.body;
 
   try {
-    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
-    await UserModel.findByIdAndUpdate(userId, {
-      role: instructorRole?._id,
-    });
+    const urlChecker = new RegExp(
+      "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    );
 
-    res.sendStatus(200);
+    if (!urlChecker.test(facebook as string) && facebook)
+      throw createHttpError(400, "Фэйсбүүк хаяг буруу байна.");
+    if (!urlChecker.test(instagram as string) && instagram)
+      throw createHttpError(400, "Инстаграм хаяг буруу байна.");
+    if (!urlChecker.test(twitter as string) && twitter)
+      throw createHttpError(400, "Твиттер хаяг буруу байна.");
+    if (!urlChecker.test(linkedin as string) && linkedin)
+      throw createHttpError(400, "Линкэдин хаяг буруу байна.");
+
+    const user = await UserModel.findById(userId);
+    if (!user) throw createHttpError(400, "Хэрэглэгч олдсонгүй.");
+
+    user.socialAccounts.facebook = facebook || "";
+    user.socialAccounts.instagram = instagram || "";
+    user.socialAccounts.twitter = twitter || "";
+    user.socialAccounts.linkedin = linkedin || "";
+
+    await user.save();
+
+    res.status(200).json({ message: "Сошиол хаягууд амжилттай шинэчлэгдлээ." });
   } catch (error) {
+    next(error);
+  }
+};
+
+interface UserDeleteBody {
+  password?: string;
+}
+
+export const deleteUser: RequestHandler<
+  unknown,
+  unknown,
+  UserDeleteBody,
+  unknown
+> = async (req, res, next) => {
+  const userId = req.session.userId;
+  const { password } = req.body;
+
+  try {
+    // Хүсэлтээр ирсэн id зөв эсэхийг шалгана.
+    if (!mongoose.isValidObjectId(userId))
+      throw createHttpError(400, "Id буруу байна.");
+    if (!password) throw createHttpError(400, "Нууц үг заавал шаардлагатай.");
+
+    // Хүсэлтээр орж ирсэн id-тай хэрэглэгч байгаа эсэхийг шалгана.
+    const user = await UserModel.findById(userId).select("+password");
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй");
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) throw createHttpError(400, "Нууц үг буруу байна.");
+
+    await user.deleteOne();
+
+    req.session.destroy((error) => {
+      if (error) next(error);
+      else res.sendStatus(204);
+    });
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };

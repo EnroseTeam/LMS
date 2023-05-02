@@ -133,7 +133,7 @@ const UserPasswordForm: FC = () => {
           {msg && <MessageBox type={type} message={msg} />}
           <div>
             <label
-              className="text-head text-base-medium mb-[9px] block"
+              className="text-head text-base-medium mb-[9px] block after:content-['*'] after:text-red-500 after:ml-1"
               htmlFor="oldPassword"
             >
               Хуучин нууц үг
@@ -160,7 +160,7 @@ const UserPasswordForm: FC = () => {
 
           <div>
             <label
-              className="text-head text-base-medium mb-[9px] block"
+              className="text-head text-base-medium mb-[9px] block after:content-['*'] after:text-red-500 after:ml-1"
               htmlFor="newPassword"
             >
               Шинэ нууц үг
@@ -187,7 +187,7 @@ const UserPasswordForm: FC = () => {
 
           <div>
             <label
-              className="text-head text-base-medium mb-[9px] block"
+              className="text-head text-base-medium mb-[9px] block after:content-['*'] after:text-red-500 after:ml-1"
               htmlFor="reNewPassword"
             >
               Шинэ нууц үг давтан
