@@ -252,9 +252,17 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <h1 className="text-white text-2xl-medium">₮{course.price}</h1>
+            <h1
+              className={
+                course.discountPrice > 0
+                  ? " text-icon text-md-medium"
+                  : "text-white text-2xl-medium"
+              }
+            >
+              ₮{course.price}
+            </h1>
             {course.discountPrice > 0 && (
-              <h3 className="text-icon text-md-medium">
+              <h3 className="text-white text-2xl-medium">
                 ₮{course.discountPrice}
               </h3>
             )}
