@@ -9,7 +9,9 @@ interface PaginationProps {
 
 const Pagination: FC<PaginationProps> = ({ totalPage }) => {
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState<number>(Number(router.query.page) || 1);
+  const [currentPage, setCurrentPage] = useState<number>(
+    Number(router.query.page) || 1
+  );
 
   const navigateToPrev = (): void => {
     setCurrentPage(currentPage - 1);
@@ -53,7 +55,9 @@ const Pagination: FC<PaginationProps> = ({ totalPage }) => {
               }}
               disabled={currentPage === 1}
               className={`hover:text-head/70 duration-300 ${
-                currentPage === 1 ? "text-color-1 border-b-2 border-b-color-1" : ""
+                currentPage === 1
+                  ? "text-color-1 border-b-2 border-b-color-1"
+                  : ""
               }`}
             >
               1
@@ -76,7 +80,7 @@ const Pagination: FC<PaginationProps> = ({ totalPage }) => {
             )}
 
             {/* Prev Page */}
-            {totalPage > currentPage && currentPage - 1 > 1 && (
+            {totalPage >= currentPage && currentPage - 1 > 1 && (
               <button
                 onClick={(): void => {
                   navigateToPage(currentPage - 1);
@@ -88,11 +92,16 @@ const Pagination: FC<PaginationProps> = ({ totalPage }) => {
             )}
 
             {/* Current Page */}
-            {totalPage > currentPage && currentPage !== 1 && currentPage !== totalPage && (
-              <button disabled className="text-color-1 border-b-2 border-b-color-1">
-                {currentPage}
-              </button>
-            )}
+            {totalPage > currentPage &&
+              currentPage !== 1 &&
+              currentPage !== totalPage && (
+                <button
+                  disabled
+                  className="text-color-1 border-b-2 border-b-color-1"
+                >
+                  {currentPage}
+                </button>
+              )}
 
             {/* Next Page */}
             {totalPage > currentPage && totalPage - currentPage > 1 && (
@@ -106,16 +115,18 @@ const Pagination: FC<PaginationProps> = ({ totalPage }) => {
               </button>
             )}
 
-            {totalPage > currentPage && totalPage - currentPage > 2 && currentPage === 1 && (
-              <button
-                onClick={(): void => {
-                  navigateToPage(currentPage + 2);
-                }}
-                className={`hover:text-head/70 duration-300 `}
-              >
-                {currentPage + 2}
-              </button>
-            )}
+            {totalPage > currentPage &&
+              totalPage - currentPage > 2 &&
+              currentPage === 1 && (
+                <button
+                  onClick={(): void => {
+                    navigateToPage(currentPage + 2);
+                  }}
+                  className={`hover:text-head/70 duration-300 `}
+                >
+                  {currentPage + 2}
+                </button>
+              )}
 
             {/* Last Dots */}
             {totalPage > currentPage && totalPage - currentPage >= 3 && (
@@ -123,14 +134,16 @@ const Pagination: FC<PaginationProps> = ({ totalPage }) => {
             )}
 
             {/* Last Page */}
-            {totalPage > currentPage && (
+            {totalPage !== 1 && (
               <button
                 onClick={(): void => {
                   navigateToPage(totalPage);
                 }}
                 disabled={currentPage === totalPage}
                 className={`hover:text-head/70 duration-300 ${
-                  currentPage === totalPage ? "text-color-1 border-b-2 border-b-color-1" : ""
+                  currentPage === totalPage
+                    ? "text-color-1 border-b-2 border-b-color-1"
+                    : ""
                 }`}
               >
                 {totalPage}
