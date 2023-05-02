@@ -28,7 +28,7 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => (
           <BsClock />
           <span className="text-sm-regular text-text">
             {course.totalLessonLength.hour > 0 &&
-              `${course.totalLessonLength.hour} цаг`}
+              `${course.totalLessonLength.hour} цаг `}
             {course.totalLessonLength.minute > 0 &&
               `${course.totalLessonLength.minute} минут`}
           </span>

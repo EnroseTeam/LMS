@@ -16,7 +16,7 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
   >
     <div className="w-[10px] h-[10px] rotate-45 bg-white ml-[80%]" />
     <div className="bg-white p-[20px] rounded-lg shadow-shadow-4 max-content -mt-[5px]">
-      <Link href="/" className="flex items-center gap-[10px] mb-6">
+      <Link href="/user/profile" className="flex items-center gap-[10px] mb-6">
         <div className="w-16 h-16 rounded-full overflow-hidden">
           <Image
             src={user.avatar}

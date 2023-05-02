@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { BiChevronUp } from "react-icons/bi";
 
@@ -11,6 +11,10 @@ interface AccordionProps {
 const Accordion: FC<AccordionProps> = ({ content, header, state = false }) => {
   const [show, setShow] = useState(state);
 
+  useEffect(() => {
+    setShow(state);
+  }, [state]);
+
   return (
     <div className="border border-border-1 rounded-lg overflow-hidden">
       <button
@@ -19,10 +23,17 @@ const Accordion: FC<AccordionProps> = ({ content, header, state = false }) => {
           show ? "border-b border-b-border-1" : ""
         }`}
       >
-        <BiChevronUp size={20} className={`${show ? "" : "rotate-180"} duration-300`} />
+        <BiChevronUp
+          size={20}
+          className={`${show ? "" : "rotate-180"} duration-300`}
+        />
         {header}
       </button>
-      <div className={`${show ? "max-h-[1000px]" : "max-h-0"} w-full bg-white duration-300`}>
+      <div
+        className={`${
+          show ? "max-h-[1000px]" : "max-h-0"
+        } w-full bg-white duration-300`}
+      >
         {content}
       </div>
     </div>

@@ -18,7 +18,7 @@ const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {
   );
 
   return (
-    <div id="tab" className="w-full scroll-mt-32">
+    <div id="tab" className="w-full scroll-mt-36">
       <div className="mb-[60px] relative">
         <div className="w-full text-text text-md-medium flex items-center gap-[30px]">
           {tabHeaders.map((header, index) => (
@@ -43,7 +43,7 @@ const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {
         </div>
         <div className="absolute bottom-0 w-full h-[2px] bg-border-1 z-[-1]" />
       </div>
-      <div className="mb-[120px]">
+      <div>
         {tabContents.map(
           (tabContent, index) =>
             activeTab === tabHeaders[index].slug && tabContent
