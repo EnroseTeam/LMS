@@ -3,14 +3,14 @@ import { FC } from "react";
 const AdvantageSection: FC = () => (
   <>
     <div className="bg-color-2 py-[120px]">
-      <div className="container text-white">
+      <div className="container grid grid-cols-1 text-white">
         <h1 className="text-3xl-bold text-center mb-[9px]">
           Яагаад манайхаас сурах хэрэгтэй гэж?
         </h1>
         <p className="text-md-regular text-center mb-[51px]">
           Манайхыг сонгох шалтгаан
         </p>
-        <div className="grid grid-cols-3 gap-[30px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-[30px]">
           <div className="border border-solid border-white/[0.25] px-[60px] pt-[60px] pb-[51px] rounded-lg text-center group hover:bg-white cursor-pointer duration-300 flex flex-col items-center ">
             <div className="mb-[37px]">
               <svg
