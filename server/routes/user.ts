@@ -22,7 +22,7 @@ userRouter.post("/becomeInstructor", authenticateUser, becomeInstructor);
 
 userRouter.delete("/:id", deleteUser);
 
+userRouter.patch("/password", authenticateUser, updateUserPassword);
 userRouter.patch("/:id", updateUser);
-userRouter.patch("/:id/password", updateUserPassword);
 
 export default userRouter;
