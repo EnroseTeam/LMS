@@ -6,8 +6,8 @@ import Link from "next/link";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 
 const NewsSection: FC = () => (
-  <div className="container text-head mt-[120px] mb-[112px]">
-    <div className="flex items-center justify-between mb-[51px]">
+  <div className="container text-head mt-[60px] mb-[69px] lg:mt-[120px] lg:mb-[112px]">
+    <div className="flex flex-col items-start mb-[30px] lg:flex-row lg:items-center lg:justify-between lg:mb-[51px] gap-[30px]">
       <div>
         <h1 className="text-3xl-bold mb-[9px]">Мэдээ мэдээлэл</h1>
         <p className="text-text font-md-regular">Хамгийн сүүлийн үеийн мэдээ</p>
@@ -19,7 +19,7 @@ const NewsSection: FC = () => (
       </Link>
     </div>
 
-    <div className="grid grid-cols-3 gap-[30px]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-[20px] lg:gap-[30px]">
       <div>
         <Link
           href="/"
