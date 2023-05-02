@@ -48,7 +48,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         {course.name}
       </Link>
 
-      <div className="flex items-center gap-[20px]">
+      <div className="flex items-center justify-between whitespace-nowrap">
         <span className="flex items-center gap-2 text-md text-icon">
           <BsFileEarmarkText />
           <span className="text-sm-regular text-text">
@@ -60,7 +60,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
           <BsClock />
           <span className="text-sm-regular text-text">
             {course.totalLessonLength.hour > 0 &&
-              `${course.totalLessonLength.hour} цаг`}
+              `${course.totalLessonLength.hour} цаг `}
             {course.totalLessonLength.minute > 0 &&
               `${course.totalLessonLength.minute} минут`}
           </span>

@@ -29,11 +29,11 @@ export interface IUser {
   boughtCourses: ICourse[];
   ownCourses: ICourse[];
   avgRating: number;
-  socialAccounts: {
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    instagram: string;
+  socialAccounts?: {
+    facebook?: string;
+    twitter?: string;
+    linkedin?: string;
+    instagram?: string;
   };
   bio: string;
   createdAt: string;

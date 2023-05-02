@@ -58,6 +58,9 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
   const [isFirstLesson, setIsFirstLesson] = useState<boolean>(false);
   const [isLastLesson, setIsLastLesson] = useState<boolean>(false);
 
+  const [currentSectionPosition, setCurrentSectionPosition] =
+    useState<number>(0);
+
   useEffect(() => {
     let curSectionPos = 0;
     let curLessonPos = 0;
@@ -70,6 +73,8 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
         }
       });
     });
+
+    setCurrentSectionPosition(curSectionPos);
 
     if (curSectionPos === 0 && curLessonPos === 0) {
       setIsFirstLesson(true);
@@ -113,6 +118,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
       setIsLastLesson(false);
       setPrevUrl("");
       setNextUrl("");
+      setCurrentSectionPosition(0);
     };
   }, [lesson]);
 
@@ -177,7 +183,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
           {course.sections.map((section, index) => (
             <Accordion
               key={section._id}
-              state={index === 0}
+              state={currentSectionPosition === index}
               header={
                 <h1 className="text-head text-base-medium">{section.title}</h1>
               }
@@ -187,18 +193,18 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
                     <Link
                       key={curLesson._id}
                       href={`/lessons/${curLesson._id}`}
-                      className={`flex items-center justify-between ${
+                      className={`flex items-center justify-between group ${
                         curLesson._id === lesson._id
                           ? "pointer-events-none"
                           : ""
                       }`}
                     >
                       <span className="flex items-center gap-[10px] w-[50%]">
-                        <div className="p-2 rounded-full bg-color-1/[.07] text-color-1">
+                        <div className="p-2 rounded-full bg-color-1/[.07] text-color-1 group-hover:bg-color-1 group-hover:text-white duration-300">
                           <BsPlayFill size={12} />
                         </div>
                         <h3
-                          className={`text-text text-md-regular ${
+                          className={`text-text text-md-regular group-hover:text-color-1 duration-300 ${
                             curLesson._id === lesson._id ? "text-text/50" : ""
                           }`}
                         >
