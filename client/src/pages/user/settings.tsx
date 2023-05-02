@@ -8,7 +8,7 @@ import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 
-const ProfilePage: FC = () => {
+const SettingsPage: FC = () => {
   const { user, isLoading } = useAuthenticate();
   const [isReady, setIsReady] = useState<boolean>(false);
   const router = useRouter();
@@ -54,11 +54,13 @@ const ProfilePage: FC = () => {
     <>
       <Breadcrumbs
         breadcrumbItems={[
-          { title: "Хэрэглэгчийн булан", link: "/user/profile" },
+          { title: "Хэрэглэгчийн тохиргоо", link: "/user/settings" },
         ]}
       />
       <div className="container mb-[120px] mt-[90px]">
-        <h1 className="text-head text-3xl-bold mb-[9px]">Хэрэглэгчийн булан</h1>
+        <h1 className="text-head text-3xl-bold mb-[9px]">
+          Хэрэглэгчийн тохиргоо
+        </h1>
         <p className="text-text text-md-regular mb-[60px]">
           Та өөрийн мэдээлээ солих боломжтой.
         </p>
@@ -70,4 +72,4 @@ const ProfilePage: FC = () => {
   );
 };
 
-export default ProfilePage;
+export default SettingsPage;

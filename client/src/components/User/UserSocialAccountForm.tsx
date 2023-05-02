@@ -1,5 +1,9 @@
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { IUser } from "@/interfaces/user";
+import axios, { isAxiosError } from "axios";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
+import MessageBox from "../global/MessageBox";
 
 interface UserSocialAccountFormProps {
   user?: IUser;
@@ -8,6 +12,10 @@ interface UserSocialAccountFormProps {
 const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
   user = {} as IUser,
 }) => {
+  const router = useRouter();
+
+  const { mutate } = useAuthenticate();
+
   const [facebook, setFacebook] = useState<string>(
     user.socialAccounts?.facebook || ""
   );
@@ -21,10 +29,56 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
     user.socialAccounts?.linkedin || ""
   );
 
-  const submitHandler = (): void => undefined;
+  const [message, setMessage] = useState<string>("");
+  const [type, setType] = useState<"Error" | "Success">("Success");
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const submitHandler = async (): Promise<void> => {
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
+        setMessage("");
+
+        const res = await axios.patch(
+          "http://localhost:5000/api/users/social-accounts",
+          {
+            facebook,
+            instagram,
+            twitter,
+            linkedin,
+          },
+          { withCredentials: true }
+        );
+
+        setType("Success");
+        setMessage(res.data.message);
+
+        mutate({
+          ...user,
+          socialAccounts: { facebook, linkedin, instagram, twitter },
+        });
+
+        router.push({
+          hash: "tab",
+        });
+      } catch (error) {
+        setType("Error");
+        if (isAxiosError(error)) {
+          setMessage(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+          );
+        } else setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
 
   return (
     <div className="-mt-[30px]">
+      {message && <MessageBox type={type} message={message} className="mb-5" />}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -109,7 +163,12 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
           />
         </div>
       </form>
-      <button type="submit" form="social-account-form" className="btn-1 py-4">
+      <button
+        disabled={isSubmitting}
+        type="submit"
+        form="social-account-form"
+        className="btn-1 py-4"
+      >
         Сошиал хаяг шинэчлэх
       </button>
     </div>

@@ -22,38 +22,40 @@ const LoginForm: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const loginUser = async (): Promise<void> => {
-    try {
-      setIsSubmitting(true);
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
 
-      if (!email || !password) {
-        if (!email) setEmailCorrect(false);
-        if (!password) setPasswordCorrect(false);
-        return;
-      }
+        if (!email || !password) {
+          if (!email) setEmailCorrect(false);
+          if (!password) setPasswordCorrect(false);
+          return;
+        }
 
-      await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email,
-          password,
-          remember,
-        },
-        { withCredentials: true }
-      );
-
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
-
-      router.back();
-    } catch (error) {
-      if (isAxiosError(error))
-        setErrorMsg(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+        await axios.post(
+          "http://localhost:5000/api/auth/login",
+          {
+            email,
+            password,
+            remember,
+          },
+          { withCredentials: true }
         );
-      else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
-    } finally {
-      setIsSubmitting(false);
+
+        setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
+
+        router.back();
+      } catch (error) {
+        if (isAxiosError(error))
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
+        else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 

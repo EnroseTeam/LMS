@@ -66,6 +66,14 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
           </li>
         )}
         <li>
+          <Link
+            className="hover:text-text/70 duration-300"
+            href="/user/settings"
+          >
+            Тохиргоо
+          </Link>
+        </li>
+        <li>
           <Link className="hover:text-text/70 duration-300" href="/auth/logout">
             Гарах
           </Link>

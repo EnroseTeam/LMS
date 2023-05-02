@@ -85,57 +85,61 @@ const RegisterForm: FC = () => {
   }, [password, rePassword]);
 
   const registerUser = async (): Promise<void> => {
-    try {
-      setIsSubmitting(true);
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
 
-      if (
-        !firstName ||
-        !lastName ||
-        !email ||
-        !phone ||
-        !password ||
-        !rePasswordMatch ||
-        !isPasswordRequirementMet ||
-        !agreement
-      ) {
-        if (!firstName) setFirstNameExist(false);
-        if (!lastName) setLastNameExist(false);
-        if (!email) setEmailExist(false);
-        if (!phone) setPhoneExist(false);
-        if (!password) setPasswordExist(false);
-        if (!agreement)
-          setErrorMsg("Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай.");
-        if (!isPasswordRequirementMet)
-          setErrorMsg("Нууц үг шаардлага хангахгүй байна");
+        if (
+          !firstName ||
+          !lastName ||
+          !email ||
+          !phone ||
+          !password ||
+          !rePasswordMatch ||
+          !isPasswordRequirementMet ||
+          !agreement
+        ) {
+          if (!firstName) setFirstNameExist(false);
+          if (!lastName) setLastNameExist(false);
+          if (!email) setEmailExist(false);
+          if (!phone) setPhoneExist(false);
+          if (!password) setPasswordExist(false);
+          if (!agreement)
+            setErrorMsg(
+              "Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай."
+            );
+          if (!isPasswordRequirementMet)
+            setErrorMsg("Нууц үг шаардлага хангахгүй байна");
 
-        return;
-      }
+          return;
+        }
 
-      await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        {
-          email,
-          phone,
-          firstName,
-          lastName,
-          password,
-          rePassword,
-        },
-        { withCredentials: true }
-      );
-
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
-
-      router.back();
-    } catch (error) {
-      if (isAxiosError(error))
-        setErrorMsg(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+        await axios.post(
+          "http://localhost:5000/api/auth/signup",
+          {
+            email,
+            phone,
+            firstName,
+            lastName,
+            password,
+            rePassword,
+          },
+          { withCredentials: true }
         );
-    } finally {
-      setIsSubmitting(false);
+
+        setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
+
+        router.back();
+      } catch (error) {
+        if (isAxiosError(error))
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 

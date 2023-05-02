@@ -16,7 +16,7 @@ export interface IUser extends Document<Types.ObjectId> {
   birthDate?: Date;
   email: string;
   phone: string;
-  address?: UserAddress;
+  address: UserAddress;
   avatar: string;
   password: string;
   role: IUserRole;
@@ -29,7 +29,7 @@ export interface IUser extends Document<Types.ObjectId> {
     linkedin: string;
     instagram: string;
   };
-  bio: string;
+  bio?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,11 +48,10 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
     address: {
-      country: String,
-      city: String,
-      district: String,
-      apartment: String,
-      default: {},
+      country: { type: String, default: "" },
+      city: { type: String, default: "" },
+      district: { type: String, default: "" },
+      apartment: { type: String, default: "" },
     },
     avatar: {
       type: String,
@@ -78,11 +77,10 @@ const UserSchema = new Schema<IUser>(
       default: 0,
     },
     socialAccounts: {
-      facebook: String,
-      linkedin: String,
-      twitter: String,
-      instagram: String,
-      default: {},
+      facebook: { type: String, default: "" },
+      linkedin: { type: String, default: "" },
+      twitter: { type: String, default: "" },
+      instagram: { type: String, default: "" },
     },
     bio: String,
   },
