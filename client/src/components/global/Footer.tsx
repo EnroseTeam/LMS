@@ -14,13 +14,13 @@ interface FooterProps {
 const Footer: FC<FooterProps> = ({ categories }) => (
   <footer className="bg-head">
     <div className="container">
-      <div className="py-[60px] text-white flex items-center  justify-between border-b border-b-white/[.15]">
-        <div className="text-2xl-medium pb-2 hover:text-color-6">
+      <div className="py-[30px] lg:py-[60px] text-white flex flex-col items-start lg:flex-row lg:items-center gap-[28px]  justify-between border-b border-b-white/[.15]">
+        <div className="text-2xl-medium hover:text-color-6 ">
           <Link href="/">
             <Image src={mainLogo} alt="IntelliSense" />
           </Link>
         </div>
-        <div className="flex items-center gap-[30px]">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-[10px] lg:gap-[30px]">
           <p className="text-lg-medium">Манай сошиал хаягууд</p>
           <div className="flex justify-between gap-4 text-sm">
             <Link
@@ -55,10 +55,10 @@ const Footer: FC<FooterProps> = ({ categories }) => (
         </div>
       </div>
 
-      <div className="text-white grid grid-cols-12 pt-[60px] pb-[127px] border-b border-b-white/[.15]">
-        <div className="col-span-9 grid grid-cols-4">
-          <ul className="flex flex-col gap-4 text-md-regular">
-            <p className="uppercase mb-[26px] text-lg-medium">Бид</p>
+      <div className="text-white grid grid-cols-12 pt-[30px] lg:pt-[60px] pb-[127px] border-b border-b-white/[.15] gap-y-[30px]">
+        <div className="col-span-12 lg:col-span-9 grid grid-cols-4 gap-y-[30px]">
+          <ul className="flex flex-col col-span-4 lg:col-span-1 gap-4 text-md-regular">
+            <p className="uppercase mb-[10px] text-lg-medium">Бид</p>
             <li>
               <Link
                 href="/about-us"
@@ -76,9 +76,9 @@ const Footer: FC<FooterProps> = ({ categories }) => (
               </Link>
             </li>
           </ul>
-          <div className="grid grid-cols-2 col-span-2">
+          <div className="grid grid-cols-2 col-span-4 lg:col-span-2 gap-x-[41px]">
             <ul className="flex flex-col gap-4 text-md-regular">
-              <p className="uppercase mb-[26px] text-lg-medium">Ангилалууд</p>
+              <p className="uppercase mb-[10px] text-lg-medium">Ангилалууд</p>
               {categories?.slice(0, 6).map((category) => (
                 <li key={category._id}>
                   <Link
@@ -91,7 +91,7 @@ const Footer: FC<FooterProps> = ({ categories }) => (
               ))}
             </ul>
             <ul className="flex flex-col gap-4 text-md-regular">
-              <p className="uppercase mb-[26px] invisible">Categories</p>
+              <p className="uppercase mb-[10px] invisible">Categories</p>
               {categories?.slice(6).map((category) => (
                 <li key={category._id}>
                   <Link
@@ -105,8 +105,8 @@ const Footer: FC<FooterProps> = ({ categories }) => (
             </ul>
           </div>
 
-          <ul className="flex flex-col gap-4 text-md-regular">
-            <p className="uppercase mb-[26px] select-none text-lg-medium">
+          <ul className="flex flex-col gap-4 text-md-regular col-span-4 lg:col-span-1">
+            <p className="uppercase mb-[10px] select-none text-lg-medium">
               Тусламж
             </p>
             <li>
@@ -119,7 +119,7 @@ const Footer: FC<FooterProps> = ({ categories }) => (
             </li>
           </ul>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-12 lg:col-span-3">
           <p className="uppercase mb-[26px] select-none text-lg-medium">
             Холбоотой байх
           </p>
