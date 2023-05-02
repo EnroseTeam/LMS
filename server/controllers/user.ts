@@ -23,8 +23,8 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const user = await UserModel.findById(req.session.userId).populate([
       "role",
-      "boughtCourses",
-      "ownCourses",
+      { path: "boughtCourses", populate: ["instructor", "level"] },
+      { path: "ownCourses", populate: ["instructor", "level"] },
     ]);
     res.status(200).json(user);
   } catch (error) {
@@ -76,7 +76,11 @@ export const getInstructors: RequestHandler = async (req, res, next) => {
         { lastName: new RegExp("^" + search, "i") },
       ],
     })
-      .populate(["role", "boughtCourses", "ownCourses"])
+      .populate([
+        "role",
+        { path: "boughtCourses", populate: ["instructor", "level"] },
+        { path: "ownCourses", populate: ["instructor", "level"] },
+      ])
       .sort(order);
     const instructors = users.filter((user) => user.role.slug === "instructor");
     res.status(200).json({ message: "Амжилттай", body: instructors });
