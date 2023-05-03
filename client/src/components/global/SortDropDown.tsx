@@ -23,6 +23,7 @@ const SortDropDown: FC = () => {
     if (router.query.sort) {
       sortItems.map((item) => item.slug === router.query.sort && setSort(item));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
   return (
@@ -34,7 +35,11 @@ const SortDropDown: FC = () => {
           className="bg-bg-4 whitespace-nowrap rounded-lg py-4 px-[15px] flex items-center justify-between text-text text-sm-regular w-[25ch]"
         >
           {sort.title}
-          <BsChevronDown className={`duration-300 ${dropSort ? "rotate-[-180deg]" : "rotate-0"}`} />
+          <BsChevronDown
+            className={`duration-300 ${
+              dropSort ? "rotate-[-180deg]" : "rotate-0"
+            }`}
+          />
         </button>
       </div>
       <div

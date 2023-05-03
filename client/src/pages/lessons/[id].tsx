@@ -120,7 +120,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
       setNextUrl("");
       setCurrentSectionPosition(0);
     };
-  }, [lesson]);
+  }, [lesson, course.sections]);
 
   useEffect(() => {
     video.current?.load();
@@ -143,7 +143,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
         router.push(`/courses/${course._id}`);
       } else setIsReady(true);
     }
-  }, [router, user, isLoading]);
+  }, [router, user, isLoading, course._id]);
 
   if (!isReady) return <div>Loading</div>;
 

@@ -26,7 +26,7 @@ const LogoutPage: FC = () => {
     };
 
     logoutUser();
-  }, []);
+  }, [router, setLoggedIn]);
 
   return <></>;
 };

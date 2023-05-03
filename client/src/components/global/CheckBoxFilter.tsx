@@ -26,7 +26,10 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
   useEffect(() => {
     if (checkedItems.length > 0) {
       router.push({
-        query: { ...router.query, [title.slug.toLowerCase()]: checkedItems.join(",") },
+        query: {
+          ...router.query,
+          [title.slug.toLowerCase()]: checkedItems.join(","),
+        },
       });
     } else {
       delete router.query[title.slug.toLowerCase()];
@@ -34,6 +37,7 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
         query: router.query,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems]);
 
   return (
@@ -50,7 +54,9 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
       </button>
       <div
         className={`${
-          show ? "max-h-[1000px] opacity-100 py-[30px]" : "max-h-0 opacity-0 pointer-events-none"
+          show
+            ? "max-h-[1000px] opacity-100 py-[30px]"
+            : "max-h-0 opacity-0 pointer-events-none"
         } z-[10] duration-150 border-b`}
       >
         {displayItems.map((item, index) => (
@@ -64,8 +70,12 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
                 type="checkbox"
                 id={item.title}
                 onChange={(e): void => {
-                  if (e.target.checked) setCheckedItems([...checkedItems, item.slug]);
-                  else setCheckedItems(checkedItems.filter((checked) => checked !== item.slug));
+                  if (e.target.checked)
+                    setCheckedItems([...checkedItems, item.slug]);
+                  else
+                    setCheckedItems(
+                      checkedItems.filter((checked) => checked !== item.slug)
+                    );
                 }}
                 className="w-[15px] h-[15px] border-2 border-2-icon rounded-none text-black"
               />
@@ -80,7 +90,9 @@ const CheckBoxFilter: FC<CheckBoxFilterProps> = ({ title, items = [] }) => {
           <button
             className="text-sm-medium text-color-1 underline mt-[22px]"
             onClick={(): void =>
-              displayItems.length > 5 ? setDisplayItems(items.slice(0, 5)) : setDisplayItems(items)
+              displayItems.length > 5
+                ? setDisplayItems(items.slice(0, 5))
+                : setDisplayItems(items)
             }
           >
             {displayItems.length > 5 ? "Хураангуй" : "Дэлгэрэнгүй"}

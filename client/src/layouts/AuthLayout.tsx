@@ -22,7 +22,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
   useEffect(() => {
     if (!isLoading && user) router.push("/");
     if (!isLoading && !user) setIsReady(true);
-  }, [router.pathname, isLoading]);
+  }, [router, isLoading, user]);
 
   if (!isReady) return <div>Loading...</div>;
 

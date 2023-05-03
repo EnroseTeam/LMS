@@ -78,6 +78,7 @@ const RegisterForm: FC = () => {
     }
 
     setPasswordRequirements(newPasswordRequirements);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password]);
 
   useEffect(() => {

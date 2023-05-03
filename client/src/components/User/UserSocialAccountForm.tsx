@@ -17,16 +17,14 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
   const { mutate } = useAuthenticate();
 
   const [facebook, setFacebook] = useState<string>(
-    user.socialAccounts?.facebook || ""
+    user.socialAccounts.facebook
   );
   const [instagram, setInstagram] = useState<string>(
-    user.socialAccounts?.instagram || ""
+    user.socialAccounts.instagram
   );
-  const [twitter, setTwitter] = useState<string>(
-    user.socialAccounts?.twitter || ""
-  );
+  const [twitter, setTwitter] = useState<string>(user.socialAccounts.twitter);
   const [linkedin, setLinkedin] = useState<string>(
-    user.socialAccounts?.linkedin || ""
+    user.socialAccounts.linkedin
   );
 
   const [message, setMessage] = useState<string>("");

@@ -22,7 +22,7 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
     return () => {
       setInput("");
     };
-  }, [router.pathname]);
+  }, [router]);
 
   const searchHandler = (): void => {
     setSearchBarShow(false);
