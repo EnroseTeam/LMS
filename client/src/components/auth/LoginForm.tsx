@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 
 const LoginForm: FC = () => {
   const { setLoggedIn } = useAuthenticate();
@@ -170,10 +171,13 @@ const LoginForm: FC = () => {
             <FaFacebookF />
             Facebook-ээр нэвтрэх
           </button>
-          <button className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300">
+          <Link
+            href={getGoogleOAuthURL()}
+            className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
+          >
             <FaGoogle />
             Google-ээр нэвтрэх
-          </button>
+          </Link>
         </div>
       </form>
     </div>
