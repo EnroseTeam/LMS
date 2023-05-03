@@ -1,6 +1,7 @@
 import InstructorNavbar from "@/components/Instructors/InstructorNavbar";
 import InstructorSidebar from "@/components/Instructors/InstructorSidebar";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import LoadingScreen from "@/utils/LoadingScreen";
 import { useRouter } from "next/router";
 import { FC, useState, useEffect } from "react";
 
@@ -27,7 +28,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     }
   }, [router, isLoading, user]);
 
-  if (!isReady) return <div>Loading...</div>;
+  if (!isReady) return <LoadingScreen />;
 
   return (
     <>
@@ -37,7 +38,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       />
       <div className="flex">
         <InstructorSidebar sidebarShow={sidebarShow} />
-        <main className="bg-[#f7f8fb] min-h-screen flex-1 rounded-2xl">
+        <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl">
           {children}
         </main>
       </div>
