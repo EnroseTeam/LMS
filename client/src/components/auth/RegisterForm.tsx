@@ -6,6 +6,7 @@ import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import { useRouter } from "next/router";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 
 const RegisterForm: FC = () => {
   const router = useRouter();
@@ -77,7 +78,7 @@ const RegisterForm: FC = () => {
     }
 
     setPasswordRequirements(newPasswordRequirements);
-  }, [password, passwordRequirements]);
+  }, [password]);
 
   useEffect(() => {
     if (password !== rePassword) setRePasswordMatch(false);
@@ -355,14 +356,20 @@ const RegisterForm: FC = () => {
         <p className="text-center text-md-medium mb-5">Эсвэл</p>
 
         <div className="grid grid-cols-2 gap-5">
-          <button className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300">
+          <Link
+            href={"/"}
+            className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300"
+          >
             <FaFacebookF />
             Facebook-ээр бүртгүүлэх
-          </button>
-          <button className="flex items-center justify-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300">
+          </Link>
+          <Link
+            href={getGoogleOAuthURL()}
+            className="flex items-center justify-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
+          >
             <FaGoogle />
             Google-ээр бүртгүүлэх
-          </button>
+          </Link>
         </div>
       </form>
     </div>

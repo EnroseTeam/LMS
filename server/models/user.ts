@@ -40,9 +40,9 @@ const UserSchema = new Schema<IUser>(
     lastName: { type: String, required: true },
     fullName: {
       type: String,
-      default: function () {
-        return this.lastName + " " + this.firstName;
-      },
+      // default: function () {
+      //   return this.lastName + " " + this.firstName;
+      // },
     },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
