@@ -69,6 +69,7 @@ const UserPasswordForm: FC = () => {
     }
 
     setPasswordRequirements(newPasswordRequirements);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newPassword]);
 
   const submitHandler = async (): Promise<void> => {

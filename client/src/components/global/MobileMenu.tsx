@@ -61,6 +61,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
     closeMobileMenu();
     closeAllChildren();
     closeUserMenu();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   return (

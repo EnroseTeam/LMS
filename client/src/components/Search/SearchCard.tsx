@@ -12,8 +12,7 @@ const SearchCard: FC<SearchCardProps> = ({ searchItem }) => {
   useEffect(() => {
     if (searchItem.type === "Instructor")
       setLink(`/instructors/${searchItem._id}`);
-    else if (searchItem.type === "Course")
-      setLink(`/courses/${searchItem._id}`);
+    if (searchItem.type === "Course") setLink(`/courses/${searchItem._id}`);
   }, [searchItem]);
   return (
     <div className="flex flex-col">
