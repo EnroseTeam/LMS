@@ -3,9 +3,13 @@ import { FC } from "react";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { HiChevronDown } from "react-icons/hi";
+import CourseCard from "@/components/Instructors/Dashboard/Courses/CourseCard";
+import Pagination from "@/components/global/Pagination";
 
 const InstructorCoursesPage: FC = () => {
   const { user } = useAuthenticate();
+
+  if (!user) return <></>;
 
   return (
     <>
@@ -42,7 +46,12 @@ const InstructorCoursesPage: FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 mb-[30px]"></div>
+        <div className="grid grid-cols-5 gap-[30px] mb-[30px]">
+          {user.ownCourses.map((course) => (
+            <CourseCard key={course._id} course={course} />
+          ))}
+        </div>
+        <Pagination totalPage={1} />
       </div>
     </>
   );

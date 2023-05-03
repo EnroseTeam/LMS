@@ -1,5 +1,5 @@
-import InstructorNavbar from "@/components/Instructors/InstructorNavbar";
-import InstructorSidebar from "@/components/Instructors/InstructorSidebar";
+import InstructorNavbar from "@/components/Instructors/Dashboard/Navbar";
+import InstructorSidebar from "@/components/Instructors/Dashboard/Sidebar";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import LoadingScreen from "@/utils/LoadingScreen";
 import { useRouter } from "next/router";
@@ -38,7 +38,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       />
       <div className="flex">
         <InstructorSidebar sidebarShow={sidebarShow} />
-        <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl">
+        <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">
           {children}
         </main>
       </div>
