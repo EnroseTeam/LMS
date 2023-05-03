@@ -36,7 +36,7 @@ const Layout: FC<LayoutProps> = ({ children, props }) => {
 
   return (
     <div className={roboto.className}>
-      <Header />
+      <Header categories={props.categories} />
       <main>{children}</main>
       <Footer categories={props.categories} />
     </div>
