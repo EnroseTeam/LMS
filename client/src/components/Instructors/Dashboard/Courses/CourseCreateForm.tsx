@@ -1,0 +1,331 @@
+import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
+import { FC, useRef, useState } from "react";
+import { HiChevronDown } from "react-icons/hi";
+
+interface CourseCreateFormProps {
+  levels: ICourseLevel[];
+  categories: ICourseCategory[];
+  image: string;
+  video: string;
+}
+
+const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image, video }) => {
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [discountPrice, setDiscountPrice] = useState<number>(0);
+
+  const [levelDropDownShow, setLevelDropDownShow] = useState<boolean>(false);
+  const [categoryDropDownShow, setCategoryDropDownShow] = useState<boolean>(false);
+
+  const [selectedLevel, setSelectedLevel] = useState<{
+    name: string;
+    _id: string;
+  }>({
+    name: "",
+    _id: "",
+  });
+  const [selectedCategory, setSelectedCategory] = useState<{
+    name: string;
+    _id: string;
+  }>({ name: "", _id: "" });
+
+  const [goals, setGoals] = useState<string[]>([]);
+  const newGoal = useRef<HTMLInputElement>(null);
+
+  const [requirements, setRequirements] = useState<string[]>([]);
+  const newRequirement = useRef<HTMLInputElement>(null);
+
+  return (
+    <div className="rounded-2xl shadow-shadow-dashboard bg-white ">
+      <div className="px-[30px] py-5 border-b border-b-border-1">
+        <h2 className="text-head text-lg-medium">Сургалтын ерөнхий мэдээлэл</h2>
+      </div>
+      <div className="p-[30px]">
+        <form id="course-create-form" className="grid grid-cols-2 gap-[30px] mb-[30px]">
+          {/* Name */}
+          <div className="col-span-2">
+            <label
+              htmlFor="name"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Сургалтын нэр
+            </label>
+            <input
+              value={name}
+              onChange={(e): void => {
+                setName(e.target.value);
+              }}
+              type="text"
+              id="name"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+              placeholder="Сургалтын нэр"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="col-span-2">
+            <label
+              htmlFor="description"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Тайлбар
+            </label>
+            <textarea
+              value={description}
+              onChange={(e): void => {
+                setDescription(e.target.value);
+              }}
+              id="description"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 resize-none overflow-y-auto"
+              placeholder="Тайлбар"
+              rows={10}
+            />
+          </div>
+
+          {/* Level */}
+          <div className="relative">
+            <label
+              htmlFor="level"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Түвшин
+            </label>
+            <button
+              onClick={(): void => {
+                setLevelDropDownShow(!levelDropDownShow);
+              }}
+              id="level"
+              type="button"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between"
+            >
+              {selectedLevel.name ? selectedLevel.name : "Түвшин сонгох"}
+              <HiChevronDown
+                className={levelDropDownShow ? "-rotate-180 duration-300" : "duration-300"}
+                size={18}
+              />
+            </button>
+
+            <div
+              className={`absolute top-full right-0 left-0 w-full bg-white border border-border-2 p-5 rounded-lg mt-2 text-text text-md-regular flex flex-col gap-5 items-start overflow-hidden ${
+                levelDropDownShow ? "block" : "hidden"
+              } duration-150`}
+            >
+              {levels.map((level) => (
+                <button
+                  type="button"
+                  onClick={(): void => {
+                    setSelectedLevel({ name: level.name, _id: level._id });
+                    setLevelDropDownShow(false);
+                  }}
+                  className="hover:text-color-1 duration-300"
+                  key={level._id}
+                >
+                  {level.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Category */}
+          <div className="relative">
+            <label
+              htmlFor="category"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Ангилал
+            </label>
+            <button
+              onClick={(): void => {
+                setCategoryDropDownShow(!categoryDropDownShow);
+              }}
+              id="category"
+              type="button"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between"
+            >
+              {selectedCategory.name ? selectedCategory.name : "Ангилал сонгох"}
+              <HiChevronDown
+                className={categoryDropDownShow ? "-rotate-180 duration-300" : "duration-300"}
+                size={18}
+              />
+            </button>
+
+            <div
+              className={`absolute top-full right-0 left-0 w-full bg-white border border-border-2 p-5 rounded-lg mt-2 text-text text-md-regular flex flex-col gap-5 items-start overflow-hidden  ${
+                categoryDropDownShow ? "block" : "hidden"
+              } duration-150`}
+            >
+              {categories.map((category) => (
+                <button
+                  onClick={(): void => {
+                    setSelectedCategory({
+                      name: category.name,
+                      _id: category._id,
+                    });
+                    setCategoryDropDownShow(false);
+                  }}
+                  type="button"
+                  className="hover:text-color-1 duration-300"
+                  key={category._id}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Goals */}
+          <div>
+            <label
+              htmlFor="newGoal"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Сургалтын зорилго
+            </label>
+            <div className="w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4">
+              <ol className="list-decimal ml-3">
+                {goals.map((goal, index) => (
+                  <li key={`goal-${index}`}>{goal}</li>
+                ))}
+              </ol>
+            </div>
+            <div className="flex items-center gap-5">
+              <div className="flex-1 flex items-center gap-2">
+                <input
+                  ref={newGoal}
+                  className="flex-1 border border-border-2 rounded-lg py-[14px] px-4 text-text text-sm-medium focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+                  type="text"
+                  id="newGoal"
+                  placeholder="Шинэ зорилго"
+                  onKeyDown={(e): void => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (newGoal.current !== null && newGoal.current.value) {
+                        setGoals([...goals, newGoal.current.value]);
+                        newGoal.current.value = "";
+                        newGoal.current.focus();
+                      }
+                    }
+                  }}
+                />
+              </div>
+              <button
+                onClick={(): void => {
+                  if (newGoal.current !== null && newGoal.current.value) {
+                    setGoals([...goals, newGoal.current.value]);
+                    newGoal.current.value = "";
+                    newGoal.current.focus();
+                  }
+                }}
+                type="button"
+                className="btn-1-outline py-3 px-4 text-sm-medium"
+              >
+                Нэмэх
+              </button>
+            </div>
+          </div>
+
+          {/* Requirements */}
+          <div>
+            <label
+              htmlFor="newRequirement"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Тавигдах шаардлага
+            </label>
+            <div className="w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4">
+              <ol className="list-decimal ml-3">
+                {requirements.map((requirement, index) => (
+                  <li key={`requirement-${index}`}>{requirement}</li>
+                ))}
+              </ol>
+            </div>
+            <div className="flex items-center gap-5">
+              <div className="flex-1 flex items-center gap-2">
+                <input
+                  ref={newRequirement}
+                  className="flex-1 border border-border-2 rounded-lg py-[14px] px-4 text-text text-sm-medium focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+                  type="text"
+                  id="newRequirement"
+                  placeholder="Шинэ шаардлага"
+                  onKeyDown={(e): void => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (newRequirement.current !== null && newRequirement.current.value) {
+                        setRequirements([...requirements, newRequirement.current.value]);
+                        newRequirement.current.value = "";
+                        newRequirement.current.focus();
+                      }
+                    }
+                  }}
+                />
+              </div>
+              <button
+                onClick={(): void => {
+                  if (newRequirement.current !== null && newRequirement.current.value) {
+                    setRequirements([...requirements, newRequirement.current.value]);
+                    newRequirement.current.value = "";
+                    newRequirement.current.focus();
+                  }
+                }}
+                type="button"
+                className="btn-1-outline py-3 px-4 text-sm-medium"
+              >
+                Нэмэх
+              </button>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div>
+            <label
+              htmlFor="price"
+              className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
+            >
+              Үндсэн үнэ
+            </label>
+            <input
+              value={price}
+              onChange={(e): void => {
+                setPrice(Number(e.target.value));
+              }}
+              type="number"
+              id="price"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+              placeholder="Үндсэн үнэ"
+            />
+          </div>
+
+          {/* Discount Price */}
+          <div>
+            <label htmlFor="discountPrice" className="block mb-[9px] text-head text-base-medium">
+              Хямдралтай үнэ
+            </label>
+            <input
+              value={discountPrice}
+              onChange={(e): void => {
+                setDiscountPrice(Number(e.target.value));
+              }}
+              type="number"
+              id="discountPrice"
+              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+              placeholder="Хямдралтай үнэ"
+            />
+          </div>
+        </form>
+
+        {/* Action Buttons */}
+        <div className="flex items-center justify-between">
+          <button type="button" className="btn-1-outline py-4">
+            Болих
+          </button>
+          <button type="submit" form="course-create-form" className="btn-1 py-4">
+            Нэмэх
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CourseCreateForm;
