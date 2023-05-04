@@ -87,7 +87,7 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
   };
 
   return (
-    <header className="w-full bg-head text-white sticky top-0 z-[9999]">
+    <header className="w-full bg-head text-white sticky top-0 z-[999]">
       <div className="container py-5 border-b border-b-white/[.15] flex items-center justify-between">
         <div className="flex items-center gap-7">
           <Link href="/">

@@ -2,7 +2,7 @@ import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import axios from "axios";
 
 import { GetServerSideProps } from "next";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 
 import CourseCard from "@/components/Courses/CourseCard";
@@ -18,6 +18,9 @@ import SortDropDown from "@/components/global/SortDropDown";
 import { IUser } from "@/interfaces/user";
 import Pagination from "@/components/global/Pagination";
 import { axiosInstance } from "@/utils/axiosInstance";
+
+import { BiFilterAlt } from "react-icons/bi";
+import { HiChevronRight } from "react-icons/hi";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
@@ -141,6 +144,45 @@ const CoursesPage: FC<CoursesPageProps> = ({
     })
   );
 
+  const filterContent = (
+    <>
+      <CheckBoxFilter
+        items={categoryItems}
+        title={{ name: "Ангилал", slug: "category" }}
+      />
+      <RadioButtonFilter
+        items={ratingItems}
+        title={{ name: "Үнэлгээ", slug: "rating" }}
+      />
+      <CheckBoxFilter
+        items={instructorItems}
+        title={{ name: "Багш", slug: "instructor" }}
+      />
+      <RadioButtonFilter
+        items={priceItems}
+        title={{ name: "Үнэ", slug: "price" }}
+      />
+      <CheckBoxFilter
+        items={levelItems}
+        title={{ name: "Түвшин", slug: "level" }}
+      />
+      <CheckBoxFilter
+        items={lengthItems}
+        title={{ name: "Хугацаа", slug: "length" }}
+      />
+    </>
+  );
+
+  const [filterShow, setFilterShow] = useState<boolean>(false);
+
+  const showFilter = (): void => {
+    setFilterShow(true);
+  };
+
+  const closeFilter = (): void => {
+    setFilterShow(false);
+  };
+
   return (
     <div>
       <Breadcrumbs
@@ -156,9 +198,12 @@ const CoursesPage: FC<CoursesPageProps> = ({
           </p>
         </div>
 
-        <div id="courses" className="grid grid-cols-4 gap-[60px]">
+        <div
+          id="courses"
+          className="grid grid-cols-1 lg:grid-cols-4 gap-[60px]"
+        >
           <div className="col-span-3">
-            <div className="flex justify-between items-center mb-[22px]">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 mb-[22px]">
               <p className="text-text text-sm-regular">
                 Нийт{" "}
                 <span className="text-head text-sm-medium">
@@ -166,10 +211,19 @@ const CoursesPage: FC<CoursesPageProps> = ({
                 </span>
                 үр дүн
               </p>
-              <SortDropDown />
+              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+                <SortDropDown />
+                <button
+                  onClick={showFilter}
+                  className="btn-4 py-4 px-6 text-md-medium flex items-center gap-2 lg:hidden"
+                >
+                  <BiFilterAlt size={16} />
+                  Шүүлт
+                </button>
+              </div>
             </div>
             {totalCourses > 0 && (
-              <div className="grid grid-cols-3 gap-[30px] mb-[77px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[30px] mb-[77px]">
                 {courses.map((course) => (
                   <CourseCard course={course} key={course._id} />
                 ))}
@@ -182,32 +236,32 @@ const CoursesPage: FC<CoursesPageProps> = ({
             )}
             {totalCourses > 0 && <Pagination totalPage={totalPages} />}
           </div>
-          <div className="flex flex-col gap-[30px]">
-            <CheckBoxFilter
-              items={categoryItems}
-              title={{ name: "Ангилал", slug: "category" }}
-            />
-            <RadioButtonFilter
-              items={ratingItems}
-              title={{ name: "Үнэлгээ", slug: "rating" }}
-            />
-            <CheckBoxFilter
-              items={instructorItems}
-              title={{ name: "Багш", slug: "instructor" }}
-            />
-            <RadioButtonFilter
-              items={priceItems}
-              title={{ name: "Үнэ", slug: "price" }}
-            />
-            <CheckBoxFilter
-              items={levelItems}
-              title={{ name: "Түвшин", slug: "level" }}
-            />
-            <CheckBoxFilter
-              items={lengthItems}
-              title={{ name: "Хугацаа", slug: "length" }}
-            />
+          <div className="hidden lg:flex flex-col gap-[30px]">
+            {filterContent}
           </div>
+
+          {/* Mobile Filter */}
+          <div
+            className={`fixed top-0 bottom-0 w-[70vw] min-h-screen bg-white z-[1000] p-5 overflow-auto ${
+              filterShow ? "right-0" : "-right-full"
+            } duration-300`}
+          >
+            <button
+              onClick={closeFilter}
+              className="text-base-medium w-full text-left p-5 rounded-lg text-color-1 bg-color-1/[.07] flex items-center gap-2 mb-5"
+            >
+              Шүүлтүүр
+              <HiChevronRight size={18} />
+            </button>
+            <div className="flex flex-col gap-[30px]">{filterContent}</div>
+          </div>
+          {/* Backdrop */}
+          <div
+            onClick={closeFilter}
+            className={`fixed top-0 right-0 bottom-0 left-0 w-screen h-screen bg-[#18181a]/70 z-[999] ${
+              filterShow ? "opacity-100" : "opacity-0 pointer-events-none"
+            } duration-300`}
+          />
         </div>
       </div>
     </div>

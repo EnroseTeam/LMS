@@ -1,9 +1,10 @@
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { IUser } from "@/interfaces/user";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import MessageBox from "../global/MessageBox";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface UserSocialAccountFormProps {
   user?: IUser;
@@ -38,16 +39,12 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
         setIsSubmitting(true);
         setMessage("");
 
-        const res = await axios.patch(
-          "http://localhost:5000/api/users/social-accounts",
-          {
-            facebook,
-            instagram,
-            twitter,
-            linkedin,
-          },
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.patch("/api/users/social-accounts", {
+          facebook,
+          instagram,
+          twitter,
+          linkedin,
+        });
 
         setType("Success");
         setMessage(res.data.message);
