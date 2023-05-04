@@ -1,13 +1,52 @@
 import { useAuthenticate } from "@/hooks/useAuthenticate";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { HiChevronDown } from "react-icons/hi";
 import CourseCard from "@/components/Instructors/Dashboard/Courses/CourseCard";
-import Pagination from "@/components/global/Pagination";
+import { ICourse } from "@/interfaces/courses";
+import { IUser } from "@/interfaces/user";
+import { useRouter } from "next/router";
 
 const InstructorCoursesPage: FC = () => {
+  const router = useRouter();
   const { user } = useAuthenticate();
+
+  const [courses, setCourses] = useState<ICourse[]>((user as IUser).ownCourses);
+  const [search, setSearch] = useState<string>(router.query.q as string);
+
+  useEffect(() => {
+    if (router.query.q) {
+      setCourses(
+        (user as IUser).ownCourses.filter((course) =>
+          course.name
+            .toLowerCase()
+            .includes((router.query.q as string).toLowerCase())
+        )
+      );
+    } else {
+      setCourses((user as IUser).ownCourses);
+    }
+  }, [router.query.q, user]);
+
+  const searchHandler = (): void => {
+    if (search) {
+      router.push({
+        query: { ...router.query, q: search },
+      });
+      setCourses(
+        (user as IUser).ownCourses.filter((course) =>
+          course.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      delete router.query.q;
+      router.push({
+        query: router.query,
+      });
+      setCourses((user as IUser).ownCourses);
+    }
+  };
 
   if (!user) return <></>;
 
@@ -24,6 +63,13 @@ const InstructorCoursesPage: FC = () => {
               <HiMagnifyingGlass />
             </label>
             <input
+              value={search}
+              onChange={(e): void => {
+                setSearch(e.target.value);
+              }}
+              onKeyDown={(e): void => {
+                if (e.key === "Enter") searchHandler();
+              }}
               type="text"
               className="flex-1 py-[15px] h-full focus:outline-none placeholder:text-text text-sm-regular"
               placeholder="Хайх"
@@ -46,12 +92,18 @@ const InstructorCoursesPage: FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 gap-[30px] mb-[30px]">
-          {user.ownCourses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))}
-        </div>
-        <Pagination totalPage={1} />
+        {courses.length === 0 && (
+          <p className="text-center text-text text-md-medium">
+            Илэрц олдсонгүй.
+          </p>
+        )}
+        {courses.length > 0 && (
+          <div className="grid grid-cols-3 gap-[30px] mb-[30px]">
+            {courses.map((course) => (
+              <CourseCard key={course._id} course={course} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
