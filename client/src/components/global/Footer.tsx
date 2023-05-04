@@ -55,7 +55,7 @@ const Footer: FC<FooterProps> = ({ categories }) => (
         </div>
       </div>
 
-      <div className="text-white grid grid-cols-12 pt-[30px] lg:pt-[60px] pb-[127px] border-b border-b-white/[.15] gap-y-[30px]">
+      <div className="text-white grid grid-cols-12 pt-[30px] lg:pt-[60px] pb-[30px] lg:pb-[127px] border-b border-b-white/[.15] gap-y-[30px]">
         <div className="col-span-12 lg:col-span-9 grid grid-cols-4 gap-y-[30px]">
           <ul className="flex flex-col col-span-4 lg:col-span-1 gap-4 text-md-regular">
             <p className="uppercase mb-[10px] text-lg-medium">Бид</p>
@@ -123,7 +123,7 @@ const Footer: FC<FooterProps> = ({ categories }) => (
           <p className="uppercase mb-[26px] select-none text-lg-medium">
             Холбоотой байх
           </p>
-          <p className="mb-5 text-md-regular">
+          <p className="mb-[11px] lg:mb-5 text-md-regular">
             Бид спам явуулахгүй тул санаа зовох зүйлгүй.
           </p>
           <div className="relative bg-white w-full h-[60px] rounded-full pl-[30px] text-sm-regular focus-within:ring-4 focus-within:ring-color-1">
@@ -140,7 +140,7 @@ const Footer: FC<FooterProps> = ({ categories }) => (
         </div>
       </div>
 
-      <div className="flex items-center justify-between py-12 text-white text-xs-regular">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between py-[30px] lg:py-12 text-white text-xs-regular gap-[30px]">
         <p>© 2023 IntelliSense. Бүх эрх хуулиар хамгаалагдсан.</p>
 
         <div className="flex items-center">
