@@ -12,12 +12,12 @@ interface OpenCartProps {
 
 const OpenCart: FC<OpenCartProps> = ({ openCartShow, closeOpenCart }) => (
   <div
-    className={`absolute -right-7 top-full mt-5  ${
+    className={`absolute -right-7 top-full  mt-5  ${
       openCartShow ? "opacity-100" : "opacity-0 pointer-events-none"
     } duration-300`}
   >
     <div className="bg-white w-[10px] h-[10px] rotate-45 ml-[367px]" />
-    <div className="bg-white rounded-lg shadow-shadow-4 w-[410px] -mt-[6px] text-head">
+    <div className="bg-white  rounded-lg shadow-shadow-4 w-[410px] -mt-[6px] text-head">
       <div className="flex flex-col gap-5 px-[30px] pt-[30px] mb-[30px]">
         <div className="flex items-center gap-[10px] relative">
           <button className="text-md text-color-1 absolute top-0 right-0">

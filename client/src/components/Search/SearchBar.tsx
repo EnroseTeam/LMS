@@ -46,9 +46,9 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
           searchBarShow
             ? "opacity-100 top-0"
             : "opacity-0 pointer-events-none top-[-100%]"
-        } fixed w-screen bg-white text-head duration-150 z-[9999]`}
+        } fixed w-screen h-fit bg-white text-head duration-150 z-[9999] overflow-y-auto`}
       >
-        <div className="max-w-[1390px] mx-auto mt-[100px] mb-[97px] px-10 lg:px-0">
+        <div className="max-w-[1390px] max-h-screen mx-auto mt-[100px] mb-[97px] px-10 width-1390:px-0">
           <div className="relative flex gap-4 justify-between items-center border-b mb-[51px]">
             <label htmlFor="search">
               <FiSearch className="text-icon" size={25} />
@@ -69,7 +69,7 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
               }}
             />
             <button
-              className="absolute right-0 text-icon p-3 rounded-full bg-color-1/[.07]"
+              className="fixed top-10 right-10 sm:absolute sm:right-0 sm:top-0 text-icon p-3 rounded-full bg-color-1/[.07]"
               onClick={(): void => {
                 setSearchBarShow(false);
               }}
@@ -78,29 +78,44 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
             </button>
           </div>
           <h1 className="text-lg-medium mb-5">Яг одоо эрэлттэй</h1>
-          <ul className="mb-[30px] max-content">
-            <li className="text-[15px] font-normal leading-[35px] hover:font-medium hover:text-color-1 hover:underline">
-              <Link href="#">
+          <ul className="mb-[30px]">
+            <li>
+              <Link
+                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
+                href="#"
+              >
                 The Ultimate Drawing Course - Beginner to Advanced
               </Link>
             </li>
-            <li className="text-[15px] font-normal leading-[35px] hover:font-medium hover:text-color-1 hover:underline">
-              <Link href="#">
+            <li>
+              <Link
+                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
+                href="#"
+              >
                 The Ultimate Drawing Course - Beginner to Advanced
               </Link>
             </li>
-            <li className="text-[15px] font-normal leading-[35px] hover:font-medium hover:text-color-1 hover:underline">
-              <Link href="#">
+            <li>
+              <Link
+                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
+                href="#"
+              >
                 The Ultimate Drawing Course - Beginner to Advanced
               </Link>
             </li>
-            <li className="text-[15px] font-normal leading-[35px] hover:font-medium hover:text-color-1 hover:underline">
-              <Link href="#">
+            <li>
+              <Link
+                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
+                href="#"
+              >
                 The Ultimate Drawing Course - Beginner to Advanced
               </Link>
             </li>
-            <li className="text-[15px] font-normal leading-[35px] hover:font-medium hover:text-color-1 hover:underline">
-              <Link href="#">
+            <li>
+              <Link
+                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
+                href="#"
+              >
                 The Ultimate Drawing Course - Beginner to Advanced
               </Link>
             </li>
