@@ -1,3 +1,5 @@
+import "swiper/css";
+
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
