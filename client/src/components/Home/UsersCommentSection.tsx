@@ -20,14 +20,23 @@ const UsersCommentSection: FC = () => (
 
       <Swiper
         grabCursor={true}
-        spaceBetween={30}
-        slidesPerView={3}
+        spaceBetween={20}
+        slidesPerView={1}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        }}
         navigation={{
           nextEl: ".slider-style-1-next",
           prevEl: ".slider-style-1-prev",
         }}
         modules={[Navigation]}
-        className="mb-[116px]"
+        className="mb-[30px] md:mb-[80px] lg:mb-[116px]"
       >
         <SwiperSlide>
           <UserCommentCard />
@@ -55,7 +64,7 @@ const UsersCommentSection: FC = () => (
         </div>
       </Swiper>
 
-      <div className="grid grid-cols-4 text-center">
+      <div className="grid grid-cols-1 gap-y-[30px] md:grid-cols-2 lg:grid-cols-4 text-center">
         <div className="flex flex-col gap-[7px]">
           <h1 className="text-color-6 text-[35px] font-bold leading-[41px]">
             350,000+
