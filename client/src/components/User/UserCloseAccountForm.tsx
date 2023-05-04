@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import MessageBox from "../global/MessageBox";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 const UserCloseAccountForm: FC = () => {
   const router = useRouter();
@@ -21,10 +22,12 @@ const UserCloseAccountForm: FC = () => {
         setMessage("");
         setIsSubmitting(true);
 
-        await axios.delete("http://localhost:5000/api/users/delete-account", {
-          withCredentials: true,
-          data: { password },
-        });
+        await axiosInstance.delete(
+          "http://localhost:5000/api/users/delete-account",
+          {
+            data: { password },
+          }
+        );
 
         router.push("/auth/logout");
       } catch (error) {

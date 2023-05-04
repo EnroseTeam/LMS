@@ -9,6 +9,7 @@ import InstructorCard from "@/components/Instructors/InstructorCard";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import SortDropDown from "@/components/global/SortDropDown";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface InstructorsPageProps {
   categories: ICourseCategory[];
@@ -21,10 +22,8 @@ export const getServerSideProps: GetServerSideProps<
   const { q: search = "", sort = "popular" } = query;
 
   const [categoryRes, instructorsRes] = await axios.all([
-    axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(
-      `http://localhost:5000/api/users/instructors?q=${search}&sort=${sort}`
-    ),
+    axiosInstance.get("/api/courses/categories"),
+    axiosInstance.get(`/api/users/instructors?q=${search}&sort=${sort}`),
   ]);
   return {
     props: {

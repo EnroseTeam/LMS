@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
@@ -6,6 +6,7 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 const LoginForm: FC = () => {
   const { setLoggedIn } = useAuthenticate();
@@ -33,15 +34,11 @@ const LoginForm: FC = () => {
           return;
         }
 
-        await axios.post(
-          "http://localhost:5000/api/auth/login",
-          {
-            email,
-            password,
-            remember,
-          },
-          { withCredentials: true }
-        );
+        await axiosInstance.post("/api/auth/login", {
+          email,
+          password,
+          remember,
+        });
 
         setLoggedIn(true);
         localStorage.setItem("loggedIn", JSON.stringify(true));

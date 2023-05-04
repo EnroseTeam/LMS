@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { ICourseCategory } from "@/interfaces/courses";
 import { GetServerSideProps } from "next";
-import axios from "axios";
 import Image from "next/image";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import placeholder from "../../assets/placeholder.png";
 
 import { RxCross2 } from "react-icons/rx";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface CartPageProps {
   categories: ICourseCategory[];
@@ -15,9 +15,7 @@ interface CartPageProps {
 export const getServerSideProps: GetServerSideProps<
   CartPageProps
 > = async () => {
-  const categoryRes = await axios.get(
-    "http://localhost:5000/api/courses/categories"
-  );
+  const categoryRes = await axiosInstance.get("/api/courses/categories");
   return {
     props: {
       categories: categoryRes.data.body,

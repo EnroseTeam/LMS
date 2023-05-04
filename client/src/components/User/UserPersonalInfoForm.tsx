@@ -1,5 +1,5 @@
 import { IUser } from "@/interfaces/user";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import { FC, useState } from "react";
 
@@ -8,6 +8,7 @@ import { BiLoader } from "react-icons/bi";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface UserPersonalInfoFormProps {
   user?: IUser;
@@ -62,8 +63,8 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({
         return setMessage("Зураг оруулаагүй байна.");
       }
 
-      const res = await axios.post(
-        `http://localhost:5000/api/files/images`,
+      const res = await axiosInstance.post(
+        `/api/files/images`,
         {
           file: image[0],
         },
@@ -71,7 +72,6 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true,
         }
       );
 
@@ -108,24 +108,20 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({
           return;
         }
 
-        const res = await axios.patch(
-          "http://localhost:5000/api/users/personal-info",
-          {
-            firstName,
-            lastName,
-            email,
-            phone,
-            birthDate: new Date(birthday),
-            address: {
-              country,
-              city,
-              district,
-              apartment: address,
-            },
-            avatar: profilePicture,
+        const res = await axiosInstance.patch("/api/users/personal-info", {
+          firstName,
+          lastName,
+          email,
+          phone,
+          birthDate: new Date(birthday),
+          address: {
+            country,
+            city,
+            district,
+            apartment: address,
           },
-          { withCredentials: true }
-        );
+          avatar: profilePicture,
+        });
 
         mutate({
           ...user,

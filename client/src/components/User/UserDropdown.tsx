@@ -20,8 +20,8 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
         <div className="w-16 h-16 rounded-full overflow-hidden">
           <Image
             src={user.avatar}
-            width={64}
-            height={64}
+            width={120}
+            height={120}
             alt={user.fullName}
             className="w-full aspect-square object-cover"
           />

@@ -1,7 +1,8 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { FC, useEffect, useState } from "react";
 import MessageBox from "../global/MessageBox";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 const UserPasswordForm: FC = () => {
   const [oldPassword, setOldPassword] = useState<string>("");
@@ -94,11 +95,11 @@ const UserPasswordForm: FC = () => {
         return;
       }
 
-      const res = await axios.patch(
-        `http://localhost:5000/api/users/password`,
-        { oldPassword, newPassword, reNewPassword },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.patch(`/api/users/password`, {
+        oldPassword,
+        newPassword,
+        reNewPassword,
+      });
 
       setMsg(res.data.message);
       setType("Success");

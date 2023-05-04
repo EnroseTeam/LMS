@@ -5,7 +5,8 @@ import { useAuthenticate } from "@/hooks/useAuthenticate";
 import Link from "next/link";
 import ButtonSkeleton from "@/utils/ButtonSkeleton";
 import MessageBox from "../global/MessageBox";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface ReviewFormProps {
   courseId: string;
@@ -37,16 +38,12 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
         return;
       }
 
-      await axios.post(
-        "http://localhost:5000/api/courses/reviews",
-        {
-          title,
-          text: description,
-          rating,
-          course: courseId,
-        },
-        { withCredentials: true }
-      );
+      await axiosInstance.post("/api/courses/reviews", {
+        title,
+        text: description,
+        rating,
+        course: courseId,
+      });
 
       router.reload();
     } catch (error) {
