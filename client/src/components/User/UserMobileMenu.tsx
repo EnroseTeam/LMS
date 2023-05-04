@@ -15,7 +15,7 @@ const UserMobileMenu: FC<UserMobileMenuProps> = ({
   closeUserMenu,
 }) => (
   <div
-    className={`fixed top-0 bottom-0 min-h-screen min-w-[70vw] bg-white z-[1000] text-head duration-300 p-5 ${
+    className={`fixed top-0 bottom-0 min-h-screen w-[70vw] bg-white z-[1000] text-head duration-300 p-5 ${
       userMenuShow ? "left-0" : "-left-full"
     }`}
   >

@@ -83,6 +83,10 @@
   @apply bg-color-1;
 }
 
+.swiper-wrapper {
+  align-items: center;
+}
+
 /* Blob Classes */
 .blob-1 {
   border-radius: 47% 53% 22% 78% / 73% 49% 51% 27%;

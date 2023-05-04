@@ -67,7 +67,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
   return (
     <>
       <div
-        className={`fixed top-0 bottom-0 min-h-screen min-w-[70vw] bg-white z-[999] text-head flex flex-col gap-5 duration-300 -left-full ${
+        className={`fixed top-0 bottom-0 min-h-screen w-[70vw] bg-white z-[999] text-head flex flex-col gap-5 duration-300 -left-full ${
           mobileMenuShow ? "left-0" : ""
         }`}
       >
