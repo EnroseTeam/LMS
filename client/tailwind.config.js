@@ -142,9 +142,6 @@ module.exports = {
         "shadow-4": "0px 25px 70px rgba(1, 33, 58, 0.07)",
         "shadow-dashboard": "0px 1px 4px rgba(20, 3, 66, 0.07)",
       },
-      screens: {
-        "2xl": "1540px",
-      },
     },
   },
   plugins: [],
