@@ -18,6 +18,8 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({
 }) => {
   const { user } = useAuthenticate();
 
+  if (!user) return <></>;
+
   return (
     <header className="bg-white py-5 px-[30px] flex items-center justify-between">
       <div className="flex items-center gap-[14px]">
@@ -62,7 +64,13 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({
         </div>
 
         <button className="w-[50px] h-[50px] overflow-hidden rounded-2xl">
-          <Image alt="User" src={user?.avatar || ""} width={50} height={50} />
+          <Image
+            alt="User"
+            src={user.avatar}
+            width={100}
+            height={100}
+            className="w-full aspect-square object-cover"
+          />
         </button>
       </div>
     </header>
