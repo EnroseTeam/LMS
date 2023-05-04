@@ -22,7 +22,7 @@ const PartnerSection: FC = () => (
     <Swiper
       grabCursor={true}
       slidesPerView={3}
-      spaceBetween={30}
+      spaceBetween={100}
       breakpoints={{ 1024: { slidesPerView: 6, spaceBetween: 150 } }}
     >
       {partners.map((partner, index) => (

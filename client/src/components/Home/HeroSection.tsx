@@ -6,12 +6,13 @@ import { CgPlayButtonR } from "react-icons/cg";
 import { BsLaptop, BsBriefcase } from "react-icons/bs";
 
 import bgShape from "@/assets/hero-shape.svg";
+import Link from "next/link";
 
 const HeroSection: FC = () => (
   <div className="relative overflow-hidden w-full bg-head pt-[55px] pb-[136px] hero">
     <div className="container grid grid-cols-1 lg:grid-cols-2 gap-[29px lg:gap-[139px]]">
       <div className="my-auto text-white">
-        <h1 className="select-none text-[28px] font-bold leading-[43px] mb-3 lg:text-[55px] lg:leading-[80px]">
+        <h1 className="select-none text-[34px] font-bold leading-[43px] mb-3 lg:text-[55px] lg:leading-[80px]">
           Онлайнаар хүссэн чадвараа эзэмших газар{" "}
           <span className="text-color-6 underline">IntelliSense</span>
         </h1>
@@ -21,12 +22,18 @@ const HeroSection: FC = () => (
         </p>
 
         <div className="flex flex-col items-center gap-5 text-base-medium mb-[84px] lg:flex-row">
-          <button className="btn-1 whitespace-nowrap w-full lg:w-fit">
+          <Link
+            href="/auth/register"
+            className="btn-1 whitespace-nowrap w-full lg:w-fit text-center"
+          >
             Үнэгүй элсэх
-          </button>
-          <button className="btn-2-outline whitespace-nowrap w-full lg:w-fit">
+          </Link>
+          <Link
+            href="/courses"
+            className="btn-2-outline whitespace-nowrap w-full lg:w-fit text-center"
+          >
             Сургалтууд үзэх
-          </button>
+          </Link>
         </div>
 
         <div className=" hidden gap-6 lg:flex">
@@ -74,13 +81,13 @@ const HeroSection: FC = () => (
           </div>
 
           {/* Hero Picture */}
-          <div className="w-[630px] h-[630px]">
+          <div className="w-full">
             <Image
               src="https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/YcQVaabWSum6FrWkPTJlE-hero-picture.jpg"
               alt="hero"
               width={800}
               height={800}
-              className="aspect-square object-cover"
+              className="aspect-square w-full object-cover"
             />
           </div>
         </div>

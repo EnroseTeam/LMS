@@ -48,7 +48,7 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
             : "opacity-0 pointer-events-none top-[-100%]"
         } fixed w-screen bg-white text-head duration-150 z-[9999]`}
       >
-        <div className="max-w-[1390px] mx-auto mt-[100px] mb-[97px]">
+        <div className="max-w-[1390px] mx-auto mt-[100px] mb-[97px] px-10 lg:px-0">
           <div className="relative flex gap-4 justify-between items-center border-b mb-[51px]">
             <label htmlFor="search">
               <FiSearch className="text-icon" size={25} />
