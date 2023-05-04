@@ -4,7 +4,7 @@ import Pagination from "@/components/global/Pagination";
 import { FC } from "react";
 import { ISearch } from "@/interfaces/search";
 import { GetServerSideProps } from "next";
-import axios from "axios";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SearchPageProps {
   searchItems: ISearch[];
@@ -16,8 +16,8 @@ export const getServerSideProps: GetServerSideProps<SearchPageProps> = async ({
   query,
 }) => {
   const { qAll: search = "", pageSize = "9", page = "1" } = query;
-  const searchRes = await axios.get(
-    `http://localhost:5000/api/search?q=${search}&pageSize=${pageSize}&page=${page}`
+  const searchRes = await axiosInstance.get(
+    `/api/search?q=${search}&pageSize=${pageSize}&page=${page}`
   );
   return {
     props: {

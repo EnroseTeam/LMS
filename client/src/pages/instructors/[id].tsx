@@ -7,6 +7,7 @@ import SinglePageHeader from "@/components/Instructors/SinglePageHeader";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import SinglePageContent from "@/components/Instructors/SinglePageContent";
 import { IUser } from "@/interfaces/user";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SingleInstructorPageProps {
   categories: ICourseCategory[];
@@ -17,8 +18,8 @@ export const getServerSideProps: GetServerSideProps<
   SingleInstructorPageProps
 > = async ({ params }) => {
   const [categoryRes, instructorRes] = await axios.all([
-    axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(`http://localhost:5000/api/users/${params?.id}`),
+    axiosInstance.get("/api/courses/categories"),
+    axiosInstance.get(`/api/users/${params?.id}`),
   ]);
   return {
     props: {

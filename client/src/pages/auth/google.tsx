@@ -1,5 +1,5 @@
 import LoadingScreen from "@/utils/LoadingScreen";
-import axios from "axios";
+import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
 
@@ -10,10 +10,8 @@ const GoogleLoginPage: FC = () => {
     const code = router.query.code;
 
     if (code !== undefined) {
-      axios
-        .get(`http://localhost:5000/api/auth/google?code=${code}`, {
-          withCredentials: true,
-        })
+      axiosInstance
+        .get(`/api/auth/google?code=${code}`)
         .then((res) => {
           if (res.status === 201) {
             localStorage.setItem("loggedIn", JSON.stringify(true));

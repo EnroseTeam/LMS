@@ -5,16 +5,19 @@ import { FC } from "react";
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
 import SinglePageHeader from "@/components/Courses/SinglePageHeader";
 import SinglePageContent from "@/components/Courses/SinglePageContent";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SingleCoursePageProps {
   categories: ICourseCategory[];
   course: ICourse;
 }
 
-export const getServerSideProps: GetServerSideProps<SingleCoursePageProps> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<
+  SingleCoursePageProps
+> = async ({ params }) => {
   const [categoryRes, courseRes] = await axios.all([
-    axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(`http://localhost:5000/api/courses/${params?.id}`),
+    axiosInstance.get("/api/courses/categories"),
+    axiosInstance.get(`/api/courses/${params?.id}`),
   ]);
   return {
     props: {
