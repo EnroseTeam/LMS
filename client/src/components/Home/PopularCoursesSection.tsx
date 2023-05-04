@@ -76,7 +76,7 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({
         ))}
       </Swiper>
 
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[30px]">
+      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[30px]">
         {courses.map((course) => (
           <CourseCard key={course._id} course={course} />
         ))}
@@ -86,7 +86,7 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({
         grabCursor={true}
         slidesPerView={1}
         spaceBetween={20}
-        className="md:hidden"
+        className="sm:hidden"
       >
         {courses.map((course) => (
           <SwiperSlide key={course._id}>

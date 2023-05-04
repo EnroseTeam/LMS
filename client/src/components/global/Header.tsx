@@ -93,13 +93,13 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
           <Link href="/">
             <Image src={mainLogo} alt="IntelliSense" />
           </Link>
-          <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer hidden lg:flex">
+          <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer hidden xl:flex">
             <RiMenu4Fill size={24} />
             <span>Explore</span>
             <NavbarDropdownLarge />
           </div>
         </div>
-        <nav className="hidden lg:block">
+        <nav className="hidden xl:block">
           <ul className="flex items-center gap-1 text-md-regular">
             {HeaderMenuItems.map((menuItem, index) => (
               <li
@@ -148,7 +148,7 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
 
           <button
             onClick={openMobileMenu}
-            className="text-2xl hover:text-white/70 duration-300 lg:hidden"
+            className="text-2xl hover:text-white/70 duration-300 xl:hidden"
           >
             <BiMenuAltRight />
           </button>
@@ -159,13 +159,13 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
             <>
               <Link
                 href="/auth/login"
-                className="text-white text-md-regular hover:text-white/70 duration-300 hidden lg:block"
+                className="text-white text-md-regular hover:text-white/70 duration-300 hidden xl:block"
               >
                 Нэвтрэх
               </Link>
               <Link
                 href="/auth/register"
-                className="text-head bg-white rounded-lg border-2 border-transparent px-[34px] py-2 text-md-regular hover:border-white hover:text-white hover:bg-transparent duration-300 hidden lg:block"
+                className="text-head bg-white rounded-lg border-2 border-transparent px-[34px] py-2 text-md-regular hover:border-white hover:text-white hover:bg-transparent duration-300 hidden xl:block"
               >
                 Бүртгүүлэх
               </Link>
@@ -173,7 +173,7 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
           )}
 
           {user && isReady && (
-            <div className="relative hidden lg:block">
+            <div className="relative hidden xl:block">
               <button
                 onClick={(): void => {
                   closeOpenCart();
