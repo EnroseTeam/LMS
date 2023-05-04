@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps } from "next";
 
 import FooterAlternate from "@/components/Lessons/FooterAlternate";
 import HeaderAlternate from "@/components/Lessons/HeaderAlternate";
-import axios from "axios";
 import { ICourse, ICourseLesson } from "@/interfaces/courses";
 import Accordion from "@/components/global/Accordion";
 import Link from "next/link";
@@ -13,6 +12,7 @@ import SinglePageDescriptionContent from "@/components/Courses/SinglePageDescrip
 import SinglePageReviewContent from "@/components/Courses/SinglePageReviewContent";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SingleLessonPageProps {
   lesson: ICourseLesson;
@@ -20,7 +20,7 @@ interface SingleLessonPageProps {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get(`http://localhost:5000/api/courses/lessons/ids`);
+  const res = await axiosInstance.get(`/api/courses/lessons/ids`);
   const paths = res.data.body.map((id: string) => ({ params: { id } }));
   return {
     paths,
@@ -31,11 +31,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({
   params,
 }) => {
-  const res = await axios.get(
-    `http://localhost:5000/api/courses/lessons/${params?.id}`
-  );
-  const courseRes = await axios.get(
-    `http://localhost:5000/api/courses/${res.data.body.section.course}`
+  const res = await axiosInstance.get(`/api/courses/lessons/${params?.id}`);
+  const courseRes = await axiosInstance.get(
+    `/api/courses/${res.data.body.section.course}`
   );
 
   return {

@@ -1,8 +1,9 @@
 import { IUser } from "@/interfaces/user";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import useSwr, { KeyedMutator } from "swr";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface useAuthenticateTypes {
   user: IUser | undefined;
@@ -24,14 +25,14 @@ export const useAuthenticate = (): useAuthenticateTypes => {
   );
 
   const fetcher = (url: string): Promise<IUser> =>
-    axios.get(url, { withCredentials: true }).then((res) => res.data);
+    axiosInstance.get(url).then((res) => res.data);
 
   const {
     data: user,
     error,
     isLoading,
     mutate,
-  } = useSwr(loggedIn && "http://localhost:5000/api/users/current", fetcher, {
+  } = useSwr(loggedIn && "/api/users/current", fetcher, {
     errorRetryCount: 0,
     revalidateOnFocus: true,
     revalidateIfStale: true,
