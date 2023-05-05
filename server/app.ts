@@ -23,7 +23,7 @@ const app: Express = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://intellisense-lilac.vercel.app/"],
     credentials: true,
   })
 );
@@ -72,11 +72,9 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 
   if (error instanceof MulterError) {
     statusCode = 400;
-    if (error.code === "LIMIT_UNEXPECTED_FILE")
-      errorMessage = "Буруу өргөтгөлтэй файл байна.";
+    if (error.code === "LIMIT_UNEXPECTED_FILE") errorMessage = "Буруу өргөтгөлтэй файл байна.";
     if (error.code === "LIMIT_FILE_SIZE")
-      errorMessage =
-        "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
+      errorMessage = "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
   }
 
   res.status(statusCode).json({ error: errorMessage });
