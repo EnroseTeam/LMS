@@ -34,11 +34,18 @@ const InstructorCreateCoursePage: FC<InstructorCreateCoursePageProps> = ({
   const [image, setImage] = useState<string>("");
   const [video, setVideo] = useState<string>("");
 
+  const [isImageExist, setIsImageExist] = useState<boolean>(true);
+  const [isVideoExist, setIsVideoExist] = useState<boolean>(true);
+
   const mediaStates = {
     image,
     setImage,
     video,
     setVideo,
+    isImageExist,
+    setIsImageExist,
+    isVideoExist,
+    setIsVideoExist,
   };
 
   return (
@@ -53,7 +60,7 @@ const InstructorCreateCoursePage: FC<InstructorCreateCoursePageProps> = ({
       />
 
       <CourseMediaUpload mediaStates={mediaStates} />
-      <CourseCreateForm levels={levels} categories={categories} image={image} video={video} />
+      <CourseCreateForm levels={levels} categories={categories} mediaStates={mediaStates} />
     </>
   );
 };

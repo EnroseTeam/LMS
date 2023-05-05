@@ -1,15 +1,35 @@
+import MessageBox from "@/components/global/MessageBox";
 import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
-import { FC, useRef, useState } from "react";
+import { axiosInstance } from "@/utils/axiosInstance";
+import { isAxiosError } from "axios";
+import { useRouter } from "next/router";
+import { FC, useRef, useState, Dispatch, SetStateAction } from "react";
 import { HiChevronDown } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 interface CourseCreateFormProps {
   levels: ICourseLevel[];
   categories: ICourseCategory[];
-  image: string;
-  video: string;
+  mediaStates: {
+    image: string;
+    video: string;
+    setImage: Dispatch<SetStateAction<string>>;
+    setVideo: Dispatch<SetStateAction<string>>;
+    isImageExist: boolean;
+    setIsImageExist: Dispatch<SetStateAction<boolean>>;
+    isVideoExist: boolean;
+    setIsVideoExist: Dispatch<SetStateAction<boolean>>;
+  };
 }
 
-const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image, video }) => {
+const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, mediaStates }) => {
+  const router = useRouter();
+
+  const [message, setMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<"Error" | "Success">("Success");
+
+  const { image, video, setIsImageExist, setIsVideoExist } = mediaStates;
+
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
@@ -36,13 +56,92 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
   const [requirements, setRequirements] = useState<string[]>([]);
   const newRequirement = useRef<HTMLInputElement>(null);
 
+  const [isNameExist, setIsNameExist] = useState<boolean>(true);
+  const [isDescriptionExist, setIsDescriptionExist] = useState<boolean>(true);
+  const [isLevelExist, setIsLevelExist] = useState<boolean>(true);
+  const [isCategoryExist, setIsCategoryExist] = useState<boolean>(true);
+  const [isGoalsExist, setIsGoalsExist] = useState<boolean>(true);
+  const [isRequirementsExist, setIsRequirementsExist] = useState<boolean>(true);
+  const [isPriceExist, setIsPriceExist] = useState<boolean>(true);
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const submitHandler = async (): Promise<void> => {
+    if (!isSubmitting) {
+      try {
+        setMessage("");
+        setIsSubmitting(true);
+
+        if (
+          !image ||
+          !video ||
+          !name ||
+          !description ||
+          !selectedLevel._id ||
+          !selectedCategory._id ||
+          goals.length === 0 ||
+          requirements.length === 0 ||
+          !price
+        ) {
+          !image && setIsImageExist(false);
+          !video && setIsVideoExist(false);
+          !name && setIsNameExist(false);
+          !description && setIsDescriptionExist(false);
+          !selectedLevel._id && setIsLevelExist(false);
+          !selectedCategory._id && setIsCategoryExist(false);
+          goals.length === 0 && setIsGoalsExist(false);
+          requirements.length === 0 && setIsRequirementsExist(false);
+          !price && setIsPriceExist(false);
+
+          return;
+        }
+
+        const res = await axiosInstance.post("/api/courses", {
+          name,
+          description,
+          picture: image,
+          video,
+          level: selectedLevel._id,
+          category: selectedCategory._id,
+          requirements,
+          goals,
+          price,
+          discountPrice,
+        });
+
+        toast.success(res.data.message);
+        router.push("/instructors/dashboard/my-courses");
+      } catch (error) {
+        setMessageType("Error");
+        if (isAxiosError(error)) {
+          setMessage(
+            error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+          );
+        } else {
+          setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   return (
     <div className="rounded-2xl shadow-shadow-dashboard bg-white ">
       <div className="px-[30px] py-5 border-b border-b-border-1">
         <h2 className="text-head text-lg-medium">Сургалтын ерөнхий мэдээлэл</h2>
       </div>
       <div className="p-[30px]">
-        <form id="course-create-form" className="grid grid-cols-2 gap-[30px] mb-[30px]">
+        {message && <MessageBox type={messageType} message={message} className="mb-5" />}
+
+        <form
+          onSubmit={(e): void => {
+            e.preventDefault();
+            submitHandler();
+          }}
+          id="course-create-form"
+          className="grid grid-cols-2 gap-[30px] mb-[30px]"
+        >
           {/* Name */}
           <div className="col-span-2">
             <label
@@ -54,13 +153,19 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
             <input
               value={name}
               onChange={(e): void => {
+                setIsNameExist(true);
                 setName(e.target.value);
               }}
               type="text"
               id="name"
-              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+              className={`w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 ${
+                !isNameExist ? "ring-2 ring-red-500" : ""
+              }`}
               placeholder="Сургалтын нэр"
             />
+            {!isNameExist && (
+              <p className="mt-2 text-red-500 text-md-medium">Сургалтын нэр заавал шаардлагатай.</p>
+            )}
           </div>
 
           {/* Description */}
@@ -74,13 +179,19 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
             <textarea
               value={description}
               onChange={(e): void => {
+                setIsDescriptionExist(true);
                 setDescription(e.target.value);
               }}
               id="description"
-              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 resize-none overflow-y-auto"
+              className={`w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 resize-none overflow-y-auto ${
+                !isDescriptionExist ? "ring-2 ring-red-500" : ""
+              }`}
               placeholder="Тайлбар"
               rows={10}
             />
+            {!isDescriptionExist && (
+              <p className="mt-2 text-red-500 text-md-medium">Тайлбар заавал шаардлагатай.</p>
+            )}
           </div>
 
           {/* Level */}
@@ -97,7 +208,9 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
               }}
               id="level"
               type="button"
-              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between"
+              className={`w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between ${
+                !isLevelExist ? "ring-2 ring-red-500" : ""
+              }`}
             >
               {selectedLevel.name ? selectedLevel.name : "Түвшин сонгох"}
               <HiChevronDown
@@ -105,6 +218,11 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
                 size={18}
               />
             </button>
+            {!isLevelExist && (
+              <p className="mt-2 text-red-500 text-md-medium">
+                Түвшин заавал сонгох шаардалагатай.
+              </p>
+            )}
 
             <div
               className={`absolute top-full right-0 left-0 w-full bg-white border border-border-2 p-5 rounded-lg mt-2 text-text text-md-regular flex flex-col gap-5 items-start overflow-hidden ${
@@ -115,6 +233,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
                 <button
                   type="button"
                   onClick={(): void => {
+                    setIsLevelExist(true);
                     setSelectedLevel({ name: level.name, _id: level._id });
                     setLevelDropDownShow(false);
                   }}
@@ -141,7 +260,9 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
               }}
               id="category"
               type="button"
-              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between"
+              className={`w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 flex items-center justify-between ${
+                !isCategoryExist ? "ring-2 ring-red-500" : ""
+              }`}
             >
               {selectedCategory.name ? selectedCategory.name : "Ангилал сонгох"}
               <HiChevronDown
@@ -149,6 +270,11 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
                 size={18}
               />
             </button>
+            {!isCategoryExist && (
+              <p className="mt-2 text-red-500 text-md-medium">
+                Ангилал заавал сонгох шаардалагатай.
+              </p>
+            )}
 
             <div
               className={`absolute top-full right-0 left-0 w-full bg-white border border-border-2 p-5 rounded-lg mt-2 text-text text-md-regular flex flex-col gap-5 items-start overflow-hidden  ${
@@ -158,6 +284,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
               {categories.map((category) => (
                 <button
                   onClick={(): void => {
+                    setIsCategoryExist(true);
                     setSelectedCategory({
                       name: category.name,
                       _id: category._id,
@@ -182,13 +309,22 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
             >
               Сургалтын зорилго
             </label>
-            <div className="w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4">
+            <div
+              className={`w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4 ${
+                !isGoalsExist ? "ring-2 ring-red-500" : ""
+              }`}
+            >
               <ol className="list-decimal ml-3">
                 {goals.map((goal, index) => (
                   <li key={`goal-${index}`}>{goal}</li>
                 ))}
               </ol>
             </div>
+            {!isGoalsExist && (
+              <p className="my-2 text-red-500 text-md-medium">
+                Сургалтын зорилго заавал шаардалагатай.
+              </p>
+            )}
             <div className="flex items-center gap-5">
               <div className="flex-1 flex items-center gap-2">
                 <input
@@ -201,6 +337,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
                     if (e.key === "Enter") {
                       e.preventDefault();
                       if (newGoal.current !== null && newGoal.current.value) {
+                        setIsGoalsExist(true);
                         setGoals([...goals, newGoal.current.value]);
                         newGoal.current.value = "";
                         newGoal.current.focus();
@@ -212,6 +349,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
               <button
                 onClick={(): void => {
                   if (newGoal.current !== null && newGoal.current.value) {
+                    setIsGoalsExist(true);
                     setGoals([...goals, newGoal.current.value]);
                     newGoal.current.value = "";
                     newGoal.current.focus();
@@ -233,13 +371,22 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
             >
               Тавигдах шаардлага
             </label>
-            <div className="w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4">
+            <div
+              className={`w-full h-[130px] overflow-auto border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular mb-4 ${
+                !isRequirementsExist ? "ring-2 ring-red-500" : ""
+              }`}
+            >
               <ol className="list-decimal ml-3">
                 {requirements.map((requirement, index) => (
                   <li key={`requirement-${index}`}>{requirement}</li>
                 ))}
               </ol>
             </div>
+            {!isRequirementsExist && (
+              <p className="my-2 text-red-500 text-md-medium">
+                Тавигдах шаардлага заавал хэрэгтэй.
+              </p>
+            )}
             <div className="flex items-center gap-5">
               <div className="flex-1 flex items-center gap-2">
                 <input
@@ -252,6 +399,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
                     if (e.key === "Enter") {
                       e.preventDefault();
                       if (newRequirement.current !== null && newRequirement.current.value) {
+                        setIsRequirementsExist(true);
                         setRequirements([...requirements, newRequirement.current.value]);
                         newRequirement.current.value = "";
                         newRequirement.current.focus();
@@ -263,6 +411,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
               <button
                 onClick={(): void => {
                   if (newRequirement.current !== null && newRequirement.current.value) {
+                    setIsRequirementsExist(true);
                     setRequirements([...requirements, newRequirement.current.value]);
                     newRequirement.current.value = "";
                     newRequirement.current.focus();
@@ -287,13 +436,19 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
             <input
               value={price}
               onChange={(e): void => {
+                setIsPriceExist(true);
                 setPrice(Number(e.target.value));
               }}
               type="number"
               id="price"
-              className="w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150"
+              className={`w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150 ${
+                !isPriceExist ? "ring-2 ring-red-500" : ""
+              }`}
               placeholder="Үндсэн үнэ"
             />
+            {!isPriceExist && (
+              <p className="mt-2 text-red-500 text-md-medium">Үндсэн үнэ заавал шаардалагатай.</p>
+            )}
           </div>
 
           {/* Discount Price */}
@@ -316,10 +471,22 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, image
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between">
-          <button type="button" className="btn-1-outline py-4">
+          <button
+            disabled={isSubmitting}
+            onClick={(): void => {
+              router.back();
+            }}
+            type="button"
+            className="btn-1-outline py-4"
+          >
             Болих
           </button>
-          <button type="submit" form="course-create-form" className="btn-1 py-4">
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            form="course-create-form"
+            className="btn-1 py-4"
+          >
             Нэмэх
           </button>
         </div>

@@ -206,12 +206,14 @@ interface CourseBody {
   name?: string;
   description?: string;
   picture?: string;
+  video?: string;
   instructor?: string;
   level?: string;
   category?: string;
   requirements?: string[];
   goals?: string[];
-  price?: string;
+  price?: number;
+  discountPrice?: number;
 }
 
 export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown> = async (
@@ -219,8 +221,19 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
   res,
   next
 ) => {
-  const { name, description, picture, instructor, level, category, requirements, goals, price } =
-    req.body;
+  const {
+    name,
+    description,
+    picture,
+    video,
+    level,
+    category,
+    requirements,
+    goals,
+    price,
+    discountPrice,
+  } = req.body;
+  const instructorId = req.session.userId;
 
   const session = await mongoose.startSession();
 
@@ -229,14 +242,14 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай");
     if (!description) throw createHttpError(400, "Тайлбар заавал шаардлагатай");
     if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай");
-    if (!instructor) throw createHttpError(400, "Багшийн мэдээлэл заавал шаардлагатай");
+    if (!video) throw createHttpError(400, "Танилцуулга бичлэг заавал шаардлагатай.");
     if (!level) throw createHttpError(400, "Хичээлийн түвшин заавал шаардлагатай");
     if (!price) throw createHttpError(400, "Хичээлийн үнэ заавал шаардлагатай");
     if (!category) throw createHttpError(400, "Хичээлийн ангилал заавал шаардлагатай");
     if (!requirements)
       throw createHttpError(400, "Хичээлд шаардагдах чадварууд заавал шаардлагатай");
     if (!goals) throw createHttpError(400, "Хичээлийн зорилго заавал шаардлагатай");
-    if (!mongoose.isValidObjectId(instructor))
+    if (!mongoose.isValidObjectId(instructorId))
       throw createHttpError(400, "Багшийн id буруу байна.");
     if (!mongoose.isValidObjectId(level)) throw createHttpError(400, "Түвшингийн id буруу байна.");
     if (!mongoose.isValidObjectId(category))
@@ -245,7 +258,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     session.startTransaction();
 
     // Хүсэлтээр орж ирсэн багшийн id-тай багш бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const isInstructorExist = await UserModel.findById(instructor, null, { session });
+    const isInstructorExist = await UserModel.findById(instructorId, null, { session });
     if (!isInstructorExist) throw createHttpError(404, "Багш олдсонгүй");
 
     // Хүсэлтээр орж ирсэн түвшингийн id-тай түвшин бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
@@ -263,12 +276,14 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
           name,
           description,
           picture,
-          instructor,
+          video,
+          instructor: instructorId,
           level,
           category,
           requirements,
           goals,
           price,
+          discountPrice,
         },
       ],
       { session }

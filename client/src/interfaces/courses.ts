@@ -15,6 +15,7 @@ export interface ICourse {
   _id: string;
   name: string;
   picture: string;
+  video: string;
   description: string;
   instructor: IUser;
   level: ICourseLevel;

@@ -1,5 +1,5 @@
 import { ICourse } from "@/interfaces/courses";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,6 +22,7 @@ import RatingStar from "@/components/global/RatingStar";
 import shape from "@/assets/hero-shape.svg";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import ButtonSkeleton from "@/utils/ButtonSkeleton";
+import { IoMdClose } from "react-icons/io";
 
 interface SinglePageHeaderProps {
   course: ICourse;
@@ -33,6 +34,9 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
   const [boughtCourses, setBoughtCourses] = useState<string[]>([]);
   const [ownCourses, setOwnCourses] = useState<string[]>([]);
+
+  const [showVideo, setShowVideo] = useState<boolean>(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (!isLoading) {
@@ -60,11 +64,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
       />
 
       <div className="container absolute w-full top-8 bottom-[62px] right-0 left-0 pointer-events-none">
-        <Image
-          src={shape}
-          alt="Shape"
-          className="w-full aspect-auto object-contain"
-        />
+        <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
       </div>
 
       <div className="container grid grid-cols-2 gap-[145px] text-icon">
@@ -94,16 +94,12 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
                   {course.avgRating.toFixed(1)}
                 </p>
                 <RatingStar gap={4} rating={course.avgRating} />
-                <p className="text-icon text-xs-regular">
-                  ({course.reviews.length})
-                </p>
+                <p className="text-icon text-xs-regular">({course.reviews.length})</p>
               </div>
 
               <div className="flex items-center gap-[10px]">
                 <BsPersonWorkspace size={16} />
-                <p className=" text-sm-regular">
-                  {course.purchaseCount} сурагч элссэн
-                </p>
+                <p className=" text-sm-regular">{course.purchaseCount} сурагч элссэн</p>
               </div>
 
               <div className="flex items-center gap-[10px]">
@@ -169,10 +165,8 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               </span>
 
               <h2>
-                {course.totalLessonLength.hour > 0 &&
-                  `${course.totalLessonLength.hour} цаг `}
-                {course.totalLessonLength.minute > 0 &&
-                  `${course.totalLessonLength.minute} минут`}
+                {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг `}
+                {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
               </h2>
             </div>
 
@@ -246,7 +240,12 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               className="w-full aspect-auto object-contain"
             />
 
-            <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] p-5 bg-white rounded-full cursor-pointer">
+            <div
+              onClick={(): void => {
+                setShowVideo(true);
+              }}
+              className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] p-5 bg-white rounded-full cursor-pointer hover:text-white hover:bg-icon duration-300"
+            >
               <BsPlay size={40} />
             </div>
           </div>
@@ -262,9 +261,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               ₮{course.price}
             </h1>
             {course.discountPrice > 0 && (
-              <h3 className="text-white text-2xl-medium">
-                ₮{course.discountPrice}
-              </h3>
+              <h3 className="text-white text-2xl-medium">₮{course.discountPrice}</h3>
             )}
           </div>
 
@@ -286,8 +283,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               </div>
             )}
           {user &&
-            (ownCourses.includes(course._id) ||
-              boughtCourses.includes(course._id)) &&
+            (ownCourses.includes(course._id) || boughtCourses.includes(course._id)) &&
             isReady && (
               <div className="grid grid-cols-2 gap-[35px]">
                 <button className="btn-1">Үзэж эхлэх</button>
@@ -295,6 +291,34 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               </div>
             )}
         </div>
+      </div>
+
+      <div
+        onClick={(): void => {
+          if (videoRef.current) videoRef.current.pause();
+          setShowVideo(false);
+        }}
+        className={`w-screen h-screen fixed top-0 right-0 left-0 bg-[#18181a]/70 grid place-items-center z-[1000] ${
+          showVideo ? "opacity-100" : "opacity-0 pointer-events-none"
+        } duration-150`}
+      >
+        <video
+          ref={videoRef}
+          onClick={(e): void => {
+            e.stopPropagation();
+          }}
+          className="w-[70%] rounded-lg mb-[41px]"
+          controls
+        >
+          <source src={course.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <button
+          className={`absolute top-5 right-10 text-head p-[10px] text-2xl bg-white rounded-full hover:text-white hover:bg-head duration-300`}
+        >
+          <IoMdClose />
+        </button>
       </div>
     </div>
   );

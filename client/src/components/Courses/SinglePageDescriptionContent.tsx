@@ -1,7 +1,7 @@
-import { ICourse } from '@/interfaces/courses';
-import { FC, useState } from 'react';
+import { ICourse } from "@/interfaces/courses";
+import { FC, useState } from "react";
 
-import { GrFormCheckmark } from 'react-icons/gr';
+import { GrFormCheckmark } from "react-icons/gr";
 
 interface SinglePageDescriptionContentProps {
   course: ICourse;
@@ -16,7 +16,7 @@ const SinglePageDescriptionContent: FC<SinglePageDescriptionContentProps> = ({ c
         <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Тайлбар</h1>
         <div
           className={`text-text text-md-regular overflow-hidden mb-10 relative ${
-            descriptionHide ? 'h-[260px]' : 'h-full'
+            descriptionHide ? "h-[260px]" : "h-full"
           } `}
         >
           <div className="[&>p]:mb-4" dangerouslySetInnerHTML={{ __html: course.description }} />
@@ -28,7 +28,7 @@ const SinglePageDescriptionContent: FC<SinglePageDescriptionContentProps> = ({ c
           onClick={(): void => setDescriptionHide(!descriptionHide)}
           className="text-color-1 underline text-sm-medium cursor-pointer hover:text-color-1/70 duration-300"
         >
-          {descriptionHide ? 'Дэлгэрэнгүй' : 'Хураангуй'}
+          {descriptionHide ? "Дэлгэрэнгүй" : "Хураангуй"}
         </p>
       </div>
       <div>
