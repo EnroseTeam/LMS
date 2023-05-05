@@ -13,11 +13,24 @@ interface CourseMediaUploadProps {
     video: string;
     setImage: Dispatch<SetStateAction<string>>;
     setVideo: Dispatch<SetStateAction<string>>;
+    isImageExist: boolean;
+    setIsImageExist: Dispatch<SetStateAction<boolean>>;
+    isVideoExist: boolean;
+    setIsVideoExist: Dispatch<SetStateAction<boolean>>;
   };
 }
 
 const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
-  const { image, video, setImage, setVideo } = mediaStates;
+  const {
+    image,
+    video,
+    isImageExist,
+    isVideoExist,
+    setImage,
+    setVideo,
+    setIsImageExist,
+    setIsVideoExist,
+  } = mediaStates;
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -133,7 +146,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 setImage("");
                 setImageName("Зураг оруулна уу.");
               }}
-              disabled={isImageLoading}
+              disabled={isImageLoading || image === ""}
               className="absolute top-5 right-5 text-base text-icon p-[10px] bg-white rounded-lg hover:text-white hover:bg-icon duration-300 disabled:pointer-events-none disabled:bg-gray-300 disabled:text-icon"
               type="button"
             >
@@ -148,7 +161,9 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
               Зураг
             </label>
             <div
-              className={`flex items-center focus-within:ring-2 focus-within:ring-color-1 rounded-lg overflow-hidden duration-150 mb-3 `}
+              className={`flex items-center focus-within:ring-2 focus-within:ring-color-1 rounded-lg overflow-hidden duration-150 mb-3 ${
+                !isImageExist ? "ring-2 ring-red-500" : ""
+              }`}
             >
               <input
                 disabled
@@ -158,7 +173,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 placeholder={imageName}
               />
               <label
-                className={`bg-icon py-[11px] px-[28px] text-white rounded-r-lg cursor-pointer text-md-regular border-2 border-transparent hover:border-icon hover:text-icon hover:bg-transparent duration-300 ${
+                className={`bg-icon py-[11.5px] px-[28px] text-white rounded-r-lg cursor-pointer text-md-regular border-2 border-transparent hover:border-icon hover:text-icon hover:bg-transparent duration-300 ${
                   isImageLoading ? "pointer-events-none bg-icon/50" : ""
                 }`}
               >
@@ -166,6 +181,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                   type="file"
                   accept="image/png, image/jpg, image/jpeg"
                   onChange={(e): void => {
+                    setIsImageExist(true);
                     imageUploadHandler(e.target.files);
                   }}
                   className="sr-only"
@@ -173,6 +189,9 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 Зураг хуулах
               </label>
             </div>
+            {!isImageExist && (
+              <p className="mb-2 text-red-500 text-md-medium">Зураг заавал шаардлагатай</p>
+            )}
             <p className="text-text text-md-regular">
               Сургалтын зургаа энд оруулна уу. Энэхүү зураг нь зөвхөн .jpg, .jpeg, .png өргөтгөлтэй
               байх ёстойг анхаарна уу.
@@ -201,7 +220,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 setVideo("");
                 setVideoName("Танилцуулга бичлэгээ оруулна уу.");
               }}
-              disabled={isVideoLoading}
+              disabled={isVideoLoading || video === ""}
               className="absolute top-5 right-5 text-base text-icon p-[10px] bg-white rounded-lg hover:text-white hover:bg-icon duration-300 disabled:pointer-events-none disabled:bg-gray-300 disabled:text-icon"
               type="button"
             >
@@ -215,7 +234,11 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
             >
               Танилцуулга бичлэг
             </label>
-            <div className="flex items-center focus-within:ring-2 focus-within:ring-color-1 rounded-lg overflow-hidden duration-150 mb-3">
+            <div
+              className={`flex items-center focus-within:ring-2 focus-within:ring-color-1 rounded-lg overflow-hidden duration-150 mb-3 ${
+                !isVideoExist ? "ring-2 ring-red-500" : ""
+              }`}
+            >
               <input
                 disabled
                 type="text"
@@ -224,7 +247,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 placeholder={videoName}
               />
               <label
-                className={`bg-icon py-[11px] px-[28px] text-white rounded-r-lg cursor-pointer text-md-regular border-2 border-transparent hover:border-icon hover:text-icon hover:bg-transparent duration-300 ${
+                className={`bg-icon py-[11.5px] px-[28px] text-white rounded-r-lg cursor-pointer text-md-regular border-2 border-transparent hover:border-icon hover:text-icon hover:bg-transparent duration-300 ${
                   isVideoLoading ? "pointer-events-none bg-icon/50" : ""
                 }`}
               >
@@ -232,6 +255,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                   type="file"
                   accept="video/*"
                   onChange={(e): void => {
+                    setIsVideoExist(true);
                     videoUploadHandler(e.target.files);
                   }}
                   className="sr-only"
@@ -239,6 +263,11 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
                 Бичлэг хуулах
               </label>
             </div>
+            {!isVideoExist && (
+              <p className="mb-2 text-red-500 text-md-medium">
+                Танилцуулга бичлэг заавал шаардлагатай.
+              </p>
+            )}
             <p className="text-text text-md-regular">
               Танилцуулга бичлэг хийснээр таны сургалтыг илүү их хүн үзэх магадлал ихсэх болно.
               Бичлэгийн дээд хэмжээ 1GB.

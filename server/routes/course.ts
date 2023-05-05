@@ -7,6 +7,7 @@ import {
   getSingleCourse,
   updateCourse,
 } from "../controllers/course";
+import { authenticateUser, authorizeInstructor } from "../middlewares/auth";
 
 const courseRouter = express.Router();
 
@@ -15,7 +16,7 @@ courseRouter.get("/counts", getCourseCounts);
 courseRouter.get("/", getCourses);
 courseRouter.get("/:id", getSingleCourse);
 
-courseRouter.post("/", createCourse);
+courseRouter.post("/", authenticateUser, authorizeInstructor, createCourse);
 
 courseRouter.patch("/:id", updateCourse);
 

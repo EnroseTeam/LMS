@@ -8,29 +8,23 @@ interface HoverCourseCardProps {
 }
 
 const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => (
-  <div className="absolute text-head top-0 left-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto flex">
+  <div className="absolute text-head top-0 left-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto flex z-[1000]">
     <div className="py-10">
       <div className="w-[10px] h-[10px] rotate-45 bg-white border-b border-l border-border-2 mt-14 ml-1 z-[1000]" />
     </div>
     <div className="bg-white rounded-lg border border-border-2 px-[30px] py-[22px] -ml-[5.5px] -mt-2">
-      <h1 className="text-[20px] font-medium leading-[30px] mb-[15px] w-[30ch]">
-        {course.name}
-      </h1>
+      <h1 className="text-[20px] font-medium leading-[30px] mb-[15px] w-[30ch]">{course.name}</h1>
       <div className="flex items-center justify-between mb-[15px]">
         <span className="flex items-center gap-2 text-md text-icon">
           <BsFileEarmarkText />
-          <span className="text-sm-regular text-text">
-            {course.lessonCount} хичээл
-          </span>
+          <span className="text-sm-regular text-text">{course.lessonCount} хичээл</span>
         </span>
 
         <span className="flex items-center gap-2 text-md text-icon">
           <BsClock />
           <span className="text-sm-regular text-text">
-            {course.totalLessonLength.hour > 0 &&
-              `${course.totalLessonLength.hour} цаг `}
-            {course.totalLessonLength.minute > 0 &&
-              `${course.totalLessonLength.minute} минут`}
+            {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг `}
+            {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
           </span>
         </span>
 
@@ -54,11 +48,8 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => (
       />
 
       <ul className="flex flex-col gap-[5px] text-text text-md-regular mb-[30px]">
-        {course.goals.map((goal, index) => (
-          <li
-            key={`course-goal-${index}`}
-            className="flex items-center gap-[10px]"
-          >
+        {course.goals.slice(0, 5).map((goal, index) => (
+          <li key={`course-goal-${index}`} className="flex items-center gap-[10px]">
             <div className="w-5 h-5 border border-border-1 rounded-full grid place-items-center">
               <GrFormCheckmark size={12} />
             </div>
