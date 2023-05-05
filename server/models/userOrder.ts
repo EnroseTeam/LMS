@@ -3,6 +3,7 @@ import { IUser } from "./user";
 import { ICourse } from "./course";
 
 export interface IUserOrder extends Document<Types.ObjectId> {
+  orderNumber: string;
   user: IUser["_id"];
   courses: ICourse["_id"][];
   totalAmount: number;
@@ -13,6 +14,7 @@ export interface IUserOrder extends Document<Types.ObjectId> {
 
 const UserOrderSchema = new Schema<IUserOrder>(
   {
+    orderNumber: { type: String, required: true, unique: true },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     courses: { type: [Schema.Types.ObjectId], ref: "Course" },
     totalAmount: { type: Number, required: true },

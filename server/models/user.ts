@@ -1,6 +1,7 @@
 import { Schema, Document, Types, model } from "mongoose";
 import { IUserRole } from "./userRole";
 import { ICourse } from "./course";
+import { IUserOrder } from "./userOrder";
 
 interface UserAddress {
   country: string;
@@ -20,6 +21,7 @@ export interface IUser extends Document<Types.ObjectId> {
   avatar: string;
   password: string;
   role: IUserRole;
+  orders: IUserOrder["_id"][];
   boughtCourses: ICourse["_id"][];
   ownCourses: ICourse["_id"][];
   avgRating: number;
@@ -47,6 +49,7 @@ const UserSchema = new Schema<IUser>(
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
+    orders: { type: [Schema.Types.ObjectId], ref: "User_Order" },
     address: {
       country: { type: String, default: "" },
       city: { type: String, default: "" },
