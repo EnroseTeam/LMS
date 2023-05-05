@@ -19,13 +19,10 @@ export const useAuthenticate = (): useAuthenticateTypes => {
   const router = useRouter();
 
   const [loggedIn, setLoggedIn] = useState<boolean>(
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("loggedIn") as string)
-      : false
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("loggedIn") as string) : false
   );
 
-  const fetcher = (url: string): Promise<IUser> =>
-    axiosInstance.get(url).then((res) => res.data);
+  const fetcher = (url: string): Promise<IUser> => axiosInstance.get(url).then((res) => res.data);
 
   const {
     data: user,
@@ -39,12 +36,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     revalidateOnReconnect: true,
   });
 
-  if (
-    error &&
-    isAxiosError(error) &&
-    !isLoading &&
-    error.response?.status === 401
-  ) {
+  if (error && isAxiosError(error) && !isLoading && error.response?.status === 401) {
     localStorage.setItem("loggedIn", JSON.stringify(false));
     router.reload();
   }
