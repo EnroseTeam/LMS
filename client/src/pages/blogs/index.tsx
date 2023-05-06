@@ -30,15 +30,15 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
 
 const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
   <>
-    <div>
+    <div className="max-w-[1100px] mx-auto">
       <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
-      <div className="flex flex-col items-center justify-center w-[640px] m-auto">
+      <div className="flex flex-col items-center justify-center px-[120px]">
         <h1 className="text-4x-bold text-head pt-[90px] pb-1">Онцлох мэдээ</h1>
         <p className="lg-regular text-text pb-[30px]">
           We’re on a mission to deliver engaging, curated courses at a
           reasonable price.
         </p>
-        <div className="relative bg-white w-full h-[60px] rounded-md pl-[30px border border-solid text-sm-regular focus-within:ring-4 focus-within:ring-color-1 mb-[78px]">
+        <div className="relative bg-white w-full h-[60px]  rounded-md pl-[30px border border-solid text-sm-regular focus-within:ring-4 focus-within:ring-color-1 mb-[78px]">
           <input
             type="text"
             placeholder="Мэдээ хайх ... "
@@ -49,11 +49,13 @@ const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
           </button>
         </div>
       </div>
-      {blogs.map((blog) => (
-        <BlogCard key={blog._id} blog={blog} />
-      ))}
-      <div className="mb-[120px]">
-        {" "}
+      <div className="flex flex-col gap-16">
+        {blogs.map((blog) => (
+          <BlogCard key={blog._id} blog={blog} />
+        ))}
+      </div>
+
+      <div className="mb-[120px] mt-[60px]">
         {totalBlogs > 0 && <Pagination totalPage={totalPages} />}
       </div>
     </div>
