@@ -27,7 +27,12 @@ const CartPage: FC = () => {
 
   return (
     <div>
-      <Breadcrumbs breadcrumbItems={[{ title: "Сагс", link: "/cart" }]} />
+      <Breadcrumbs
+        breadcrumbItems={[
+          { title: "Хэрэглэгч", link: "/user/settings" },
+          { title: "Сагс", link: "/cart" },
+        ]}
+      />
       <div className="container mb-[120px]">
         <div className="mx-[200px]">
           <div className="text-center mb-12">
@@ -127,7 +132,9 @@ const CartPage: FC = () => {
                 </span>
               </div>
             </div>
-            <button className="btn-1 w-2/5">Төлбөр хийх</button>
+            <Link href={"/user/cart/checkout"} className="btn-1 w-2/5 text-center">
+              Худалдаж авах
+            </Link>
           </div>
         </div>
       </div>

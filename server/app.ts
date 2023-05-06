@@ -66,9 +66,8 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/users/roles", userRoleRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/blogs", blogRoutes)
+app.use("/api/blogs", blogRoutes);
 app.use("/api/search", searchRoutes);
-
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Хүсэлт явуулсан хаяг олдсонгүй."));
