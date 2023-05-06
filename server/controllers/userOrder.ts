@@ -108,6 +108,7 @@ export const createUserOrder: RequestHandler<
   session.endSession();
 };
 
+//UPDATE ORDER
 interface UserOrderParams {
   id: string;
 }
@@ -118,15 +119,43 @@ export const updateUserOrder: RequestHandler<
   unknown
 > = async (req, res, next) => {
   const { id } = req.params;
-  const { status } = req.body;
 
   const session = await mongoose.startSession();
   try {
     if (!mongoose.isValidObjectId(id))
       throw createHttpError(400, "ID буруу байна.");
-    if (!status) throw createHttpError(400, "Статус шаардлагатай.");
-    const updatedOrder = await UserOrderModel.findById(id);
+
+    session.startTransaction();
+
+    const order = await UserOrderModel.findById(id, null, { session });
+    if (!order) throw createHttpError(404, "Захиалга олдсонгүй.");
+
+    order.status = "Accepted";
+    await order.save({ session });
+
+    const user = await UserModel.findById(order.user, null, { session });
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
+
+    order.courses.map((courseId) => {
+      user.boughtCourses.push(courseId);
+    });
+    await user.save({ session });
+
+    for (const courseId of order.courses) {
+      const course = await CourseModel.findById(courseId, null, { session });
+      if (course) {
+        course.purchaseCount += 1;
+        await course.save({ session });
+      }
+    }
+
+    await session.commitTransaction();
+
+    res.status(200).json({ message: "Амжилттай." });
   } catch (error) {
+    await session.abortTransaction();
     next(error);
   }
+
+  session.endSession();
 };
