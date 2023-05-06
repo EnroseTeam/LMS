@@ -12,7 +12,12 @@ const CategoryCard: FC<CategoryCardProps> = ({ category }) => (
   <Link href={`/courses?category=${category.slug}`}>
     <div className="bg-bg-4 rounded-lg py-[26px] px-[50px] text-center flex flex-col items-center hover:bg-color-2 duration-300 group">
       <div className="bg-white rounded-[100%] w-[90px] h-[90px] mb-5 flex items-center justify-center">
-        <Image src={category.image} alt={category.name} width={45} height={45} />
+        <Image
+          src={category.image}
+          alt={category.name}
+          width={45}
+          height={45}
+        />
       </div>
       <h1 className="text-head text-lg-medium mb-[10px] group-hover:text-white duration-300">
         {category.name}

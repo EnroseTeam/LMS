@@ -1,5 +1,5 @@
 import { useAuthenticate } from "@/hooks/useAuthenticate";
-import axios from "axios";
+import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
 
@@ -11,11 +11,7 @@ const LogoutPage: FC = () => {
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
       try {
-        await axios.post(
-          `http://localhost:5000/api/auth/logout`,
-          {},
-          { withCredentials: true }
-        );
+        await axiosInstance.post(`/api/auth/logout`);
 
         setLoggedIn(false);
         localStorage.setItem("loggedIn", JSON.stringify(false));
@@ -26,7 +22,7 @@ const LogoutPage: FC = () => {
     };
 
     logoutUser();
-  }, []);
+  }, [router, setLoggedIn]);
 
   return <></>;
 };

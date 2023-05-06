@@ -3,7 +3,7 @@ import { ICourse } from "./courses";
 interface UserAddress {
   country: string;
   city: string;
-  disctrict: string;
+  district: string;
   apartment: string;
 }
 
@@ -20,10 +20,10 @@ export interface IUser {
   firstName: string;
   lastName: string;
   fullName: string;
-  birthDate: string;
+  birthDate?: string;
   email: string;
   phone: string;
-  address?: UserAddress;
+  address: UserAddress;
   avatar: string;
   role: IUserRole;
   boughtCourses: ICourse[];
@@ -35,7 +35,7 @@ export interface IUser {
     linkedin: string;
     instagram: string;
   };
-  bio: string;
+  bio?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,12 +1,14 @@
 import express from "express";
 import {
+  becomeInstructor,
   deleteUser,
   getAuthenticatedUser,
   getInstructors,
   getSingleUser,
   getUsers,
-  updateUser,
+  updateUserPersonalInfo,
   updateUserPassword,
+  updateUserSocialAccounts,
 } from "../controllers/user";
 import { authenticateUser } from "../middlewares/auth";
 
@@ -17,9 +19,16 @@ userRouter.get("/instructors", getInstructors);
 userRouter.get("/", getUsers);
 userRouter.get("/:id", getSingleUser);
 
-userRouter.delete("/:id", deleteUser);
+userRouter.post("/becomeInstructor", authenticateUser, becomeInstructor);
 
-userRouter.patch("/:id", updateUser);
-userRouter.patch("/:id/password", updateUserPassword);
+userRouter.patch("/password", authenticateUser, updateUserPassword);
+userRouter.patch("/personal-info", authenticateUser, updateUserPersonalInfo);
+userRouter.patch(
+  "/social-accounts",
+  authenticateUser,
+  updateUserSocialAccounts
+);
+
+userRouter.delete("/delete-account", authenticateUser, deleteUser);
 
 export default userRouter;

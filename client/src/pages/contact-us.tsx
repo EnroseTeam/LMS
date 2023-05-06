@@ -114,7 +114,7 @@ const ContactUs: FC = () => (
         </div>
       </div>
     </div>
-    <div className="bg-bg-1">
+    <div className="bg-bg-1" id="faq">
       <div className="container px-[270px] py-[120px]">
         <h1 className="text-center text-head text-3xl-bold mb-[9px]">
           Түгээмэл Асуултууд

@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import UserRoleModel from "../models/userRole";
+import { getGoogleAuthTokens, getGoogleUser } from "../services/google";
 
 interface SignUpBody {
   firstName?: string;
@@ -16,6 +17,7 @@ interface SignUpBody {
 interface LogInBody {
   email?: string;
   password?: string;
+  remember?: boolean;
 }
 
 //CREATE AN USER
@@ -102,7 +104,7 @@ export const logIn: RequestHandler<
   LogInBody,
   unknown
 > = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
 
   try {
     if (!email)
@@ -122,6 +124,7 @@ export const logIn: RequestHandler<
       throw createHttpError(400, "Таны оруулсан мэдээлэл буруу байна.");
 
     req.session.userId = user._id;
+    if (remember) req.session.cookie.maxAge = 60 * 60 * 1000 * 24;
 
     res.status(200).json({ message: "Амжилттай нэвтэрлээ" });
   } catch (error) {
@@ -134,4 +137,43 @@ export const logout: RequestHandler = (req, res, next) => {
     if (error) next(error);
     else res.sendStatus(200);
   });
+};
+
+export const googleOAuthHandler: RequestHandler = async (req, res, next) => {
+  const code = req.query.code as string;
+
+  try {
+    const { id_token, access_token } = await getGoogleAuthTokens({ code });
+
+    const googleUser = await getGoogleUser({ id_token, access_token });
+
+    if (!googleUser.verified_email) {
+      throw createHttpError(400, "Хэрэглэчийн и-мэйл баталгаажаагүй байна.");
+    }
+
+    const studentRole = await UserRoleModel.findOne({ slug: "student" });
+
+    const user = await UserModel.findOneAndUpdate(
+      { email: googleUser.email },
+      {
+        email: googleUser.email,
+        firstName: googleUser.given_name,
+        lastName: googleUser.family_name,
+        fullName: googleUser.family_name + " " + googleUser.given_name,
+        avatar: googleUser.picture,
+        role: studentRole?._id,
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+
+    req.session.userId = user._id;
+
+    res.sendStatus(201);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 };

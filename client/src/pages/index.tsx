@@ -1,10 +1,12 @@
+import "swiper/css";
+
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { FC } from "react";
 
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
-import ResourcesNewsSection from "@/components/Home/ResourcesNewsSection";
+import NewsSection from "@/components/Home/NewsSection";
 import AdvantageSection from "@/components/Home/AdvantageSection";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import HeroSection from "@/components/Home/HeroSection";
@@ -13,6 +15,7 @@ import PopularCoursesSection from "@/components/Home/PopularCoursesSection";
 import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
 import { IUser } from "@/interfaces/user";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface HomeProps {
   categories: ICourseCategory[];
@@ -25,9 +28,9 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
 }) => {
   const { category = "" } = query;
   const [categoryRes, coursesRes, instructorRes] = await axios.all([
-    axios.get("http://localhost:5000/api/courses/categories"),
-    axios.get(`http://localhost:5000/api/courses?category=${category}`),
-    axios.get("http://localhost:5000/api/users/instructors"),
+    axiosInstance.get("/api/courses/categories"),
+    axiosInstance.get(`/api/courses?category=${category}`),
+    axiosInstance.get("/api/users/instructors"),
   ]);
 
   return {
@@ -51,7 +54,7 @@ const Home: FC<HomeProps> = ({ categories, courses, instructors }) => (
     <UsersCommentSection />
     <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
-    <ResourcesNewsSection />
+    <NewsSection />
   </>
 );
 

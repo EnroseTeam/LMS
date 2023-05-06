@@ -9,6 +9,7 @@ import { LessonLength } from "./courseLesson";
 export interface ICourse extends Document<Types.ObjectId> {
   name: string;
   description: string;
+  video: string;
   picture: string;
   instructor: IUser["_id"];
   level: ICourseLevel["_id"];
@@ -41,8 +42,13 @@ const CourseSchema = new Schema<ICourse>(
       type: String,
       required: true,
     },
+    video: {
+      type: String,
+      required: true,
+    },
     picture: {
       type: String,
+      required: true,
     },
     instructor: {
       type: Schema.Types.ObjectId,

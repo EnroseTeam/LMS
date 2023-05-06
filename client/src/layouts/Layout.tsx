@@ -16,7 +16,7 @@ interface LayoutProps {
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
 });
 
 const Layout: FC<LayoutProps> = ({ children, props }) => {
@@ -36,7 +36,7 @@ const Layout: FC<LayoutProps> = ({ children, props }) => {
 
   return (
     <div className={roboto.className}>
-      <Header />
+      <Header categories={props.categories} />
       <main>{children}</main>
       <Footer categories={props.categories} />
     </div>

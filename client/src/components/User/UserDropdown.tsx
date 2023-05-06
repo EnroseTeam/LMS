@@ -16,12 +16,12 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
   >
     <div className="w-[10px] h-[10px] rotate-45 bg-white ml-[80%]" />
     <div className="bg-white p-[20px] rounded-lg shadow-shadow-4 max-content -mt-[5px]">
-      <Link href="/" className="flex items-center gap-[10px] mb-6">
+      <Link href="/user/profile" className="flex items-center gap-[10px] mb-6">
         <div className="w-16 h-16 rounded-full overflow-hidden">
           <Image
             src={user.avatar}
-            width={64}
-            height={64}
+            width={120}
+            height={120}
             alt={user.fullName}
             className="w-full aspect-square object-cover"
           />
@@ -36,7 +36,10 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
 
       <ul className="flex flex-col gap-[15px] text-text text-md-regular">
         <li>
-          <Link className="hover:text-text/70 duration-300" href="/">
+          <Link
+            className="hover:text-text/70 duration-300"
+            href="/user/courses"
+          >
             Миний сургалтууд
           </Link>
         </li>
@@ -45,7 +48,7 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
             Миний сагс
           </Link>
         </li>
-        {user.role.slug === "instructor" && (
+        {user.role.slug !== "student" && (
           <li>
             <Link
               className="hover:text-text/70 duration-300"
@@ -55,6 +58,24 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown }) => (
             </Link>
           </li>
         )}
+        {user.role.slug === "student" && (
+          <li>
+            <Link
+              className="hover:text-text/70 duration-300"
+              href="/become-instructor"
+            >
+              Багш болох
+            </Link>
+          </li>
+        )}
+        <li>
+          <Link
+            className="hover:text-text/70 duration-300"
+            href="/user/settings"
+          >
+            Тохиргоо
+          </Link>
+        </li>
         <li>
           <Link className="hover:text-text/70 duration-300" href="/auth/logout">
             Гарах

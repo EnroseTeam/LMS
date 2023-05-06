@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow-x: hidden;
+  overflow-y: overlay;
+}
+
 .container {
   @apply max-w-[1390px] mx-auto;
 }
@@ -15,6 +21,10 @@
 /* Button Classes */
 .btn-1 {
   @apply rounded-lg text-white bg-color-1 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
+}
+
+.btn-1-outline {
+  @apply rounded-lg text-color-1 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-1 hover:border-color-1 hover:text-white hover:bg-color-1 duration-300 disabled:border-transparent disabled:text-white disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
 }
 
 .btn-2 {
@@ -31,6 +41,18 @@
 
 .btn-4 {
   @apply rounded-lg text-color-1 bg-color-1/[.07] text-base-medium py-[22px] px-[55px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-color-1;
+}
+
+.arrow-btn-1 {
+  @apply bg-color-1/[.07] text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-color-1/[.05] disabled:text-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/[.05] disabled:hover:text-color-1/50;
+}
+
+.arrow-btn-2 {
+  @apply bg-color-1 text-white rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:cursor-not-allowed disabled:bg-color-1/50  disabled:hover:bg-color-1/50 disabled:hover:text-white;
+}
+
+.arrow-btn-3 {
+  @apply bg-transparent text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium border-2 border-color-1 flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:cursor-not-allowed disabled:border-color-1/50 disabled:text-color-1/50 disabled:hover:bg-transparent disabled:hover:text-color-1/50 disabled:hover:border-color-1/50;
 }
 
 /* Slider Navigation 1 */
@@ -67,6 +89,10 @@
   @apply bg-color-1;
 }
 
+.swiper-wrapper {
+  align-items: center;
+}
+
 /* Blob Classes */
 .blob-1 {
   border-radius: 47% 53% 22% 78% / 73% 49% 51% 27%;
@@ -82,4 +108,42 @@
 
 .max-content {
   width: max-content !important;
+}
+
+.lds-facebook {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #140342;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%,
+  100% {
+    top: 24px;
+    height: 32px;
+  }
 }

@@ -1,13 +1,14 @@
 import { FC, useState } from "react";
 
 import CourseCard from "../../components/Courses/CourseCard";
-import { ICourse } from "@/interfaces/courses";
+import { IUser } from "@/interfaces/user";
+import Tab, { TabHeaderItem } from "../global/Tab";
 
 interface SinglePageContentProps {
-  courses: ICourse[];
+  instructor: IUser;
 }
 
-const SinglePageContent: FC<SinglePageContentProps> = ({ courses }) => {
+const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   const [descriptionHide, setDescriptionHide] = useState(true);
 
   const data = `Phasellus enim magna, varius et commodo ut, ultricies vitae velit. Ut nulla tellus, eleifend euismod pellentesque vel, sagittis vel justo. In libero urna, venenatis sit amet ornare non, suscipit nec risus. Sed consequat justo non mauris pretium at tempor justo sodales. Quisque tincidunt laoreet malesuada. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur.
@@ -45,42 +46,29 @@ First, we will go over the differences between UX and UI Design. We will look at
 
   const courseContent = (
     <div className="grid grid-cols-2 gap-[30px]">
-      {courses.map((course) => (
-        <CourseCard key={course._id} course={course} />
-      ))}
+      {instructor.ownCourses.length > 0 &&
+        instructor.ownCourses.map((course) => (
+          <CourseCard key={course._id} course={course} />
+        ))}
+      {instructor.ownCourses.length === 0 && (
+        <p className="col-span-2 text-center text-text text-md-medium">
+          Сургалт байхгүй байна.
+        </p>
+      )}
     </div>
   );
 
-  const tabs: string[] = ["Дэлгэрэнгүй мэдээлэл", "Хичээлүүд"];
+  const tabHeaders: TabHeaderItem[] = [
+    { name: "Дэлгэрэнгүй мэдээлэл", slug: "description" },
+    { name: "Хичээлүүд", slug: "course-content" },
+  ];
 
   const tabContents: JSX.Element[] = [description, courseContent];
 
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-
   return (
     <>
-      <div className="container px-[325px]">
-        <div className="flex gap-[30px] border-b mb-[60px]">
-          {tabs.map((tab, index) => (
-            <button
-              key={`single-course-tab-${index}`}
-              onClick={(): void => setActiveTab(tab)}
-              className={`py-4 border-b border-b-border-1 hover:text-color-1 hover:text-md-medium hover:leading-[26px] transition-all duration-300 ${
-                activeTab === tab
-                  ? "border-b-2 border-b-color-1 text-color-1 text-md-medium"
-                  : "text-md-regular leading-[26px]"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        <div className="mb-[120px]">
-          {tabContents.map(
-            (tabContent, index) => activeTab === tabs[index] && tabContent
-          )}
-        </div>
+      <div className="container px-[325px] mb-[120px]">
+        <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
       </div>
     </>
   );

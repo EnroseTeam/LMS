@@ -1,6 +1,7 @@
 import { Schema, Document, Types, model } from "mongoose";
 import { IUserRole } from "./userRole";
 import { ICourse } from "./course";
+import { IUserOrder } from "./userOrder";
 
 interface UserAddress {
   country: string;
@@ -16,10 +17,11 @@ export interface IUser extends Document<Types.ObjectId> {
   birthDate?: Date;
   email: string;
   phone: string;
-  address?: UserAddress;
-  avatar?: string;
+  address: UserAddress;
+  avatar: string;
   password: string;
   role: IUserRole;
+  orders: IUserOrder["_id"][];
   boughtCourses: ICourse["_id"][];
   ownCourses: ICourse["_id"][];
   avgRating: number;
@@ -29,7 +31,7 @@ export interface IUser extends Document<Types.ObjectId> {
     linkedin: string;
     instagram: string;
   };
-  bio: string;
+  bio?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,19 +42,19 @@ const UserSchema = new Schema<IUser>(
     lastName: { type: String, required: true },
     fullName: {
       type: String,
-      default: function () {
-        return this.lastName + " " + this.firstName;
-      },
+      // default: function () {
+      //   return this.lastName + " " + this.firstName;
+      // },
     },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
+    orders: { type: [Schema.Types.ObjectId], ref: "User_Order" },
     address: {
-      country: String,
-      city: String,
-      district: String,
-      apartment: String,
-      default: {},
+      country: { type: String, default: "" },
+      city: { type: String, default: "" },
+      district: { type: String, default: "" },
+      apartment: { type: String, default: "" },
     },
     avatar: {
       type: String,
@@ -78,11 +80,10 @@ const UserSchema = new Schema<IUser>(
       default: 0,
     },
     socialAccounts: {
-      facebook: String,
-      linkedin: String,
-      twitter: String,
-      instagram: String,
-      default: {},
+      facebook: { type: String, default: "" },
+      linkedin: { type: String, default: "" },
+      twitter: { type: String, default: "" },
+      instagram: { type: String, default: "" },
     },
     bio: String,
   },

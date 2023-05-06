@@ -16,14 +16,25 @@ import courseReviewRoutes from "./routes/courseReview";
 import courseRoutes from "./routes/course";
 import authRoutes from "./routes/auth";
 import courseSectionRoutes from "./routes/courseSection";
+import searchRoutes from "./routes/search";
 import MongoStore from "connect-mongo";
 import blogRoutes from "./routes/blog";
 
 const app: Express = express();
 
+const allowedDomains = ["https://intellisense-lilac.vercel.app/", "http://localhost:3000"];
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+      // bypass the requests with no origin (like curl requests, mobile apps, etc )
+      if (!origin) return callback(null, true);
+
+      if (allowedDomains.indexOf(origin) === -1) {
+        const msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
@@ -35,6 +46,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
+      sameSite: "none",
     },
     rolling: true,
     store: MongoStore.create({
@@ -55,6 +67,8 @@ app.use("/api/users/roles", userRoleRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes)
+app.use("/api/search", searchRoutes);
+
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Хүсэлт явуулсан хаяг олдсонгүй."));
@@ -72,11 +86,9 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 
   if (error instanceof MulterError) {
     statusCode = 400;
-    if (error.code === "LIMIT_UNEXPECTED_FILE")
-      errorMessage = "Буруу өргөтгөлтэй файл байна.";
+    if (error.code === "LIMIT_UNEXPECTED_FILE") errorMessage = "Буруу өргөтгөлтэй файл байна.";
     if (error.code === "LIMIT_FILE_SIZE")
-      errorMessage =
-        "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
+      errorMessage = "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
   }
 
   res.status(statusCode).json({ error: errorMessage });

@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
@@ -6,6 +6,8 @@ import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import { useRouter } from "next/router";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 const RegisterForm: FC = () => {
   const router = useRouter();
@@ -26,7 +28,6 @@ const RegisterForm: FC = () => {
   const [firstNameExist, setFirstNameExist] = useState<boolean>(true);
   const [lastNameExist, setLastNameExist] = useState<boolean>(true);
   const [passwordExist, setPasswordExist] = useState<boolean>(true);
-  const [rePasswordExist, setRePasswordExist] = useState<boolean>(true);
   const [rePasswordMatch, setRePasswordMatch] = useState<boolean>(true);
 
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -78,71 +79,66 @@ const RegisterForm: FC = () => {
     }
 
     setPasswordRequirements(newPasswordRequirements);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password]);
 
   useEffect(() => {
-    if (password && rePassword) {
-      if (password !== rePassword) setRePasswordMatch(false);
-      else setRePasswordMatch(true);
-    } else {
-      setRePasswordMatch(true);
-    }
+    if (password !== rePassword) setRePasswordMatch(false);
+    else setRePasswordMatch(true);
   }, [password, rePassword]);
 
   const registerUser = async (): Promise<void> => {
-    try {
-      setIsSubmitting(true);
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
 
-      if (
-        !firstName ||
-        !lastName ||
-        !email ||
-        !phone ||
-        !password ||
-        !rePassword ||
-        !rePasswordMatch ||
-        !isPasswordRequirementMet ||
-        !agreement
-      ) {
-        if (!firstName) setFirstNameExist(false);
-        if (!lastName) setLastNameExist(false);
-        if (!email) setEmailExist(false);
-        if (!phone) setPhoneExist(false);
-        if (!password) setPasswordExist(false);
-        if (!rePassword) setRePasswordExist(false);
-        if (!agreement)
-          setErrorMsg("Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай.");
-        if (!isPasswordRequirementMet)
-          setErrorMsg("Нууц үг шаардлага хангахгүй байна");
+        if (
+          !firstName ||
+          !lastName ||
+          !email ||
+          !phone ||
+          !password ||
+          !rePasswordMatch ||
+          !isPasswordRequirementMet ||
+          !agreement
+        ) {
+          if (!firstName) setFirstNameExist(false);
+          if (!lastName) setLastNameExist(false);
+          if (!email) setEmailExist(false);
+          if (!phone) setPhoneExist(false);
+          if (!password) setPasswordExist(false);
+          if (!agreement)
+            setErrorMsg(
+              "Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай."
+            );
+          if (!isPasswordRequirementMet)
+            setErrorMsg("Нууц үг шаардлага хангахгүй байна");
 
-        return;
-      }
+          return;
+        }
 
-      await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        {
+        await axiosInstance.post("/api/auth/signup", {
           email,
           phone,
           firstName,
           lastName,
           password,
           rePassword,
-        },
-        { withCredentials: true }
-      );
+        });
 
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
+        setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
 
-      router.push("/");
-    } catch (error) {
-      if (isAxiosError(error))
-        setErrorMsg(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
-        );
-    } finally {
-      setIsSubmitting(false);
+        router.back();
+      } catch (error) {
+        if (isAxiosError(error))
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -298,20 +294,14 @@ const RegisterForm: FC = () => {
               value={rePassword}
               onChange={(e): void => {
                 setRePassword(e.target.value);
-                setRePasswordExist(true);
               }}
               type="password"
               id="repassword"
               className={`border border-border-2 w-full py-[12px] px-[22px] rounded-lg focus:outline-none focus:ring-2 focus:ring-color-1 text-text text-md-regular ${
-                !rePasswordExist || !rePasswordMatch ? "ring ring-red-500" : ""
+                !rePasswordMatch ? "ring ring-red-500" : ""
               }`}
               placeholder="Нууц үг давтах"
             />
-            {!rePasswordExist && (
-              <p className="text-red-500 text-md-medium mt-2">
-                Давтан нууц үг заавал шаардлагатай.
-              </p>
-            )}
             {!rePasswordMatch && (
               <p className="text-red-500 text-md-medium mt-2">
                 Давтан нууц үг таарахгүй байна.
@@ -364,14 +354,20 @@ const RegisterForm: FC = () => {
         <p className="text-center text-md-medium mb-5">Эсвэл</p>
 
         <div className="grid grid-cols-2 gap-5">
-          <button className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300">
+          <Link
+            href={"/"}
+            className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300"
+          >
             <FaFacebookF />
             Facebook-ээр бүртгүүлэх
-          </button>
-          <button className="flex items-center justify-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300">
+          </Link>
+          <Link
+            href={getGoogleOAuthURL()}
+            className="flex items-center justify-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
+          >
             <FaGoogle />
             Google-ээр бүртгүүлэх
-          </button>
+          </Link>
         </div>
       </form>
     </div>

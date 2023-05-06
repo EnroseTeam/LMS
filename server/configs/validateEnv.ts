@@ -10,4 +10,7 @@ export default cleanEnv(process.env, {
   AWS_REGION: str(),
   AWS_BUCKET_NAME: str(),
   SESSION_SECRET: str(),
+  GOOGLE_CLIENT_ID: str(),
+  GOOGLE_CLIENT_SECRET: str(),
+  GOOGLE_OAUTH_REDIRECT_URL: str(),
 });

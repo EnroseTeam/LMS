@@ -19,12 +19,17 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
     >
       <Image
         src={course.picture}
-        width={300}
-        height={210}
+        width={600}
+        height={420}
         alt={course.name}
-        className="w-full aspect-[1.42/1] object-cover"
+        className="w-full aspect-[1.42/1] object-cover group-hover/picture:scale-110 duration-300"
       />
       <div className="w-full h-full absolute top-0 right-0 left-0 bottom-0 bg-head/0 group-hover/picture:bg-head/50 duration-300 " />
+      {course.discountPrice > 0 && (
+        <div className="absolute top-[10px] left-[5px] uppercase py-2 px-4 bg-color-6 text-head text-[11px] font-medium leading-[13px] rounded-[60px]">
+          Хямдралтай
+        </div>
+      )}
     </Link>
 
     <div className="flex flex-col gap-[10px]">
@@ -41,7 +46,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         {course.name}
       </Link>
 
-      <div className="flex items-center gap-[20px]">
+      <div className="flex items-center justify-between whitespace-nowrap">
         <span className="flex items-center gap-2 text-md text-icon">
           <BsFileEarmarkText />
           <span className="text-sm-regular text-text">{course.lessonCount} хичээл</span>
@@ -50,7 +55,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
         <span className="flex items-center gap-2 text-md text-icon">
           <BsClock />
           <span className="text-sm-regular text-text">
-            {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг`}
+            {course.totalLessonLength.hour > 0 && `${course.totalLessonLength.hour} цаг `}
             {course.totalLessonLength.minute > 0 && `${course.totalLessonLength.minute} минут`}
           </span>
         </span>

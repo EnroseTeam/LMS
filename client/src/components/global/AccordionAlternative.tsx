@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { FaMinus } from "react-icons/fa";
 
 interface AccordionAlternativeProps {
   header: string;

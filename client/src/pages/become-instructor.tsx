@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import { IUser } from "@/interfaces/user";
@@ -11,6 +11,9 @@ import science from "../assets/instructor-2.svg";
 import online from "../assets/instructor-3.svg";
 import certificate from "../assets/instructor-4.svg";
 import main from "../assets/instructor-5.svg";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { useRouter } from "next/router";
+import Tab, { TabHeaderItem } from "@/components/global/Tab";
 
 interface BecomeInstructorPageProps {
   instructors: IUser[];
@@ -41,15 +44,37 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
     </div>
   );
 
-  const tabs: string[] = [
-    "Багш, сургагчаар элсэх",
-    "Дүрэм, шаардлага",
-    "Эхлэх",
+  const tabHeaders: TabHeaderItem[] = [
+    { name: "Багш, сургагчаар элсэх", slug: "become-instructor" },
+    { name: "Дүрэм, шаардлага", slug: "rules" },
+    { name: "Эхлэх", slug: "start" },
   ];
 
   const tabContents: JSX.Element[] = [tabOne];
 
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const { user, isLoading, mutate } = useAuthenticate();
+  const router = useRouter();
+
+  const submitHandler = (): void => {
+    if (!user && !isLoading) {
+      router.push("/auth/login");
+    }
+
+    if (user && !isLoading) {
+      axios
+        .post(
+          `http://localhost:5000/api/users/becomeInstructor`,
+          {},
+          { withCredentials: true }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            mutate({ ...user, role: { ...user.role, slug: "instructor" } });
+            router.push("/instructors/dashboard");
+          }
+        });
+    }
+  };
 
   return (
     <>
@@ -111,28 +136,7 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
         </div>
 
         <div className="px-[276px] mb-[120px]">
-          <div>
-            <div className="flex gap-[30px] border-b mb-[60px]">
-              {tabs.map((tab, index) => (
-                <button
-                  key={`become-instructor-tab-${index}`}
-                  onClick={(): void => setActiveTab(tab)}
-                  className={`py-4 border-b border-b-border-1 hover:text-color-1 hover:text-md-medium hover:leading-[26px] transition-all duration-300 ${
-                    activeTab === tab
-                      ? "border-b-2 border-b-color-1 text-color-1 text-md-medium"
-                      : "text-md-regular leading-[26px]"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-            <div className="mb-[120px]">
-              {tabContents.map(
-                (tabContent, index) => activeTab === tabs[index] && tabContent
-              )}
-            </div>
-          </div>
+          <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
         </div>
       </div>
       <div className="bg-bg-1 w-screen">
@@ -170,7 +174,7 @@ const BecomeInstructorPage: FC<BecomeInstructorPageProps> = ({
               Use the list below to bring attention to your product’s key
               differentiator.
             </p>
-            <button className="bg-color-2 rounded-lg py-[21px] px-[55px] text-[#FFFFFF] text-base-medium">
+            <button onClick={submitHandler} className="btn-3">
               Манай Багт Нэгдээрэй
             </button>
           </div>

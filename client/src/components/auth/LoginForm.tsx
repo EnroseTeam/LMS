@@ -1,10 +1,12 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "../global/MessageBox";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import getGoogleOAuthURL from "@/utils/getGoogleUrl";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 const LoginForm: FC = () => {
   const { setLoggedIn } = useAuthenticate();
@@ -12,6 +14,7 @@ const LoginForm: FC = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [remember, setRemember] = useState<boolean>(false);
 
   const [emailCorrect, setEmailCorrect] = useState<boolean>(true);
   const [passwordCorrect, setPasswordCorrect] = useState<boolean>(true);
@@ -21,37 +24,36 @@ const LoginForm: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const loginUser = async (): Promise<void> => {
-    try {
-      setIsSubmitting(true);
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
 
-      if (!email || !password) {
-        if (!email) setEmailCorrect(false);
-        if (!password) setPasswordCorrect(false);
-        return;
-      }
+        if (!email || !password) {
+          if (!email) setEmailCorrect(false);
+          if (!password) setPasswordCorrect(false);
+          return;
+        }
 
-      await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
+        await axiosInstance.post("/api/auth/login", {
           email,
           password,
-        },
-        { withCredentials: true }
-      );
+          remember,
+        });
 
-      setLoggedIn(true);
-      localStorage.setItem("loggedIn", JSON.stringify(true));
+        setLoggedIn(true);
+        localStorage.setItem("loggedIn", JSON.stringify(true));
 
-      router.push("/");
-    } catch (error) {
-      if (isAxiosError(error))
-        setErrorMsg(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
-        );
-      else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
-    } finally {
-      setIsSubmitting(false);
+        router.back();
+      } catch (error) {
+        if (isAxiosError(error))
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
+        else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -129,6 +131,11 @@ const LoginForm: FC = () => {
         <div className="flex items-center justify-between text-sm-regular mb-5">
           <div className="flex items-center gap-[10px]">
             <input
+              checked={remember}
+              onChange={(e): void => {
+                if (e.target.checked) setRemember(true);
+                else setRemember(false);
+              }}
               type="checkbox"
               id="remember"
               className="w-[15px] h-[15px] border-2 border-icon"
@@ -161,10 +168,13 @@ const LoginForm: FC = () => {
             <FaFacebookF />
             Facebook-ээр нэвтрэх
           </button>
-          <button className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300">
+          <Link
+            href={getGoogleOAuthURL()}
+            className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
+          >
             <FaGoogle />
             Google-ээр нэвтрэх
-          </button>
+          </Link>
         </div>
       </form>
     </div>

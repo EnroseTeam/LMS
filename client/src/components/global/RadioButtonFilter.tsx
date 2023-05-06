@@ -12,7 +12,10 @@ interface RadioButtonFilterProps {
   items?: IRadioButtonFilterItem[];
 }
 
-const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) => {
+const RadioButtonFilter: FC<RadioButtonFilterProps> = ({
+  title,
+  items = [],
+}) => {
   const router = useRouter();
 
   const [show, setShow] = useState(true);
@@ -33,6 +36,7 @@ const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) =>
       delete router.query[title.slug.toLowerCase()];
       router.push({ query: router.query });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   return (
@@ -49,7 +53,9 @@ const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) =>
       </button>
       <div
         className={`${
-          show ? "max-h-[1000px] opacity-100 py-[30px]" : "max-h-0 opacity-0 pointer-events-none"
+          show
+            ? "max-h-[1000px] opacity-100 py-[30px]"
+            : "max-h-0 opacity-0 pointer-events-none"
         } z-10 border-b duration-150`}
       >
         {displayItems.map((item, index) => (
@@ -69,7 +75,10 @@ const RadioButtonFilter: FC<RadioButtonFilterProps> = ({ title, items = [] }) =>
                 className="w-[15px] h-[15px] border-2 border-2-icon text-black"
                 name={title.slug}
               />
-              <label htmlFor={`button-${index}`} className="select-none w-[20ch] whitespace-nowrap">
+              <label
+                htmlFor={`button-${index}`}
+                className="select-none w-[20ch] whitespace-nowrap"
+              >
                 {item.content}
               </label>
             </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 
 const DropdownLarge: FC = () => (
-  <div className="absolute top-11 left-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto whitespace-nowrap">
+  <div className="absolute top-full pt-2 left-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto whitespace-nowrap">
     <div className="px-10">
       <div className="w-[10px] h-[10px] rotate-45 bg-white" />
     </div>

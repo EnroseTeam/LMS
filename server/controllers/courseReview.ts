@@ -1,15 +1,14 @@
-import CourseReviewModel from '../models/courseReview';
-import CourseModel from '../models/course';
-import UserModel from '../models/user';
-import createHttpError from 'http-errors';
-import mongoose from 'mongoose';
-import { RequestHandler } from 'express';
+import CourseReviewModel from "../models/courseReview";
+import CourseModel from "../models/course";
+import UserModel from "../models/user";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
+import { RequestHandler } from "express";
 
 interface CourseReviewBody {
   title?: string;
   text?: string;
-  user?: string;
-  rating?: string;
+  rating?: number;
   course?: string;
 }
 
@@ -21,9 +20,9 @@ interface CourseReviewParams {
 export const getCourseReviews: RequestHandler = async (req, res, next) => {
   try {
     // Бүх сэтгэгдлээ олоод буцаана. Буцаахдаа user хэсгийг populate хийж буцаана.
-    const reviews = await CourseReviewModel.find().populate('user');
+    const reviews = await CourseReviewModel.find().populate("user");
 
-    res.status(200).json({ message: 'Амжилттай', body: reviews });
+    res.status(200).json({ message: "Амжилттай", body: reviews });
   } catch (error) {
     next(error);
   }
@@ -34,13 +33,14 @@ export const getSingleCourseReview: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   try {
     // Хүсэлтээс ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна.");
 
     // Id-р сэтгэгдлээ олоод буцаана. Буцаахдаа user хэсгийг populate хийнэ.
-    const review = await CourseReviewModel.findById(id).populate('user');
-    if (!review) throw createHttpError(404, 'Сэтгэгдэл олдсонгүй.');
+    const review = await CourseReviewModel.findById(id).populate("user");
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
 
-    res.status(200).json({ message: 'Амжилттай', body: review });
+    res.status(200).json({ message: "Амжилттай", body: review });
   } catch (error) {
     next(error);
   }
@@ -53,42 +53,59 @@ export const createCourseReview: RequestHandler<
   CourseReviewBody,
   unknown
 > = async (req, res, next) => {
-  const { title, text, user, rating, course } = req.body;
+  const { title, text, rating, course } = req.body;
 
+  const userId = req.session.userId;
   const session = await mongoose.startSession();
 
   try {
     // Хүсэлтээс ирсэн мэдээлэл бүрэн эсэхийг шалгана.
-    if (!title) throw createHttpError(400, 'Гарчиг заавал шаардлагатай.');
-    if (!user) throw createHttpError(400, 'Хэрэглэгчийн Id заавал шаардлагатай.');
-    if (!rating) throw createHttpError(400, 'Үнэлгээ заавал шаардлагатай.');
-    if (!course) throw createHttpError(400, 'Сургалтын id заавал шаардлагатай.');
-    if (!mongoose.isValidObjectId(user)) throw createHttpError(400, 'Хэрэглэгчийн id буруу байна.');
-    if (!mongoose.isValidObjectId(course)) throw createHttpError(400, 'Сургалтын id буруу байна.');
+    if (!title) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
+
+    if (!rating) throw createHttpError(400, "Үнэлгээ заавал шаардлагатай.");
+    if (!course)
+      throw createHttpError(400, "Сургалтын id заавал шаардлагатай.");
+
+    if (!mongoose.isValidObjectId(course))
+      throw createHttpError(400, "Сургалтын id буруу байна.");
 
     session.startTransaction();
 
-    // Хүсэлтээс орж ирсэн хэрэглэгчийн id-тай хэрэглэгч байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const isUserExist = await UserModel.findById(user, null, { session });
-    if (!isUserExist) throw createHttpError(400, `${user} id-тай хэрэглэгч олдсонгүй.`);
-
     // Хүсэлтээс орж ирсэн сургалтын id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isCourseExist = await CourseModel.findById(course, null, { session });
-    if (!isCourseExist) throw createHttpError(400, `${course} id-тай сургалт олдсонгүй.`);
+    if (!isCourseExist)
+      throw createHttpError(400, `${course} id-тай сургалт олдсонгүй.`);
+
+    const isUserExist = await UserModel.findById(
+      isCourseExist.instructor,
+      null,
+      { session }
+    );
+    if (!isUserExist)
+      throw createHttpError(
+        400,
+        `${isCourseExist.instructor} id-тай хэрэглэгч олдсонгүй.`
+      );
 
     // Сургалтын дундаж үнэлгээг шинэчлэнэ.
     const totalRating = isCourseExist.avgRating * isCourseExist.reviews.length;
-    isCourseExist.avgRating = (totalRating + Number(rating)) / (isCourseExist.reviews.length + 1);
+    isCourseExist.avgRating =
+      (totalRating + Number(rating)) / (isCourseExist.reviews.length + 1);
     await isCourseExist.save({ session });
 
     // Сургалтыг заасан багшийн дундаж үнэлгээг шинэчлэнэ.
     let totalReviewLength = 0;
     for (let i = 0; i < isUserExist.ownCourses.length; i++) {
-      const course = await CourseModel.findById(isUserExist.ownCourses[i], null, { session });
+      const course = await CourseModel.findById(
+        isUserExist.ownCourses[i],
+        null,
+        { session }
+      );
       if (course) totalReviewLength += course.reviews.length;
     }
     const totalUserRating = isUserExist.avgRating * totalReviewLength;
-    isUserExist.avgRating = (totalUserRating + Number(rating)) / (totalReviewLength + 1);
+    isUserExist.avgRating =
+      (totalUserRating + Number(rating)) / (totalReviewLength + 1);
     await isUserExist.save({ session });
 
     // Орж ирсэн мэдээллийн дагуу шинэ сэтгэгдэл үүсгэнэ.
@@ -97,7 +114,7 @@ export const createCourseReview: RequestHandler<
         {
           title,
           text,
-          user,
+          user: userId,
           rating,
           course,
         },
@@ -111,9 +128,10 @@ export const createCourseReview: RequestHandler<
 
     await session.commitTransaction();
 
-    res.status(200).json({ message: 'Амжилттай нэмэгдлээ.', body: newReview });
+    res.status(200).json({ message: "Амжилттай нэмэгдлээ.", body: newReview });
   } catch (error) {
     await session.abortTransaction();
+    console.log(error);
     next(error);
   }
 
@@ -128,18 +146,21 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна.");
 
     session.startTransaction();
 
     // Орж ирсэн id-тай сэтгэгдэл байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const review = await CourseReviewModel.findById(id, null, { session });
-    if (!review) throw createHttpError(404, 'Сэтгэгдэл олдсонгүй.');
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
 
     // Олдсон сэтгэгдэл дээр бүртгэлтэй байгаа сургалтын id-гаар сургалтаа олоод олдсон сургалтнаас устгагдаж буй сэтгэгдлийн id-г хасна.
     const course = await CourseModel.findById(review.course);
     if (course) {
-      course.reviews = course.reviews.filter((curReview) => curReview?._id !== review._id);
+      course.reviews = course.reviews.filter(
+        (curReview) => curReview?._id !== review._id
+      );
       await course.save({ session });
     }
 
@@ -168,13 +189,14 @@ export const updateCourseReview: RequestHandler<
   const { title, text, rating } = req.body;
   try {
     // Хүсэлтээс ирж буй мэдээлэл бүрэн эсэхийг шалгана.
-    if (!title) throw createHttpError(400, 'Гарчиг заавал шаардлагатай.');
-    if (!rating) throw createHttpError(400, 'Үнэлгээ заавал шаардлагатай.');
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!title) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
+    if (!rating) throw createHttpError(400, "Үнэлгээ заавал шаардлагатай.");
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна.");
 
     // Орж ирсэн id-тай сэтгэгдэл байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const review = await CourseReviewModel.findById(id);
-    if (!review) throw createHttpError(404, 'Сэтгэгдэл олдсонгүй.');
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
 
     // Олдсон сэтгэгдлийн мэдээллийг хүсэлтээс орж ирсэн мэдээллийн дагуу шинэчлэнэ. Энд сургалтын id-г солих шаардлагагүй. Сэтгэгдлийг шууд өөр сургалтруу шилжүүлэх үйлдэл огт хийгдэхгүй.
     await review.updateOne({
@@ -183,7 +205,7 @@ export const updateCourseReview: RequestHandler<
       rating,
     });
 
-    res.status(200).json({ message: 'Амжилттай шинэчлээ' });
+    res.status(200).json({ message: "Амжилттай шинэчлээ" });
   } catch (error) {
     next(error);
   }
