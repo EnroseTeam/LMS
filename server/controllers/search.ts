@@ -14,7 +14,7 @@ interface SearchItem {
 
 export const searchEverything: RequestHandler = async (req, res, next) => {
   try {
-    let { q: search = "", pageSize = "9", page = "1" } = req.query;
+    const { q: search = "", pageSize = "9", page = "1" } = req.query;
 
     const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
 
