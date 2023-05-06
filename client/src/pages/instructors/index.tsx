@@ -96,7 +96,7 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
             <SortDropDown />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-[30px] mb-[60px]">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-[30px] mb-[60px]">
           {instructors.length > 0 &&
             instructors.map((instructor) => (
               <InstructorCard key={instructor._id} instructor={instructor} />
