@@ -50,8 +50,13 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown, setUserDropdo
             </Link>
           </li>
           <li>
-            <Link className="hover:text-text/70 duration-300" href="/">
+            <Link className="hover:text-text/70 duration-300" href="/user/cart">
               Миний сагс
+            </Link>
+          </li>
+          <li>
+            <Link className="hover:text-text/70 duration-300" href="/user/orders">
+              Захиалгууд
             </Link>
           </li>
           {user.role.slug !== "student" && (

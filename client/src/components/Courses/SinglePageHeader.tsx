@@ -24,12 +24,14 @@ import { useAuthenticate } from "@/hooks/useAuthenticate";
 import ButtonSkeleton from "@/utils/ButtonSkeleton";
 import { IoMdClose } from "react-icons/io";
 import { useCart } from "@/hooks/useCart";
+import { useRouter } from "next/router";
 
 interface SinglePageHeaderProps {
   course: ICourse;
 }
 
 const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
+  const router = useRouter();
   const { user, isLoading } = useAuthenticate();
   const { addCartItem } = useCart();
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -279,7 +281,17 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               >
                 Сагслах
               </button>
-              <button className="btn-2-outline">Худалдаж авах</button>
+              <button
+                onClick={(): void => {
+                  router.push({
+                    pathname: "/user/cart/checkout",
+                    query: { course: course._id },
+                  });
+                }}
+                className="btn-2-outline"
+              >
+                Худалдаж авах
+              </button>
             </div>
           )}
           {user &&
@@ -295,7 +307,17 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
                 >
                   Сагслах
                 </button>
-                <button className="btn-2-outline">Худалдаж авах</button>
+                <button
+                  onClick={(): void => {
+                    router.push({
+                      pathname: "/user/cart/checkout",
+                      query: { course: course._id },
+                    });
+                  }}
+                  className="btn-2-outline"
+                >
+                  Худалдаж авах
+                </button>
               </div>
             )}
           {user &&

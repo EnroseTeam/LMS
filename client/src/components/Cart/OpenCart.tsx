@@ -87,10 +87,10 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => {
             <p>₮{totalPrice}</p>
           </div>
           <div className="flex items-center gap-5 whitespace-nowrap">
-            <Link href="/cart" className="btn-3 px-[35px] py-4">
+            <Link href="/user/cart" className="btn-3 px-[35px] py-4">
               Сагс үзэх
             </Link>
-            <Link href="/" className="btn-1 px-[35px] py-4">
+            <Link href="/user/cart/checkout" className="btn-1 px-[35px] py-4">
               Худалдаж авах
             </Link>
           </div>

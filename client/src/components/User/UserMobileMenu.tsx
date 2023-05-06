@@ -9,11 +9,7 @@ interface UserMobileMenuProps {
   closeUserMenu: () => void;
 }
 
-const UserMobileMenu: FC<UserMobileMenuProps> = ({
-  user,
-  userMenuShow,
-  closeUserMenu,
-}) => (
+const UserMobileMenu: FC<UserMobileMenuProps> = ({ user, userMenuShow, closeUserMenu }) => (
   <div
     className={`fixed top-0 bottom-0 min-h-screen w-[70vw] bg-white z-[1000] text-head duration-300 p-5 ${
       userMenuShow ? "left-0" : "-left-full"
@@ -30,22 +26,19 @@ const UserMobileMenu: FC<UserMobileMenuProps> = ({
       <Link className="hover:text-color-1 duration-300" href={"/user/courses"}>
         Миний сургалтууд
       </Link>
-      <Link className="hover:text-color-1 duration-300" href={"/"}>
+      <Link className="hover:text-color-1 duration-300" href={"/user/cart"}>
+        Миний сагс
+      </Link>
+      <Link className="hover:text-color-1 duration-300" href={"/user/orders"}>
         Миний сагс
       </Link>
       {user.role.slug !== "student" && (
-        <Link
-          className="hover:text-color-1 duration-300"
-          href={"/instructors/dashboard"}
-        >
+        <Link className="hover:text-color-1 duration-300" href={"/instructors/dashboard"}>
           Багшийн булан
         </Link>
       )}
       {user.role.slug === "student" && (
-        <Link
-          className="hover:text-color-1 duration-300"
-          href={"/become-instructor"}
-        >
+        <Link className="hover:text-color-1 duration-300" href={"/become-instructor"}>
           Багш болох
         </Link>
       )}
