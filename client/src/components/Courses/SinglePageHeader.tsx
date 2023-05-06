@@ -23,6 +23,7 @@ import shape from "@/assets/hero-shape.svg";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import ButtonSkeleton from "@/utils/ButtonSkeleton";
 import { IoMdClose } from "react-icons/io";
+import { useCart } from "@/hooks/useCart";
 
 interface SinglePageHeaderProps {
   course: ICourse;
@@ -30,6 +31,7 @@ interface SinglePageHeaderProps {
 
 const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const { user, isLoading } = useAuthenticate();
+  const { addCartItem } = useCart();
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const [boughtCourses, setBoughtCourses] = useState<string[]>([]);
@@ -269,7 +271,14 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
           {!user && isReady && (
             <div className="grid grid-cols-2 gap-[35px]">
-              <button className="btn-1">Сагслах</button>
+              <button
+                onClick={(): void => {
+                  addCartItem(course);
+                }}
+                className="btn-1"
+              >
+                Сагслах
+              </button>
               <button className="btn-2-outline">Худалдаж авах</button>
             </div>
           )}
@@ -278,7 +287,14 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             !boughtCourses.includes(course._id) &&
             isReady && (
               <div className="grid grid-cols-2 gap-[35px]">
-                <button className="btn-1">Сагслах</button>
+                <button
+                  onClick={(): void => {
+                    addCartItem(course);
+                  }}
+                  className="btn-1"
+                >
+                  Сагслах
+                </button>
                 <button className="btn-2-outline">Худалдаж авах</button>
               </div>
             )}
