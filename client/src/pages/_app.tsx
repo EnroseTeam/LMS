@@ -7,6 +7,7 @@ import NextProgress from "next-progress";
 
 import Layout from "@/layouts/Layout";
 import { ToastContainer } from "react-toastify";
+import { CartProvider } from "@/contexts/CartContext";
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
@@ -33,9 +34,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         pauseOnHover
         theme="light"
       />
-      <Layout props={pageProps}>
-        <Component {...pageProps} />
-      </Layout>
+      <CartProvider>
+        <Layout props={pageProps}>
+          <Component {...pageProps} />
+        </Layout>
+      </CartProvider>
     </>
   );
 }

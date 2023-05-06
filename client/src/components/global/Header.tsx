@@ -110,9 +110,7 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
                   {menuItem.title}
                   {menuItem.children && <HiChevronDown size={18} />}
                 </Link>
-                {menuItem.children && (
-                  <NavbarDroprown headerMenuChildren={menuItem.children} />
-                )}
+                {menuItem.children && <NavbarDroprown headerMenuChildren={menuItem.children} />}
               </li>
             ))}
           </ul>
@@ -140,10 +138,7 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
               <FiShoppingBag />
             </button>
 
-            <OpenCart
-              openCartShow={openCartShow}
-              closeOpenCart={closeOpenCart}
-            />
+            <OpenCart openCartShow={openCartShow} setOpenCartShow={setOpenCartShow} />
           </div>
 
           <button
@@ -183,15 +178,16 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
               >
                 {user.fullName}
               </button>
-              <UserDropdown user={user} userDropdown={userDropdown} />
+              <UserDropdown
+                user={user}
+                userDropdown={userDropdown}
+                setUserDropdown={setUserDropdown}
+              />
             </div>
           )}
         </div>
       </div>
-      <SearchBar
-        searchBarShow={searchBarShow}
-        setSearchBarShow={setSearchBarShow}
-      />
+      <SearchBar searchBarShow={searchBarShow} setSearchBarShow={setSearchBarShow} />
       <MobileMenu
         menuItems={HeaderMenuItems}
         mobileMenuShow={mobileMenuShow}
