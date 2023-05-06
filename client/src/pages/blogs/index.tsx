@@ -30,8 +30,8 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
 
 const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
   <>
+    <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
     <div className="max-w-[1100px] mx-auto">
-      <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
       <div className="flex flex-col items-center justify-center px-[120px]">
         <h1 className="text-4x-bold text-head pt-[90px] pb-1">Онцлох мэдээ</h1>
         <p className="lg-regular text-text pb-[30px]">
