@@ -110,7 +110,11 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
         });
 
         toast.success(res.data.message);
-        router.push("/instructors/dashboard/my-courses");
+        router.push({
+          pathname: "/instructors/dashboard/my-courses",
+          query: { activeTab: "unpublished" },
+          hash: "tab",
+        });
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error)) {
