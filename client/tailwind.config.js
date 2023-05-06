@@ -110,6 +110,13 @@ module.exports = {
             fontWeight: "700",
           },
         ],
+        "4x-bold": [
+          "40px",
+          {
+            lineHeight: "46px",
+            fontWeight: "700",
+          },
+        ],
         "4xl-bold": [
           "45px",
           {
