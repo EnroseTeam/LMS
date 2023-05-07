@@ -25,22 +25,13 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
     { name: "Сэтгэгдлүүд", slug: "reviews" },
   ];
   const tabContents: JSX.Element[] = [
-    <SinglePageDescriptionContent
-      key={`course-single-page-content-1`}
-      course={course}
-    />,
-    <SinglePageSectionContent
-      key={`course-single-page-content-2`}
-      course={course}
-    />,
+    <SinglePageDescriptionContent key={`course-single-page-content-1`} course={course} />,
+    <SinglePageSectionContent key={`course-single-page-content-2`} course={course} />,
     <SinglePageInstructorContent
       key={`course-single-page-content-3`}
       instuctor={course.instructor}
     />,
-    <SinglePageReviewContent
-      key={`course-single-page-content-4`}
-      course={course}
-    />,
+    <SinglePageReviewContent key={`course-single-page-content-4`} course={course} />,
   ];
 
   return (
