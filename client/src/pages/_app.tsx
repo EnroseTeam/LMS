@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import NextProgress from "next-progress";
 
 import MainLayout from "@/layouts/MainLayout";
 import { ToastContainer } from "react-toastify";
@@ -35,7 +34,6 @@ export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.E
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <NextProgress />
       <ToastContainer
         position="top-right"
         autoClose={5000}

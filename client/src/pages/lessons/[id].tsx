@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import FooterAlternate from "@/components/Lessons/FooterAlternate";
@@ -13,6 +13,9 @@ import SinglePageReviewContent from "@/components/Courses/SinglePageReviewConten
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { NextPageWithLayout } from "../_app";
+import NoLayout from "@/layouts/NoLayout";
+import LoadingScreen from "@/utils/LoadingScreen";
 
 interface SingleLessonPageProps {
   lesson: ICourseLesson;
@@ -28,13 +31,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({ params }) => {
   const res = await axiosInstance.get(`/api/courses/lessons/${params?.id}`);
-  const courseRes = await axiosInstance.get(
-    `/api/courses/${res.data.body.section.course}`
-  );
+  const courseRes = await axiosInstance.get(`/api/courses/${res.data.body.section.course}`);
 
   return {
     props: {
@@ -44,7 +43,7 @@ export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({
   };
 };
 
-const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
+const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, course }) => {
   const { user, isLoading } = useAuthenticate();
   const [isReady, setIsReady] = useState<boolean>(false);
   const router = useRouter();
@@ -56,8 +55,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
   const [isFirstLesson, setIsFirstLesson] = useState<boolean>(false);
   const [isLastLesson, setIsLastLesson] = useState<boolean>(false);
 
-  const [currentSectionPosition, setCurrentSectionPosition] =
-    useState<number>(0);
+  const [currentSectionPosition, setCurrentSectionPosition] = useState<number>(0);
 
   useEffect(() => {
     let curSectionPos = 0;
@@ -89,9 +87,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
           ]._id
         );
       } else {
-        setPrevUrl(
-          course.sections[curSectionPos].lessons[curLessonPos - 1]._id
-        );
+        setPrevUrl(course.sections[curSectionPos].lessons[curLessonPos - 1]._id);
       }
     } else if (curLessonPos === 0) {
       setPrevUrl(
@@ -100,10 +96,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
         ]._id
       );
       setNextUrl(course.sections[curSectionPos].lessons[curLessonPos + 1]._id);
-    } else if (
-      curLessonPos ===
-      course.sections[curSectionPos].lessons.length - 1
-    ) {
+    } else if (curLessonPos === course.sections[curSectionPos].lessons.length - 1) {
       setPrevUrl(course.sections[curSectionPos].lessons[curLessonPos - 1]._id);
       setNextUrl(course.sections[curSectionPos + 1].lessons[0]._id);
     } else {
@@ -130,20 +123,15 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
     }
     if (user && !isLoading) {
       const ownCourses: string[] = user.ownCourses.map((course) => course._id);
-      const boughtCourses: string[] = user.boughtCourses.map(
-        (course) => course._id
-      );
+      const boughtCourses: string[] = user.boughtCourses.map((course) => course._id);
 
-      if (
-        !ownCourses.includes(course._id) &&
-        !boughtCourses.includes(course._id)
-      ) {
+      if (!ownCourses.includes(course._id) && !boughtCourses.includes(course._id)) {
         router.push(`/courses/${course._id}`);
       } else setIsReady(true);
     }
   }, [router, user, isLoading, course._id]);
 
-  if (!isReady) return <div>Loading</div>;
+  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <>
@@ -182,9 +170,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
             <Accordion
               key={section._id}
               state={currentSectionPosition === index}
-              header={
-                <h1 className="text-head text-base-medium">{section.title}</h1>
-              }
+              header={<h1 className="text-head text-base-medium">{section.title}</h1>}
               content={
                 <div className="p-[30px] flex flex-col gap-5">
                   {section.lessons.map((curLesson) => (
@@ -192,9 +178,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
                       key={curLesson._id}
                       href={`/lessons/${curLesson._id}`}
                       className={`flex items-center justify-between group ${
-                        curLesson._id === lesson._id
-                          ? "pointer-events-none"
-                          : ""
+                        curLesson._id === lesson._id ? "pointer-events-none" : ""
                       }`}
                     >
                       <span className="flex items-center gap-[10px] w-[50%]">
@@ -210,10 +194,8 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
                         </h3>
                       </span>
                       <p className="text-text text-md-regular underline">
-                        {curLesson.length.hour > 0 &&
-                          `${curLesson.length.hour} цаг`}
-                        {curLesson.length.minute > 0 &&
-                          `${curLesson.length.minute} минут`}
+                        {curLesson.length.hour > 0 && `${curLesson.length.hour} цаг`}
+                        {curLesson.length.minute > 0 && `${curLesson.length.minute} минут`}
                       </p>
                     </Link>
                   ))}
@@ -229,3 +211,7 @@ const SingleLessonPage: FC<SingleLessonPageProps> = ({ lesson, course }) => {
 };
 
 export default SingleLessonPage;
+
+SingleLessonPage.getLayout = function getLayout(page): ReactNode {
+  return <NoLayout>{page}</NoLayout>;
+};

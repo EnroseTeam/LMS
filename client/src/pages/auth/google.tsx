@@ -24,7 +24,7 @@ const GoogleLoginPage: NextPageWithLayout = () => {
     }
   }, [router]);
 
-  return <LoadingScreen />;
+  return <LoadingScreen state={true} />;
 };
 
 export default GoogleLoginPage;
