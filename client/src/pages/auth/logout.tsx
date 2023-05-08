@@ -1,11 +1,13 @@
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
-import { FC, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
+import { NextPageWithLayout } from "../_app";
+import LoadingScreen from "@/utils/LoadingScreen";
+import NoLayout from "@/layouts/NoLayout";
 
-const LogoutPage: FC = () => {
+const LogoutPage: NextPageWithLayout = () => {
   const router = useRouter();
-  // const { setUser } = useContext(UserContext);
   const { setLoggedIn } = useAuthenticate();
 
   useEffect(() => {
@@ -24,7 +26,11 @@ const LogoutPage: FC = () => {
     logoutUser();
   }, [router, setLoggedIn]);
 
-  return <></>;
+  return <LoadingScreen />;
 };
 
 export default LogoutPage;
+
+LogoutPage.getLayout = function getLayout(page): ReactNode {
+  return <NoLayout>{page}</NoLayout>;
+};

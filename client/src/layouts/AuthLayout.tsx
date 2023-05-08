@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import AuthNavbar from "../components/auth/AuthNavbar";
 import Image from "next/image";
 
@@ -9,10 +9,17 @@ import authBgSmall2 from "@/assets/authBgSmall-2.svg";
 import authBgSmall3 from "@/assets/authBgSmall-3.svg";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
+import { Roboto } from "next/font/google";
+import LoadingScreen from "@/utils/LoadingScreen";
 
 interface AuthLayoutProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
+
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ["latin", "cyrillic"],
+});
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
   const { user, isLoading } = useAuthenticate();
@@ -24,10 +31,10 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
     if (!isLoading && !user) setIsReady(true);
   }, [router, isLoading, user]);
 
-  if (!isReady) return <div>Loading...</div>;
+  if (!isReady) return <LoadingScreen />;
 
   return (
-    <>
+    <div className={roboto.className}>
       <AuthNavbar />
       <main className="min-w-screen min-h-screen grid grid-cols-3">
         <div className="col-span-1 bg-head relative overflow-hidden grid place-items-center">
@@ -38,11 +45,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
           />
           <div className="relative">
             <div className="w-[400px] h-[400px] bg-color-1 rounded-full overflow-hidden">
-              <Image
-                src={authBg}
-                alt="Studying"
-                className="w-full aspect-square object-cover"
-              />
+              <Image src={authBg} alt="Studying" className="w-full aspect-square object-cover" />
             </div>
 
             <div className="absolute overflow-hidden w-[90px] h-[90px] bg-[#efccc7] rounded-full top-20 -left-8">
@@ -70,11 +73,9 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
             </div>
           </div>
         </div>
-        <div className="col-span-2 bg-bg-5 grid place-items-center">
-          {children}
-        </div>
+        <div className="col-span-2 bg-bg-5 grid place-items-center">{children}</div>
       </main>
-    </>
+    </div>
   );
 };
 

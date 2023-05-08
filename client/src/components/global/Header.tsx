@@ -26,7 +26,7 @@ export interface HeaderMenuItem {
 }
 
 interface HeaderProps {
-  categories: ICourseCategory[];
+  categories?: ICourseCategory[];
 }
 
 const Header: FC<HeaderProps> = ({ categories = [] }) => {

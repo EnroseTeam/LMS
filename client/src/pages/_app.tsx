@@ -5,11 +5,25 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import NextProgress from "next-progress";
 
-import Layout from "@/layouts/Layout";
+import MainLayout from "@/layouts/MainLayout";
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "@/contexts/CartContext";
+import { NextPage } from "next";
+import { ReactNode } from "react";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactNode) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+  const getLayout = Component.getLayout ?? ((page): ReactNode => <MainLayout>{page}</MainLayout>);
+
   return (
     <>
       <Head>
@@ -34,11 +48,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         pauseOnHover
         theme="light"
       />
-      <CartProvider>
-        <Layout props={pageProps}>
-          <Component {...pageProps} />
-        </Layout>
-      </CartProvider>
+      <LoadingProvider>
+        <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+      </LoadingProvider>
     </>
   );
 }

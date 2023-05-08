@@ -1,9 +1,11 @@
 import LoadingScreen from "@/utils/LoadingScreen";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
-import { FC, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
+import { NextPageWithLayout } from "../_app";
+import NoLayout from "@/layouts/NoLayout";
 
-const GoogleLoginPage: FC = () => {
+const GoogleLoginPage: NextPageWithLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -26,3 +28,7 @@ const GoogleLoginPage: FC = () => {
 };
 
 export default GoogleLoginPage;
+
+GoogleLoginPage.getLayout = function getLayout(page): ReactNode {
+  return <NoLayout>{page}</NoLayout>;
+};
