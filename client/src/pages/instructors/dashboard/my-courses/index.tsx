@@ -28,27 +28,37 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
     if (router.query.q) {
       setCourses(
         (user as IUser).ownCourses.filter((course) =>
-          course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+          course.name
+            .toLowerCase()
+            .includes((router.query.q as string).toLowerCase())
         )
       );
       setPublishedCourses(
         (user as IUser).ownCourses.filter(
           (course) =>
             course.isPublished &&
-            course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+            course.name
+              .toLowerCase()
+              .includes((router.query.q as string).toLowerCase())
         )
       );
       setUnPublishedCourses(
         (user as IUser).ownCourses.filter(
           (course) =>
             !course.isPublished &&
-            course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+            course.name
+              .toLowerCase()
+              .includes((router.query.q as string).toLowerCase())
         )
       );
     } else {
       setCourses((user as IUser).ownCourses);
-      setPublishedCourses((user as IUser).ownCourses.filter((course) => course.isPublished));
-      setUnPublishedCourses((user as IUser).ownCourses.filter((course) => !course.isPublished));
+      setPublishedCourses(
+        (user as IUser).ownCourses.filter((course) => course.isPublished)
+      );
+      setUnPublishedCourses(
+        (user as IUser).ownCourses.filter((course) => !course.isPublished)
+      );
     }
   }, [router.query.q, user]);
 
@@ -64,13 +74,16 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
       );
       setPublishedCourses(
         (user as IUser).ownCourses.filter(
-          (course) => course.isPublished && course.name.toLowerCase().includes(search.toLowerCase())
+          (course) =>
+            course.isPublished &&
+            course.name.toLowerCase().includes(search.toLowerCase())
         )
       );
       setUnPublishedCourses(
         (user as IUser).ownCourses.filter(
           (course) =>
-            !course.isPublished && course.name.toLowerCase().includes(search.toLowerCase())
+            !course.isPublished &&
+            course.name.toLowerCase().includes(search.toLowerCase())
         )
       );
     } else {
@@ -79,15 +92,21 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         query: router.query,
       });
       setCourses((user as IUser).ownCourses);
-      setPublishedCourses((user as IUser).ownCourses.filter((course) => course.isPublished));
-      setUnPublishedCourses((user as IUser).ownCourses.filter((course) => !course.isPublished));
+      setPublishedCourses(
+        (user as IUser).ownCourses.filter((course) => course.isPublished)
+      );
+      setUnPublishedCourses(
+        (user as IUser).ownCourses.filter((course) => !course.isPublished)
+      );
     }
   };
 
   const allCourses = (
     <>
       {courses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
+        <p className="text-center text-text text-md-medium mb-[30px]">
+          Илэрц олдсонгүй.
+        </p>
       )}
       {courses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -102,7 +121,9 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   const publishedCoursesContent = (
     <>
       {publishedCourses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
+        <p className="text-center text-text text-md-medium mb-[30px]">
+          Илэрц олдсонгүй.
+        </p>
       )}
       {publishedCourses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -117,7 +138,9 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   const unPublishedCoursesContent = (
     <>
       {unPublishedCourses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
+        <p className="text-center text-text text-md-medium mb-[30px]">
+          Илэрц олдсонгүй.
+        </p>
       )}
       {unPublishedCourses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -146,8 +169,10 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Миний сургалтууд</h1>
-      <p className="text-text text-md-regular mb-[60px]">Миний үүсгэсэн сургалтууд</p>
-      <div className="w-full rounded-2xl bg-white shadow-shadow dashboard p-[30px]">
+      <p className="text-text text-md-regular mb-[60px]">
+        Миний үүсгэсэн сургалтууд
+      </p>
+      <div className="w-full rounded-2xl bg-white shadow-shadow-dashboard p-[30px]">
         <div className="grid grid-cols-2 mb-[30px]">
           <div className="w-1/2 border border-border-2 rounded-lg pl-[18px] flex items-center gap-5 text-text overflow-hidden focus-within:ring-2 focus-within:ring-color-1 duration-150">
             <label className="text-xl" htmlFor="search">
