@@ -8,7 +8,7 @@ interface LoadingScreenProps {
 const LoadingScreen: FC<LoadingScreenProps> = ({ state }) => (
   <div
     className={classNames(
-      "min-w-screen min-h-screen fixed top-0 left-0 right-0 bottom-0 grid place-items-center bg-white z-[9999]",
+      "min-w-screen min-h-screen fixed top-0 left-0 right-0 bottom-0 grid place-items-center bg-white/80 z-[9999]",
       { block: state },
       { hidden: !state }
     )}

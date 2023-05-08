@@ -18,7 +18,7 @@ const UserOrdersPage: FC = () => {
     if (!isLoading && user) {
       setIsReady(true);
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, router]);
 
   const HeaderContent = (
     <div className="grid grid-cols-7 gap-5 pb-5 border-b border-b-border-1 -mt-[20px] text-head text-base-medium">

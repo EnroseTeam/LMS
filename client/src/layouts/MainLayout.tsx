@@ -20,10 +20,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { setShowLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    router.events.on("routeChangeStart", (url, { shallow }) => {
+    router.events.on("routeChangeStart", () => {
       setShowLoading(true);
     });
-    router.events.on("routeChangeComplete", (url, { shallow }) => {
+    router.events.on("routeChangeComplete", () => {
+      setShowLoading(false);
+    });
+    router.events.on("routeChangeError", () => {
       setShowLoading(false);
     });
 
@@ -31,8 +34,14 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       router.events.off("routeChangeStart", () => {
         setShowLoading(false);
       });
+      router.events.off("routeChangeComplete", () => {
+        setShowLoading(false);
+      });
+      router.events.off("routeChangeError", () => {
+        setShowLoading(false);
+      });
     };
-  }, [router.query]);
+  }, [router, setShowLoading]);
 
   return (
     <div className={roboto.className}>
