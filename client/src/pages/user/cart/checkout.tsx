@@ -63,7 +63,7 @@ const CheckoutPage: FC = () => {
     }
   }, [user, isLoading, router, cartItems, cartTotal]);
 
-  if (!isReady) return <LoadingScreen />;
+  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <>
