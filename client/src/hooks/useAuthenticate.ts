@@ -41,5 +41,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     router.reload();
   }
 
+  console.log(user);
+
   return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };

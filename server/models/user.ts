@@ -16,7 +16,7 @@ export interface IUser extends Document<Types.ObjectId> {
   fullName: string;
   birthDate?: Date;
   email: string;
-  phone: string;
+  phone?: string;
   address: UserAddress;
   avatar: string;
   password: string;
@@ -48,8 +48,8 @@ const UserSchema = new Schema<IUser>(
     },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
-    phone: { type: String, required: true, unique: true },
-    orders: { type: [Schema.Types.ObjectId], ref: "User_Order" },
+    phone: { type: String, unique: true },
+    orders: { type: [Schema.Types.ObjectId], ref: "User_Order", default: [] },
     address: {
       country: { type: String, default: "" },
       city: { type: String, default: "" },
@@ -70,10 +70,12 @@ const UserSchema = new Schema<IUser>(
     boughtCourses: {
       type: [Schema.Types.ObjectId],
       ref: "Course",
+      default: [],
     },
     ownCourses: {
       type: [Schema.Types.ObjectId],
       ref: "Course",
+      default: [],
     },
     avgRating: {
       type: Number,

@@ -2,6 +2,7 @@ import OrderItem from "@/components/Orders/OrderItem";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { IUserOrder } from "@/interfaces/user";
 import LoadingScreen from "@/utils/LoadingScreen";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
@@ -11,11 +12,18 @@ const UserOrdersPage: FC = () => {
   const { user, isLoading } = useAuthenticate();
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  const [allOrders, setAllOrders] = useState<IUserOrder[]>([]);
+  const [acceptedOrders, setAcceptedOrders] = useState<IUserOrder[]>([]);
+  const [pendingOrders, setPendingOrders] = useState<IUserOrder[]>([]);
+
   useEffect(() => {
     if (!isLoading && !user) {
       router.push("/auth/login");
     }
     if (!isLoading && user) {
+      setAllOrders(user.orders);
+      setAcceptedOrders(user.orders.filter((order) => order.status === "Accepted"));
+      setPendingOrders(user.orders.filter((order) => order.status === "Pending"));
       setIsReady(true);
     }
   }, [user, isLoading, router]);
@@ -35,7 +43,13 @@ const UserOrdersPage: FC = () => {
     <>
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
-        <OrderItem />
+        {allOrders.length === 0 && (
+          <p className="text-text text-center text-md-medium mt-5">
+            Танд одоогоор захиалга байхгүй байна.
+          </p>
+        )}
+        {allOrders.length > 0 &&
+          allOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );
@@ -44,7 +58,13 @@ const UserOrdersPage: FC = () => {
     <>
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
-        <OrderItem />
+        {acceptedOrders.length === 0 && (
+          <p className="text-text text-center text-md-medium mt-5">
+            Танд одоогоор захиалга байхгүй байна.
+          </p>
+        )}
+        {acceptedOrders.length > 0 &&
+          acceptedOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );
@@ -53,7 +73,13 @@ const UserOrdersPage: FC = () => {
     <>
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
-        <OrderItem />
+        {pendingOrders.length === 0 && (
+          <p className="text-text text-center text-md-medium mt-5">
+            Танд одоогоор захиалга байхгүй байна.
+          </p>
+        )}
+        {pendingOrders.length > 0 &&
+          pendingOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );

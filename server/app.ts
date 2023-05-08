@@ -3,6 +3,7 @@ import cors from "cors";
 import createHttpError, { isHttpError } from "http-errors";
 import { MulterError } from "multer";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 
 import env from "./configs/validateEnv";
 
@@ -17,8 +18,8 @@ import courseRoutes from "./routes/course";
 import authRoutes from "./routes/auth";
 import courseSectionRoutes from "./routes/courseSection";
 import searchRoutes from "./routes/search";
-import MongoStore from "connect-mongo";
 import blogRoutes from "./routes/blog";
+import userOrderRoutes from "./routes/userOrder";
 
 const app: Express = express();
 
@@ -64,6 +65,7 @@ app.use("/api/courses/reviews", courseReviewRoutes);
 app.use("/api/courses/sections", courseSectionRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/users/roles", userRoleRoutes);
+app.use("/api/users/orders", userOrderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
