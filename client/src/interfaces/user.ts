@@ -7,6 +7,29 @@ interface UserAddress {
   apartment: string;
 }
 
+export interface IUserOrder {
+  _id: string;
+  orderNumber: string;
+  user: string;
+  courses: ICourse[];
+  totalAmount: number;
+  status: "Pending" | "Accepted";
+  payerInformation: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: {
+      apartment: string;
+      district: string;
+      city: string;
+      country: string;
+    };
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IUserRole {
   _id: string;
   role: string;
@@ -26,6 +49,7 @@ export interface IUser {
   address: UserAddress;
   avatar: string;
   role: IUserRole;
+  orders: IUserOrder[];
   boughtCourses: ICourse[];
   ownCourses: ICourse[];
   avgRating: number;
