@@ -26,7 +26,7 @@ const SinglePostPage: FC = () => (
           alt="postSingle"
           width={1290}
           height={600}
-          className="w-full object-cover aspect-[2/1]"
+          className="w-full items-center object-cover aspect-[2/1]"
         />
       </div>
     </div>
