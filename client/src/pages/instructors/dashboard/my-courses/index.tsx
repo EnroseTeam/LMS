@@ -1,5 +1,5 @@
 import { useAuthenticate } from "@/hooks/useAuthenticate";
-import { FC, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import CourseCard from "@/components/Instructors/Dashboard/Courses/CourseCard";
@@ -7,8 +7,10 @@ import { ICourse } from "@/interfaces/courses";
 import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
+import { NextPageWithLayout } from "@/pages/_app";
+import DashboardLayout from "@/layouts/DashboardLayout";
 
-const InstructorCoursesPage: FC = () => {
+const InstructorCoursesPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { user } = useAuthenticate();
 
@@ -173,3 +175,7 @@ const InstructorCoursesPage: FC = () => {
 };
 
 export default InstructorCoursesPage;
+
+InstructorCoursesPage.getLayout = function getLayout(page): ReactNode {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

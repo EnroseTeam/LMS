@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { ReactNode, useState } from "react";
 import axios from "axios";
 
 import MessageBox from "@/components/global/MessageBox";
@@ -7,6 +7,8 @@ import CourseCreateForm from "@/components/Instructors/Dashboard/Courses/CourseC
 import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { GetStaticProps } from "next";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { NextPageWithLayout } from "@/pages/_app";
+import DashboardLayout from "@/layouts/DashboardLayout";
 
 interface InstructorCreateCoursePageProps {
   levels: ICourseLevel[];
@@ -27,7 +29,7 @@ export const getStaticProps: GetStaticProps<InstructorCreateCoursePageProps> = a
   };
 };
 
-const InstructorCreateCoursePage: FC<InstructorCreateCoursePageProps> = ({
+const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageProps> = ({
   levels,
   categories,
 }) => {
@@ -66,3 +68,7 @@ const InstructorCreateCoursePage: FC<InstructorCreateCoursePageProps> = ({
 };
 
 export default InstructorCreateCoursePage;
+
+InstructorCreateCoursePage.getLayout = function getLayout(page): ReactNode {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

@@ -15,8 +15,8 @@ const SinglePageDescriptionContent: FC<SinglePageDescriptionContentProps> = ({ c
       <div>
         <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Тайлбар</h1>
         <div
-          className={`text-text text-md-regular overflow-hidden mb-10 relative ${
-            descriptionHide ? "h-[260px]" : "h-full"
+          className={`text-text text-md-regular overflow-hidden mb-10 relative duration-150 ${
+            descriptionHide ? "max-h-[150px]" : "max-h-fit"
           } `}
         >
           <div className="[&>p]:mb-4" dangerouslySetInnerHTML={{ __html: course.description }} />

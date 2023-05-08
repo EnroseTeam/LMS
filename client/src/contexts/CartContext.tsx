@@ -1,8 +1,8 @@
 import { ICourse } from "@/interfaces/courses";
-import { Dispatch, FC, SetStateAction, createContext, useState, useEffect } from "react";
+import { Dispatch, FC, SetStateAction, createContext, useState, useEffect, ReactNode } from "react";
 
 interface CartProviderProps {
-  children: JSX.Element | JSX.Element[];
+  children: ReactNode;
 }
 
 interface CartContextTypes {

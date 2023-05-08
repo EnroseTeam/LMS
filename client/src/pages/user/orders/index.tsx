@@ -70,7 +70,7 @@ const UserOrdersPage: FC = () => {
     PendingOrdersContent,
   ];
 
-  if (!isReady) return <LoadingScreen />;
+  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <>

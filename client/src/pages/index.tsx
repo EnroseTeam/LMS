@@ -1,9 +1,8 @@
 import "swiper/css";
 
 import axios from "axios";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { FC } from "react";
 
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
 import NewsSection from "@/components/Home/NewsSection";
@@ -17,15 +16,14 @@ import UsersCommentSection from "@/components/Home/UsersCommentSection";
 import { IUser } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 
+
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
   instructors: IUser[];
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
   const { category = "" } = query;
   const [categoryRes, coursesRes, instructorRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
@@ -42,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
   };
 };
 
-const Home: FC<HomeProps> = ({ categories, courses, instructors }) => (
+const Home: NextPage<HomeProps> = ({ categories, courses, instructors }) => (
   <>
     <Head>
       <title key="title">Нүүр хуудас | IntelliSense</title>
