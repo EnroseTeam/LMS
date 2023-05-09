@@ -34,7 +34,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     }
   }, [router, isLoading, user]);
 
-  if (!isReady) return <LoadingScreen />;
+  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <div className={roboto.className}>

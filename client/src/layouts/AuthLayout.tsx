@@ -31,7 +31,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
     if (!isLoading && !user) setIsReady(true);
   }, [router, isLoading, user]);
 
-  if (!isReady) return <LoadingScreen />;
+  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <div className={roboto.className}>

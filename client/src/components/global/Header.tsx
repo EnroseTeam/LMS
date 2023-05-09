@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from "react";
+import useSWR from "swr";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import UserDropdown from "../User/UserDropdown";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import UserSkeleton from "@/utils/UserSkeleton";
 import MobileMenu from "./MobileMenu";
+import { fetcher } from "@/utils/fetcher";
 import { ICourseCategory } from "@/interfaces/courses";
 
 export interface HeaderMenuItem {
@@ -25,11 +27,12 @@ export interface HeaderMenuItem {
   children?: HeaderMenuItem[];
 }
 
-interface HeaderProps {
-  categories?: ICourseCategory[];
-}
+const Header: FC = () => {
+  const { data: categories, isLoading: categoriesLoading } = useSWR(
+    "/api/courses/categories",
+    fetcher<{ message: string; body: ICourseCategory[] }>
+  );
 
-const Header: FC<HeaderProps> = ({ categories = [] }) => {
   const { user, isLoading } = useAuthenticate();
 
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -39,20 +42,30 @@ const Header: FC<HeaderProps> = ({ categories = [] }) => {
   const [userDropdown, setUserDropdown] = useState<boolean>(false);
   const [mobileMenuShow, setMobileMenuShow] = useState<boolean>(false);
 
+  const [headerCategories, setHeaderCategories] = useState<HeaderMenuItem[]>([]);
+
   const HeaderMenuItems: HeaderMenuItem[] = [
     { title: "Нүүр хуудас", link: "/" },
     {
       title: "Сургалт",
       link: "/courses",
-      children: categories.map((category) => ({
-        title: category.name,
-        link: `/courses?category=${category.slug}`,
-      })),
+      children: headerCategories,
     },
     { title: "Багш, сургагч", link: "/instructors" },
     { title: "Мэдээ", link: "/blog" },
     { title: "Бидний тухай", link: "/about-us" },
   ];
+
+  useEffect(() => {
+    if (!categoriesLoading && categories) {
+      setHeaderCategories(
+        categories.body.map((category) => ({
+          title: category.name,
+          link: `/courses?category=${category.slug}`,
+        }))
+      );
+    }
+  }, [categories, categoriesLoading]);
 
   useEffect(() => {
     if (!isLoading) setIsReady(true);

@@ -26,7 +26,7 @@ const LogoutPage: NextPageWithLayout = () => {
     logoutUser();
   }, [router, setLoggedIn]);
 
-  return <LoadingScreen />;
+  return <LoadingScreen state={true} />;
 };
 
 export default LogoutPage;

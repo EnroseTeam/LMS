@@ -5,6 +5,7 @@ import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import { IUser } from "../models/user";
 import UserRoleModel from "../models/userRole";
+import axios from "axios";
 
 interface UserBody {
   firstName?: string;
@@ -49,8 +50,35 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
   }
 };
 
-//GET ALL INSTRUCTORS
+export const getAllInsturctorIds: RequestHandler = async (req, res, next) => {
+  try {
+    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
 
+    const instructors = await UserModel.find({ role: instructorRole?._id }).select({ _id: 1 });
+    const ids = instructors.map((instuctor) => instuctor._id);
+
+    res.status(200).json({ body: ids });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSingleInstructor: RequestHandler = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+
+    const instructor = await UserModel.findById(id).populate("ownCourses");
+    if (!instructor) throw createHttpError(404, "Багш олдсонгүй.");
+
+    res.status(200).json({ message: "Амжилттай", body: instructor });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//GET ALL INSTRUCTORS
 export const getInstructors: RequestHandler = async (req, res, next) => {
   try {
     const { q: search = "", sort = "popular" } = req.query;
@@ -162,8 +190,14 @@ export const updateUserPersonalInfo: RequestHandler<unknown, unknown, UserBody, 
       avatar,
     });
 
+    await axios.get(`http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=/`);
+    await axios.get(
+      `http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=${`/instructors/${user._id}`}`
+    );
+
     res.status(200).json({ message: "Хэрэглэгчийн хувийн мэдээлэл амжилттай шинэчлэгдлээ" });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

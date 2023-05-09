@@ -2,10 +2,10 @@ import { FC } from "react";
 import classNames from "classnames";
 
 interface LoadingScreenProps {
-  state: boolean;
+  state?: boolean;
 }
 
-const LoadingScreen: FC<LoadingScreenProps> = ({ state }) => (
+const LoadingScreen: FC<LoadingScreenProps> = ({ state = true }) => (
   <div
     className={classNames(
       "min-w-screen min-h-screen fixed top-0 left-0 right-0 bottom-0 grid place-items-center bg-white/80 z-[9999]",

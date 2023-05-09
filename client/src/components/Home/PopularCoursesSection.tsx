@@ -1,28 +1,32 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import CourseCard from "../Courses/CourseCard";
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
-import { useRouter } from "next/router";
+import classNames from "classnames";
 
 interface PopularCoursesProps {
   courses: ICourse[];
   categories: ICourseCategory[];
 }
 
-const PopularCoursesSection: FC<PopularCoursesProps> = ({
-  courses,
-  categories,
-}) => {
-  const router = useRouter();
+const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories }) => {
+  const [initialCourses, setInitialCourses] = useState<ICourse[]>(courses);
+  const [activeTab, setActiveTab] = useState<string>("");
+
+  const categoryFilterHandler = (slug?: string): void => {
+    if (slug) {
+      setInitialCourses(courses.filter((course) => course.category.slug === slug));
+    } else {
+      setInitialCourses(courses);
+    }
+  };
 
   return (
-    <div className="container mb-[120px]" id="popular-courses">
+    <div className="container mb-[120px]">
       <div className="text-center mb-[51px]">
-        <h1 className="text-head text-3xl-bold mb-[9px]">
-          Хамгийн Эрэлттэй Сургалтууд
-        </h1>
+        <h1 className="text-head text-3xl-bold mb-[9px]">Хамгийн Эрэлттэй Сургалтууд</h1>
         <p className="text-text text-md-regular">5,000+ гаруй сургалтууд</p>
       </div>
 
@@ -40,16 +44,13 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({
         <SwiperSlide className="flex-1">
           <button
             onClick={(): void => {
-              delete router.query.category;
-              router.push({
-                pathname: "/",
-                hash: "popular-courses",
-                query: router.query,
-              });
+              setActiveTab("");
+              categoryFilterHandler();
             }}
-            className={`py-2 px-3 whitespace-nowrap rounded-lg hover:text-color-1 hover:bg-color-1/[.07] duration-300 ${
-              !router.query.category ? "text-color-1 bg-color-1/[.07]" : ""
-            }`}
+            className={classNames(
+              "py-2 px-3 whitespace-nowrap rounded-lg hover:text-color-1 hover:bg-color-1/[.07] duration-300",
+              { "text-color-1 bg-color-1/[.07]": !activeTab }
+            )}
           >
             Бүгд
           </button>
@@ -59,16 +60,13 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({
           <SwiperSlide className="flex-1" key={category._id}>
             <button
               onClick={(): void => {
-                router.push({
-                  query: { ...router.query, category: category.slug },
-                  hash: "popular-courses",
-                });
+                setActiveTab(category.slug);
+                categoryFilterHandler(category.slug);
               }}
-              className={` py-2 px-3 whitespace-nowrap rounded-lg hover:text-color-1 hover:bg-color-1/[.07] duration-300 ${
-                router.query.category === category.slug
-                  ? "text-color-1 bg-color-1/[.07]"
-                  : ""
-              }`}
+              className={classNames(
+                "py-2 px-3 whitespace-nowrap rounded-lg hover:text-color-1 hover:bg-color-1/[.07] duration-300",
+                { "text-color-1 bg-color-1/[.07]": activeTab === category.slug }
+              )}
             >
               {category.name}
             </button>
@@ -77,18 +75,13 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({
       </Swiper>
 
       <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[30px]">
-        {courses.map((course) => (
+        {initialCourses.map((course) => (
           <CourseCard key={course._id} course={course} />
         ))}
       </div>
 
-      <Swiper
-        grabCursor={true}
-        slidesPerView={1}
-        spaceBetween={20}
-        className="sm:hidden"
-      >
-        {courses.map((course) => (
+      <Swiper grabCursor={true} slidesPerView={1} spaceBetween={20} className="sm:hidden">
+        {initialCourses.map((course) => (
           <SwiperSlide key={course._id}>
             <CourseCard course={course} />
           </SwiperSlide>

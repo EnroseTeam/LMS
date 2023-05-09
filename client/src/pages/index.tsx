@@ -1,7 +1,7 @@
 import "swiper/css";
 
 import axios from "axios";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
@@ -16,18 +16,16 @@ import UsersCommentSection from "@/components/Home/UsersCommentSection";
 import { IUser } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 
-
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
   instructors: IUser[];
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
-  const { category = "" } = query;
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const [categoryRes, coursesRes, instructorRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
-    axiosInstance.get(`/api/courses?category=${category}`),
+    axiosInstance.get(`/api/courses`),
     axiosInstance.get("/api/users/instructors"),
   ]);
 
