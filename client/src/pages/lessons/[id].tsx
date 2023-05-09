@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 import FooterAlternate from "@/components/Lessons/FooterAlternate";
 import HeaderAlternate from "@/components/Lessons/HeaderAlternate";
@@ -10,42 +10,63 @@ import Link from "next/link";
 import { BsPlayFill } from "react-icons/bs";
 import SinglePageDescriptionContent from "@/components/Courses/SinglePageDescriptionContent";
 import SinglePageReviewContent from "@/components/Courses/SinglePageReviewContent";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "../_app";
 import NoLayout from "@/layouts/NoLayout";
-import LoadingScreen from "@/utils/LoadingScreen";
+import { isAxiosError } from "axios";
 
 interface SingleLessonPageProps {
   lesson: ICourseLesson;
   course: ICourse;
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axiosInstance.get(`/api/courses/lessons/ids`);
-  const paths = res.data.body.map((id: string) => ({ params: { id } }));
-  return {
-    paths,
-    fallback: false,
-  };
-};
+export const getServerSideProps: GetServerSideProps<SingleLessonPageProps> = async ({
+  params,
+  req,
+}) => {
+  try {
+    const res = await axiosInstance.get(`/api/courses/lessons/${params?.id}`, {
+      headers: {
+        Cookie: `connect.sid=${req.cookies["connect.sid"]}`,
+      },
+    });
+    const courseRes = await axiosInstance.get(`/api/courses/${res.data.body.section.course}`);
 
-export const getStaticProps: GetStaticProps<SingleLessonPageProps> = async ({ params }) => {
-  const res = await axiosInstance.get(`/api/courses/lessons/${params?.id}`);
-  const courseRes = await axiosInstance.get(`/api/courses/${res.data.body.section.course}`);
+    return {
+      props: {
+        lesson: res.data.body,
+        course: courseRes.data.body,
+      },
+    };
+  } catch (error) {
+    if (isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        return {
+          redirect: {
+            destination: "/auth/login",
+            permanent: false,
+          },
+        };
+      }
 
-  return {
-    props: {
-      lesson: res.data.body,
-      course: courseRes.data.body,
-    },
-  };
+      if (error.response?.status === 403) {
+        return {
+          redirect: {
+            destination: "/",
+            permanent: false,
+          },
+        };
+      }
+    }
+
+    return {
+      notFound: true,
+    };
+  }
 };
 
 const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, course }) => {
-  const { user, isLoading } = useAuthenticate();
-  const [isReady, setIsReady] = useState<boolean>(false);
   const router = useRouter();
   const video = useRef<HTMLVideoElement>(null);
 
@@ -117,24 +138,8 @@ const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, c
     video.current?.load();
   }, [lesson]);
 
-  useEffect(() => {
-    if (!user && !isLoading) {
-      router.push(`/auth/login`);
-    }
-    if (user && !isLoading) {
-      const ownCourses: string[] = user.ownCourses.map((course) => course._id);
-      const boughtCourses: string[] = user.boughtCourses.map((course) => course._id);
-
-      if (!ownCourses.includes(course._id) && !boughtCourses.includes(course._id)) {
-        router.push(`/courses/${course._id}`);
-      } else setIsReady(true);
-    }
-  }, [router, user, isLoading, course._id]);
-
-  if (!isReady) return <LoadingScreen state={true} />;
-
   return (
-    <>
+    <div key={lesson._id}>
       <HeaderAlternate title={lesson.name} courseId={lesson.section.course} />
       <main className="container grid grid-cols-6 gap-[30px] mt-[30px]">
         <div className="col-span-4">
@@ -206,7 +211,7 @@ const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, c
         </div>
       </main>
       <FooterAlternate />
-    </>
+    </div>
   );
 };
 

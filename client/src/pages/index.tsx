@@ -15,18 +15,21 @@ import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
 import { IUser } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { IBlog } from "@/interfaces/blogs";
 
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
   instructors: IUser[];
+  blogs: IBlog[];
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  const [categoryRes, coursesRes, instructorRes] = await axios.all([
+  const [categoryRes, coursesRes, instructorRes, blogRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
     axiosInstance.get(`/api/courses`),
     axiosInstance.get("/api/users/instructors"),
+    axiosInstance.get("/api/blogs?pageSize=5"),
   ]);
 
   return {
@@ -34,11 +37,12 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
       categories: categoryRes.data.body,
       courses: coursesRes.data.body,
       instructors: instructorRes.data.body,
+      blogs: blogRes.data.body,
     },
   };
 };
 
-const Home: NextPage<HomeProps> = ({ categories, courses, instructors }) => (
+const Home: NextPage<HomeProps> = ({ categories, courses, instructors, blogs }) => (
   <>
     <Head>
       <title key="title">Нүүр хуудас | IntelliSense</title>
@@ -50,7 +54,7 @@ const Home: NextPage<HomeProps> = ({ categories, courses, instructors }) => (
     <UsersCommentSection />
     <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
-    <NewsSection />
+    <NewsSection blogs={blogs} />
   </>
 );
 

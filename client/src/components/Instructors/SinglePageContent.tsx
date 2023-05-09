@@ -19,18 +19,13 @@ First, we will go over the differences between UX and UI Design. We will look at
 
   const description = (
     <div className="mb-[60px]">
-      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">
-        Тайлбар
-      </h1>
+      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Тайлбар</h1>
       <div
         className={`text-text text-md-regular overflow-hidden mb-10 relative ${
           descriptionHide ? "h-[160px]" : "h-full"
         } `}
       >
-        <div
-          className="[&>p]:mb-4"
-          dangerouslySetInnerHTML={{ __html: data }}
-        />
+        <div className="[&>p]:mb-4" dangerouslySetInnerHTML={{ __html: data }} />
         {descriptionHide && (
           <div className="absolute w-full bottom-0 left-0 right-0 h-full pointer-events-none text-fade" />
         )}
@@ -48,12 +43,10 @@ First, we will go over the differences between UX and UI Design. We will look at
     <div className="grid grid-cols-2 gap-[30px]">
       {instructor.ownCourses.length > 0 &&
         instructor.ownCourses.map((course) => (
-          <CourseCard key={course._id} course={course} />
+          <CourseCard key={course._id} course={{ ...course, instructor }} />
         ))}
       {instructor.ownCourses.length === 0 && (
-        <p className="col-span-2 text-center text-text text-md-medium">
-          Сургалт байхгүй байна.
-        </p>
+        <p className="col-span-2 text-center text-text text-md-medium">Сургалт байхгүй байна.</p>
       )}
     </div>
   );

@@ -22,13 +22,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<SingleInstructorPageProps> = async ({ params }) => {
-  const res = await axiosInstance.get(`/api/users/instructors/${params?.id}`);
+  try {
+    const res = await axiosInstance.get(`/api/users/instructors/${params?.id}`);
 
-  return {
-    props: {
-      instructor: res.data.body,
-    },
-  };
+    return {
+      props: {
+        instructor: res.data.body,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 const SingleInstructorPage: FC<SingleInstructorPageProps> = ({ instructor }) => (

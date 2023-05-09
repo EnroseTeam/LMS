@@ -13,7 +13,7 @@ export interface ICourseLesson extends Document<Types.ObjectId> {
   video?: string;
   length: LessonLength;
   type: string;
-  section: ICourseSection["_id"];
+  section: ICourseSection;
   createdAt: Date;
   updatedAt: Date;
 }

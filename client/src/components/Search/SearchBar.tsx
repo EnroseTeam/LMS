@@ -5,6 +5,8 @@ import { RxCross2 } from "react-icons/rx";
 import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/router";
 
+import classNames from "classnames";
+
 interface SearchBarProps {
   searchBarShow: boolean;
   setSearchBarShow: (state: boolean) => void;
@@ -42,11 +44,11 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
   return (
     <>
       <div
-        className={`${
-          searchBarShow
-            ? "opacity-100 top-0"
-            : "opacity-0 pointer-events-none top-[-100%]"
-        } fixed w-screen h-fit bg-white text-head duration-150 z-[9999] overflow-y-auto`}
+        className={classNames(
+          "fixed w-screen h-fit bg-white text-head duration-150 z-[9999] overflow-y-auto",
+          { "opacity-100 top-0": searchBarShow },
+          { "opacity-0 pointer-events-none top-[-100%]": !searchBarShow }
+        )}
       >
         <div className="max-w-[1390px] max-h-screen mx-auto mt-[100px] mb-[97px] px-10 width-1390:px-0">
           <div className="relative flex gap-4 justify-between items-center border-b mb-[51px]">
@@ -57,7 +59,7 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
               id="search"
               type="text"
               placeholder="Та юу сурахыг хүсэж байна вэ?"
-              className="w-full h-full py-[19px] focus:outline-none text-xl-medium placeholder:text-head"
+              className="w-full h-full py-[19px] focus:outline-none text-xl-medium text-head"
               value={input}
               onChange={(e): void => {
                 setInput(e.target.value);
@@ -69,7 +71,7 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
               }}
             />
             <button
-              className="fixed top-10 right-10 sm:absolute sm:right-0 sm:top-0 text-icon p-3 rounded-full bg-color-1/[.07]"
+              className="fixed top-10 right-10 sm:absolute sm:right-0 sm:top-0 text-icon p-3 rounded-full bg-color-1/[.07] hover:text-white hover:bg-color-1 duration-300"
               onClick={(): void => {
                 setSearchBarShow(false);
               }}
@@ -123,16 +125,18 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
 
           <button
             onClick={searchHandler}
-            className="text-text font-medium [text-15px] leading-[35px] hover:text-color-1 hover:underline"
+            className="text-text font-medium [text-15px] leading-[35px] hover:text-color-1 hover:underline uppercase"
           >
-            PRESS ENTER TO SEE ALL SEARCH RESULTS
+            Бүгдийг хайх
           </button>
         </div>
       </div>
       <div
-        className={`${
-          searchBarShow ? "opacity-50" : "opacity-0 pointer-events-none"
-        } fixed w-screen h-screen bg-black top-0 left-0 right-0 bottom-0 duration-150`}
+        className={classNames(
+          "fixed w-screen h-screen bg-black top-0 left-0 right-0 bottom-0 duration-150",
+          { "opacity-50": searchBarShow },
+          { "opacity-0 pointer-events-none": !searchBarShow }
+        )}
         onClick={(): void => {
           setSearchBarShow(false);
         }}

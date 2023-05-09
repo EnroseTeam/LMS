@@ -5,6 +5,7 @@ import { ReactNode, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
 import LoadingScreen from "@/utils/LoadingScreen";
 import NoLayout from "@/layouts/NoLayout";
+import { removeCookies } from "cookies-next";
 
 const LogoutPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const LogoutPage: NextPageWithLayout = () => {
       try {
         await axiosInstance.post(`/api/auth/logout`);
 
+        removeCookies("connect.sid");
         setLoggedIn(false);
         localStorage.setItem("loggedIn", JSON.stringify(false));
         router.push("/");

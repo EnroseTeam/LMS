@@ -70,6 +70,17 @@ interface CoursesQueries {
   page?: string;
 }
 
+export const getCourseIds: RequestHandler = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find().select({ _id: 1 });
+    const courseIds = courses.map((course) => course._id);
+
+    res.status(200).json({ body: courseIds });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
   req,
   res,

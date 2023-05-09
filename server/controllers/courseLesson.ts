@@ -1,6 +1,7 @@
 import CourseLessonModel, { LessonLength } from "../models/courseLesson";
 import CourseSectionModel from "../models/courseSection";
 import CourseModel from "../models/course";
+import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
@@ -40,14 +41,24 @@ export const getCourseLessons: RequestHandler = async (req, res, next) => {
 
 export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
+  const userId = req.session.userId;
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
+    const user = await UserModel.findById(userId);
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
+
     // Орж ирсэн id-тай хичээл байгаа эсэхийг шалгана. Байвал буцаана.
     const courseLesson = await CourseLessonModel.findById(id).populate("section");
     if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй");
+
+    if (
+      !user.boughtCourses.includes(courseLesson.section.course) &&
+      !user.ownCourses.includes(courseLesson.section.course)
+    )
+      throw createHttpError(403, "Танд энэ сургалтыг үзэх эрх байхгүй байна.");
 
     res.status(200).json({ message: "Амжилттай", body: courseLesson });
   } catch (error) {

@@ -38,10 +38,8 @@ export const useAuthenticate = (): useAuthenticateTypes => {
 
   if (error && isAxiosError(error) && !isLoading && error.response?.status === 401) {
     localStorage.setItem("loggedIn", JSON.stringify(false));
-    router.reload();
+    router.push("/auth/login");
   }
-
-  console.log(user);
 
   return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };

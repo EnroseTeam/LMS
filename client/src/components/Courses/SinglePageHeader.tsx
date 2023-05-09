@@ -332,6 +332,12 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
       </div>
 
       <div
+        onKeyDown={(e): void => {
+          if (e.key === "Escape") {
+            if (videoRef.current) videoRef.current.pause();
+            setShowVideo(false);
+          }
+        }}
         onClick={(): void => {
           if (videoRef.current) videoRef.current.pause();
           setShowVideo(false);
