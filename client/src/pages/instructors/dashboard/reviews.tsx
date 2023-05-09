@@ -1,5 +1,6 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { ReactNode, useState } from "react";
+
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { BsChevronDown } from "react-icons/bs";
 import InstructorReviewCard from "@/components/Instructors/Dashboard/ReviewCard";
@@ -11,9 +12,11 @@ const InstructorReviewPage: NextPageWithLayout = () => {
 
   const dropSortHandler = (): void => {
     setDropSort(!dropSort);
+    setDropRate(!setDropSort);
   };
   const dropRateHandler = (): void => {
     setDropRate(!dropRate);
+    setDropSort(!setDropRate);
   };
   return (
     <>
@@ -85,6 +88,7 @@ const InstructorReviewPage: NextPageWithLayout = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[60px]">
+            <InstructorReviewCard />
             <InstructorReviewCard />
           </div>
         </div>
