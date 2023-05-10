@@ -6,7 +6,7 @@ import about2 from "../assets/about-1.svg";
 import about3 from "../assets/about-3.svg";
 import AdvantageSection from "@/components/Home/AdvantageSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { GetStaticProps } from "next";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import PartnerSection from "@/components/Home/PartnerSection";
@@ -14,11 +14,11 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "./_app";
 
 interface AboutUsPageProps {
-  instructors: IUser[];
+  instructors: IInstructor[];
 }
 
 export const getStaticProps: GetStaticProps<AboutUsPageProps> = async () => {
-  const res = await axiosInstance.get("/api/users/instructors");
+  const res = await axiosInstance.get("/api/instructors");
   return {
     props: {
       instructors: res.data.body,

@@ -1,19 +1,19 @@
-import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import RatingStar from "../global/RatingStar";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import Link from "next/link";
-import ButtonSkeleton from "@/utils/ButtonSkeleton";
+import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton";
 import MessageBox from "../global/MessageBox";
 import { isAxiosError } from "axios";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { ICourseReview } from "@/interfaces/courses";
 
 interface ReviewFormProps {
   courseId: string;
+  afterSubmit: (review: ICourseReview) => void;
 }
 
-const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
-  const router = useRouter();
+const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
   const { user, isLoading } = useAuthenticate();
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -38,20 +38,17 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
         return;
       }
 
-      await axiosInstance.post("/api/courses/reviews", {
+      const res = await axiosInstance.post("/api/courses/reviews", {
         title,
         text: description,
         rating,
         course: courseId,
       });
 
-      router.reload();
+      afterSubmit(res.data.body);
     } catch (error) {
       if (isAxiosError(error))
-        setErrorMsg(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
-        );
+        setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
       else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
     }
   };
@@ -83,17 +80,12 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
           }}
           className="text-head mb-[119px] flex flex-col gap-[30px]"
         >
-          <h1 className="text-xl font-medium leading-[23px]">
-            Сэтгэгдэл бичих
-          </h1>
+          <h1 className="text-xl font-medium leading-[23px]">Сэтгэгдэл бичих</h1>
 
           {errorMsg && <MessageBox type="Error" message={errorMsg} />}
 
           <div>
-            <label
-              htmlFor="rating"
-              className="mb-[9px] inline-block text-base-medium"
-            >
+            <label htmlFor="rating" className="mb-[9px] inline-block text-base-medium">
               Үнэлгээ
             </label>
             <div className="flex items-center gap-4 ">
@@ -115,18 +107,13 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
                 id="rating"
               />
               {!isRatingCorrect && (
-                <p className="text-red-500 text-md-medium mt-2">
-                  Үнэлгээ 0-5 хооронд байх ёстой.
-                </p>
+                <p className="text-red-500 text-md-medium mt-2">Үнэлгээ 0-5 хооронд байх ёстой.</p>
               )}
             </div>
           </div>
 
           <div>
-            <label
-              htmlFor="title"
-              className="mb-[9px] inline-block text-base-medium"
-            >
+            <label htmlFor="title" className="mb-[9px] inline-block text-base-medium">
               Гарчиг
             </label>
             <input
@@ -143,17 +130,12 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId }) => {
               placeholder="Сэтгэгдлийн гарчиг"
             />
             {!isTitleExist && (
-              <p className="text-red-500 text-md-medium mt-2">
-                Гарчиг заавал шаардлагатай.
-              </p>
+              <p className="text-red-500 text-md-medium mt-2">Гарчиг заавал шаардлагатай.</p>
             )}
           </div>
 
           <div>
-            <label
-              htmlFor="description"
-              className="mb-[9px] inline-block text-base-medium"
-            >
+            <label htmlFor="description" className="mb-[9px] inline-block text-base-medium">
               Тайлбар
             </label>
             <textarea

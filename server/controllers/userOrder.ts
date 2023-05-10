@@ -22,11 +22,12 @@ export const getSingleOrder: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
   try {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "ID буруу байна.");
-    const order = await UserOrderModel.findById(id).populate(["courses"]);
 
+    const order = await UserOrderModel.findById(id).populate(["courses"]);
     if (!order) throw createHttpError(404, "Захиалга олдсонгүй");
-    // if (order.user !== userId)
-    //   throw createHttpError(403, "Танд энэ захиалгыг харах эрх байхгүй байна.");
+
+    if (order.user?.toString() !== userId?.toString())
+      throw createHttpError(403, "Танд энэ захиалгыг харах эрх байхгүй байна.");
 
     res.status(200).json({ message: "Амжилттай", body: order });
   } catch (error) {
@@ -38,8 +39,9 @@ export const getSingleOrder: RequestHandler = async (req, res, next) => {
 export const getSingleUserOrder: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
   try {
-    const orders = await UserOrderModel.find({ user: userId }).populate(["course", "user"]);
+    const orders = await UserOrderModel.find({ user: userId }).populate(["courses"]);
     if (!orders) throw createHttpError(404, "Захиалга олдсонгүй");
+
     res.status(200).json({ message: "Амжилттай", body: orders });
   } catch (error) {
     next(error);

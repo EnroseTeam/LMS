@@ -2,7 +2,6 @@ import Breadcrumbs from "@/components/global/Breadcrumbs";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useCart } from "@/hooks/useCart";
 import { ICourse } from "@/interfaces/courses";
-import LoadingScreen from "@/utils/LoadingScreen";
 import { axiosInstance } from "@/utils/axiosInstance";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -19,8 +18,6 @@ const CheckoutPage: NextPageWithLayout = () => {
 
   const [courses, setCourses] = useState<ICourse[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const [isReady, setIsReady] = useState<boolean>(false);
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -76,8 +73,6 @@ const CheckoutPage: NextPageWithLayout = () => {
         setCourses(cartItems);
         setTotalPrice(cartTotal);
       }
-
-      setIsReady(true);
     }
   }, [user, isLoading, router, cartItems, cartTotal]);
 
@@ -150,8 +145,6 @@ const CheckoutPage: NextPageWithLayout = () => {
       }
     }
   };
-
-  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <>

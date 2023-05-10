@@ -106,77 +106,52 @@ body {
   width: max-content !important;
 }
 
-.lds-facebook {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-facebook div {
-  display: inline-block;
-  position: absolute;
-  left: 8px;
-  width: 16px;
-  background: #140342;
-  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
-}
-.lds-facebook div:nth-child(1) {
-  left: 8px;
-  animation-delay: -0.24s;
-}
-.lds-facebook div:nth-child(2) {
-  left: 32px;
-  animation-delay: -0.12s;
-}
-.lds-facebook div:nth-child(3) {
-  left: 56px;
-  animation-delay: 0;
-}
-@keyframes lds-facebook {
-  0% {
-    top: 8px;
-    height: 64px;
-  }
-  50%,
-  100% {
-    top: 24px;
-    height: 32px;
-  }
-}
-
-.lds-ring {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid #1a064f;
+.loader {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #1a064f transparent transparent transparent;
+  position: relative;
+  animation: rotate 1s linear infinite;
 }
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
+.loader::before,
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  animation: prixClipFix 2s linear infinite;
 }
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
+.loader::after {
+  border-color: #6440fb;
+  animation: prixClipFix 2s linear infinite, rotate 0.5s linear infinite reverse;
+  inset: 6px;
 }
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
+
+@keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
   }
 }

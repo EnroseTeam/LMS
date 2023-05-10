@@ -25,9 +25,13 @@ const OrderItem: FC<OrderItemProps> = ({ order }) => (
         </Link>
       ))}
     </span>
+
     <span>{new Date(order.createdAt).toLocaleDateString("en-US")}</span>
+
     <span>₮{order.totalAmount}</span>
+
     <span>Шилжүүлэг</span>
+
     <span
       className={classNames("flex items-center gap-2", {
         "text-color-4": order.status === "Pending",

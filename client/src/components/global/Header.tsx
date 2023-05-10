@@ -16,7 +16,7 @@ import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
 import UserDropdown from "../User/UserDropdown";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
-import UserSkeleton from "@/utils/UserSkeleton";
+import UserSkeleton from "@/components/Skeletons/UserSkeleton";
 import MobileMenu from "./MobileMenu";
 import { fetcher } from "@/utils/fetcher";
 import { ICourseCategory } from "@/interfaces/courses";
@@ -52,7 +52,7 @@ const Header: FC = () => {
       children: headerCategories,
     },
     { title: "Багш, сургагч", link: "/instructors" },
-    { title: "Мэдээ", link: "/blog" },
+    { title: "Мэдээ", link: "/blogs" },
     { title: "Бидний тухай", link: "/about-us" },
   ];
 

@@ -47,7 +47,7 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId).select("+boughtCourses +ownCourses");
     if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     // Орж ирсэн id-тай хичээл байгаа эсэхийг шалгана. Байвал буцаана.
@@ -62,6 +62,7 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({ message: "Амжилттай", body: courseLesson });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

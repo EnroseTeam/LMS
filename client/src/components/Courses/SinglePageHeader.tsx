@@ -20,11 +20,13 @@ import Breadcrumbs from "@/components/global/Breadcrumbs";
 import RatingStar from "@/components/global/RatingStar";
 
 import shape from "@/assets/hero-shape.svg";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
-import ButtonSkeleton from "@/utils/ButtonSkeleton";
+import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton";
 import { IoMdClose } from "react-icons/io";
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/router";
+import useSwr from "swr";
+import { fetcher } from "@/utils/fetcher";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 interface SinglePageHeaderProps {
   course: ICourse;
@@ -32,9 +34,18 @@ interface SinglePageHeaderProps {
 
 const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const router = useRouter();
-  const { user, isLoading } = useAuthenticate();
   const { addCartItem } = useCart();
-  const [isReady, setIsReady] = useState<boolean>(false);
+
+  const { user } = useAuthenticate();
+
+  const { data: userOwnCourses, isLoading: ownCoursesLoading } = useSwr(
+    user && "/api/courses/user",
+    fetcher<{ body: ICourse[] }>
+  );
+  const { data: userBoughtCourses, isLoading: boughtCoursesLoading } = useSwr(
+    user && "/api/courses/instructor",
+    fetcher<{ body: ICourse[] }>
+  );
 
   const [boughtCourses, setBoughtCourses] = useState<string[]>([]);
   const [ownCourses, setOwnCourses] = useState<string[]>([]);
@@ -43,15 +54,14 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        setBoughtCourses(user.boughtCourses.map((course) => course._id));
-        setOwnCourses(user.ownCourses.map((course) => course._id));
-      }
-
-      setIsReady(true);
+    if (!ownCoursesLoading && userOwnCourses) {
+      setOwnCourses(userOwnCourses.body.map((course) => course._id));
     }
-  }, [isLoading, user]);
+
+    if (!boughtCoursesLoading && userBoughtCourses) {
+      setBoughtCourses(userBoughtCourses.body.map((course) => course._id));
+    }
+  }, [userBoughtCourses, userOwnCourses, ownCoursesLoading, boughtCoursesLoading]);
 
   return (
     <div className="bg-head pb-[60px] relative overflow-hidden">
@@ -269,9 +279,9 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             )}
           </div>
 
-          {!isReady && <ButtonSkeleton />}
+          {ownCoursesLoading && boughtCoursesLoading && <ButtonSkeleton />}
 
-          {!user && isReady && (
+          {!user && (
             <div className="grid grid-cols-2 gap-[35px]">
               <button
                 onClick={(): void => {
@@ -297,7 +307,8 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
           {user &&
             !ownCourses.includes(course._id) &&
             !boughtCourses.includes(course._id) &&
-            isReady && (
+            !ownCoursesLoading &&
+            !boughtCoursesLoading && (
               <div className="grid grid-cols-2 gap-[35px]">
                 <button
                   onClick={(): void => {
@@ -322,7 +333,8 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             )}
           {user &&
             (ownCourses.includes(course._id) || boughtCourses.includes(course._id)) &&
-            isReady && (
+            !boughtCoursesLoading &&
+            !ownCoursesLoading && (
               <div className="grid grid-cols-2 gap-[35px]">
                 <button className="btn-1">Үзэж эхлэх</button>
                 <button className="btn-2-outline">Сургалтуудруу буцах</button>

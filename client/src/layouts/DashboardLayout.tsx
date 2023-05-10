@@ -1,7 +1,6 @@
 import InstructorNavbar from "@/components/Instructors/Dashboard/Navbar";
 import InstructorSidebar from "@/components/Instructors/Dashboard/Sidebar";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
-import LoadingScreen from "@/utils/LoadingScreen";
 import { Roboto } from "next/font/google";
 import { useRouter } from "next/router";
 import { FC, useState, useEffect, ReactNode } from "react";
@@ -19,7 +18,8 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const [sidebarShow, setSidebarShow] = useState<boolean>(true);
   const { user, isLoading } = useAuthenticate();
   const router = useRouter();
-  const [isReady, setIsReady] = useState<boolean>(false);
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user && !isLoading) {
@@ -29,12 +29,14 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       router.push("/");
     }
 
-    if (user && !isLoading && user.role.slug !== "student") {
-      setIsReady(true);
+    if (!isLoading && user && user.role.slug !== "student") {
+      setIsAuthenticated(true);
     }
   }, [router, isLoading, user]);
 
-  if (!isReady) return <LoadingScreen state={true} />;
+  if (!isAuthenticated) {
+    return <></>;
+  }
 
   return (
     <div className={roboto.className}>

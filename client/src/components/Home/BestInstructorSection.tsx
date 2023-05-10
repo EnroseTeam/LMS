@@ -2,17 +2,15 @@ import { FC } from "react";
 import Link from "next/link";
 
 import InstructorCard from "../Instructors/InstructorCard";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface BestInstructorSectionProps {
-  instructors: IUser[];
+  instructors: IInstructor[];
 }
 
-const BestInstructorSection: FC<BestInstructorSectionProps> = ({
-  instructors,
-}) => (
+const BestInstructorSection: FC<BestInstructorSectionProps> = ({ instructors }) => (
   <>
     <div className="container mb-[111px] mt-[120px]">
       <div className="flex flex-col gap-y-[30px] justify-between items-start md:flex-row md:items-center mb-[43px]">
@@ -48,11 +46,7 @@ const BestInstructorSection: FC<BestInstructorSectionProps> = ({
           </SwiperSlide>
         ))}
       </Swiper>
-      {/* <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[22px] mb-[60px]">
-        {instructors.map((instructor) => (
-          <InstructorCard key={instructor._id} instructor={instructor} />
-        ))}
-      </div> */}
+
       <p className="text-text lg:text-center">
         Өөрийн мэдлэгээ бусдад түгээж, нэмэлт орлоготой болмоор байна уу?
         <Link href="/become-instructor" className="text-color-1 ml-1 underline">

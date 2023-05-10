@@ -29,7 +29,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     error,
     isLoading,
     mutate,
-  } = useSwr(loggedIn && "/api/users/current", fetcher, {
+  } = useSwr(loggedIn && "/api/auth/current", fetcher, {
     errorRetryCount: 0,
     revalidateOnFocus: true,
     revalidateIfStale: true,

@@ -42,14 +42,12 @@ const UserSchema = new Schema<IUser>(
     lastName: { type: String, required: true },
     fullName: {
       type: String,
-      // default: function () {
-      //   return this.lastName + " " + this.firstName;
-      // },
+      required: true,
     },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
     phone: { type: String, unique: true },
-    orders: { type: [Schema.Types.ObjectId], ref: "User_Order", default: [] },
+    orders: { type: [Schema.Types.ObjectId], ref: "User_Order", default: [], select: false },
     address: {
       country: { type: String, default: "" },
       city: { type: String, default: "" },
@@ -71,15 +69,18 @@ const UserSchema = new Schema<IUser>(
       type: [Schema.Types.ObjectId],
       ref: "Course",
       default: [],
+      select: false,
     },
     ownCourses: {
       type: [Schema.Types.ObjectId],
       ref: "Course",
       default: [],
+      select: false,
     },
     avgRating: {
       type: Number,
       default: 0,
+      select: false,
     },
     socialAccounts: {
       facebook: { type: String, default: "" },

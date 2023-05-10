@@ -9,10 +9,10 @@ import { AiOutlineComment, AiOutlineUser } from "react-icons/ai";
 import { BiRightArrow } from "react-icons/bi";
 import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
 import { BsInstagram } from "react-icons/bs";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 
 interface SinglePageHeaderProps {
-  instructor: IUser;
+  instructor: IInstructor;
 }
 
 const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
@@ -32,9 +32,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
         />
       </div>
 
-      <h1 className="font-[700] text-[30px] leading-[45px]">
-        {instructor.fullName}
-      </h1>
+      <h1 className="font-[700] text-[30px] leading-[45px]">{instructor.fullName}</h1>
       <p className="text-md-regular mb-[10px]">UX Designer</p>
 
       <div className="flex items-center gap-5 pb-[30px]">
@@ -64,9 +62,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
 
         <span className="flex items-center gap-[10px]">
           <BiRightArrow />
-          <span className="text-xs-regular">
-            {instructor.ownCourses.length} хичээл
-          </span>
+          <span className="text-xs-regular">{instructor.ownCourses.length} хичээл</span>
         </span>
       </div>
 

@@ -9,13 +9,10 @@ import CourseCard from "@/components/Courses/CourseCard";
 import { ICourse } from "@/interfaces/courses";
 import CheckBoxFilter from "@/components/global/CheckBoxFilter";
 import RadioButtonFilter from "@/components/global/RadioButtonFilter";
-import {
-  ICheckBoxFilterItem,
-  IRadioButtonFilterItem,
-} from "@/interfaces/components";
+import { ICheckBoxFilterItem, IRadioButtonFilterItem } from "@/interfaces/components";
 import RatingStar from "@/components/global/RatingStar";
 import SortDropDown from "@/components/global/SortDropDown";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import Pagination from "@/components/global/Pagination";
 import { axiosInstance } from "@/utils/axiosInstance";
 
@@ -25,7 +22,7 @@ import { HiChevronRight } from "react-icons/hi";
 interface CoursesPageProps {
   categories: ICourseCategory[];
   courses: ICourse[];
-  instructors: IUser[];
+  instructors: IInstructor[];
   levels: ICourseLevel[];
   courseCount: {
     ratingCount: {
@@ -49,9 +46,7 @@ interface CoursesPageProps {
   totalCourses: number;
 }
 
-export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({ query }) => {
   const {
     category = "",
     rating = "0",
@@ -63,16 +58,15 @@ export const getServerSideProps: GetServerSideProps<CoursesPageProps> = async ({
     page = "1",
     pageSize = "12",
   } = query;
-  const [resCategory, resCourses, instructorRes, levelRes, courseCountRes] =
-    await axios.all([
-      axiosInstance.get("/api/courses/categories"),
-      axiosInstance.get(
-        `/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}&page=${page}&pageSize=${pageSize}`
-      ),
-      axiosInstance.get(`/api/users/instructors`),
-      axiosInstance.get(`/api/courses/levels`),
-      axiosInstance.get(`/api/courses/counts`),
-    ]);
+  const [resCategory, resCourses, instructorRes, levelRes, courseCountRes] = await axios.all([
+    axiosInstance.get("/api/courses/categories"),
+    axiosInstance.get(
+      `/api/courses?category=${category}&rating=${rating}&sort=${sort}&instructor=${instructor}&price=${price}&level=${level}&length=${length}&page=${page}&pageSize=${pageSize}`
+    ),
+    axiosInstance.get(`/api/instructors`),
+    axiosInstance.get(`/api/courses/levels`),
+    axiosInstance.get(`/api/courses/counts`),
+  ]);
   return {
     props: {
       categories: resCategory.data.body,
@@ -101,34 +95,28 @@ const CoursesPage: FC<CoursesPageProps> = ({
     count: category.courseCount,
   }));
 
-  const ratingItems: IRadioButtonFilterItem[] = courseCount.ratingCount.map(
-    (rCount) => ({
-      content: (
-        <span className="flex items-center gap-[10px]">
-          <RatingStar count={5} rating={rCount.rating} gap={4} />
-          <h5 className="text-head text-sm-regular">{rCount.rating} ба дээш</h5>
-        </span>
-      ),
-      slug: rCount.rating.toString(),
-      count: rCount.count,
-    })
-  );
+  const ratingItems: IRadioButtonFilterItem[] = courseCount.ratingCount.map((rCount) => ({
+    content: (
+      <span className="flex items-center gap-[10px]">
+        <RatingStar count={5} rating={rCount.rating} gap={4} />
+        <h5 className="text-head text-sm-regular">{rCount.rating} ба дээш</h5>
+      </span>
+    ),
+    slug: rCount.rating.toString(),
+    count: rCount.count,
+  }));
 
-  const instructorItems: ICheckBoxFilterItem[] = instructors.map(
-    (instructor) => ({
-      title: instructor.fullName,
-      slug: instructor._id,
-      count: instructor.ownCourses.length,
-    })
-  );
+  const instructorItems: ICheckBoxFilterItem[] = instructors.map((instructor) => ({
+    title: instructor.fullName,
+    slug: instructor._id,
+    count: instructor.ownCourses.length,
+  }));
 
-  const priceItems: IRadioButtonFilterItem[] = courseCount.priceCount.map(
-    (pCount) => ({
-      content: pCount.label,
-      slug: `${pCount.minPrice}-${pCount.maxPrice}`,
-      count: pCount.count,
-    })
-  );
+  const priceItems: IRadioButtonFilterItem[] = courseCount.priceCount.map((pCount) => ({
+    content: pCount.label,
+    slug: `${pCount.minPrice}-${pCount.maxPrice}`,
+    count: pCount.count,
+  }));
 
   const levelItems: ICheckBoxFilterItem[] = levels.map((level) => ({
     title: level.name,
@@ -136,40 +124,20 @@ const CoursesPage: FC<CoursesPageProps> = ({
     count: level.courseCount,
   }));
 
-  const lengthItems: ICheckBoxFilterItem[] = courseCount.lengthCount.map(
-    (lCount) => ({
-      title: lCount.label,
-      slug: `${lCount.minLength}-${lCount.maxLength}`,
-      count: lCount.count,
-    })
-  );
+  const lengthItems: ICheckBoxFilterItem[] = courseCount.lengthCount.map((lCount) => ({
+    title: lCount.label,
+    slug: `${lCount.minLength}-${lCount.maxLength}`,
+    count: lCount.count,
+  }));
 
   const filterContent = (
     <>
-      <CheckBoxFilter
-        items={categoryItems}
-        title={{ name: "Ангилал", slug: "category" }}
-      />
-      <RadioButtonFilter
-        items={ratingItems}
-        title={{ name: "Үнэлгээ", slug: "rating" }}
-      />
-      <CheckBoxFilter
-        items={instructorItems}
-        title={{ name: "Багш", slug: "instructor" }}
-      />
-      <RadioButtonFilter
-        items={priceItems}
-        title={{ name: "Үнэ", slug: "price" }}
-      />
-      <CheckBoxFilter
-        items={levelItems}
-        title={{ name: "Түвшин", slug: "level" }}
-      />
-      <CheckBoxFilter
-        items={lengthItems}
-        title={{ name: "Хугацаа", slug: "length" }}
-      />
+      <CheckBoxFilter items={categoryItems} title={{ name: "Ангилал", slug: "category" }} />
+      <RadioButtonFilter items={ratingItems} title={{ name: "Үнэлгээ", slug: "rating" }} />
+      <CheckBoxFilter items={instructorItems} title={{ name: "Багш", slug: "instructor" }} />
+      <RadioButtonFilter items={priceItems} title={{ name: "Үнэ", slug: "price" }} />
+      <CheckBoxFilter items={levelItems} title={{ name: "Түвшин", slug: "level" }} />
+      <CheckBoxFilter items={lengthItems} title={{ name: "Хугацаа", slug: "length" }} />
     </>
   );
 
@@ -185,30 +153,18 @@ const CoursesPage: FC<CoursesPageProps> = ({
 
   return (
     <div>
-      <Breadcrumbs
-        breadcrumbItems={[{ title: "Сургалтууд", link: "/courses" }]}
-      />
+      <Breadcrumbs breadcrumbItems={[{ title: "Сургалтууд", link: "/courses" }]} />
       <div className="container mb-[136px]">
         <div className="mb-[90px]">
-          <h1 className="text-head font-[700] text-[40px] leading-[47px] mb-1">
-            Сургалтууд
-          </h1>
-          <p className="text-lg-regular text-text">
-            Бүх төрлийн сургалтуудыг нэг дороос үз.
-          </p>
+          <h1 className="text-head font-[700] text-[40px] leading-[47px] mb-1">Сургалтууд</h1>
+          <p className="text-lg-regular text-text">Бүх төрлийн сургалтуудыг нэг дороос үз.</p>
         </div>
 
-        <div
-          id="courses"
-          className="grid grid-cols-1 lg:grid-cols-4 gap-[60px]"
-        >
+        <div id="courses" className="grid grid-cols-1 lg:grid-cols-4 gap-[60px]">
           <div className="col-span-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 mb-[22px]">
               <p className="text-text text-sm-regular">
-                Нийт{" "}
-                <span className="text-head text-sm-medium">
-                  {totalCourses}{" "}
-                </span>
+                Нийт <span className="text-head text-sm-medium">{totalCourses} </span>
                 үр дүн
               </p>
               <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
@@ -230,15 +186,11 @@ const CoursesPage: FC<CoursesPageProps> = ({
               </div>
             )}
             {totalCourses === 0 && (
-              <p className="text-center mt-10 text-text text-md-medium">
-                Илэрц олдсонгүй
-              </p>
+              <p className="text-center mt-10 text-text text-md-medium">Илэрц олдсонгүй</p>
             )}
             {totalCourses > 0 && <Pagination totalPage={totalPages} />}
           </div>
-          <div className="hidden lg:flex flex-col gap-[30px]">
-            {filterContent}
-          </div>
+          <div className="hidden lg:flex flex-col gap-[30px]">{filterContent}</div>
 
           {/* Mobile Filter */}
           <div

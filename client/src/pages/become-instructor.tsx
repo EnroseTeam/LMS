@@ -1,6 +1,6 @@
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 
@@ -16,11 +16,11 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "./_app";
 
 interface BecomeInstructorPageProps {
-  instructors: IUser[];
+  instructors: IInstructor[];
 }
 
 export const getStaticProps: GetStaticProps<BecomeInstructorPageProps> = async () => {
-  const instructorRes = await axiosInstance.get(`/api/users/instructors`);
+  const instructorRes = await axiosInstance.get(`/api/instructors`);
   return {
     props: {
       instructors: instructorRes.data.body,
@@ -55,7 +55,7 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
     }
 
     if (user && !isLoading) {
-      axiosInstance.post(`/api/users/becomeInstructor`).then((res) => {
+      axiosInstance.post(`/api/instructors/becomeInstructor`).then((res) => {
         if (res.status === 200) {
           mutate({ ...user, role: { ...user.role, slug: "instructor" } });
           router.push("/instructors/dashboard");

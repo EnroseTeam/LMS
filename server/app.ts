@@ -20,6 +20,7 @@ import courseSectionRoutes from "./routes/courseSection";
 import searchRoutes from "./routes/search";
 import blogRoutes from "./routes/blog";
 import userOrderRoutes from "./routes/userOrder";
+import instructorRoutes from "./routes/instructors";
 
 const app: Express = express();
 
@@ -70,6 +71,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/instructors", instructorRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Хүсэлт явуулсан хаяг олдсонгүй."));

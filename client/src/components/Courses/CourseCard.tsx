@@ -6,6 +6,7 @@ import RatingStar from "../global/RatingStar";
 import { ICourse } from "@/interfaces/courses";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
 import HoverCourseCard from "./HoverCourseCard";
+import { currencyFormatter } from "@/utils/currenctyFormatter";
 
 interface CourseCardProps {
   course: ICourse;
@@ -19,8 +20,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
     >
       <Image
         src={course.picture}
-        width={600}
-        height={420}
+        width={800}
+        height={600}
         alt={course.name}
         className="w-full aspect-[1.42/1] object-cover group-hover/picture:scale-110 duration-300"
       />
@@ -71,9 +72,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
           <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
             <Image
               src={course.instructor.avatar}
-              alt="Profile"
-              width={30}
-              height={30}
+              alt={course.instructor.fullName}
+              width={60}
+              height={60}
               className="object-cover w-full h-full"
             />
           </div>
@@ -83,10 +84,12 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
 
         <div className="flex items-center gap-2">
           {course.discountPrice > 0 && (
-            <p className="text-text text-md-medium line-through">{course.price}</p>
+            <p className="text-text text-md-medium line-through">
+              {currencyFormatter(course.price)}
+            </p>
           )}
           <p className="text-head text-md-medium">
-            ₮{course.discountPrice > 0 ? course.discountPrice : course.price}
+            {currencyFormatter(course.discountPrice > 0 ? course.discountPrice : course.price)}
           </p>
         </div>
       </div>

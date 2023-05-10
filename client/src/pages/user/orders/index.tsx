@@ -1,32 +1,43 @@
 import OrderItem from "@/components/Orders/OrderItem";
+import UserOrderSkeleton from "@/components/Skeletons/UserOrderSkeleton";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { IUserOrder } from "@/interfaces/user";
-import LoadingScreen from "@/utils/LoadingScreen";
+import { NextPageWithLayout } from "@/pages/_app";
+import { fetcher } from "@/utils/fetcher";
+import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import useSwr from "swr";
 
-const UserOrdersPage: FC = () => {
+const UserOrdersPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { user, isLoading } = useAuthenticate();
-  const [isReady, setIsReady] = useState<boolean>(false);
+
+  const {
+    data: userOrders,
+    isLoading: isOrdersLoading,
+    error: userOrderError,
+  } = useSwr("/api/users/orders/user", fetcher<{ message: string; body: IUserOrder[] }>);
 
   const [allOrders, setAllOrders] = useState<IUserOrder[]>([]);
   const [acceptedOrders, setAcceptedOrders] = useState<IUserOrder[]>([]);
   const [pendingOrders, setPendingOrders] = useState<IUserOrder[]>([]);
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/auth/login");
+    if (!isOrdersLoading && userOrderError) {
+      if (isAxiosError(userOrderError)) {
+        if (userOrderError.response?.status === 401) router.push("/auth/login");
+      } else {
+        router.push("/");
+      }
     }
-    if (!isLoading && user) {
-      setAllOrders(user.orders);
-      setAcceptedOrders(user.orders.filter((order) => order.status === "Accepted"));
-      setPendingOrders(user.orders.filter((order) => order.status === "Pending"));
-      setIsReady(true);
+
+    if (!isOrdersLoading && userOrders) {
+      setAllOrders(userOrders.body);
+      setAcceptedOrders(userOrders.body.filter((order) => order.status === "Accepted"));
+      setPendingOrders(userOrders.body.filter((order) => order.status === "Pending"));
     }
-  }, [user, isLoading, router]);
+  }, [router, userOrders, isOrdersLoading, userOrderError]);
 
   const HeaderContent = (
     <div className="grid grid-cols-7 gap-5 pb-5 border-b border-b-border-1 -mt-[20px] text-head text-base-medium">
@@ -43,13 +54,16 @@ const UserOrdersPage: FC = () => {
     <>
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
-        {allOrders.length === 0 && (
+        {isOrdersLoading &&
+          Array.from(Array(5)).map((val, index) => <UserOrderSkeleton key={index} />)}
+        {!isOrdersLoading &&
+          allOrders.length > 0 &&
+          allOrders.map((order) => <OrderItem key={order._id} order={order} />)}
+        {!isOrdersLoading && allOrders.length === 0 && (
           <p className="text-text text-center text-md-medium mt-5">
             Танд одоогоор захиалга байхгүй байна.
           </p>
         )}
-        {allOrders.length > 0 &&
-          allOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );
@@ -95,8 +109,6 @@ const UserOrdersPage: FC = () => {
     AcceptedOrdersContent,
     PendingOrdersContent,
   ];
-
-  if (!isReady) return <LoadingScreen state={true} />;
 
   return (
     <>

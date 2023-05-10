@@ -4,15 +4,15 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import SinglePageHeader from "@/components/Instructors/SinglePageHeader";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import SinglePageContent from "@/components/Instructors/SinglePageContent";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SingleInstructorPageProps {
-  instructor: IUser;
+  instructor: IInstructor;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axiosInstance.get("/api/users/instructors/id");
+  const res = await axiosInstance.get("/api/instructors/id");
   const paths = res.data.body.map((id: string) => ({ params: { id } }));
 
   return {
@@ -23,7 +23,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<SingleInstructorPageProps> = async ({ params }) => {
   try {
-    const res = await axiosInstance.get(`/api/users/instructors/${params?.id}`);
+    const res = await axiosInstance.get(`/api/instructors/${params?.id}`);
 
     return {
       props: {

@@ -13,14 +13,14 @@ import PartnerSection from "@/components/Home/PartnerSection";
 import PopularCoursesSection from "@/components/Home/PopularCoursesSection";
 import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { IBlog } from "@/interfaces/blogs";
 
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
-  instructors: IUser[];
+  instructors: IInstructor[];
   blogs: IBlog[];
 }
 
@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const [categoryRes, coursesRes, instructorRes, blogRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
     axiosInstance.get(`/api/courses`),
-    axiosInstance.get("/api/users/instructors"),
+    axiosInstance.get("/api/instructors"),
     axiosInstance.get("/api/blogs?pageSize=5"),
   ]);
 
