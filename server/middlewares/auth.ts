@@ -3,7 +3,6 @@ import createHttpError from "http-errors";
 import UserModel from "../models/user";
 
 export const authenticateUser: RequestHandler = (req, res, next) => {
-  console.log(req.session.userId);
   if (req.session.userId) next();
   else next(createHttpError(401, "Хэрэглэгч нэвтрээгүй байна."));
 };

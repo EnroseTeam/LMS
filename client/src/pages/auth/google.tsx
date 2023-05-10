@@ -1,4 +1,3 @@
-import LoadingScreen from "@/utils/LoadingScreen";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
@@ -24,7 +23,7 @@ const GoogleLoginPage: NextPageWithLayout = () => {
     }
   }, [router]);
 
-  return <LoadingScreen state={true} />;
+  return <></>;
 };
 
 export default GoogleLoginPage;

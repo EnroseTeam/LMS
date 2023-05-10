@@ -1,103 +1,99 @@
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { ReactNode, useEffect, useState } from "react";
+import useSwr from "swr";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import CourseCard from "@/components/Instructors/Dashboard/Courses/CourseCard";
 import { ICourse } from "@/interfaces/courses";
-import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
 import { NextPageWithLayout } from "@/pages/_app";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import { fetcher } from "@/utils/fetcher";
+import TabSkeleton from "@/components/Skeletons/TabSkeleton";
 
 const InstructorCoursesPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { user } = useAuthenticate();
+  const { data: instructorCourses, isLoading: isCourseLoading } = useSwr(
+    "/api/courses/instructor",
+    fetcher<{ body: ICourse[] }>
+  );
 
-  const [courses, setCourses] = useState<ICourse[]>((user as IUser).ownCourses);
-  const [publishedCourses, setPublishedCourses] = useState<ICourse[]>(
-    (user as IUser).ownCourses.filter((course) => course.isPublished)
-  );
-  const [unPublishedCourses, setUnPublishedCourses] = useState<ICourse[]>(
-    (user as IUser).ownCourses.filter((course) => !course.isPublished)
-  );
+  const [courses, setCourses] = useState<ICourse[]>([]);
+  const [publishedCourses, setPublishedCourses] = useState<ICourse[]>([]);
+  const [unPublishedCourses, setUnPublishedCourses] = useState<ICourse[]>([]);
 
   const [search, setSearch] = useState<string>(router.query.q as string);
 
   useEffect(() => {
-    if (router.query.q) {
-      setCourses(
-        (user as IUser).ownCourses.filter((course) =>
-          course.name
-            .toLowerCase()
-            .includes((router.query.q as string).toLowerCase())
-        )
-      );
-      setPublishedCourses(
-        (user as IUser).ownCourses.filter(
-          (course) =>
-            course.isPublished &&
-            course.name
-              .toLowerCase()
-              .includes((router.query.q as string).toLowerCase())
-        )
-      );
-      setUnPublishedCourses(
-        (user as IUser).ownCourses.filter(
-          (course) =>
-            !course.isPublished &&
-            course.name
-              .toLowerCase()
-              .includes((router.query.q as string).toLowerCase())
-        )
-      );
-    } else {
-      setCourses((user as IUser).ownCourses);
-      setPublishedCourses(
-        (user as IUser).ownCourses.filter((course) => course.isPublished)
-      );
-      setUnPublishedCourses(
-        (user as IUser).ownCourses.filter((course) => !course.isPublished)
-      );
+    if (!isCourseLoading && instructorCourses) {
+      setCourses(instructorCourses.body);
+      setPublishedCourses(instructorCourses.body.filter((course) => course.isPublished));
+      setUnPublishedCourses(instructorCourses.body.filter((course) => !course.isPublished));
     }
-  }, [router.query.q, user]);
+  }, [instructorCourses, isCourseLoading]);
+
+  useEffect(() => {
+    if (instructorCourses) {
+      if (router.query.q) {
+        setCourses(
+          instructorCourses.body.filter((course) =>
+            course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+          )
+        );
+        setPublishedCourses(
+          instructorCourses.body.filter(
+            (course) =>
+              course.isPublished &&
+              course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+          )
+        );
+        setUnPublishedCourses(
+          instructorCourses.body.filter(
+            (course) =>
+              !course.isPublished &&
+              course.name.toLowerCase().includes((router.query.q as string).toLowerCase())
+          )
+        );
+      } else {
+        setCourses(instructorCourses.body);
+        setPublishedCourses(instructorCourses.body.filter((course) => course.isPublished));
+        setUnPublishedCourses(instructorCourses.body.filter((course) => !course.isPublished));
+      }
+    }
+  }, [router, instructorCourses]);
 
   const searchHandler = (): void => {
-    if (search) {
-      router.push({
-        query: { ...router.query, q: search },
-      });
-      setCourses(
-        (user as IUser).ownCourses.filter((course) =>
-          course.name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-      setPublishedCourses(
-        (user as IUser).ownCourses.filter(
-          (course) =>
-            course.isPublished &&
+    if (instructorCourses) {
+      if (search) {
+        router.push({
+          query: { ...router.query, q: search },
+        });
+        setCourses(
+          instructorCourses.body.filter((course) =>
             course.name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-      setUnPublishedCourses(
-        (user as IUser).ownCourses.filter(
-          (course) =>
-            !course.isPublished &&
-            course.name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-    } else {
-      delete router.query.q;
-      router.push({
-        query: router.query,
-      });
-      setCourses((user as IUser).ownCourses);
-      setPublishedCourses(
-        (user as IUser).ownCourses.filter((course) => course.isPublished)
-      );
-      setUnPublishedCourses(
-        (user as IUser).ownCourses.filter((course) => !course.isPublished)
-      );
+          )
+        );
+        setPublishedCourses(
+          instructorCourses.body.filter(
+            (course) =>
+              course.isPublished && course.name.toLowerCase().includes(search.toLowerCase())
+          )
+        );
+        setUnPublishedCourses(
+          instructorCourses.body.filter(
+            (course) =>
+              !course.isPublished && course.name.toLowerCase().includes(search.toLowerCase())
+          )
+        );
+      } else {
+        delete router.query.q;
+        router.push({
+          query: router.query,
+        });
+        setCourses(instructorCourses.body);
+        setPublishedCourses(instructorCourses.body.filter((course) => course.isPublished));
+        setUnPublishedCourses(instructorCourses.body.filter((course) => !course.isPublished));
+      }
     }
   };
 
@@ -164,8 +160,6 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
     unPublishedCoursesContent,
   ];
 
-  if (!user) return <></>;
-
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Миний сургалтууд</h1>
@@ -193,7 +187,8 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
           </div>
         </div>
 
-        <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
+        {isCourseLoading && <TabSkeleton />}
+        {instructorCourses && <Tab tabHeaders={tabHeaders} tabContents={tabContents} />}
       </div>
     </>
   );

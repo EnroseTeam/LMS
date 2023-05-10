@@ -3,8 +3,7 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
-import { IUser } from "../models/user";
-import UserRoleModel from "../models/userRole";
+import axios from "axios";
 
 interface UserBody {
   firstName?: string;
@@ -17,80 +16,6 @@ interface UserBody {
   password?: string;
   role?: string;
 }
-
-// Get authenticated user info
-export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
-  try {
-    const user = await UserModel.findById(req.session.userId).populate([
-      "role",
-      { path: "boughtCourses", populate: ["instructor", "level"] },
-      { path: "ownCourses", populate: ["instructor", "level"] },
-      { path: "orders", populate: "courses" },
-    ]);
-    res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-export const becomeInstructor: RequestHandler = async (req, res, next) => {
-  const userId = req.session.userId;
-
-  try {
-    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
-    await UserModel.findByIdAndUpdate(userId, {
-      role: instructorRole?._id,
-    });
-
-    res.sendStatus(200);
-  } catch (error) {
-    next(error);
-  }
-};
-
-//GET ALL INSTRUCTORS
-
-export const getInstructors: RequestHandler = async (req, res, next) => {
-  try {
-    const { q: search = "", sort = "popular" } = req.query;
-
-    let order = "";
-    switch (sort) {
-      case "newest":
-        order = "-createdAt";
-        break;
-      case "nameAsc":
-        order = "fullName";
-        break;
-      case "nameDesc":
-        order = "-fullName";
-        break;
-      default:
-        order = "-avgRating";
-        break;
-    }
-
-    const users: IUser[] = await UserModel.find({
-      $or: [
-        { firstName: new RegExp("^" + search, "i") },
-        { lastName: new RegExp("^" + search, "i") },
-      ],
-    })
-      .populate([
-        "role",
-        { path: "boughtCourses", populate: ["instructor", "level"] },
-        { path: "ownCourses", populate: ["instructor", "level"] },
-      ])
-      .sort(order);
-
-    const instructors = users.filter((user) => user.role.slug === "instructor");
-    res.status(200).json({ message: "Амжилттай", body: instructors });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
 
 //GET ALL USER
 export const getUsers: RequestHandler = async (req, res, next) => {
@@ -162,8 +87,14 @@ export const updateUserPersonalInfo: RequestHandler<unknown, unknown, UserBody, 
       avatar,
     });
 
+    await axios.get(`http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=/`);
+    await axios.get(
+      `http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=${`/instructors/${user._id}`}`
+    );
+
     res.status(200).json({ message: "Хэрэглэгчийн хувийн мэдээлэл амжилттай шинэчлэгдлээ" });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

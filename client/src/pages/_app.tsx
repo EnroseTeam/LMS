@@ -9,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import { CartProvider } from "@/contexts/CartContext";
 import { NextPage } from "next";
 import { ReactNode } from "react";
-import { LoadingProvider } from "@/contexts/LoadingContext";
+import LoadingScreen from "@/components/utils/LoadingScreen";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -46,9 +46,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.E
         pauseOnHover
         theme="light"
       />
-      <LoadingProvider>
-        <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
-      </LoadingProvider>
+      <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+      <LoadingScreen />
     </>
   );
 }

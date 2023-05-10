@@ -70,6 +70,50 @@ interface CoursesQueries {
   page?: string;
 }
 
+export const getCourseByUserId: RequestHandler = async (req, res, next) => {
+  const userId = req.session.userId;
+
+  try {
+    const user = await UserModel.findById(userId).select("+boughtCourses");
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
+
+    const courses = await CourseModel.find({ _id: { $in: user.boughtCourses } }).populate([
+      "level",
+      "instructor",
+    ]);
+
+    res.status(200).json({ body: courses });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCourseByInstructorId: RequestHandler = async (req, res, next) => {
+  const userId = req.session.userId;
+
+  try {
+    const user = await UserModel.findById(userId).select("+ownCourses");
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
+
+    const courses = await CourseModel.find({ _id: { $in: user.ownCourses } }).populate(["level"]);
+
+    res.status(200).json({ body: courses });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCourseIds: RequestHandler = async (req, res, next) => {
+  try {
+    const courses = await CourseModel.find().select({ _id: 1 });
+    const courseIds = courses.map((course) => course._id);
+
+    res.status(200).json({ body: courseIds });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQueries> = async (
   req,
   res,

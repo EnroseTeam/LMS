@@ -1,37 +1,43 @@
 import { FC } from "react";
-import { ICourseCategory } from "@/interfaces/courses";
-import axios from "axios";
-import { GetServerSideProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 
 import SinglePageHeader from "@/components/Instructors/SinglePageHeader";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import SinglePageContent from "@/components/Instructors/SinglePageContent";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SingleInstructorPageProps {
-  categories: ICourseCategory[];
-  instructor: IUser;
+  instructor: IInstructor;
 }
 
-export const getServerSideProps: GetServerSideProps<
-  SingleInstructorPageProps
-> = async ({ params }) => {
-  const [categoryRes, instructorRes] = await axios.all([
-    axiosInstance.get("/api/courses/categories"),
-    axiosInstance.get(`/api/users/${params?.id}`),
-  ]);
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await axiosInstance.get("/api/instructors/id");
+  const paths = res.data.body.map((id: string) => ({ params: { id } }));
+
   return {
-    props: {
-      categories: categoryRes.data.body,
-      instructor: instructorRes.data.body,
-    },
+    paths,
+    fallback: "blocking",
   };
 };
 
-const SingleInstructorPage: FC<SingleInstructorPageProps> = ({
-  instructor,
-}) => (
+export const getStaticProps: GetStaticProps<SingleInstructorPageProps> = async ({ params }) => {
+  try {
+    const res = await axiosInstance.get(`/api/instructors/${params?.id}`);
+
+    return {
+      props: {
+        instructor: res.data.body,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+const SingleInstructorPage: FC<SingleInstructorPageProps> = ({ instructor }) => (
   <div>
     <Breadcrumbs
       breadcrumbItems={[

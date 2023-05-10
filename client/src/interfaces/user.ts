@@ -49,10 +49,6 @@ export interface IUser {
   address: UserAddress;
   avatar: string;
   role: IUserRole;
-  orders: IUserOrder[];
-  boughtCourses: ICourse[];
-  ownCourses: ICourse[];
-  avgRating: number;
   socialAccounts: {
     facebook: string;
     twitter: string;
@@ -62,4 +58,11 @@ export interface IUser {
   bio?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IInstructor extends IUser {
+  ownCourses: ICourse[];
+  avgRating: number;
+  reviewCount: number;
+  studentCount: number;
 }

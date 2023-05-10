@@ -1,28 +1,13 @@
-import { FC } from "react";
-import { ICourseCategory } from "@/interfaces/courses";
-import { GetServerSideProps } from "next";
 import Image from "next/image";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 
 import { RxCross2 } from "react-icons/rx";
-import { axiosInstance } from "@/utils/axiosInstance";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
+import { NextPageWithLayout } from "@/pages/_app";
 
-interface CartPageProps {
-  categories: ICourseCategory[];
-}
-export const getServerSideProps: GetServerSideProps<CartPageProps> = async () => {
-  const categoryRes = await axiosInstance.get("/api/courses/categories");
-  return {
-    props: {
-      categories: categoryRes.data.body,
-    },
-  };
-};
-
-const CartPage: FC = () => {
+const CartPage: NextPageWithLayout = () => {
   const { cartItems, removeCartItem, totalPrice } = useCart();
 
   return (

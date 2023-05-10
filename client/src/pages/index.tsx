@@ -1,7 +1,7 @@
 import "swiper/css";
 
 import axios from "axios";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
@@ -13,22 +13,23 @@ import PartnerSection from "@/components/Home/PartnerSection";
 import PopularCoursesSection from "@/components/Home/PopularCoursesSection";
 import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
-
+import { IBlog } from "@/interfaces/blogs";
 
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
-  instructors: IUser[];
+  instructors: IInstructor[];
+  blogs: IBlog[];
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query }) => {
-  const { category = "" } = query;
-  const [categoryRes, coursesRes, instructorRes] = await axios.all([
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const [categoryRes, coursesRes, instructorRes, blogRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
-    axiosInstance.get(`/api/courses?category=${category}`),
-    axiosInstance.get("/api/users/instructors"),
+    axiosInstance.get(`/api/courses`),
+    axiosInstance.get("/api/instructors"),
+    axiosInstance.get("/api/blogs?pageSize=5"),
   ]);
 
   return {
@@ -36,11 +37,12 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ query 
       categories: categoryRes.data.body,
       courses: coursesRes.data.body,
       instructors: instructorRes.data.body,
+      blogs: blogRes.data.body,
     },
   };
 };
 
-const Home: NextPage<HomeProps> = ({ categories, courses, instructors }) => (
+const Home: NextPage<HomeProps> = ({ categories, courses, instructors, blogs }) => (
   <>
     <Head>
       <title key="title">Нүүр хуудас | IntelliSense</title>
@@ -52,7 +54,7 @@ const Home: NextPage<HomeProps> = ({ categories, courses, instructors }) => (
     <UsersCommentSection />
     <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
-    <NewsSection />
+    <NewsSection blogs={blogs} />
   </>
 );
 

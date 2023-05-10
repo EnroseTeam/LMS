@@ -8,11 +8,11 @@ import { BiRightArrow } from "react-icons/bi";
 import { BsInstagram } from "react-icons/bs";
 
 import RatingStar from "../global/RatingStar";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { useRouter } from "next/router";
 
 interface InstructorCardProps {
-  instructor: IUser;
+  instructor: IInstructor;
 }
 
 const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
@@ -98,9 +98,7 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
         <div className="flex items-center gap-[20px]">
           <span className="flex items-center  gap-2 text-md">
             <RatingStar count={1} rating={1} />
-            <p className="text-[#E59819] text-sm-medium mt-[2px]">
-              {instructor.avgRating}
-            </p>
+            <p className="text-[#E59819] text-sm-medium mt-[2px]">{instructor.avgRating}</p>
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <AiOutlineUser />
@@ -109,9 +107,7 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <BiRightArrow />
-            <span className="text-text text-sm-regular">
-              {instructor.ownCourses.length} хичээл
-            </span>
+            <span className="text-text text-sm-regular">{instructor.ownCourses.length} хичээл</span>
           </span>
         </div>
       </div>

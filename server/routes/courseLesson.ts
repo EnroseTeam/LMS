@@ -7,12 +7,13 @@ import {
   getSingleCourseLesson,
   updateCourseLesson,
 } from "../controllers/courseLesson";
+import { authenticateUser } from "../middlewares/auth";
 
 const courseLessonRouter = express.Router();
 
 courseLessonRouter.get("/ids", getLessonIds);
 courseLessonRouter.get("/", getCourseLessons);
-courseLessonRouter.get("/:id", getSingleCourseLesson);
+courseLessonRouter.get("/:id", authenticateUser, getSingleCourseLesson);
 
 courseLessonRouter.post("/", createCourseLesson);
 

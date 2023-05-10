@@ -3,7 +3,6 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
-import LoadingScreen from "@/utils/LoadingScreen";
 import NoLayout from "@/layouts/NoLayout";
 
 const LogoutPage: NextPageWithLayout = () => {
@@ -17,6 +16,7 @@ const LogoutPage: NextPageWithLayout = () => {
 
         setLoggedIn(false);
         localStorage.setItem("loggedIn", JSON.stringify(false));
+
         router.push("/");
       } catch (error) {
         console.log(error);
@@ -26,7 +26,7 @@ const LogoutPage: NextPageWithLayout = () => {
     logoutUser();
   }, [router, setLoggedIn]);
 
-  return <LoadingScreen />;
+  return <></>;
 };
 
 export default LogoutPage;

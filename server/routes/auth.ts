@@ -1,7 +1,16 @@
 import express from "express";
-import { googleOAuthHandler, logIn, logout, signUp } from "../controllers/auth";
+import {
+  getAuthenticatedUser,
+  googleOAuthHandler,
+  logIn,
+  logout,
+  signUp,
+} from "../controllers/auth";
+import { authenticateUser } from "../middlewares/auth";
 
 const authRoutes = express.Router();
+
+authRoutes.get("/current", authenticateUser, getAuthenticatedUser);
 
 authRoutes.post("/signup", signUp);
 authRoutes.post("/login", logIn);

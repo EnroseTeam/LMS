@@ -1,34 +1,26 @@
-import axios from "axios";
 import { GetServerSideProps } from "next";
 import { FC, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
-import { ICourseCategory } from "@/interfaces/courses";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import InstructorCard from "@/components/Instructors/InstructorCard";
-import { IUser } from "@/interfaces/user";
+import { IInstructor } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import SortDropDown from "@/components/global/SortDropDown";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 interface InstructorsPageProps {
-  categories: ICourseCategory[];
-  instructors: IUser[];
+  instructors: IInstructor[];
 }
 
-export const getServerSideProps: GetServerSideProps<
-  InstructorsPageProps
-> = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<InstructorsPageProps> = async ({ query }) => {
   const { q: search = "", sort = "popular" } = query;
 
-  const [categoryRes, instructorsRes] = await axios.all([
-    axiosInstance.get("/api/courses/categories"),
-    axiosInstance.get(`/api/users/instructors?q=${search}&sort=${sort}`),
-  ]);
+  const res = await axiosInstance.get(`/api/instructors?q=${search}&sort=${sort}`);
+
   return {
     props: {
-      categories: categoryRes.data.body,
-      instructors: instructorsRes.data.body,
+      instructors: res.data.body,
     },
   };
 };
@@ -39,26 +31,17 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
 
   return (
     <>
-      <Breadcrumbs
-        breadcrumbItems={[{ title: "Багш, сургагч нар", link: "/instructors" }]}
-      />
+      <Breadcrumbs breadcrumbItems={[{ title: "Багш, сургагч нар", link: "/instructors" }]} />
       <div className="container mb-[60px] lg:mb-[120px]">
         <div className="text-center">
-          <h1 className="font-[700] text-[40px] leading-[47px] text-head mb-1">
-            Багш, сургагчид
-          </h1>
+          <h1 className="font-[700] text-[40px] leading-[47px] text-head mb-1">Багш, сургагчид</h1>
           <p className="text-lg-regular text-text mb-[60px] lg:mb-[120px]">
-            We’re on a mission to deliver engaging, curated courses at a
-            reasonable price.
+            We’re on a mission to deliver engaging, curated courses at a reasonable price.
           </p>
         </div>
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-[30px] mb-[30px]">
           <p className="text-text text-sm-regular">
-            Нийт{" "}
-            <span className="text-head text-sm-medium">
-              {instructors.length}
-            </span>{" "}
-            үр дүн
+            Нийт <span className="text-head text-sm-medium">{instructors.length}</span> үр дүн
           </p>
           <div className="flex flex-col md:flex-row md:justify-between gap-[23px]">
             <div className="flex items-center gap-[20px] text-icon bg-bg-4 rounded-lg px-[18px] w-[340px] h-[50px] focus-within:ring-2 focus-within:ring-color-1 duration-300">
@@ -101,9 +84,7 @@ const InstructorsPage: FC<InstructorsPageProps> = ({ instructors }) => {
             instructors.map((instructor) => (
               <InstructorCard key={instructor._id} instructor={instructor} />
             ))}
-          {instructors.length === 0 && (
-            <p className="text-center col-span-4">Илэрц олдсонгүй</p>
-          )}
+          {instructors.length === 0 && <p className="text-center col-span-4">Илэрц олдсонгүй</p>}
         </div>
       </div>
     </>

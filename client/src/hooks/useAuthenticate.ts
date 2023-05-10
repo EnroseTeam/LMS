@@ -29,7 +29,7 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     error,
     isLoading,
     mutate,
-  } = useSwr(loggedIn && "/api/users/current", fetcher, {
+  } = useSwr(loggedIn && "/api/auth/current", fetcher, {
     errorRetryCount: 0,
     revalidateOnFocus: true,
     revalidateIfStale: true,
@@ -38,10 +38,8 @@ export const useAuthenticate = (): useAuthenticateTypes => {
 
   if (error && isAxiosError(error) && !isLoading && error.response?.status === 401) {
     localStorage.setItem("loggedIn", JSON.stringify(false));
-    router.reload();
+    router.push("/auth/login");
   }
-
-  console.log(user);
 
   return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };

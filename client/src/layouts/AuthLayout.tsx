@@ -10,7 +10,6 @@ import authBgSmall3 from "@/assets/authBgSmall-3.svg";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { Roboto } from "next/font/google";
-import LoadingScreen from "@/utils/LoadingScreen";
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -23,15 +22,15 @@ const roboto = Roboto({
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
   const { user, isLoading } = useAuthenticate();
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && user) router.push("/");
-    if (!isLoading && !user) setIsReady(true);
+    if (!isLoading && !user) setIsAuthenticated(false);
   }, [router, isLoading, user]);
 
-  if (!isReady) return <LoadingScreen />;
+  if (isAuthenticated) return <></>;
 
   return (
     <div className={roboto.className}>
