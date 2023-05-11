@@ -1,8 +1,12 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import CourseCard from "../../components/Courses/CourseCard";
 import { IInstructor } from "@/interfaces/user";
 import Tab, { TabHeaderItem } from "../global/Tab";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { ICourse } from "@/interfaces/courses";
+import { fetcher } from "@/utils/fetcher";
+import useSwr from "swr";
 
 interface SinglePageContentProps {
   instructor: IInstructor;
@@ -10,6 +14,20 @@ interface SinglePageContentProps {
 
 const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   const [descriptionHide, setDescriptionHide] = useState(true);
+  const { user } = useAuthenticate();
+
+  const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
+    user && "/api/courses/user",
+    fetcher<{ body: ICourse[] }>
+  );
+
+  const [boughtCoursesIds, setBoughtCoursesIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!boughtCoursesLoading && boughtCourses) {
+      setBoughtCoursesIds(boughtCourses.body.map((course) => course._id));
+    }
+  }, [boughtCourses, boughtCoursesLoading]);
 
   const description = (
     <div className="mb-[60px]">
@@ -37,7 +55,12 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
     <div className="grid grid-cols-2 gap-[30px]">
       {instructor.ownCourses.length > 0 &&
         instructor.ownCourses.map((course) => (
-          <CourseCard key={course._id} course={{ ...course, instructor }} />
+          <CourseCard
+            key={course._id}
+            course={{ ...course, instructor }}
+            user={user}
+            boughtCourses={boughtCoursesIds}
+          />
         ))}
       {instructor.ownCourses.length === 0 && (
         <p className="col-span-2 text-center text-text text-md-medium">Сургалт байхгүй байна.</p>

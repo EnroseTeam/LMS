@@ -2,7 +2,7 @@ import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import axios from "axios";
 
 import { GetServerSideProps } from "next";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 
 import CourseCard from "@/components/Courses/CourseCard";
@@ -18,6 +18,9 @@ import { axiosInstance } from "@/utils/axiosInstance";
 
 import { BiFilterAlt } from "react-icons/bi";
 import { HiChevronRight } from "react-icons/hi";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { fetcher } from "@/utils/fetcher";
+import useSwr from "swr";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
@@ -89,6 +92,21 @@ const CoursesPage: FC<CoursesPageProps> = ({
   totalPages,
   totalCourses,
 }) => {
+  const { user } = useAuthenticate();
+
+  const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
+    user && "/api/courses/user",
+    fetcher<{ body: ICourse[] }>
+  );
+
+  const [boughtCoursesIds, setBoughtCoursesIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!boughtCoursesLoading && boughtCourses) {
+      setBoughtCoursesIds(boughtCourses.body.map((course) => course._id));
+    }
+  }, [boughtCourses, boughtCoursesLoading]);
+
   const categoryItems: ICheckBoxFilterItem[] = categories.map((category) => ({
     title: category.name,
     slug: category.slug,
@@ -181,7 +199,12 @@ const CoursesPage: FC<CoursesPageProps> = ({
             {totalCourses > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[30px] mb-[77px]">
                 {courses.map((course) => (
-                  <CourseCard course={course} key={course._id} />
+                  <CourseCard
+                    course={course}
+                    key={course._id}
+                    user={user}
+                    boughtCourses={boughtCoursesIds}
+                  />
                 ))}
               </div>
             )}

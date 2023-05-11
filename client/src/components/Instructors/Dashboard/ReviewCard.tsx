@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import placeholder from "../../../assets/placeholder.png";
 import RatingStar from "@/components/global/RatingStar";
-import { BsFlag, BsFlagFill } from "react-icons/bs";
+import { BsFlag } from "react-icons/bs";
 import classNames from "classnames";
 
 const InstructorReviewCard: FC = () => {
@@ -30,13 +30,11 @@ const InstructorReviewCard: FC = () => {
             <BsFlag className="text-icon" />
           </div>
           <RatingStar rating={5} gap={4} size={15} />
-          <p className="text-md-medium text-head mt-[15px] mb-[9px]">
-            Шилдэг платформ
-          </p>
+          <p className="text-md-medium text-head mt-[15px] mb-[9px]">Шилдэг платформ</p>
           <p className="text-md-regular text-text mb-[20px]">
-            This course is a very applicable. Professor Ng explains precisely
-            each algorithm and even tries to give an intuition for mathematical
-            and statistic concepts behind each algorithm. Thank you very much.
+            This course is a very applicable. Professor Ng explains precisely each algorithm and
+            even tries to give an intuition for mathematical and statistic concepts behind each
+            algorithm. Thank you very much.
           </p>
           <button
             onClick={(): void => setShowReply(!showReply)}

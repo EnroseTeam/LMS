@@ -100,9 +100,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   const allCourses = (
     <>
       {courses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">
-          Илэрц олдсонгүй.
-        </p>
+        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {courses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -117,9 +115,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   const publishedCoursesContent = (
     <>
       {publishedCourses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">
-          Илэрц олдсонгүй.
-        </p>
+        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {publishedCourses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -134,9 +130,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   const unPublishedCoursesContent = (
     <>
       {unPublishedCourses.length === 0 && (
-        <p className="text-center text-text text-md-medium mb-[30px]">
-          Илэрц олдсонгүй.
-        </p>
+        <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {unPublishedCourses.length > 0 && (
         <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
@@ -163,9 +157,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Миний сургалтууд</h1>
-      <p className="text-text text-md-regular mb-[60px]">
-        Миний үүсгэсэн сургалтууд
-      </p>
+      <p className="text-text text-md-regular mb-[60px]">Миний үүсгэсэн сургалтууд</p>
       <div className="w-full rounded-2xl bg-white shadow-shadow-dashboard p-[30px]">
         <div className="grid grid-cols-2 mb-[30px]">
           <div className="w-1/2 border border-border-2 rounded-lg pl-[18px] flex items-center gap-5 text-text overflow-hidden focus-within:ring-2 focus-within:ring-color-1 duration-150">
@@ -188,7 +180,9 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         </div>
 
         {isCourseLoading && <TabSkeleton />}
-        {instructorCourses && <Tab tabHeaders={tabHeaders} tabContents={tabContents} />}
+        {instructorCourses && !isCourseLoading && (
+          <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
+        )}
       </div>
     </>
   );
