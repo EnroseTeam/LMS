@@ -25,6 +25,7 @@ export const getAllInsturctorIds: RequestHandler = async (req, res, next) => {
     const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
 
     const instructors = await UserModel.find({ role: instructorRole?._id }).select({ _id: 1 });
+
     const ids = instructors.map((instuctor) => instuctor._id);
 
     res.status(200).json({ body: ids });

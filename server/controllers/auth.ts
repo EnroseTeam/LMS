@@ -23,7 +23,7 @@ interface LogInBody {
 // Get authenticated user info
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.session.userId);
+    const user = await UserModel.findById(req.session.userId).populate("role");
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -113,8 +113,10 @@ export const logIn: RequestHandler<unknown, unknown, LogInBody, unknown> = async
 
 export const logout: RequestHandler = (req, res, next) => {
   req.session.destroy((error) => {
-    if (error) next(error);
-    else res.sendStatus(200);
+    if (error) {
+      // 123
+      next(error);
+    } else res.sendStatus(200);
   });
 };
 
