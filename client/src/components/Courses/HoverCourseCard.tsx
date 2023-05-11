@@ -1,14 +1,18 @@
 import { useCart } from "@/hooks/useCart";
 import { ICourse } from "@/interfaces/courses";
+import { IUser } from "@/interfaces/user";
+import router from "next/router";
 import { FC } from "react";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
 import { GrFormCheckmark } from "react-icons/gr";
 
 interface HoverCourseCardProps {
   course: ICourse;
+  user: IUser | undefined;
+  boughtCourses: string[];
 }
 
-const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => {
+const HoverCourseCard: FC<HoverCourseCardProps> = ({ course, user, boughtCourses }) => {
   const { addCartItem } = useCart();
 
   return (
@@ -62,15 +66,41 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({ course }) => {
           ))}
         </ul>
 
-        <button
-          onClick={(): void => {
-            addCartItem(course);
-          }}
-          type="button"
-          className="block w-full btn-1 py-3"
-        >
-          Сагсанд нэмэх
-        </button>
+        {!user && (
+          <button
+            onClick={(): void => {
+              addCartItem(course);
+            }}
+            type="button"
+            className="block w-full btn-1 py-3"
+          >
+            Сагсанд нэмэх
+          </button>
+        )}
+
+        {user && !boughtCourses.includes(course._id) && (
+          <button
+            onClick={(): void => {
+              addCartItem(course);
+            }}
+            type="button"
+            className="block w-full btn-1 py-3"
+          >
+            Сагсанд нэмэх
+          </button>
+        )}
+
+        {user && boughtCourses.includes(course._id) && (
+          <button
+            onClick={(): void => {
+              router.push(`/courses/${course._id}`);
+            }}
+            type="button"
+            className="block w-full btn-1 py-3"
+          >
+            Үзэх
+          </button>
+        )}
       </div>
     </div>
   );

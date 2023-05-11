@@ -39,7 +39,10 @@ export const getSingleOrder: RequestHandler = async (req, res, next) => {
 export const getSingleUserOrder: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
   try {
-    const orders = await UserOrderModel.find({ user: userId }).populate(["courses"]);
+    const user = await UserModel.findById(userId).select("+orders");
+    if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
+
+    const orders = await UserOrderModel.find({ _id: { $in: user.orders } }).populate(["courses"]);
     if (!orders) throw createHttpError(404, "Захиалга олдсонгүй");
 
     res.status(200).json({ message: "Амжилттай", body: orders });

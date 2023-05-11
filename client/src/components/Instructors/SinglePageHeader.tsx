@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,100 +15,118 @@ interface SinglePageHeaderProps {
   instructor: IInstructor;
 }
 
-const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => (
-  <div className="container relative bg-color-1 pt-[69px] rounded-lg text-white mb-[30px]">
-    <div className="absolute container top-0 right-0 left-0 bottom-0 pointer-events-none w-full h-full">
-      <Image src={BgShape} alt="" className="w-full h-full object-cover" />
-    </div>
+const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => {
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const [studentCount, setStudentCount] = useState<number>(0);
 
-    <div className="px-[325px]">
-      <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px]">
-        <Image
-          src={instructor.avatar}
-          width={127}
-          height={127}
-          alt=""
-          className="w-full h-full object-cover"
-        />
+  useEffect(() => {
+    let newReviewCount = 0;
+    let newStudentCount = 0;
+
+    instructor.ownCourses.map((course) => {
+      newReviewCount += course.reviews.length;
+      newStudentCount += course.purchaseCount;
+    });
+
+    setReviewCount(newReviewCount);
+    setStudentCount(newStudentCount);
+  }, [instructor]);
+
+  return (
+    <div className="container relative bg-color-1 pt-[69px] rounded-lg text-white mb-[30px]">
+      <div className="absolute container top-0 right-0 left-0 bottom-0 pointer-events-none w-full h-full">
+        <Image src={BgShape} alt="" className="w-full h-full object-cover" />
       </div>
 
-      <h1 className="font-[700] text-[30px] leading-[45px]">{instructor.fullName}</h1>
-      <p className="text-md-regular mb-[10px]">UX Designer</p>
+      <div className="px-[325px]">
+        <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px]">
+          <Image
+            src={instructor.avatar}
+            width={127}
+            height={127}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-      <div className="flex items-center gap-5 pb-[30px]">
-        <span className="flex items-center gap-2">
-          <div className="flex gap-[2px] text-[#E59819] text-sm-medium">
-            <RatingStar rating={1} count={1} />
-            <p className="">{instructor.avgRating}</p>
+        <h1 className="font-[700] text-[30px] leading-[45px]">{instructor.fullName}</h1>
+        <p className="text-md-regular mb-[10px]">UX Designer</p>
+
+        <div className="flex items-center gap-5 pb-[30px]">
+          <span className="flex items-center gap-2">
+            <div className="flex gap-[2px] text-[#E59819] text-sm-medium">
+              <RatingStar rating={1} count={1} />
+              <p className="">{instructor.avgRating.toFixed(1)}</p>
+            </div>
+            <span className="text-xs-regular">Үнэлгээ</span>
+          </span>
+
+          <span className="flex items-center gap-2">
+            <AiOutlineComment />
+            <div className="flex text-xs-regular gap-1">
+              <span>{reviewCount}</span>
+              <span>Сэтгэгдэл</span>
+            </div>
+          </span>
+
+          <span className="flex items-center gap-2">
+            <AiOutlineUser />
+            <div className="flex text-xs-regular gap-1">
+              <span>{studentCount}</span>
+              <span>Сурагчид</span>
+            </div>
+          </span>
+
+          <span className="flex items-center gap-[10px]">
+            <BiRightArrow />
+            <span className="text-xs-regular">{instructor.ownCourses.length} сургалт</span>
+          </span>
+        </div>
+
+        <div className="flex items-center pb-[76px]">
+          <button className="btn-2">Мессеж илгээх</button>
+          <div className="flex items-center ml-[30px] ">
+            {instructor.socialAccounts.facebook && (
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.facebook}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
+                <ImFacebook />
+              </Link>
+            )}
+            {instructor.socialAccounts.twitter && (
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.twitter}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
+                <ImTwitter />
+              </Link>
+            )}
+            {instructor.socialAccounts.instagram && (
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.instagram}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
+                <BsInstagram />
+              </Link>
+            )}
+            {instructor.socialAccounts.linkedin && (
+              <Link
+                target="_blank"
+                href={instructor.socialAccounts.linkedin}
+                className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
+              >
+                <ImLinkedin2 />
+              </Link>
+            )}
           </div>
-          <span className="text-xs-regular">Үнэлгээ</span>
-        </span>
-
-        <span className="flex items-center gap-2">
-          <AiOutlineComment />
-          <div className="flex text-xs-regular gap-1">
-            <span>23,987</span>
-            <span>Сэтгэгдэл</span>
-          </div>
-        </span>
-
-        <span className="flex items-center gap-2">
-          <AiOutlineUser />
-          <div className="flex text-xs-regular gap-1">
-            <span>692</span>
-            <span>Сурагчид</span>
-          </div>
-        </span>
-
-        <span className="flex items-center gap-[10px]">
-          <BiRightArrow />
-          <span className="text-xs-regular">{instructor.ownCourses.length} хичээл</span>
-        </span>
-      </div>
-
-      <div className="flex items-center pb-[76px]">
-        <button className="btn-2">Мессеж илгээх</button>
-        <div className="flex items-center ml-[30px] ">
-          {instructor.socialAccounts.facebook && (
-            <Link
-              target="_blank"
-              href={instructor.socialAccounts.facebook}
-              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
-            >
-              <ImFacebook />
-            </Link>
-          )}
-          {instructor.socialAccounts.twitter && (
-            <Link
-              target="_blank"
-              href={instructor.socialAccounts.twitter}
-              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
-            >
-              <ImTwitter />
-            </Link>
-          )}
-          {instructor.socialAccounts.instagram && (
-            <Link
-              target="_blank"
-              href={instructor.socialAccounts.instagram}
-              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
-            >
-              <BsInstagram />
-            </Link>
-          )}
-          {instructor.socialAccounts.linkedin && (
-            <Link
-              target="_blank"
-              href={instructor.socialAccounts.linkedin}
-              className="text-white p-4 rounded-full hover:bg-white/10 duration-300"
-            >
-              <ImLinkedin2 />
-            </Link>
-          )}
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default SinglePageHeader;

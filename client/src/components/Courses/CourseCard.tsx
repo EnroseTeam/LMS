@@ -7,12 +7,15 @@ import { ICourse } from "@/interfaces/courses";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
 import HoverCourseCard from "./HoverCourseCard";
 import { currencyFormatter } from "@/utils/currenctyFormatter";
+import { IUser } from "@/interfaces/user";
 
 interface CourseCardProps {
   course: ICourse;
+  user: IUser | undefined;
+  boughtCourses: string[];
 }
 
-const CourseCard: FC<CourseCardProps> = ({ course }) => (
+const CourseCard: FC<CourseCardProps> = ({ course, user, boughtCourses }) => (
   <div className="flex flex-col gap-[15px] relative group">
     <Link
       href={`/courses/${course._id}`}
@@ -95,7 +98,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => (
       </div>
     </div>
 
-    <HoverCourseCard course={course} />
+    <HoverCourseCard course={course} user={user} boughtCourses={boughtCourses} />
   </div>
 );
 

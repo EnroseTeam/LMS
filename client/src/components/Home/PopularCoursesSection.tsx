@@ -1,10 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import CourseCard from "../Courses/CourseCard";
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
 import classNames from "classnames";
+import useSwr from "swr";
+import { fetcher } from "@/utils/fetcher";
+import { useAuthenticate } from "@/hooks/useAuthenticate";
 
 interface PopularCoursesProps {
   courses: ICourse[];
@@ -14,6 +17,21 @@ interface PopularCoursesProps {
 const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories }) => {
   const [initialCourses, setInitialCourses] = useState<ICourse[]>(courses);
   const [activeTab, setActiveTab] = useState<string>("");
+
+  const { user } = useAuthenticate();
+
+  const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
+    user && "/api/courses/user",
+    fetcher<{ body: ICourse[] }>
+  );
+
+  const [boughtCoursesIds, setBoughtCoursesIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!boughtCoursesLoading && boughtCourses) {
+      setBoughtCoursesIds(boughtCourses.body.map((course) => course._id));
+    }
+  }, [boughtCourses, boughtCoursesLoading]);
 
   const categoryFilterHandler = (slug?: string): void => {
     if (slug) {
@@ -76,14 +94,19 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories })
 
       <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[30px]">
         {initialCourses.map((course) => (
-          <CourseCard key={course._id} course={course} />
+          <CourseCard
+            key={course._id}
+            course={course}
+            user={user}
+            boughtCourses={boughtCoursesIds}
+          />
         ))}
       </div>
 
       <Swiper grabCursor={true} slidesPerView={1} spaceBetween={20} className="sm:hidden">
         {initialCourses.map((course) => (
           <SwiperSlide key={course._id}>
-            <CourseCard course={course} />
+            <CourseCard course={course} user={user} boughtCourses={boughtCoursesIds} />
           </SwiperSlide>
         ))}
       </Swiper>

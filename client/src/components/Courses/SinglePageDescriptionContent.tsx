@@ -31,11 +31,12 @@ const SinglePageDescriptionContent: FC<SinglePageDescriptionContentProps> = ({ c
           {descriptionHide ? "Дэлгэрэнгүй" : "Хураангуй"}
         </p>
       </div>
+
       <div>
         <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">
           Суралцах чадварууд
         </h1>
-        <div className="grid grid-cols-2 text-text text-md-regular">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-text text-md-regular">
           <ul className="flex flex-col gap-5">
             {course.goals.slice(0, 6).map((goal, index) => (
               <li key={`course-goal-col-1-${index}`} className="flex items-center gap-[10px]">

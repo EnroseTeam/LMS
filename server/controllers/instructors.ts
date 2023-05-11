@@ -41,7 +41,7 @@ export const getSingleInstructor: RequestHandler = async (req, res, next) => {
 
     const instructor = await UserModel.findById(id)
       .select("+ownCourses +avgRating")
-      .populate("ownCourses");
+      .populate({ path: "ownCourses", populate: "level" });
     if (!instructor) throw createHttpError(404, "Багш олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: instructor });
