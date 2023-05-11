@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
 
 import { RxCross2 } from "react-icons/rx";
 import { FiSearch } from "react-icons/fi";
@@ -79,49 +78,6 @@ const SearchBar: FC<SearchBarProps> = ({ searchBarShow, setSearchBarShow }) => {
               <RxCross2 size={16} />
             </button>
           </div>
-          <h1 className="text-lg-medium mb-5">Яг одоо эрэлттэй</h1>
-          <ul className="mb-[30px]">
-            <li>
-              <Link
-                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
-                href="#"
-              >
-                The Ultimate Drawing Course - Beginner to Advanced
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
-                href="#"
-              >
-                The Ultimate Drawing Course - Beginner to Advanced
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
-                href="#"
-              >
-                The Ultimate Drawing Course - Beginner to Advanced
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
-                href="#"
-              >
-                The Ultimate Drawing Course - Beginner to Advanced
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-[15px] font-normal leading-[35px] hover:text-color-1 hover:underline"
-                href="#"
-              >
-                The Ultimate Drawing Course - Beginner to Advanced
-              </Link>
-            </li>
-          </ul>
 
           <button
             onClick={searchHandler}

@@ -3,7 +3,7 @@ import { FC } from "react";
 
 const FooterAlternate: FC = () => (
   <footer className="border-t border-t-border-1 py-12">
-    <div className="container flex items-center justify-between">
+    <div className="container flex flex-col gap-5 sm:flex-row items-center justify-between">
       <p className="text-text text-xs-regular">© 2023 IntelliSense. All Right Reserved.</p>
       <ul className="flex items-center gap-[10px] text-text text-xs-regular">
         <li>

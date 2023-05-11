@@ -38,8 +38,8 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) =
   return (
     <div>
       <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Сурагчдын үнэлгээ</h1>
-      <div className="flex items-center gap-[10px] mb-[60px]">
-        <div className="bg-bg-3 rounded-lg py-[50px] px-[94px] grid place-items-center">
+      <div className="flex flex-col sm:flex-row items-center gap-[10px] mb-[60px]">
+        <div className="bg-bg-3 rounded-lg py-[50px] px-[94px] grid place-items-center w-full sm:w-fit">
           <h3 className="text-head text-[60px] font-medium leading-[70px] mb-2">
             {course.avgRating.toFixed(1)}
           </h3>
@@ -47,7 +47,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) =
           <p className="text-text text-md-regular mt-[10px]">Дундаж үнэлгээ</p>
         </div>
 
-        <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right">
+        <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right w-full sm:w-fit">
           {ratingCount.map((count, index) => {
             const percentage = ((count * 100) / course.reviews.length).toFixed(1);
             return (

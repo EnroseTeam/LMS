@@ -19,7 +19,7 @@ import { useAuthenticate } from "@/hooks/useAuthenticate";
 import UserSkeleton from "@/components/Skeletons/UserSkeleton";
 import MobileMenu from "./MobileMenu";
 import { fetcher } from "@/utils/fetcher";
-import { ICourseCategory } from "@/interfaces/courses";
+import { ICourse, ICourseCategory } from "@/interfaces/courses";
 
 export interface HeaderMenuItem {
   title: string;
@@ -31,6 +31,12 @@ const Header: FC = () => {
   const { data: categories, isLoading: categoriesLoading } = useSWR(
     "/api/courses/categories",
     fetcher<{ message: string; body: ICourseCategory[] }>
+  );
+
+  const { data: courses } = useSWR(
+    categories &&
+      `/api/courses?category=${categories.body.map((category) => category.slug).join(",")}`,
+    fetcher<{ body: ICourse[] }>
   );
 
   const { user, isLoading } = useAuthenticate();
@@ -108,8 +114,10 @@ const Header: FC = () => {
           </Link>
           <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer hidden xl:flex">
             <RiMenu4Fill size={24} />
-            <span>Explore</span>
-            <NavbarDropdownLarge />
+            <span>Ангилалууд</span>
+            {categories && courses && (
+              <NavbarDropdownLarge categories={categories.body} courses={courses.body} />
+            )}
           </div>
         </div>
         <nav className="hidden xl:block">

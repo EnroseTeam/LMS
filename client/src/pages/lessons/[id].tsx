@@ -141,36 +141,14 @@ const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, c
   return (
     <div key={lesson._id}>
       <HeaderAlternate title={lesson.name} courseId={lesson.section.course} />
-      <main className="container grid grid-cols-6 gap-[30px] mt-[30px]">
-        <div className="col-span-4">
+      <main className="container grid grid-cols-1 lg:grid-cols-6 gap-[30px] mt-[30px] mb-[60px] lg:mb-0">
+        <div className="col-span-1 lg:col-span-4">
           <video ref={video} className="w-full rounded-lg mb-[41px]" controls>
             <source src={lesson.video} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <SinglePageDescriptionContent course={course} />
-          <div className="w-full flex items-center justify-between mt-[36px] mb-[60px]">
-            <button
-              disabled={isFirstLesson}
-              onClick={(): void => {
-                router.push(`/lessons/${prevUrl}`);
-              }}
-              className="btn-1"
-            >
-              Өмнөх
-            </button>
-            <button
-              disabled={isLastLesson}
-              onClick={(): void => {
-                router.push(`/lessons/${nextUrl}`);
-              }}
-              className="btn-1-outline"
-            >
-              Дараах
-            </button>
-          </div>
-          <SinglePageReviewContent course={course} />
         </div>
-        <div className="flex flex-col gap-[10px] col-span-2">
+        <div className="flex flex-col gap-[10px] col-span-1 lg:col-span-2">
           {course.sections.map((section, index) => (
             <Accordion
               key={section._id}
@@ -210,6 +188,33 @@ const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, c
           ))}
         </div>
       </main>
+
+      <div className="container grid grid-cols-1 lg:grid-cols-6">
+        <div className="col-span-1 lg:col-span-4">
+          <SinglePageDescriptionContent course={course} />
+          <div className="w-full flex items-center justify-between mt-[36px] mb-[60px]">
+            <button
+              disabled={isFirstLesson}
+              onClick={(): void => {
+                router.push(`/lessons/${prevUrl}`);
+              }}
+              className="btn-1"
+            >
+              Өмнөх
+            </button>
+            <button
+              disabled={isLastLesson}
+              onClick={(): void => {
+                router.push(`/lessons/${nextUrl}`);
+              }}
+              className="btn-1-outline"
+            >
+              Дараах
+            </button>
+          </div>
+          <SinglePageReviewContent course={course} />
+        </div>
+      </div>
       <FooterAlternate />
     </div>
   );
