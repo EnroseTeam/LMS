@@ -3,32 +3,27 @@ import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { FC, useRef, useState, Dispatch, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 import { toast } from "react-toastify";
 
-interface CourseCreateFormProps {
+interface CourseInfoFormProps {
   levels: ICourseLevel[];
   categories: ICourseCategory[];
-  mediaStates: {
-    image: string;
-    video: string;
-    setImage: Dispatch<SetStateAction<string>>;
-    setVideo: Dispatch<SetStateAction<string>>;
-    isImageExist: boolean;
-    setIsImageExist: Dispatch<SetStateAction<boolean>>;
-    isVideoExist: boolean;
-    setIsVideoExist: Dispatch<SetStateAction<boolean>>;
-  };
+  setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
+  setCourseId: Dispatch<SetStateAction<string>>;
 }
 
-const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, mediaStates }) => {
+const CourseInfoForm: FC<CourseInfoFormProps> = ({
+  levels,
+  categories,
+  setActiveStage,
+  setCourseId,
+}) => {
   const router = useRouter();
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Error" | "Success">("Success");
-
-  const { image, video, setIsImageExist, setIsVideoExist } = mediaStates;
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -73,8 +68,6 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
         setIsSubmitting(true);
 
         if (
-          !image ||
-          !video ||
           !name ||
           !description ||
           !selectedLevel._id ||
@@ -83,8 +76,6 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
           requirements.length === 0 ||
           !price
         ) {
-          !image && setIsImageExist(false);
-          !video && setIsVideoExist(false);
           !name && setIsNameExist(false);
           !description && setIsDescriptionExist(false);
           !selectedLevel._id && setIsLevelExist(false);
@@ -99,8 +90,6 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
         const res = await axiosInstance.post("/api/courses", {
           name,
           description,
-          picture: image,
-          video,
           level: selectedLevel._id,
           category: selectedCategory._id,
           requirements,
@@ -110,11 +99,8 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
         });
 
         toast.success(res.data.message);
-        router.push({
-          pathname: "/instructors/dashboard/my-courses",
-          query: { activeTab: "unpublished" },
-          hash: "tab",
-        });
+        setCourseId(res.data.body._id);
+        setActiveStage("Media");
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error)) {
@@ -131,7 +117,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
   };
 
   return (
-    <div className="rounded-2xl shadow-shadow-dashboard bg-white ">
+    <div className="rounded-2xl shadow-shadow-dashboard bg-white">
       <div className="px-[30px] py-5 border-b border-b-border-1">
         <h2 className="text-head text-lg-medium">Сургалтын ерөнхий мэдээлэл</h2>
       </div>
@@ -491,7 +477,7 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
             form="course-create-form"
             className="btn-1 py-4"
           >
-            Нэмэх
+            Дараах
           </button>
         </div>
       </div>
@@ -499,4 +485,4 @@ const CourseCreateForm: FC<CourseCreateFormProps> = ({ levels, categories, media
   );
 };
 
-export default CourseCreateForm;
+export default CourseInfoForm;

@@ -2,11 +2,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 import { FaRegCompass } from "react-icons/fa";
-import {
-  AiOutlinePlayCircle,
-  AiOutlineVideoCameraAdd,
-  AiOutlineComment,
-} from "react-icons/ai";
+import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "react-icons/ai";
 import { BsChatLeftText } from "react-icons/bs";
 import { HiOutlineCog8Tooth } from "react-icons/hi2";
 import { RiShutDownLine } from "react-icons/ri";
@@ -60,7 +56,7 @@ const InstructorSidebar: FC<InstructorSidebarProps> = ({ sidebarShow }) => {
       } duration-300`}
     >
       <div
-        className={`flex flex-col gap-[5px] text-text whitespace-nowrap text-lg-medium ${
+        className={` flex flex-col gap-[5px] text-text whitespace-nowrap text-lg-medium ${
           sidebarShow ? "opacity-100" : "opacity-0"
         } duration-100`}
       >

@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState, useRef, useEffect } from "react";
+import { FC, useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import imagePlaceholder from "@/assets/ph-image.webp";
 import { BiLoader } from "react-icons/bi";
@@ -8,29 +8,16 @@ import { isAxiosError } from "axios";
 import { SlTrash } from "react-icons/sl";
 
 interface CourseMediaUploadProps {
-  mediaStates: {
-    image: string;
-    video: string;
-    setImage: Dispatch<SetStateAction<string>>;
-    setVideo: Dispatch<SetStateAction<string>>;
-    isImageExist: boolean;
-    setIsImageExist: Dispatch<SetStateAction<boolean>>;
-    isVideoExist: boolean;
-    setIsVideoExist: Dispatch<SetStateAction<boolean>>;
-  };
+  setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
+  courseId: string;
 }
 
-const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
-  const {
-    image,
-    video,
-    isImageExist,
-    isVideoExist,
-    setImage,
-    setVideo,
-    setIsImageExist,
-    setIsVideoExist,
-  } = mediaStates;
+const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseId }) => {
+  const [image, setImage] = useState<string>("");
+  const [video, setVideo] = useState<string>("");
+
+  const [isImageExist, setIsImageExist] = useState<boolean>(true);
+  const [isVideoExist, setIsVideoExist] = useState<boolean>(true);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -120,7 +107,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
   }, [video]);
 
   return (
-    <div className="rounded-2xl shadow-shadow-dashboard bg-white mb-[60px]">
+    <div className="rounded-2xl shadow-shadow-dashboard bg-white">
       <div className="px-[30px] py-5 border-b border-b-border-1">
         <h2 className="text-head text-lg-medium">Зураг болон бичлэг</h2>
       </div>
@@ -273,6 +260,21 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ mediaStates }) => {
               Бичлэгийн дээд хэмжээ 1GB.
             </p>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            onClick={(): void => {
+              setActiveStage("Info");
+            }}
+            type="button"
+            className="btn-1-outline py-4"
+          >
+            Буцах
+          </button>
+          <button type="submit" form="course-create-form" className="btn-1 py-4">
+            Дараах
+          </button>
         </div>
       </div>
     </div>

@@ -103,7 +103,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {courses.length > 0 && (
-        <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
+        <div className="grid grid-cols-2 g gap-[30px] mb-[30px] -mt-[30px]">
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
@@ -118,7 +118,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {publishedCourses.length > 0 && (
-        <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
+        <div className="grid grid-cols-2 gap-[30px] mb-[30px] -mt-[30px]">
           {publishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
@@ -133,7 +133,7 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {unPublishedCourses.length > 0 && (
-        <div className="grid grid-cols-3 gap-[30px] mb-[30px] -mt-[30px]">
+        <div className="grid grid-cols-2 gap-[30px] mb-[30px] -mt-[30px]">
           {unPublishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
