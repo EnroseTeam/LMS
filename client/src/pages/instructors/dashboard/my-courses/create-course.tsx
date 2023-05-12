@@ -2,13 +2,14 @@ import { ReactNode, useState } from "react";
 import axios from "axios";
 
 import MessageBox from "@/components/global/MessageBox";
-import CourseMediaUpload from "@/components/Instructors/Dashboard/Courses/CourseMediaUpload";
-import CourseCreateForm from "@/components/Instructors/Dashboard/Courses/CourseCreateForm";
+import CourseInfoForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
 import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { GetStaticProps } from "next";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "@/pages/_app";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import CourseMediaUpload from "@/components/Instructors/Dashboard/Courses/CourseMediaUpload";
+import CourseSectionForm from "@/components/Instructors/Dashboard/Courses/CourseSectionForm";
 
 interface InstructorCreateCoursePageProps {
   levels: ICourseLevel[];
@@ -33,22 +34,8 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
   levels,
   categories,
 }) => {
-  const [image, setImage] = useState<string>("");
-  const [video, setVideo] = useState<string>("");
-
-  const [isImageExist, setIsImageExist] = useState<boolean>(true);
-  const [isVideoExist, setIsVideoExist] = useState<boolean>(true);
-
-  const mediaStates = {
-    image,
-    setImage,
-    video,
-    setVideo,
-    isImageExist,
-    setIsImageExist,
-    isVideoExist,
-    setIsVideoExist,
-  };
+  const [courseId, setCourseId] = useState<string>("");
+  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Sections");
 
   return (
     <>
@@ -61,8 +48,20 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
         className="mb-[30px]"
       />
 
-      <CourseMediaUpload mediaStates={mediaStates} />
-      <CourseCreateForm levels={levels} categories={categories} mediaStates={mediaStates} />
+      {activeStage === "Info" && (
+        <CourseInfoForm
+          levels={levels}
+          categories={categories}
+          setActiveStage={setActiveStage}
+          setCourseId={setCourseId}
+        />
+      )}
+      {activeStage === "Media" && (
+        <CourseMediaUpload setActiveStage={setActiveStage} courseId={courseId} />
+      )}
+      {activeStage === "Sections" && (
+        <CourseSectionForm setActiveStage={setActiveStage} courseId={courseId} />
+      )}
     </>
   );
 };
