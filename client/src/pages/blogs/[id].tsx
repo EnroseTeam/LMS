@@ -114,7 +114,7 @@ const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
             fames.
           </p>
         </div>
-        <div className="flex gap-5">
+        <div className="flex justify-between gap-5">
           <div>
             <Image
               src={
@@ -123,7 +123,7 @@ const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
               alt="postSingle"
               width={410}
               height={350}
-              className="w-full object-cover aspect-[1.3/1] rounded-2xl"
+              className="w-full object-cover aspect-[1.3] rounded-2xl"
             />
             <p className="text-head text-md-medium pt-[13px]">
               Donec purus posuere nullam lacus aliquam
