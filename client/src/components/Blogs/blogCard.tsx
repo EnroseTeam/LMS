@@ -35,7 +35,7 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => (
       <div>
         <h1 className="text-[#242239] text-2xl-medium py-[20px]">
           <Link
-            href={`instructors/${blog._id}`}
+            href={`blogs/${blog._id}`}
             className="block text-head hover:text-head/80 duration-300 mb-[5px]"
           >
             {blog.name}

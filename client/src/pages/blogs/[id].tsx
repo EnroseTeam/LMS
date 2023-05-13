@@ -1,3 +1,8 @@
+import "swiper/css/pagination";
+import "swiper/css";
+import { Navigation, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Image from "next/image";
 import { FC } from "react";
@@ -5,24 +10,45 @@ import { TbGridDots } from "react-icons/tb";
 import IconH from "../../assets/“.svg";
 import Link from "next/link";
 import { ImFacebook, ImLinkedin2, ImTwitter } from "react-icons/im";
-import { BsInstagram } from "react-icons/bs";
+import { BsArrowLeft, BsArrowRight, BsInstagram } from "react-icons/bs";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import BlogCard from "@/components/Blogs/blogCard";
+import axios from "axios";
+import { IBlog } from "@/interfaces/blogs";
+import { GetServerSideProps } from "next";
+import { axiosInstance } from "@/utils/axiosInstance";
 
-const SinglePostPage: FC = () => (
+interface SingleBlogPageProps {
+  blog: IBlog;
+  blogs: IBlog[];
+}
+
+export const getServerSideProps: GetServerSideProps<
+  SingleBlogPageProps
+> = async ({ params }) => {
+  const [blogRes, blogsRes] = await axios.all([
+    axiosInstance.get(`/api/blogs/${params?.id}`),
+    axiosInstance.get("/api/blogs?pageSize=6"),
+  ]);
+  return {
+    props: {
+      blog: blogRes.data.body,
+      blogs: blogsRes.data.body,
+    },
+  };
+};
+
+const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
   <>
     <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
-    <div className="">
+    <div>
       <div className="max-w-[1100px] mx-auto px-[120px] text-center bg-white">
-        <h1 className="text-head text-4x-bold ">
-          Getting Started The Web Development JavaScript in 2022
-        </h1>
-        <p className="text-lg-regular text-text pb-[90px]">August 10, 2022</p>
+        <h1 className="text-head text-4x-bold ">{blog.name}</h1>
+        <p className="text-lg-regular text-text pb-[90px]">{blog.updatedAt}</p>
       </div>
       <div className="rounded-lg overflow-hidden group relative px-[315px] ">
         <Image
-          src={
-            "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/wdxL7_LiT67eRzHPncQPh-html5-css3.jpg"
-          }
+          src={blog.picture}
           alt="postSingle"
           width={1290}
           height={600}
@@ -36,28 +62,19 @@ const SinglePostPage: FC = () => (
           What makes a good brand book?
         </h3>
         <p className="py-[30px] text-text text-md-regular">
-          Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Diam
-          phasellus vestibulum lorem sed risus ultricies. Magna sit amet purus
-          gravida quis blandit. Arcu cursus vitae congue mauris. Nunc mattis
-          enim ut tellus elementum sagittis vitae et leo. Semper risus in
-          hendrerit gravida rutrum quisque non. At urna condimentum mattis
-          pellentesque id nibh tortor. A erat nam at lectus urna duis convallis
-          convallis tellus. Sit amet mauris commodo quis imperdiet massa. Vitae
-          congue eu consequat ac felis.
+          {blog.description}
         </p>
         <div className="py-[30px] text-text text-md-regular">
-          <ul className="flex flex-col gap-[30px]">
-            <li className="flex items-center gap-[10px]">
+          <ul className="list-disc space-y-[30px]">
+            <li>
               Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.
             </li>
-            <li className="flex items-center gap-[10px]">
-              At urna condimentum mattis pellentesque id nibh.{" "}
-            </li>
-            <li className="flex items-center gap-[10px]">
+            <li>At urna condimentum mattis pellentesque id nibh. </li>
+            <li>
               Laoreet non curabitur Magna etiam tempor orci eu lobortis
               elementum.{" "}
             </li>
-            <li className="flex items-center gap-[10px]">
+            <li>
               Bibendum est ultricies integer quis. Semper eget duis at tellus.{" "}
             </li>
           </ul>
@@ -252,7 +269,6 @@ const SinglePostPage: FC = () => (
               <h3>Next</h3>
               <AiOutlineArrowRight />
             </div>
-
             <p className="flex text-end">
               Happy clients leave positive feedback less often{" "}
             </p>
@@ -267,83 +283,35 @@ const SinglePostPage: FC = () => (
       <p className="text-center text-text text-md-regular pb-[60px]">
         10,000+ unique online course list designs
       </p>
+      <Swiper
+        grabCursor={true}
+        spaceBetween={20}
+        slidesPerView={2}
+        navigation={{
+          nextEl: ".slider-style-2-next",
+          prevEl: ".slider-style-2-prev",
+        }}
+        pagination={{ clickable: true, el: ".slider-style-2-pagination" }}
+        modules={[Navigation, Pagination]}
+      >
+        {blogs.map((blog) => (
+          <SwiperSlide key={blog._id}>
+            <BlogCard blog={blog} />
+          </SwiperSlide>
+        ))}
 
-      <div className="grid grid-cols-4 gap-6">
-        <div>
-          <Image
-            src={
-              "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/wdxL7_LiT67eRzHPncQPh-html5-css3.jpg"
-            }
-            alt="postSingle"
-            width={410}
-            height={350}
-            className="w-full object-cover aspect-[1.3/1] rounded-md"
-          />
-          <h1>Related Posts</h1>
-          <p>10,000+ unique online course list designs</p>
-          <div>
-            <p>EDUCATION</p>
-            <h1>Eco-Education in Our Lives: We Can Change the Future </h1>
-            <p>December 16, 2022</p>
-          </div>
+        <div className="flex items-center justify-center gap-5 mt-[30px] lg:mt-[60px]">
+          <button className="slider-style-2-prev">
+            <BsArrowLeft />
+          </button>
+          <div className="slider-style-2-pagination" />
+          <button className="slider-style-2-next">
+            <BsArrowRight />
+          </button>
         </div>
-        <div>
-          <Image
-            src={
-              "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/wdxL7_LiT67eRzHPncQPh-html5-css3.jpg"
-            }
-            alt="postSingle"
-            width={410}
-            height={350}
-            className="w-full object-cover aspect-[1.3/1] rounded-md"
-          />
-          <h1>Related Posts</h1>
-          <p>10,000+ unique online course list designs</p>
-          <div>
-            <p>EDUCATION</p>
-            <h1>Eco-Education in Our Lives: We Can Change the Future </h1>
-            <p>December 16, 2022</p>
-          </div>
-        </div>
-        <div>
-          <Image
-            src={
-              "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/wdxL7_LiT67eRzHPncQPh-html5-css3.jpg"
-            }
-            alt="postSingle"
-            width={410}
-            height={350}
-            className="w-full object-cover aspect-[1.3/1] rounded-md"
-          />
-          <h1>Related Posts</h1>
-          <p>10,000+ unique online course list designs</p>
-          <div>
-            <p>EDUCATION</p>
-            <h1>Eco-Education in Our Lives: We Can Change the Future </h1>
-            <p>December 16, 2022</p>
-          </div>
-        </div>
-        <div>
-          <Image
-            src={
-              "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/wdxL7_LiT67eRzHPncQPh-html5-css3.jpg"
-            }
-            alt="postSingle"
-            width={410}
-            height={350}
-            className="w-full object-cover aspect-[1.3/1] rounded-md"
-          />
-          <h1>Related Posts</h1>
-          <p>10,000+ unique online course list designs</p>
-          <div>
-            <p>EDUCATION</p>
-            <h1>Eco-Education in Our Lives: We Can Change the Future </h1>
-            <p>December 16, 2022</p>
-          </div>
-        </div>
-      </div>
+      </Swiper>
     </div>
   </>
 );
 
-export default SinglePostPage;
+export default SingleBlogPage;
