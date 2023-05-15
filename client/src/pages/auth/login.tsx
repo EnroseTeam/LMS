@@ -47,7 +47,9 @@ const LoginPage: NextPageWithLayout = () => {
         setLoggedIn(true);
         localStorage.setItem("loggedIn", JSON.stringify(true));
 
-        router.back();
+        setTimeout(() => {
+          router.push("/");
+        }, 400);
       } catch (error) {
         if (isAxiosError(error))
           setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");

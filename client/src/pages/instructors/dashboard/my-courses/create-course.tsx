@@ -37,6 +37,9 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
   const [courseId, setCourseId] = useState<string>("");
   const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Sections");
 
+  const [message, setMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
+
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Сургалт нэмэх</h1>
@@ -48,16 +51,25 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
         className="mb-[30px]"
       />
 
+      {message && <MessageBox className="mb-[30px]" message={message} type={messageType} />}
+
       {activeStage === "Info" && (
         <CourseInfoForm
           levels={levels}
           categories={categories}
           setActiveStage={setActiveStage}
           setCourseId={setCourseId}
+          setMessage={setMessage}
+          setMessageType={setMessageType}
         />
       )}
       {activeStage === "Media" && (
-        <CourseMediaUpload setActiveStage={setActiveStage} courseId={courseId} />
+        <CourseMediaUpload
+          setActiveStage={setActiveStage}
+          courseId={courseId}
+          setMessage={setMessage}
+          setMessageType={setMessageType}
+        />
       )}
       {activeStage === "Sections" && (
         <CourseSectionForm setActiveStage={setActiveStage} courseId={courseId} />
