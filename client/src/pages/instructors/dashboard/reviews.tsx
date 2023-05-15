@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 const sortItems = [
   { title: "Шинэ", value: "dateDesc" },
   { title: "Хуучин", value: "dateAsc" },
+  { title: "Үнэлгээ", value: "ratingDesc" },
 ];
 
 const InstructorReviewPage: NextPageWithLayout = () => {
@@ -90,6 +91,11 @@ const InstructorReviewPage: NextPageWithLayout = () => {
         newReviews.sort(
           (a, b) => +new Date(a.createdAt) - +new Date(b.createdAt)
         );
+        setReviews(newReviews);
+      }
+      if (value === "ratingDesc") {
+        const newReviews = [...instructorReviews.body];
+        newReviews.sort((a, b) => +b.rating - +a.rating);
         setReviews(newReviews);
       }
     }
