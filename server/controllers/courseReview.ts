@@ -34,7 +34,7 @@ export const getReviewByInstructorId: RequestHandler = async (
 
     const courses: PopulatedCourse[] = await CourseModel.find({
       _id: { $in: user.ownCourses },
-    }).populate("reviews");
+    }).populate([{ path: "reviews", populate: "user" }]);
 
     const result: ICourseReview[] = [];
 

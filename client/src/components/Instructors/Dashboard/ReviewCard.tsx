@@ -1,12 +1,16 @@
 import { FC, useState } from "react";
 import Image from "next/image";
 
-import placeholder from "../../../assets/placeholder.png";
 import RatingStar from "@/components/global/RatingStar";
 import { BsFlag } from "react-icons/bs";
 import classNames from "classnames";
+import { ICourseReview } from "@/interfaces/courses";
 
-const InstructorReviewCard: FC = () => {
+interface InstructorReviewCardProps {
+  review: ICourseReview;
+}
+
+const InstructorReviewCard: FC<InstructorReviewCardProps> = ({ review }) => {
   const [showReply, setShowReply] = useState(false);
 
   return (
@@ -14,28 +18,35 @@ const InstructorReviewCard: FC = () => {
       <div className="flex gap-5 pb-[30px] border-b">
         <div className="w-[60px] h-[60px] rounded-full overflow-hidden">
           <Image
-            src={placeholder}
-            alt=""
+            src={review.user.avatar}
+            alt={review.user.fullName}
             className="w-full h-full object-cover"
-            width={60}
-            height={60}
+            width={120}
+            height={120}
           />
         </div>
         <div className="flex-1 flex-col">
           <div className="flex justify-between items-center mb-[10px]">
             <div className="flex gap-[5px] items-center">
-              <h2 className="text-lg-medium text-head">Binderiya</h2>
-              <span className="text-xs-regular">3 Days ago</span>
+              <h2 className="text-lg-medium text-head">
+                {review.user.fullName}
+              </h2>
+              <span className="text-xs-regular">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </span>
             </div>
             <BsFlag className="text-icon" />
           </div>
-          <RatingStar rating={5} gap={4} size={15} />
-          <p className="text-md-medium text-head mt-[15px] mb-[9px]">Шилдэг платформ</p>
-          <p className="text-md-regular text-text mb-[20px]">
-            This course is a very applicable. Professor Ng explains precisely each algorithm and
-            even tries to give an intuition for mathematical and statistic concepts behind each
-            algorithm. Thank you very much.
+          <div className="flex items-center gap-2">
+            <RatingStar rating={review.rating} gap={4} size={15} />
+            <span className="text-sm-medium text-[#E59819]">
+              {review.rating}
+            </span>
+          </div>
+          <p className="text-md-medium text-head mt-[15px] mb-[9px]">
+            {review.title}
           </p>
+          <p className="text-md-regular text-text mb-[20px]">{review.text}</p>
           <button
             onClick={(): void => setShowReply(!showReply)}
             className={`bg-bg-2 text-xs-medium text-color-1 rounded-lg py-2 px-[17px] mb-2`}
