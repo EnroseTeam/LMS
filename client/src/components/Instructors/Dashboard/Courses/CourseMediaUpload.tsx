@@ -2,17 +2,26 @@ import { FC, useState, useRef, useEffect, Dispatch, SetStateAction } from "react
 import Image from "next/image";
 import imagePlaceholder from "@/assets/ph-image.webp";
 import { BiLoader } from "react-icons/bi";
-import MessageBox from "@/components/global/MessageBox";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { SlTrash } from "react-icons/sl";
+import { toast } from "react-toastify";
 
 interface CourseMediaUploadProps {
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
   courseId: string;
+  setMessage: Dispatch<SetStateAction<string>>;
+  setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;
 }
 
-const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseId }) => {
+const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
+  setActiveStage,
+  courseId,
+  setMessage,
+  setMessageType,
+}) => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const [image, setImage] = useState<string>("");
   const [video, setVideo] = useState<string>("");
 
@@ -20,9 +29,6 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseI
   const [isVideoExist, setIsVideoExist] = useState<boolean>(true);
 
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const [messageType, setMessageType] = useState<"Error" | "Success">("Success");
-  const [message, setMessage] = useState<string>("");
 
   const [imageName, setImageName] = useState<string>("Зураг оруулна уу.");
   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
@@ -100,6 +106,40 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseI
     }
   };
 
+  const submitHandler = async (): Promise<void> => {
+    if (!isSubmitting) {
+      try {
+        setMessage("");
+        setMessageType("Success");
+        setIsSubmitting(true);
+        if (!image || !video) {
+          if (!image) setIsImageExist(false);
+          if (!video) setIsVideoExist(false);
+
+          return;
+        }
+
+        const res = await axiosInstance.patch(`/api/courses/${courseId}/media`, {
+          picture: image,
+          video,
+        });
+        toast.success(res.data.message);
+        setActiveStage("Sections");
+      } catch (error) {
+        setMessageType("Error");
+        if (isAxiosError(error)) {
+          setMessage(
+            error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+          );
+        } else {
+          setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
@@ -112,7 +152,6 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseI
         <h2 className="text-head text-lg-medium">Зураг болон бичлэг</h2>
       </div>
       <div className="p-[30px] flex flex-col gap-[60px]">
-        {message && <MessageBox type={messageType} message={message} className="-mb-[30px]" />}
         {/* Image Upload */}
         <div className="grid grid-cols-7 gap-[30px]">
           <div className="col-span-2 rounded-lg overflow-hidden relative">
@@ -272,7 +311,14 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({ setActiveStage, courseI
           >
             Буцах
           </button>
-          <button type="submit" form="course-create-form" className="btn-1 py-4">
+          <button
+            disabled={isSubmitting}
+            onClick={(): void => {
+              submitHandler();
+            }}
+            type="submit"
+            className="btn-1 py-4"
+          >
             Дараах
           </button>
         </div>

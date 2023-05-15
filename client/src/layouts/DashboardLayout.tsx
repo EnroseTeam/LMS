@@ -1,5 +1,6 @@
 import InstructorNavbar from "@/components/Instructors/Dashboard/Navbar";
 import InstructorSidebar from "@/components/Instructors/Dashboard/Sidebar";
+import { ModalProvider } from "@/contexts/ModalContext";
 import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { Roboto } from "next/font/google";
 import { useRouter } from "next/router";
@@ -39,13 +40,15 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className={roboto.className}>
-      <InstructorNavbar setSidebarShow={setSidebarShow} sidebarShow={sidebarShow} />
-      <div className="flex">
-        <InstructorSidebar sidebarShow={sidebarShow} />
-        <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
+    <ModalProvider>
+      <div className={roboto.className}>
+        <InstructorNavbar setSidebarShow={setSidebarShow} sidebarShow={sidebarShow} />
+        <div className="flex">
+          <InstructorSidebar sidebarShow={sidebarShow} />
+          <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
+        </div>
       </div>
-    </div>
+    </ModalProvider>
   );
 };
 

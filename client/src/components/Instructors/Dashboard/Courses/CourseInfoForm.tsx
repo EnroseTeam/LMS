@@ -1,4 +1,3 @@
-import MessageBox from "@/components/global/MessageBox";
 import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
@@ -12,6 +11,8 @@ interface CourseInfoFormProps {
   categories: ICourseCategory[];
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
   setCourseId: Dispatch<SetStateAction<string>>;
+  setMessage: Dispatch<SetStateAction<string>>;
+  setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;
 }
 
 const CourseInfoForm: FC<CourseInfoFormProps> = ({
@@ -19,11 +20,10 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
   categories,
   setActiveStage,
   setCourseId,
+  setMessage,
+  setMessageType,
 }) => {
   const router = useRouter();
-
-  const [message, setMessage] = useState<string>("");
-  const [messageType, setMessageType] = useState<"Error" | "Success">("Success");
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -102,6 +102,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
         setCourseId(res.data.body._id);
         setActiveStage("Media");
       } catch (error) {
+        console.log(error);
         setMessageType("Error");
         if (isAxiosError(error)) {
           setMessage(
@@ -122,8 +123,6 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
         <h2 className="text-head text-lg-medium">Сургалтын ерөнхий мэдээлэл</h2>
       </div>
       <div className="p-[30px]">
-        {message && <MessageBox type={messageType} message={message} className="mb-5" />}
-
         <form
           onSubmit={(e): void => {
             e.preventDefault();

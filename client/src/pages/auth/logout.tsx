@@ -12,19 +12,23 @@ const LogoutPage: NextPageWithLayout = () => {
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
       try {
-        await axiosInstance.post(`/api/auth/logout`);
+        const res = await axiosInstance.post(`/api/auth/logout`);
 
-        setLoggedIn(false);
-        localStorage.setItem("loggedIn", JSON.stringify(false));
+        if (res.status === 200) {
+          setLoggedIn(false);
+          localStorage.setItem("loggedIn", JSON.stringify(false));
 
-        router.push("/");
+          setTimeout(() => {
+            router.push("/");
+          }, 400);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     logoutUser();
-  }, [router, setLoggedIn]);
+  }, []);
 
   return <></>;
 };

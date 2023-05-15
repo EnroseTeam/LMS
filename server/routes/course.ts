@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addMediaToCourse,
   createCourse,
   deleteCourse,
   getCourseByInstructorId,
@@ -24,7 +25,8 @@ courseRouter.get("/:id", getSingleCourse);
 
 courseRouter.post("/", authenticateUser, authorizeInstructor, createCourse);
 
-courseRouter.patch("/:id", updateCourse);
+courseRouter.patch("/:id", authenticateUser, authorizeInstructor, updateCourse);
+courseRouter.patch("/:id/media", authenticateUser, authorizeInstructor, addMediaToCourse);
 
 courseRouter.delete("/:id", deleteCourse);
 

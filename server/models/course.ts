@@ -44,11 +44,11 @@ const CourseSchema = new Schema<ICourse>(
     },
     video: {
       type: String,
-      required: true,
+      default: "",
     },
     picture: {
       type: String,
-      required: true,
+      default: "",
     },
     instructor: {
       type: Schema.Types.ObjectId,

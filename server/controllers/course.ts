@@ -265,18 +265,8 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
   res,
   next
 ) => {
-  const {
-    name,
-    description,
-    picture,
-    video,
-    level,
-    category,
-    requirements,
-    goals,
-    price,
-    discountPrice,
-  } = req.body;
+  const { name, description, level, category, requirements, goals, price, discountPrice } =
+    req.body;
   const instructorId = req.session.userId;
 
   const session = await mongoose.startSession();
@@ -285,8 +275,6 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     // Хүсэлтээс орж ирж байгаа мэдээлэл бүрэн байгаа эсэхийг шалгана.
     if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай");
     if (!description) throw createHttpError(400, "Тайлбар заавал шаардлагатай");
-    if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай");
-    if (!video) throw createHttpError(400, "Танилцуулга бичлэг заавал шаардлагатай.");
     if (!level) throw createHttpError(400, "Хичээлийн түвшин заавал шаардлагатай");
     if (!price) throw createHttpError(400, "Хичээлийн үнэ заавал шаардлагатай");
     if (!category) throw createHttpError(400, "Хичээлийн ангилал заавал шаардлагатай");
@@ -302,7 +290,9 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     session.startTransaction();
 
     // Хүсэлтээр орж ирсэн багшийн id-тай багш бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const isInstructorExist = await UserModel.findById(instructorId, null, { session });
+    const isInstructorExist = await UserModel.findById(instructorId, null, { session }).select(
+      "+ownCourses"
+    );
     if (!isInstructorExist) throw createHttpError(404, "Багш олдсонгүй");
 
     // Хүсэлтээр орж ирсэн түвшингийн id-тай түвшин бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
@@ -319,8 +309,6 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
         {
           name,
           description,
-          picture,
-          video,
           instructor: instructorId,
           level,
           category,
@@ -347,8 +335,11 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
 
     await session.commitTransaction();
 
-    res.status(201).json({ message: `${name} нэртэй цуврал хичээл амжилттай нэмэгдлээ` });
+    res
+      .status(201)
+      .json({ message: `${name} нэртэй цуврал хичээл амжилттай нэмэгдлээ`, body: newCourse });
   } catch (error) {
+    console.log(error);
     await session.abortTransaction();
     next(error);
   }
@@ -357,8 +348,40 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
 };
 
 interface CourseParams {
-  id: string;
+  id?: string;
 }
+
+export const addMediaToCourse: RequestHandler<CourseParams, unknown, CourseBody, unknown> = async (
+  req,
+  res,
+  next
+) => {
+  const { id } = req.params;
+  const { picture, video } = req.body;
+  const userId = req.session.userId;
+
+  try {
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+    if (!picture) throw createHttpError(400, "Зураг заавал шаардалгатай.");
+    if (!video) throw createHttpError(400, "Танилцуулга бичлэг заавал шаардлагатай.");
+
+    const course = await CourseModel.findById(id);
+    if (!course) throw createHttpError(404, "Сургалт олдсонгүй.");
+
+    if (course.instructor?.toString() !== userId?.toString()) {
+      throw createHttpError(403, "Танд энэ сургалтыг шинэчлэх эрх байхгүй байна.");
+    }
+
+    course.picture = picture;
+    course.video = video;
+
+    await course.save();
+
+    res.status(200).json({ message: "Зураг болон бичлэг амжилттай нэмэгдлээ." });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unknown> = async (
   req,
@@ -366,7 +389,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
   next
 ) => {
   const { id } = req.params;
-  const { name, description, picture, level, category, requirements, goals } = req.body;
+  const { name, description, category, requirements, goals, level } = req.body;
 
   const session = await mongoose.startSession();
 
@@ -375,8 +398,6 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
     if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай");
     if (!description) throw createHttpError(400, "Тайлбар заавал шаардлагатай");
-    if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай");
-    if (!level) throw createHttpError(400, "Хичээлийн түвшин заавал шаардлагатай");
     if (!category) throw createHttpError(400, "Хичээлийн ангилал заавал шаардлагатай");
     if (!requirements)
       throw createHttpError(400, "Хичээлд шаардагдах чадварууд заавал шаардлагатай");
@@ -426,10 +447,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     }
 
     // Хүсэлтээр орж ирсэн мэдээллийн дагуу сургалтын мэдээллийг шинэчлэнэ.
-    await course.updateOne(
-      { name, description, picture, level, category, requirements, goals },
-      { session }
-    );
+    await course.updateOne({ name, description, category, requirements, goals }, { session });
 
     await session.commitTransaction();
 
