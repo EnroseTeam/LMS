@@ -10,6 +10,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { NextPage } from "next";
 import { ReactNode } from "react";
 import LoadingScreen from "@/components/utils/LoadingScreen";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -46,7 +47,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.E
         pauseOnHover
         theme="light"
       />
-      <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+      <AuthProvider>
+        <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
+      </AuthProvider>
       <LoadingScreen />
     </>
   );

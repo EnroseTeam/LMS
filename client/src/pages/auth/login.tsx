@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useContext } from "react";
 
 import { NextPageWithLayout } from "../_app";
 import AuthLayout from "@/layouts/AuthLayout";
@@ -11,9 +11,10 @@ import { axiosInstance } from "@/utils/axiosInstance";
 
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "@/components/global/MessageBox";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const LoginPage: NextPageWithLayout = () => {
-  const { setLoggedIn } = useAuthenticate();
+  const { userMutate, setLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -45,7 +46,9 @@ const LoginPage: NextPageWithLayout = () => {
         });
 
         setLoggedIn(true);
+        console.log("set to true");
         localStorage.setItem("loggedIn", JSON.stringify(true));
+        console.log("newly local loggedIn:", localStorage.getItem("loggedIn"));
 
         setTimeout(() => {
           router.push("/");

@@ -1,7 +1,7 @@
 import { IUser } from "@/interfaces/user";
 import { isAxiosError } from "axios";
 import useSwr, { KeyedMutator } from "swr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
 
@@ -18,9 +18,13 @@ interface useAuthenticateTypes {
 export const useAuthenticate = (): useAuthenticateTypes => {
   const router = useRouter();
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(
-    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("loggedIn") as string) : false
-  );
+  const [loggedIn, setLoggedIn] = useState<boolean>();
+  // typeof window !== "undefined" ? JSON.parse(localStorage.getItem("loggedIn") as string) : false
+
+  useEffect(() => {
+    console.log("local loggedIn:", localStorage.getItem("loggedIn"));
+    setLoggedIn(JSON.parse(localStorage.getItem("loggedIn") as string));
+  }, []);
 
   const fetcher = (url: string): Promise<IUser> => axiosInstance.get(url).then((res) => res.data);
 
@@ -40,6 +44,9 @@ export const useAuthenticate = (): useAuthenticateTypes => {
     localStorage.setItem("loggedIn", JSON.stringify(false));
     router.push("/auth/login");
   }
+  useEffect(() => {
+    console.log("loggedIn", loggedIn);
+  }, [loggedIn]);
 
   return { user, error, loggedIn, setLoggedIn, isLoading, mutate };
 };
