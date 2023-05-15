@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import useSWR from "swr";
 
 import Image from "next/image";
@@ -15,11 +15,11 @@ import NavbarDroprown from "./NavbarDroprown";
 import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
 import UserDropdown from "../User/UserDropdown";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
-import UserSkeleton from "@/components/Skeletons/UserSkeleton";
+// import UserSkeleton from "@/components/Skeletons/UserSkeleton";
 import MobileMenu from "./MobileMenu";
 import { fetcher } from "@/utils/fetcher";
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export interface HeaderMenuItem {
   title: string;
@@ -39,9 +39,7 @@ const Header: FC = () => {
     fetcher<{ body: ICourse[] }>
   );
 
-  const { user, isLoading } = useAuthenticate();
-
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const { user, loggedIn } = useContext(AuthContext);
 
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
@@ -72,10 +70,6 @@ const Header: FC = () => {
       );
     }
   }, [categories, categoriesLoading]);
-
-  useEffect(() => {
-    if (!isLoading) setIsReady(true);
-  }, [isLoading]);
 
   const toggleUserDropdown = (): void => {
     setUserDropdown(!userDropdown);
@@ -169,9 +163,7 @@ const Header: FC = () => {
             <BiMenuAltRight />
           </button>
 
-          {!isReady && <UserSkeleton />}
-
-          {!user && isReady && (
+          {!loggedIn && (
             <>
               <Link
                 href="/auth/login"
@@ -188,7 +180,7 @@ const Header: FC = () => {
             </>
           )}
 
-          {user && isReady && (
+          {user && loggedIn && (
             <div className="relative hidden xl:block">
               <button
                 onClick={(): void => {
@@ -214,7 +206,7 @@ const Header: FC = () => {
         mobileMenuShow={mobileMenuShow}
         closeMobileMenu={closeMobileMenu}
         user={user}
-        isReady={isReady}
+        isReady={loggedIn}
       />
     </header>
   );

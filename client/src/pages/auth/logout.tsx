@@ -1,13 +1,13 @@
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
 import NoLayout from "@/layouts/NoLayout";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const LogoutPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { setLoggedIn } = useAuthenticate();
+  const { setLoggedIn, userMutate } = useContext(AuthContext);
 
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
@@ -16,8 +16,9 @@ const LogoutPage: NextPageWithLayout = () => {
 
         if (res.status === 200) {
           setLoggedIn(false);
-          console.log("loggedIn is unsetting here!");
-          localStorage.setItem("loggedIn", JSON.stringify(false));
+          localStorage.setItem("loggedIn", "false");
+
+          userMutate(undefined);
 
           setTimeout(() => {
             router.push("/");

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -7,7 +7,7 @@ import { ICourse, ICourseCategory } from "@/interfaces/courses";
 import classNames from "classnames";
 import useSwr from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface PopularCoursesProps {
   courses: ICourse[];
@@ -18,7 +18,7 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories })
   const [initialCourses, setInitialCourses] = useState<ICourse[]>(courses);
   const [activeTab, setActiveTab] = useState<string>("");
 
-  const { user } = useAuthenticate();
+  const { user } = useContext(AuthContext);
 
   const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
     user && "/api/courses/user",
