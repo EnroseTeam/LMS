@@ -16,6 +16,7 @@ const LogoutPage: NextPageWithLayout = () => {
 
         if (res.status === 200) {
           setLoggedIn(false);
+          console.log("loggedIn is unsetting here!");
           localStorage.setItem("loggedIn", JSON.stringify(false));
 
           setTimeout(() => {

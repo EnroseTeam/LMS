@@ -105,7 +105,7 @@ export const logIn: RequestHandler<unknown, unknown, LogInBody, unknown> = async
     req.session.userId = user._id;
     if (remember) req.session.cookie.maxAge = 60 * 60 * 1000 * 24;
 
-    res.status(200).json({ message: "Амжилттай нэвтэрлээ" });
+    res.status(200).json({ message: "Амжилттай нэвтэрлээ", body: user });
   } catch (error) {
     next(error);
   }
