@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import AuthNavbar from "../components/auth/AuthNavbar";
 import Image from "next/image";
 
@@ -7,9 +7,9 @@ import authBg from "@/assets/authBg.svg";
 import authBgSmall1 from "@/assets/authBgSmall-1.svg";
 import authBgSmall2 from "@/assets/authBgSmall-2.svg";
 import authBgSmall3 from "@/assets/authBgSmall-3.svg";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { Roboto } from "next/font/google";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -21,14 +21,14 @@ const roboto = Roboto({
 });
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
-  const { user, isLoading } = useAuthenticate();
+  const { user, userLoading } = useContext(AuthContext);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && user) router.push("/");
-    if (!isLoading && !user) setIsAuthenticated(false);
-  }, [router, isLoading, user]);
+    if (!userLoading && user) router.push("/");
+    if (!userLoading && !user) setIsAuthenticated(false);
+  }, [router, userLoading, user]);
 
   if (isAuthenticated) return <></>;
 

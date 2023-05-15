@@ -5,13 +5,13 @@ import { useState, ReactNode, useContext } from "react";
 
 import { NextPageWithLayout } from "../_app";
 import AuthLayout from "@/layouts/AuthLayout";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "@/components/global/MessageBox";
 import { AuthContext } from "@/contexts/AuthContext";
+import { IUser } from "@/interfaces/user";
 
 const LoginPage: NextPageWithLayout = () => {
   const { userMutate, setLoggedIn } = useContext(AuthContext);
@@ -39,16 +39,15 @@ const LoginPage: NextPageWithLayout = () => {
           return;
         }
 
-        await axiosInstance.post("/api/auth/login", {
+        const res = await axiosInstance.post<{ message: string; body: IUser }>("/api/auth/login", {
           email,
           password,
           remember,
         });
 
         setLoggedIn(true);
-        console.log("set to true");
-        localStorage.setItem("loggedIn", JSON.stringify(true));
-        console.log("newly local loggedIn:", localStorage.getItem("loggedIn"));
+        localStorage.setItem("loggedIn", "true");
+        userMutate(res.data.body);
 
         setTimeout(() => {
           router.push("/");
