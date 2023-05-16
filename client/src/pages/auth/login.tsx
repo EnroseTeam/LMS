@@ -45,9 +45,11 @@ const LoginPage: NextPageWithLayout = () => {
           remember,
         });
 
-        setLoggedIn(true);
+        console.log(res.data.body);
+
         localStorage.setItem("loggedIn", "true");
-        userMutate(res.data.body);
+        setLoggedIn(true);
+        // userMutate(res.data.body);
 
         setTimeout(() => {
           router.push("/");
