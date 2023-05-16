@@ -5,22 +5,43 @@ import router from "next/router";
 import { FC } from "react";
 import { BsFileEarmarkText, BsClock, BsBarChart } from "react-icons/bs";
 import { GrFormCheckmark } from "react-icons/gr";
+import classNames from "classnames";
 
 interface HoverCourseCardProps {
   course: ICourse;
   user: IUser | undefined;
   boughtCourses: string[];
+  position?: "Left" | "Right";
 }
 
-const HoverCourseCard: FC<HoverCourseCardProps> = ({ course, user, boughtCourses }) => {
+const HoverCourseCard: FC<HoverCourseCardProps> = ({
+  course,
+  user,
+  boughtCourses,
+  position = "Right",
+}) => {
   const { addCartItem } = useCart();
 
   return (
-    <div className="absolute text-head top-0 left-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto flex z-[1000]">
-      <div className="py-10">
-        <div className="w-[10px] h-[10px] rotate-45 bg-white border-b border-l border-border-2 mt-14 ml-1 z-[1000]" />
-      </div>
-      <div className="bg-white rounded-lg border border-border-2 px-[30px] py-[22px] -ml-[5.5px] -mt-2">
+    <div
+      className={classNames(
+        "absolute text-head top-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto flex z-[1000]",
+        { "left-full": position === "Right" },
+        { "right-full": position === "Left" }
+      )}
+    >
+      {position === "Right" && (
+        <div className="py-10">
+          <div className="w-[10px] h-[10px] rotate-45 bg-white border-b border-l border-border-2 mt-14 ml-1 z-[1000]" />
+        </div>
+      )}
+      <div
+        className={classNames(
+          "bg-white rounded-lg border border-border-2 px-[30px] py-[22px] -mt-2",
+          { "-ml-[5.5px]": position === "Right" },
+          { "-mr-[5.5px]": position === "Left" }
+        )}
+      >
         <h1 className="text-[20px] font-medium leading-[30px] mb-[15px] w-[30ch]">{course.name}</h1>
         <div className="flex items-center justify-between mb-[15px]">
           <span className="flex items-center gap-2 text-md text-icon">
@@ -102,6 +123,12 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({ course, user, boughtCourses
           </button>
         )}
       </div>
+
+      {position === "Left" && (
+        <div className="py-10">
+          <div className="w-[10px] h-[10px] rotate-45 bg-white border-t border-r border-border-2 mt-14 mr-1 z-[1000]" />
+        </div>
+      )}
     </div>
   );
 };
