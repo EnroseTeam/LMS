@@ -15,7 +15,7 @@ import NavbarDroprown from "./NavbarDroprown";
 import SearchBar from "../Search/SearchBar";
 import OpenCart from "../Cart/OpenCart";
 import UserDropdown from "../User/UserDropdown";
-// import UserSkeleton from "@/components/Skeletons/UserSkeleton";
+import UserSkeleton from "@/components/Skeletons/UserSkeleton";
 import MobileMenu from "./MobileMenu";
 import { fetcher } from "@/utils/fetcher";
 import { ICourse, ICourseCategory } from "@/interfaces/courses";
@@ -39,7 +39,7 @@ const Header: FC = () => {
     fetcher<{ body: ICourse[] }>
   );
 
-  const { user, loggedIn } = useContext(AuthContext);
+  const { user, loggedIn, userLoading } = useContext(AuthContext);
 
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
@@ -163,7 +163,9 @@ const Header: FC = () => {
             <BiMenuAltRight />
           </button>
 
-          {!loggedIn && (
+          {userLoading && <UserSkeleton />}
+
+          {(!loggedIn || !user) && (
             <>
               <Link
                 href="/auth/login"
