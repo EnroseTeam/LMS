@@ -1,25 +1,31 @@
-import Accordion from "@/components/global/Accordion";
 import { useModal } from "@/hooks/useModal";
-import { Dispatch, FC, SetStateAction, useState } from "react";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import SectionForm from "../Sections/SectionForm";
-import { ICourseSection } from "@/interfaces/courses";
+import { ICourse, ICourseSection } from "@/interfaces/courses";
 import { useRouter } from "next/router";
+import SectionAccordion from "../Sections/SectionAccordion";
 
 interface CourseSectionFormProps {
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
-  courseId: string;
+  courseId?: string;
+  course?: ICourse;
 }
 
-const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseId }) => {
+const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseId, course }) => {
   const router = useRouter();
   const { showModal } = useModal();
   const [sections, setSections] = useState<ICourseSection[]>([]);
 
+  useEffect(() => {
+    if (course) {
+      setSections(course.sections);
+    }
+  }, [course]);
+
   const showAddSectionModal = (): void => {
     showModal({
       title: "Хичээлийн сэдэв нэмэх",
-      content: <SectionForm courseId={courseId} afterCreate={afterCreate} />,
+      content: <SectionForm courseId={courseId} course={course} afterCreate={afterCreate} />,
     });
   };
 
@@ -43,38 +49,7 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseI
       <div className="p-[30px]">
         <div className="flex flex-col gap-[10px] mb-[30px]">
           {sections.map((section) => (
-            <Accordion
-              key={section._id}
-              header={
-                <div className="flex items-center justify-between flex-1">
-                  <span className="text-head text-base-medium">{section.title}</span>
-                  <div className="flex items-center gap-5 text-base text-icon">
-                    <button
-                      className="hover:text-icon/70 duration-300"
-                      onClick={(e): void => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      <AiOutlineEdit />
-                    </button>
-                    <button
-                      onClick={(e): void => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      <AiOutlineDelete />
-                    </button>
-                  </div>
-                </div>
-              }
-              content={
-                <div className="p-[30px]">
-                  <div className="flex flex-col gap-5 mb-5"></div>
-
-                  <button className="btn-4 py-4 px-7 text-md-medium">Хичээл нэмэх +</button>
-                </div>
-              }
-            />
+            <SectionAccordion key={section._id} section={section} />
           ))}
         </div>
 

@@ -1,14 +1,14 @@
 import { IUser } from "@/interfaces/user";
 import { isAxiosError } from "axios";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 
 import { SlCloudUpload, SlTrash } from "react-icons/sl";
 import { BiLoader } from "react-icons/bi";
 import MessageBox from "../global/MessageBox";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface UserPersonalInfoFormProps {
   user?: IUser;
@@ -17,7 +17,7 @@ interface UserPersonalInfoFormProps {
 const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUser }) => {
   const router = useRouter();
 
-  const { mutate } = useAuthenticate();
+  const { setUser } = useContext(AuthContext);
 
   const [profilePicture, setProfilePicture] = useState<string>(user.avatar);
   const defaultProfile =
@@ -118,7 +118,7 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
           avatar: profilePicture,
         });
 
-        mutate({
+        setUser({
           ...user,
           firstName,
           lastName,

@@ -56,6 +56,9 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
 }) => {
   const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Info");
 
+  const [message, setMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
+
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Сургалт засах</h1>
@@ -67,11 +70,29 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
         className="mb-[30px]"
       />
 
+      {message && <MessageBox className="mb-[30px]" message={message} type={messageType} />}
+
       {activeStage === "Info" && (
-        <CourseInfoForm levels={levels} categories={categories} setActiveStage={setActiveStage} />
+        <CourseInfoForm
+          levels={levels}
+          categories={categories}
+          setActiveStage={setActiveStage}
+          course={course}
+          setMessage={setMessage}
+          setMessageType={setMessageType}
+        />
       )}
-      {activeStage === "Media" && <CourseMediaUpload />}
-      {activeStage === "Sections" && <CourseSectionForm />}
+      {activeStage === "Media" && (
+        <CourseMediaUpload
+          setActiveStage={setActiveStage}
+          course={course}
+          setMessage={setMessage}
+          setMessageType={setMessageType}
+        />
+      )}
+      {activeStage === "Sections" && (
+        <CourseSectionForm setActiveStage={setActiveStage} course={course} />
+      )}
     </>
   );
 };

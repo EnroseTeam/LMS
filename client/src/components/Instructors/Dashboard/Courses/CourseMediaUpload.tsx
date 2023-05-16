@@ -6,12 +6,14 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { SlTrash } from "react-icons/sl";
 import { toast } from "react-toastify";
+import { ICourse } from "@/interfaces/courses";
 
 interface CourseMediaUploadProps {
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
-  courseId: string;
+  courseId?: string;
   setMessage: Dispatch<SetStateAction<string>>;
   setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;
+  course?: ICourse;
 }
 
 const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
@@ -19,6 +21,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
   courseId,
   setMessage,
   setMessageType,
+  course,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -35,6 +38,13 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
 
   const [videoName, setVideoName] = useState<string>("Танилцуулга бичлэгээ оруулна уу.");
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (course) {
+      setImage(course.picture);
+      setVideo(course.video);
+    }
+  }, [course]);
 
   const imageUploadHandler = async (image: FileList | null): Promise<void> => {
     try {
@@ -119,7 +129,9 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
           return;
         }
 
-        const res = await axiosInstance.patch(`/api/courses/${courseId}/media`, {
+        const url = course ? `/api/courses/${course._id}/media` : `/api/courses/${courseId}/media`;
+
+        const res = await axiosInstance.patch(url, {
           picture: image,
           video,
         });
