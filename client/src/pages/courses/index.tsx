@@ -2,7 +2,7 @@ import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import axios from "axios";
 
 import { GetServerSideProps } from "next";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 
 import CourseCard from "@/components/Courses/CourseCard";
@@ -18,9 +18,9 @@ import { axiosInstance } from "@/utils/axiosInstance";
 
 import { BiFilterAlt } from "react-icons/bi";
 import { HiChevronRight } from "react-icons/hi";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { fetcher } from "@/utils/fetcher";
 import useSwr from "swr";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
@@ -92,7 +92,7 @@ const CoursesPage: FC<CoursesPageProps> = ({
   totalPages,
   totalCourses,
 }) => {
-  const { user } = useAuthenticate();
+  const { user } = useContext(AuthContext);
 
   const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
     user && "/api/courses/user",

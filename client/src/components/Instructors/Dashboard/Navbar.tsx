@@ -1,22 +1,16 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
 import { BiBell, BiMessageSquareDetail } from "react-icons/bi";
 
 import logoDark from "@/assets/logo-dark.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { AuthContext } from "@/contexts/AuthContext";
+import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
 
-interface InstructorNavbarProps {
-  setSidebarShow: (state: boolean) => void;
-  sidebarShow: boolean;
-}
-
-const InstructorNavbar: FC<InstructorNavbarProps> = ({
-  setSidebarShow,
-  sidebarShow,
-}) => {
-  const { user } = useAuthenticate();
+const InstructorNavbar: FC = () => {
+  const { user } = useContext(AuthContext);
+  const { setSidebarShow, sidebarShow } = useContext(DashboardSidebarContext);
 
   if (!user) return <></>;
 

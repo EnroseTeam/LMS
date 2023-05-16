@@ -35,7 +35,7 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
   categories,
 }) => {
   const [courseId, setCourseId] = useState<string>("");
-  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Sections");
+  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Info");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");

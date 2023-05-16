@@ -7,23 +7,19 @@ import { AuthContext } from "@/contexts/AuthContext";
 
 const LogoutPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { setLoggedIn, userMutate } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     const logoutUser = async (): Promise<void> => {
       try {
-        const res = await axiosInstance.post(`/api/auth/logout`);
+        await axiosInstance.post(`/api/auth/logout`);
 
-        if (res.status === 200) {
-          setLoggedIn(false);
-          localStorage.setItem("loggedIn", "false");
+        setIsLoggedIn(false);
+        setUser(undefined);
 
-          userMutate(undefined);
-
-          setTimeout(() => {
-            router.push("/");
-          }, 400);
-        }
+        setTimeout(() => {
+          router.push("/");
+        }, 400);
       } catch (error) {
         console.log(error);
       }

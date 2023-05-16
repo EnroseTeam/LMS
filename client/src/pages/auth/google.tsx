@@ -1,11 +1,13 @@
 import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
 import NoLayout from "@/layouts/NoLayout";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const GoogleLoginPage: NextPageWithLayout = () => {
   const router = useRouter();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     const code = router.query.code;
@@ -15,7 +17,7 @@ const GoogleLoginPage: NextPageWithLayout = () => {
         .get(`/api/auth/google?code=${code}`)
         .then((res) => {
           if (res.status === 201) {
-            localStorage.setItem("loggedIn", JSON.stringify(true));
+            setIsLoggedIn(true);
             router.push("/");
           }
         })

@@ -1,6 +1,6 @@
 import { IUser } from "@/interfaces/user";
 import Link from "next/link";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { BsInstagram } from "react-icons/bs";
 import { ImFacebook, ImLinkedin2, ImTwitter } from "react-icons/im";
 import { IoMdClose } from "react-icons/io";
@@ -9,27 +9,19 @@ import { HeaderMenuItem } from "./Header";
 import MobileMenuChildren from "./MobileMenuChildren";
 import UserMobileMenu from "../User/UserMobileMenu";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface MobileMenuProps {
   menuItems: HeaderMenuItem[];
   mobileMenuShow: boolean;
   closeMobileMenu: () => void;
-  user: IUser | undefined;
-  isReady: boolean;
 }
 
-const MobileMenu: FC<MobileMenuProps> = ({
-  menuItems,
-  mobileMenuShow,
-  closeMobileMenu,
-  user,
-  isReady,
-}) => {
+const MobileMenu: FC<MobileMenuProps> = ({ menuItems, mobileMenuShow, closeMobileMenu }) => {
   const router = useRouter();
+  const { user, isLoggedIn } = useContext(AuthContext);
 
-  const [childrenStates, setChildrenStates] = useState<boolean[]>(
-    menuItems.map(() => false)
-  );
+  const [childrenStates, setChildrenStates] = useState<boolean[]>(menuItems.map(() => false));
   const [userMenuShow, setUserMenuShow] = useState<boolean>(false);
 
   const closeAllChildren = (): void => {
@@ -72,28 +64,19 @@ const MobileMenu: FC<MobileMenuProps> = ({
         }`}
       >
         <div className="py-5 pl-5 border-b border-b-border-1 flex items-center gap-[30px] text-md-regular">
-          {isReady && !user && (
+          {(!isLoggedIn || !user) && (
             <>
-              <Link
-                className="hover:text-color-1 duration-300"
-                href="/auth/login"
-              >
+              <Link className="hover:text-color-1 duration-300" href="/auth/login">
                 Нэвтрэх
               </Link>
-              <Link
-                className="hover:text-color-1 duration-300"
-                href="/auth/register"
-              >
+              <Link className="hover:text-color-1 duration-300" href="/auth/register">
                 Бүртгүүлэх
               </Link>
             </>
           )}
-          {isReady && user && (
+          {isLoggedIn && user && (
             <>
-              <button
-                className={`hover:text-color-1 duration-300`}
-                onClick={showUserMenu}
-              >
+              <button className={`hover:text-color-1 duration-300`} onClick={showUserMenu}>
                 {user.fullName}
               </button>
               <UserMobileMenu

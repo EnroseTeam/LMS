@@ -1,5 +1,5 @@
 import { ICourse } from "@/interfaces/courses";
-import { FC, useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect, useRef, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/router";
 import useSwr from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface SinglePageHeaderProps {
   course: ICourse;
@@ -36,7 +36,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const router = useRouter();
   const { addCartItem } = useCart();
 
-  const { user } = useAuthenticate();
+  const { user, isUserLoading } = useContext(AuthContext);
 
   const { data: userOwnCourses, isLoading: ownCoursesLoading } = useSwr(
     user && "/api/courses/user",
@@ -279,9 +279,9 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             )}
           </div>
 
-          {ownCoursesLoading && boughtCoursesLoading && <ButtonSkeleton />}
+          {(isUserLoading || ownCoursesLoading || boughtCoursesLoading) && <ButtonSkeleton />}
 
-          {!user && (
+          {!user && !isUserLoading && (
             <div className="grid grid-cols-2 gap-[35px]">
               <button
                 onClick={(): void => {
@@ -305,6 +305,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             </div>
           )}
           {user &&
+            !isUserLoading &&
             !ownCourses.includes(course._id) &&
             !boughtCourses.includes(course._id) &&
             !ownCoursesLoading &&
@@ -332,6 +333,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               </div>
             )}
           {user &&
+            !isUserLoading &&
             (ownCourses.includes(course._id) || boughtCourses.includes(course._id)) &&
             !boughtCoursesLoading &&
             !ownCoursesLoading && (

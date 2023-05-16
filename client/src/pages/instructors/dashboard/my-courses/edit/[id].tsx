@@ -7,7 +7,7 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ReactNode, useState } from "react";
-import CourseCreateForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
+import CourseInfoForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
 import CourseSectionForm from "@/components/Instructors/Dashboard/Courses/CourseSectionForm";
 
 interface InstructorCoursesEditPageProps {
@@ -54,22 +54,7 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
   levels,
   categories,
 }) => {
-  const [image, setImage] = useState<string>("");
-  const [video, setVideo] = useState<string>("");
-
-  const [isImageExist, setIsImageExist] = useState<boolean>(true);
-  const [isVideoExist, setIsVideoExist] = useState<boolean>(true);
-
-  const mediaStates = {
-    image,
-    setImage,
-    video,
-    setVideo,
-    isImageExist,
-    setIsImageExist,
-    isVideoExist,
-    setIsVideoExist,
-  };
+  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Info");
 
   return (
     <>
@@ -82,9 +67,11 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
         className="mb-[30px]"
       />
 
-      <CourseMediaUpload mediaStates={mediaStates} />
-      <CourseCreateForm levels={levels} categories={categories} mediaStates={mediaStates} />
-      <CourseSectionForm />
+      {activeStage === "Info" && (
+        <CourseInfoForm levels={levels} categories={categories} setActiveStage={setActiveStage} />
+      )}
+      {activeStage === "Media" && <CourseMediaUpload />}
+      {activeStage === "Sections" && <CourseSectionForm />}
     </>
   );
 };

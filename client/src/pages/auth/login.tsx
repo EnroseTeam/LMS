@@ -14,7 +14,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { IUser } from "@/interfaces/user";
 
 const LoginPage: NextPageWithLayout = () => {
-  const { userMutate, setLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -39,20 +39,16 @@ const LoginPage: NextPageWithLayout = () => {
           return;
         }
 
-        const res = await axiosInstance.post<{ message: string; body: IUser }>("/api/auth/login", {
+        await axiosInstance.post<{ message: string; body: IUser }>("/api/auth/login", {
           email,
           password,
           remember,
         });
 
-        console.log(res.data.body);
-
-        localStorage.setItem("loggedIn", "true");
-        setLoggedIn(true);
-        // userMutate(res.data.body);
+        setIsLoggedIn(true);
 
         setTimeout(() => {
-          router.push("/");
+          router.back();
         }, 400);
       } catch (error) {
         if (isAxiosError(error))

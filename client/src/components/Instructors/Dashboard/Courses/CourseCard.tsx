@@ -89,7 +89,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
         <div
           className={classNames(
-            "absolute top-full right-0 mt-2 duration-300",
+            "absolute top-full right-0 mt-2 duration-300 z-10",
             { "opacity-100": dropDownShow },
             { "opacity-0 pointer-events-none": !dropDownShow }
           )}

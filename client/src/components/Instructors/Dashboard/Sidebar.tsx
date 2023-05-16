@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 import { FaRegCompass } from "react-icons/fa";
 import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "react-icons/ai";
@@ -7,6 +7,8 @@ import { BsChatLeftText } from "react-icons/bs";
 import { HiOutlineCog8Tooth } from "react-icons/hi2";
 import { RiShutDownLine } from "react-icons/ri";
 import { useRouter } from "next/router";
+import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
+import classNames from "classnames";
 
 const SidebarItems = [
   { title: "Хянах самбар", link: "/instructors/dashboard", Icon: FaRegCompass },
@@ -42,31 +44,35 @@ const SidebarItems = [
   },
 ];
 
-interface InstructorSidebarProps {
-  sidebarShow: boolean;
-}
-
-const InstructorSidebar: FC<InstructorSidebarProps> = ({ sidebarShow }) => {
+const InstructorSidebar: FC = () => {
   const router = useRouter();
+  const { sidebarShow } = useContext(DashboardSidebarContext);
 
   return (
     <div
-      className={`bg-white pt-[50px] duration-300 ${
-        sidebarShow ? "px-[30px] max-w-[300px] min-w-[300px]" : "px-0 max-w-0"
-      } duration-300`}
+      className={classNames(
+        "bg-white pt-[50px] duration-300",
+        {
+          "px-[30px] max-w-[300px] min-w-[300px]": sidebarShow,
+        },
+        { "px-0 max-w-0 pointer-events-none": !sidebarShow }
+      )}
     >
       <div
-        className={` flex flex-col gap-[5px] text-text whitespace-nowrap text-lg-medium ${
-          sidebarShow ? "opacity-100" : "opacity-0"
-        } duration-100`}
+        className={classNames(
+          "flex flex-col gap-[5px] text-text whitespace-nowrap text-lg-medium duration-100",
+          { "opacity-100": sidebarShow },
+          { "opacity-0": !sidebarShow }
+        )}
       >
         {SidebarItems.map((item, index) => (
           <Link
             key={`sidebar-item-${index}`}
             href={item.link}
-            className={`px-5 py-4 flex items-center gap-[15px] rounded-2xl hover:bg-color-2 hover:text-white duration-150 ${
-              router.pathname === item.link ? "text-white bg-color-2" : ""
-            }`}
+            className={classNames(
+              "px-5 py-4 flex items-center gap-[15px] rounded-2xl hover:bg-color-2 hover:text-white duration-150",
+              { "text-white bg-color-2": router.pathname === item.link }
+            )}
           >
             <item.Icon size={22} />
             {item.title}

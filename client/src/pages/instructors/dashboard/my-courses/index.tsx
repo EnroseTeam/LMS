@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import useSwr from "swr";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
@@ -10,8 +10,12 @@ import { NextPageWithLayout } from "@/pages/_app";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { fetcher } from "@/utils/fetcher";
 import TabSkeleton from "@/components/Skeletons/TabSkeleton";
+import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
+import classNames from "classnames";
 
 const InstructorCoursesPage: NextPageWithLayout = () => {
+  const { sidebarShow } = useContext(DashboardSidebarContext);
+
   const router = useRouter();
   const { data: instructorCourses, isLoading: isCourseLoading } = useSwr(
     "/api/courses/instructor",
@@ -103,7 +107,15 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {courses.length > 0 && (
-        <div className="grid grid-cols-2 g gap-[30px] mb-[30px] -mt-[30px]">
+        <div
+          className={classNames(
+            "grid gap-[30px] mb-[30px] -mt-[30px]",
+            {
+              "grid-cols-1": sidebarShow,
+            },
+            { "grid-cols-2": !sidebarShow }
+          )}
+        >
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
@@ -118,7 +130,15 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {publishedCourses.length > 0 && (
-        <div className="grid grid-cols-2 gap-[30px] mb-[30px] -mt-[30px]">
+        <div
+          className={classNames(
+            "grid gap-[30px] mb-[30px] -mt-[30px]",
+            {
+              "grid-cols-1": sidebarShow,
+            },
+            { "grid-cols-2": !sidebarShow }
+          )}
+        >
           {publishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
@@ -133,7 +153,15 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {unPublishedCourses.length > 0 && (
-        <div className="grid grid-cols-2 gap-[30px] mb-[30px] -mt-[30px]">
+        <div
+          className={classNames(
+            "grid gap-[30px] mb-[30px] -mt-[30px]",
+            {
+              "grid-cols-1": sidebarShow,
+            },
+            { "grid-cols-2": !sidebarShow }
+          )}
+        >
           {unPublishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}

@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import RatingStar from "../global/RatingStar";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import Link from "next/link";
 import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton";
 import MessageBox from "../global/MessageBox";
 import { isAxiosError } from "axios";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { ICourseReview } from "@/interfaces/courses";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface ReviewFormProps {
   courseId: string;
@@ -14,8 +14,7 @@ interface ReviewFormProps {
 }
 
 const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
-  const { user, isLoading } = useAuthenticate();
-  const [isReady, setIsReady] = useState<boolean>(false);
+  const { user, isUserLoading } = useContext(AuthContext);
 
   const [errorMsg, setErrorMsg] = useState<string>("");
 
@@ -25,10 +24,6 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
 
   const [isRatingCorrect, setIsRatingCorrect] = useState<boolean>(true);
   const [isTitleExist, setIsTitleExist] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (!isLoading) setIsReady(true);
-  }, [isLoading]);
 
   const formSubmitHandler = async (): Promise<void> => {
     try {
@@ -55,9 +50,9 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
 
   return (
     <>
-      {!isReady && <ButtonSkeleton />}
+      {isUserLoading && <ButtonSkeleton />}
 
-      {isReady && !user && (
+      {!isUserLoading && !user && (
         <div className="mb-[119px]">
           <h1 className="text-head text-lg-medium mb-5">
             Зөвхөн бүртгэлтэй хэрэглэгчид сэтгэгдэл бичих боломжтой.
@@ -72,7 +67,7 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
           </div>
         </div>
       )}
-      {isReady && user && (
+      {!isUserLoading && user && (
         <form
           onSubmit={(e): void => {
             e.preventDefault();
