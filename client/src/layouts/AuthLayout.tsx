@@ -21,16 +21,16 @@ const roboto = Roboto({
 });
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
-  const { user, userLoading } = useContext(AuthContext);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const { user, isUserLoading } = useContext(AuthContext);
+  const [isReady, setIsReady] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!userLoading && user) router.push("/");
-    if (!userLoading && !user) setIsAuthenticated(false);
-  }, [router, userLoading, user]);
+    if (!isUserLoading && user) router.push("/");
+    if (!isUserLoading && !user) setIsReady(true);
+  }, [router, isUserLoading, user]);
 
-  if (isAuthenticated) return <></>;
+  if (!isReady) return <></>;
 
   return (
     <div className={roboto.className}>

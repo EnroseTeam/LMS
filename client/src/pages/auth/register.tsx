@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { isAxiosError } from "axios";
 
 import { NextPageWithLayout } from "../_app";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { axiosInstance } from "@/utils/axiosInstance";
 import getGoogleOAuthURL from "@/utils/getGoogleUrl";
 import AuthLayout from "@/layouts/AuthLayout";
@@ -12,10 +11,11 @@ import AuthLayout from "@/layouts/AuthLayout";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { BsCheckCircle, BsXCircle } from "react-icons/bs";
 import MessageBox from "@/components/global/MessageBox";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const RegisterPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { setLoggedIn } = useAuthenticate();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -125,8 +125,7 @@ const RegisterPage: NextPageWithLayout = () => {
           rePassword,
         });
 
-        setLoggedIn(true);
-        localStorage.setItem("loggedIn", JSON.stringify(true));
+        setIsLoggedIn(true);
 
         router.back();
       } catch (error) {

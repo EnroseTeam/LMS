@@ -9,9 +9,10 @@ import { axiosInstance } from "@/utils/axiosInstance";
 interface SectionFormProps {
   courseId?: string;
   section?: ICourseSection;
+  afterCreate: (section: ICourseSection) => void;
 }
 
-const SectionForm: FC<SectionFormProps> = ({ courseId, section }) => {
+const SectionForm: FC<SectionFormProps> = ({ courseId, section, afterCreate }) => {
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
 
@@ -24,7 +25,16 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, section }) => {
 
   const createSection = async (): Promise<void> => {
     try {
-      const res = await axiosInstance.post("/api/courses/sections", { name, course: courseId });
+      const res = await axiosInstance.post<{ message: string; body: ICourseSection }>(
+        "/api/courses/sections",
+        {
+          title: name,
+          course: courseId,
+        }
+      );
+
+      afterCreate(res.data.body);
+      closeModal();
     } catch (error) {
       if (isAxiosError(error)) {
         throw new AxiosError(error.response?.data.error);

@@ -1,8 +1,10 @@
 import Accordion from "@/components/global/Accordion";
 import { useModal } from "@/hooks/useModal";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import SectionForm from "../Sections/SectionForm";
+import { ICourseSection } from "@/interfaces/courses";
+import { useRouter } from "next/router";
 
 interface CourseSectionFormProps {
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
@@ -10,13 +12,19 @@ interface CourseSectionFormProps {
 }
 
 const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseId }) => {
+  const router = useRouter();
   const { showModal } = useModal();
+  const [sections, setSections] = useState<ICourseSection[]>([]);
 
   const showAddSectionModal = (): void => {
     showModal({
       title: "Хичээлийн сэдэв нэмэх",
-      content: <SectionForm courseId={courseId} />,
+      content: <SectionForm courseId={courseId} afterCreate={afterCreate} />,
     });
+  };
+
+  const afterCreate = (section: ICourseSection): void => {
+    setSections([...sections, section]);
   };
 
   return (
@@ -34,37 +42,40 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseI
       </div>
       <div className="p-[30px]">
         <div className="flex flex-col gap-[10px] mb-[30px]">
-          <Accordion
-            header={
-              <div className="flex items-center justify-between flex-1">
-                <span className="text-head text-base-medium">Хичээлийн сэдэв</span>
-                <div className="flex items-center gap-5 text-base text-icon">
-                  <button
-                    className="hover:text-icon/70 duration-300"
-                    onClick={(e): void => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <AiOutlineEdit />
-                  </button>
-                  <button
-                    onClick={(e): void => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <AiOutlineDelete />
-                  </button>
+          {sections.map((section) => (
+            <Accordion
+              key={section._id}
+              header={
+                <div className="flex items-center justify-between flex-1">
+                  <span className="text-head text-base-medium">{section.title}</span>
+                  <div className="flex items-center gap-5 text-base text-icon">
+                    <button
+                      className="hover:text-icon/70 duration-300"
+                      onClick={(e): void => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <AiOutlineEdit />
+                    </button>
+                    <button
+                      onClick={(e): void => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <AiOutlineDelete />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            }
-            content={
-              <div className="p-[30px]">
-                <div className="flex flex-col gap-5 mb-5"></div>
+              }
+              content={
+                <div className="p-[30px]">
+                  <div className="flex flex-col gap-5 mb-5"></div>
 
-                <button className="btn-4 py-4 px-7 text-md-medium">Хичээл нэмэх +</button>
-              </div>
-            }
-          />
+                  <button className="btn-4 py-4 px-7 text-md-medium">Хичээл нэмэх +</button>
+                </div>
+              }
+            />
+          ))}
         </div>
 
         <div className="flex items-center justify-between">
@@ -77,7 +88,14 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseI
           >
             Буцах
           </button>
-          <button type="submit" form="course-create-form" className="btn-1 py-4">
+          <button
+            onClick={(): void => {
+              router.push("/instructors/dashboard/my-courses");
+            }}
+            type="button"
+            form="course-create-form"
+            className="btn-1 py-4"
+          >
             Нэмэх
           </button>
         </div>

@@ -39,7 +39,7 @@ const Header: FC = () => {
     fetcher<{ body: ICourse[] }>
   );
 
-  const { user, loggedIn, userLoading } = useContext(AuthContext);
+  const { user, isLoggedIn, isUserLoading } = useContext(AuthContext);
 
   const [searchBarShow, setSearchBarShow] = useState<boolean>(false);
   const [openCartShow, setOpenCartShow] = useState<boolean>(false);
@@ -163,9 +163,9 @@ const Header: FC = () => {
             <BiMenuAltRight />
           </button>
 
-          {userLoading && <UserSkeleton />}
+          {isUserLoading && <UserSkeleton />}
 
-          {(!loggedIn || !user) && (
+          {(!isLoggedIn || !user) && !isUserLoading && (
             <>
               <Link
                 href="/auth/login"
@@ -182,7 +182,7 @@ const Header: FC = () => {
             </>
           )}
 
-          {user && loggedIn && (
+          {user && isLoggedIn && !isUserLoading && (
             <div className="relative hidden xl:block">
               <button
                 onClick={(): void => {
@@ -207,8 +207,6 @@ const Header: FC = () => {
         menuItems={HeaderMenuItems}
         mobileMenuShow={mobileMenuShow}
         closeMobileMenu={closeMobileMenu}
-        user={user}
-        isReady={loggedIn}
       />
     </header>
   );
