@@ -455,7 +455,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
 
     // Хүсэлтээр орж ирсэн мэдээллийн дагуу сургалтын мэдээллийг шинэчлэнэ.
     await course.updateOne(
-      { name, description, category, requirements, goals, price, discountPrice },
+      { name, description, category, level, requirements, goals, price, discountPrice },
       { session }
     );
 
