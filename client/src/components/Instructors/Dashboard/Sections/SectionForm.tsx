@@ -1,18 +1,18 @@
 import { useModal } from "@/hooks/useModal";
-import { ICourseSection } from "@/interfaces/courses";
+import { ICourse, ICourseSection } from "@/interfaces/courses";
 import { FC, useState } from "react";
 import classNames from "classnames";
 import MessageBox from "@/components/global/MessageBox";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 interface SectionFormProps {
   courseId?: string;
-  section?: ICourseSection;
+  course?: ICourse;
   afterCreate: (section: ICourseSection) => void;
 }
 
-const SectionForm: FC<SectionFormProps> = ({ courseId, section, afterCreate }) => {
+const SectionForm: FC<SectionFormProps> = ({ courseId, course, afterCreate }) => {
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
 
@@ -23,28 +23,7 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, section, afterCreate }) =
 
   const { closeModal } = useModal();
 
-  const createSection = async (): Promise<void> => {
-    try {
-      const res = await axiosInstance.post<{ message: string; body: ICourseSection }>(
-        "/api/courses/sections",
-        {
-          title: name,
-          course: courseId,
-        }
-      );
-
-      afterCreate(res.data.body);
-      closeModal();
-    } catch (error) {
-      if (isAxiosError(error)) {
-        throw new AxiosError(error.response?.data.error);
-      } else throw new Error();
-    }
-  };
-
-  const updateSection = async (): Promise<void> => {};
-
-  const submitHandler = (): void => {
+  const submitHandler = async (): Promise<void> => {
     if (!isSubmitting) {
       try {
         setMessage("");
@@ -53,13 +32,16 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, section, afterCreate }) =
           return setIsNameExist(false);
         }
 
-        if (courseId) {
-          createSection();
-        }
+        const res = await axiosInstance.post<{ message: string; body: ICourseSection }>(
+          "/api/courses/sections",
+          {
+            title: name,
+            course: course ? course._id : courseId,
+          }
+        );
 
-        if (section) {
-          updateSection();
-        }
+        afterCreate(res.data.body);
+        closeModal();
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error)) {
@@ -106,7 +88,9 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, section, afterCreate }) =
       <div className="flex items-center justify-start space-x-2 ">
         <button
           disabled={isSubmitting}
-          onClick={submitHandler}
+          onClick={(): void => {
+            submitHandler();
+          }}
           className="btn-4 py-3 px-5 text-sm-medium"
         >
           Нэмэх

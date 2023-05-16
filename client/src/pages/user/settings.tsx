@@ -4,21 +4,21 @@ import UserPersonalInfoForm from "@/components/User/UserPersonalInfoForm";
 import UserSocialAccountForm from "@/components/User/UserSocialAccountForm";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
 import TabSkeleton from "@/components/Skeletons/TabSkeleton";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const SettingsPage: NextPageWithLayout = () => {
-  const { user, isLoading } = useAuthenticate();
+  const { user, isUserLoading } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isUserLoading && !user) {
       router.push("/auth/login");
     }
-  }, [user, isLoading, router]);
+  }, [user, isUserLoading, router]);
 
   const tabHeaders: TabHeaderItem[] = [
     {
@@ -53,8 +53,8 @@ const SettingsPage: NextPageWithLayout = () => {
         <h1 className="text-head text-3xl-bold mb-[9px]">Хэрэглэгчийн тохиргоо</h1>
         <p className="text-text text-md-regular mb-[60px]">Та өөрийн мэдээлээ солих боломжтой.</p>
         <div className="w-full rounded-2xl shadow-shadow-dashboard p-[30px]">
-          {!user && <TabSkeleton />}
-          {user && <Tab tabHeaders={tabHeaders} tabContents={tabContents} />}
+          {isUserLoading && <TabSkeleton />}
+          {user && !isUserLoading && <Tab tabHeaders={tabHeaders} tabContents={tabContents} />}
         </div>
       </div>
     </>

@@ -389,7 +389,9 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
   next
 ) => {
   const { id } = req.params;
-  const { name, description, category, requirements, goals, level } = req.body;
+  const { name, description, category, requirements, goals, level, price, discountPrice } =
+    req.body;
+  const userId = req.session.userId;
 
   const session = await mongoose.startSession();
 
@@ -405,6 +407,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     if (!mongoose.isValidObjectId(level)) throw createHttpError(400, "Түвшингийн id буруу байна.");
     if (!mongoose.isValidObjectId(category))
       throw createHttpError(400, "Ангилалын id буруу байна.");
+    if (!price) throw createHttpError(400, "Үнэ заавал шаардлагатай.");
 
     session.startTransaction();
 
@@ -419,6 +422,10 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     // Хүсэлтээс орж ирсэн id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const course = await CourseModel.findById(id, null, { session });
     if (!course) throw createHttpError(404, "Сургалт олдсонгүй.");
+
+    if (course.instructor?.toString() !== userId?.toString()) {
+      throw createHttpError(403, "Танд энэ сургалтыг шинэчлэх эрх байхгүй байна.");
+    }
 
     // Хүсэлтээр орж ирсэн түвшин болон ангилал, өмнө нь сургалтанд бүртгэлтэй байгаа түвшин болон ангилалтай адилхан байгаа эсэхийг шалгана.
     const isLevelSame = course.level?.toString() === level;
@@ -447,7 +454,10 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     }
 
     // Хүсэлтээр орж ирсэн мэдээллийн дагуу сургалтын мэдээллийг шинэчлэнэ.
-    await course.updateOne({ name, description, category, requirements, goals }, { session });
+    await course.updateOne(
+      { name, description, category, requirements, goals, price, discountPrice },
+      { session }
+    );
 
     await session.commitTransaction();
 

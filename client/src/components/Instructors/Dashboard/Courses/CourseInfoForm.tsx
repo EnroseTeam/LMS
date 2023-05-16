@@ -1,8 +1,8 @@
-import { ICourseCategory, ICourseLevel } from "@/interfaces/courses";
+import { ICourse, ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 import { toast } from "react-toastify";
 
@@ -10,9 +10,10 @@ interface CourseInfoFormProps {
   levels: ICourseLevel[];
   categories: ICourseCategory[];
   setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
-  setCourseId: Dispatch<SetStateAction<string>>;
+  setCourseId?: Dispatch<SetStateAction<string>>;
   setMessage: Dispatch<SetStateAction<string>>;
   setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;
+  course?: ICourse;
 }
 
 const CourseInfoForm: FC<CourseInfoFormProps> = ({
@@ -22,6 +23,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
   setCourseId,
   setMessage,
   setMessageType,
+  course,
 }) => {
   const router = useRouter();
 
@@ -61,6 +63,19 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (course) {
+      setName(course.name);
+      setDescription(course.description);
+      setPrice(course.price);
+      course.discountPrice > 0 && setDiscountPrice(course.discountPrice);
+      setSelectedCategory({ name: course.category.name, _id: course.category._id });
+      setSelectedLevel({ name: course.level.name, _id: course.level._id });
+      setGoals(course.goals);
+      setRequirements(course.requirements);
+    }
+  }, [course]);
+
   const submitHandler = async (): Promise<void> => {
     if (!isSubmitting) {
       try {
@@ -87,20 +102,38 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           return;
         }
 
-        const res = await axiosInstance.post("/api/courses", {
-          name,
-          description,
-          level: selectedLevel._id,
-          category: selectedCategory._id,
-          requirements,
-          goals,
-          price,
-          discountPrice,
-        });
+        if (setCourseId) {
+          const res = await axiosInstance.post("/api/courses", {
+            name,
+            description,
+            level: selectedLevel._id,
+            category: selectedCategory._id,
+            requirements,
+            goals,
+            price,
+            discountPrice,
+          });
 
-        toast.success(res.data.message);
-        setCourseId(res.data.body._id);
-        setActiveStage("Media");
+          toast.success(res.data.message);
+          setCourseId(res.data.body._id);
+          setActiveStage("Media");
+        }
+
+        if (course) {
+          const res = await axiosInstance.patch<{ message: string }>(`/api/courses/${course._id}`, {
+            name,
+            description,
+            level: selectedLevel._id,
+            category: selectedCategory._id,
+            requirements,
+            goals,
+            price,
+            discountPrice,
+          });
+
+          toast.success(res.data.message);
+          setActiveStage("Media");
+        }
       } catch (error) {
         console.log(error);
         setMessageType("Error");
