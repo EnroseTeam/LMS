@@ -12,6 +12,7 @@ import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "
 import { BsChatLeftText } from "react-icons/bs";
 import { HiOutlineCog8Tooth } from "react-icons/hi2";
 import { RiShutDownLine } from "react-icons/ri";
+import InstructorFooter from "@/components/Instructors/Dashboard/Footer";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -86,7 +87,10 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
           <InstructorNavbar MenuItems={MenuItems} />
           <div className="flex">
             <InstructorSidebar MenuItems={MenuItems} />
-            <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
+            <div>
+              <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
+              <InstructorFooter />
+            </div>
           </div>
         </div>
       </ModalProvider>
