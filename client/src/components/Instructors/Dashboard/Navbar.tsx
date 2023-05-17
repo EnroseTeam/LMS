@@ -75,7 +75,7 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
 
           <div
             className={classNames(
-              "absolute top-full right-0 mt-2",
+              "absolute top-full right-0 mt-2 z-50",
               { block: userMenuShow },
               { hidden: !userMenuShow }
             )}
