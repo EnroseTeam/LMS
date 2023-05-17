@@ -7,6 +7,12 @@ import { Roboto } from "next/font/google";
 import { useRouter } from "next/router";
 import { FC, useState, useEffect, ReactNode, useContext } from "react";
 
+import { FaRegCompass } from "react-icons/fa";
+import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "react-icons/ai";
+import { BsChatLeftText } from "react-icons/bs";
+import { HiOutlineCog8Tooth } from "react-icons/hi2";
+import { RiShutDownLine } from "react-icons/ri";
+
 interface DashboardLayoutProps {
   children: ReactNode;
 }
@@ -15,6 +21,40 @@ const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
   subsets: ["latin", "cyrillic"],
 });
+
+const MenuItems = [
+  { title: "Хянах самбар", link: "/instructors/dashboard", Icon: FaRegCompass },
+  {
+    title: "Миний сургалтууд",
+    link: "/instructors/dashboard/my-courses",
+    Icon: AiOutlinePlayCircle,
+  },
+  {
+    title: "Мессеж",
+    link: "/instructors/dashboard/messages",
+    Icon: BsChatLeftText,
+  },
+  {
+    title: "Сургалт нэмэх",
+    link: "/instructors/dashboard/my-courses/create-course",
+    Icon: AiOutlineVideoCameraAdd,
+  },
+  {
+    title: "Сэтгэгдлүүд",
+    link: "/instructors/dashboard/reviews",
+    Icon: AiOutlineComment,
+  },
+  {
+    title: "Тохиргоо",
+    link: "/instructors/dashboard/settings",
+    Icon: HiOutlineCog8Tooth,
+  },
+  {
+    title: "Гарах",
+    link: "/auth/logout",
+    Icon: RiShutDownLine,
+  },
+];
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   const { user, isUserLoading } = useContext(AuthContext);
@@ -43,9 +83,9 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     <DashboardSidebarProvider>
       <ModalProvider>
         <div className={roboto.className}>
-          <InstructorNavbar />
+          <InstructorNavbar MenuItems={MenuItems} />
           <div className="flex">
-            <InstructorSidebar />
+            <InstructorSidebar MenuItems={MenuItems} />
             <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
           </div>
         </div>

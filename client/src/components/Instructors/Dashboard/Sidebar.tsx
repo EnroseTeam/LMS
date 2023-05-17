@@ -1,50 +1,16 @@
 import Link from "next/link";
 import { FC, useContext } from "react";
 
-import { FaRegCompass } from "react-icons/fa";
-import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "react-icons/ai";
-import { BsChatLeftText } from "react-icons/bs";
-import { HiOutlineCog8Tooth } from "react-icons/hi2";
-import { RiShutDownLine } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
 import classNames from "classnames";
+import { IconType } from "react-icons";
 
-const SidebarItems = [
-  { title: "Хянах самбар", link: "/instructors/dashboard", Icon: FaRegCompass },
-  {
-    title: "Миний сургалтууд",
-    link: "/instructors/dashboard/my-courses",
-    Icon: AiOutlinePlayCircle,
-  },
-  {
-    title: "Мессеж",
-    link: "/instructors/dashboard/messages",
-    Icon: BsChatLeftText,
-  },
-  {
-    title: "Сургалт нэмэх",
-    link: "/instructors/dashboard/my-courses/create-course",
-    Icon: AiOutlineVideoCameraAdd,
-  },
-  {
-    title: "Сэтгэгдлүүд",
-    link: "/instructors/dashboard/reviews",
-    Icon: AiOutlineComment,
-  },
-  {
-    title: "Тохиргоо",
-    link: "/instructors/dashboard/settings",
-    Icon: HiOutlineCog8Tooth,
-  },
-  {
-    title: "Гарах",
-    link: "/auth/logout",
-    Icon: RiShutDownLine,
-  },
-];
+interface InstructorSidebarProps {
+  MenuItems: { title: string; link: string; Icon: IconType }[];
+}
 
-const InstructorSidebar: FC = () => {
+const InstructorSidebar: FC<InstructorSidebarProps> = ({ MenuItems: SidebarItems }) => {
   const router = useRouter();
   const { sidebarShow } = useContext(DashboardSidebarContext);
 

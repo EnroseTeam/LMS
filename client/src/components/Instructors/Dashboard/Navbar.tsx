@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
 import { BiBell, BiMessageSquareDetail } from "react-icons/bi";
 
@@ -7,10 +7,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { AuthContext } from "@/contexts/AuthContext";
 import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
+import { IconType } from "react-icons";
 
-const InstructorNavbar: FC = () => {
+import classNames from "classnames";
+
+interface InstructorNavbarProps {
+  MenuItems: { title: string; link: string; Icon: IconType }[];
+}
+
+const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
   const { user } = useContext(AuthContext);
   const { setSidebarShow, sidebarShow } = useContext(DashboardSidebarContext);
+
+  const [userMenuShow, setUserMenuShow] = useState<boolean>(false);
 
   if (!user) return <></>;
 
@@ -37,17 +46,6 @@ const InstructorNavbar: FC = () => {
       </div>
 
       <div className="flex items-center gap-[30px]">
-        <nav>
-          <ul className="flex items-center gap-10 text-head text-md-regular">
-            <li>
-              <Link href={"#"}>All Pages</Link>
-            </li>
-            <li>
-              <Link href={"#"}>My Courses</Link>
-            </li>
-          </ul>
-        </nav>
-
         <div className="flex items-center gap-[10px]">
           <button className="text-xl text-icon p-[15px] rounded-2xl hover:bg-bg-1 hover:text-color-1 duration-300">
             <BiMessageSquareDetail />
@@ -57,15 +55,46 @@ const InstructorNavbar: FC = () => {
           </button>
         </div>
 
-        <button className="w-[50px] h-[50px] overflow-hidden rounded-2xl">
-          <Image
-            alt="User"
-            src={user.avatar}
-            width={100}
-            height={100}
-            className="w-full aspect-square object-cover"
-          />
-        </button>
+        <div className="relative">
+          <button
+            onClick={(): void => {
+              setUserMenuShow(!userMenuShow);
+            }}
+            className="block w-[50px] h-[50px] overflow-hidden rounded-2xl relative group/picture"
+          >
+            <Image
+              alt="User"
+              src={user.avatar}
+              width={100}
+              height={100}
+              className="w-full aspect-square object-cover"
+            />
+
+            <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full group-hover/picture:bg-color-2/30 duration-300" />
+          </button>
+
+          <div
+            className={classNames(
+              "absolute top-full right-0 mt-2",
+              { block: userMenuShow },
+              { hidden: !userMenuShow }
+            )}
+          >
+            <div className="absolute right-5 w-[10px] h-[10px] bg-white border-t border-l border-border-2 rotate-45" />
+            <div className="flex flex-col gap-0 bg-white border border-border-2 shadow-shadow-4 rounded-lg px-[30px] py-6 w-fit mt-[5px]">
+              {MenuItems.map((item, index) => (
+                <Link
+                  className="whitespace-nowrap flex items-center gap-[15px] text-text text-lg-medium px-5 py-4 rounded-2xl hover:bg-color-2 hover:text-white duration-300"
+                  key={`user-menu-item-${index}`}
+                  href={item.link}
+                >
+                  <item.Icon size={20} />
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );
