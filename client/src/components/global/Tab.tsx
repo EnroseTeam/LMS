@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import classNames from "classnames";
 
 export interface TabHeaderItem {
@@ -8,7 +8,7 @@ export interface TabHeaderItem {
 
 interface TabProps {
   tabHeaders: TabHeaderItem[];
-  tabContents: JSX.Element[];
+  tabContents: ReactNode[];
 }
 
 const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {

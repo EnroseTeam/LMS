@@ -5,7 +5,7 @@ import UserSocialAccountForm from "@/components/User/UserSocialAccountForm";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { NextPageWithLayout } from "../_app";
 import TabSkeleton from "@/components/Skeletons/TabSkeleton";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -39,7 +39,7 @@ const SettingsPage: NextPageWithLayout = () => {
     },
   ];
 
-  const tabContents: JSX.Element[] = [
+  const tabContents: ReactNode[] = [
     <UserPersonalInfoForm key={`user-personal-info`} user={user} />,
     <UserPasswordForm key={`user-password-form`} />,
     <UserSocialAccountForm key={`user-social-account-form`} user={user} />,

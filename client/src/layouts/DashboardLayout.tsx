@@ -9,7 +9,6 @@ import { FC, useState, useEffect, ReactNode, useContext } from "react";
 
 import { FaRegCompass } from "react-icons/fa";
 import { AiOutlinePlayCircle, AiOutlineVideoCameraAdd, AiOutlineComment } from "react-icons/ai";
-import { BsChatLeftText } from "react-icons/bs";
 import { HiOutlineCog8Tooth } from "react-icons/hi2";
 import { RiShutDownLine } from "react-icons/ri";
 import InstructorFooter from "@/components/Instructors/Dashboard/Footer";
@@ -29,11 +28,6 @@ const MenuItems = [
     title: "Миний сургалтууд",
     link: "/instructors/dashboard/my-courses",
     Icon: AiOutlinePlayCircle,
-  },
-  {
-    title: "Мессеж",
-    link: "/instructors/dashboard/messages",
-    Icon: BsChatLeftText,
   },
   {
     title: "Сургалт нэмэх",
@@ -87,8 +81,8 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
           <InstructorNavbar MenuItems={MenuItems} />
           <div className="flex">
             <InstructorSidebar MenuItems={MenuItems} />
-            <div>
-              <main className="bg-[#f7f8fb] p-[60px] flex-1 rounded-2xl mr-[30px]">{children}</main>
+            <div className="flex-1">
+              <main className="bg-[#f7f8fb] p-[60px] rounded-2xl mr-[30px]">{children}</main>
               <InstructorFooter />
             </div>
           </div>

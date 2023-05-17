@@ -6,7 +6,6 @@ import { FC, useContext, useState } from "react";
 import { SlCloudUpload, SlTrash } from "react-icons/sl";
 import { BiLoader } from "react-icons/bi";
 import MessageBox from "../global/MessageBox";
-import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { AuthContext } from "@/contexts/AuthContext";
 
@@ -15,8 +14,6 @@ interface UserPersonalInfoFormProps {
 }
 
 const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUser }) => {
-  const router = useRouter();
-
   const { setUser } = useContext(AuthContext);
 
   const [profilePicture, setProfilePicture] = useState<string>(user.avatar);
@@ -131,10 +128,6 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
 
         setType("Success");
         setMessage(res.data.message);
-
-        router.push({
-          hash: "tab",
-        });
       } catch (error) {
         setType("Error");
         if (isAxiosError(error)) {

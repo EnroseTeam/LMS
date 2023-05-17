@@ -1,6 +1,5 @@
 import { IUser } from "@/interfaces/user";
 import { isAxiosError } from "axios";
-import { useRouter } from "next/router";
 import { FC, useContext, useState } from "react";
 import MessageBox from "../global/MessageBox";
 import { axiosInstance } from "@/utils/axiosInstance";
@@ -11,8 +10,6 @@ interface UserSocialAccountFormProps {
 }
 
 const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IUser }) => {
-  const router = useRouter();
-
   const { setUser } = useContext(AuthContext);
 
   const [facebook, setFacebook] = useState<string>(user.socialAccounts.facebook);
@@ -44,10 +41,6 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
         setUser({
           ...user,
           socialAccounts: { facebook, linkedin, instagram, twitter },
-        });
-
-        router.push({
-          hash: "tab",
         });
       } catch (error) {
         setType("Error");
