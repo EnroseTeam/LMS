@@ -71,6 +71,7 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
     const newUser = await UserModel.create({
       firstName,
       lastName,
+      fullName: lastName + " " + firstName,
       email,
       phone,
       password: hashedPassword,

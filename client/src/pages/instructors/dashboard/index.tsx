@@ -25,9 +25,9 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
       <p className="text-text text-md-regular mb-[60px]">Таны сургалтуудын талаарх мэдээлэл</p>
       <div
         className={classNames(
-          "grid gap-[30px] mb-[30px]",
-          { "grid-cols-2": sidebarShow },
-          { "grid-cols-4": !sidebarShow }
+          "grid gap-[30px] mb-[30px] grid-cols-1 sm:grid-cols-2",
+          { "lg:grid-cols-2": sidebarShow },
+          { "lg:grid-cols-4": !sidebarShow }
         )}
       >
         <div className="bg-white rounded-2xl shadow-shadow-dashboard py-[35px] px-[30px] flex items-center justify-between  hover:bg-color-1 duration-300 group">
@@ -87,9 +87,9 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
 
       <div
         className={classNames(
-          "grid gap-[30px]",
-          { "grid-cols-2": sidebarShow },
-          { "grid-cols-3": !sidebarShow }
+          "grid gap-[30px] grid-cols-1",
+          { "lg:grid-cols-1 xl:grid-cols-2": sidebarShow },
+          { "lg:grid-cols-2 xl:grid-cols-3": !sidebarShow }
         )}
       >
         <div className="bg-white shadow-shadow-dashboard rounded-2xl">
