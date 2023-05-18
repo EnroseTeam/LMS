@@ -150,7 +150,7 @@ module.exports = {
         "shadow-dashboard": "0px 1px 4px rgba(20, 3, 66, 0.07)",
       },
       screens: {
-        "width-1390": "1390px",
+        xs: "540px",
       },
     },
   },

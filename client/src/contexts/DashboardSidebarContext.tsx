@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Dispatch, FC, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
 
 interface DashboardSidebarProviderProps {
@@ -14,6 +15,8 @@ export const DashboardSidebarContext = createContext<DashboardSidebarContextType
 );
 
 export const DashboardSidebarProvider: FC<DashboardSidebarProviderProps> = ({ children }) => {
+  const router = useRouter();
+
   const [sidebarShow, setSidebarShow] = useState<boolean>(
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("dashboard_sidebar") as string)
@@ -23,6 +26,12 @@ export const DashboardSidebarProvider: FC<DashboardSidebarProviderProps> = ({ ch
   useEffect(() => {
     localStorage.setItem("dashboard_sidebar", "" + sidebarShow);
   }, [sidebarShow]);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setSidebarShow(false);
+    }
+  }, [router]);
 
   const value = { sidebarShow, setSidebarShow };
 
