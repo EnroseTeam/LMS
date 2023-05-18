@@ -82,7 +82,9 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
           <div className="flex">
             <InstructorSidebar MenuItems={MenuItems} />
             <div className="flex-1">
-              <main className="bg-[#f7f8fb] p-[60px] rounded-2xl mr-[30px]">{children}</main>
+              <main className="bg-[#f7f8fb] p-[60px] rounded-2xl mr-[30px] ml-[30px]">
+                {children}
+              </main>
               <InstructorFooter />
             </div>
           </div>
