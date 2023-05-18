@@ -166,7 +166,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
       <div className="p-[30px] flex flex-col gap-[60px]">
         {/* Image Upload */}
         <div className="grid grid-cols-7 gap-[30px]">
-          <div className="col-span-2 rounded-lg overflow-hidden relative">
+          <div className="col-span-7 lg:col-span-2 rounded-lg overflow-hidden relative">
             <Image
               src={image ? image : imagePlaceholder}
               alt="Image"
@@ -191,7 +191,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
               <SlTrash />
             </button>
           </div>
-          <div className="col-span-5">
+          <div className="col-span-7 lg:col-span-5">
             <label
               htmlFor="image"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -239,7 +239,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
 
         {/* Video Upload */}
         <div className="grid grid-cols-7 gap-[30px]">
-          <div className="col-span-2 rounded-lg overflow-hidden relative">
+          <div className="col-span-7 lg:col-span-2 rounded-lg overflow-hidden relative">
             <video
               ref={videoRef}
               className="block w-full aspect-[1.2/1] object-cover"
@@ -265,7 +265,7 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
               <SlTrash />
             </button>
           </div>
-          <div className="col-span-5">
+          <div className="col-span-7 lg:col-span-5">
             <label
               htmlFor="video"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"

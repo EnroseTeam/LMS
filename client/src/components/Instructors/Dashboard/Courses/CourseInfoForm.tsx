@@ -217,7 +217,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Level */}
-          <div className="relative">
+          <div className="relative col-span-2 md:col-span-1">
             <label
               htmlFor="level"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -269,7 +269,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Category */}
-          <div className="relative">
+          <div className="relative col-span-2 md:col-span-1">
             <label
               htmlFor="category"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -324,7 +324,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Goals */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label
               htmlFor="newGoal"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -386,7 +386,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Requirements */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label
               htmlFor="newRequirement"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -448,7 +448,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Price */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label
               htmlFor="price"
               className="block mb-[9px] text-head text-base-medium after:content-['*'] after:text-red-500 after:ml-1"
@@ -474,7 +474,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
           </div>
 
           {/* Discount Price */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label htmlFor="discountPrice" className="block mb-[9px] text-head text-base-medium">
               Хямдралтай үнэ
             </label>
