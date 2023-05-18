@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import useSwr from "swr";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
@@ -107,19 +107,11 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {courses.length > 0 && (
-        <div
-          className={classNames(
-            "grid gap-[30px] mb-[30px] -mt-[30px]",
-            {
-              "grid-cols-1": sidebarShow,
-            },
-            { "grid-cols-2": !sidebarShow }
-          )}
-        >
+        <CourseWrapper sidebarShow={sidebarShow}>
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
-        </div>
+        </CourseWrapper>
       )}
     </>
   );
@@ -130,19 +122,11 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {publishedCourses.length > 0 && (
-        <div
-          className={classNames(
-            "grid gap-[30px] mb-[30px] -mt-[30px]",
-            {
-              "grid-cols-1": sidebarShow,
-            },
-            { "grid-cols-2": !sidebarShow }
-          )}
-        >
+        <CourseWrapper sidebarShow={sidebarShow}>
           {publishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
-        </div>
+        </CourseWrapper>
       )}
     </>
   );
@@ -153,19 +137,11 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
         <p className="text-center text-text text-md-medium mb-[30px]">Илэрц олдсонгүй.</p>
       )}
       {unPublishedCourses.length > 0 && (
-        <div
-          className={classNames(
-            "grid gap-[30px] mb-[30px] -mt-[30px]",
-            {
-              "grid-cols-1": sidebarShow,
-            },
-            { "grid-cols-2": !sidebarShow }
-          )}
-        >
+        <CourseWrapper sidebarShow={sidebarShow}>
           {unPublishedCourses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
-        </div>
+        </CourseWrapper>
       )}
     </>
   );
@@ -187,8 +163,8 @@ const InstructorCoursesPage: NextPageWithLayout = () => {
       <h1 className="text-head text-3xl-bold mb-[9px]">Миний сургалтууд</h1>
       <p className="text-text text-md-regular mb-[60px]">Миний үүсгэсэн сургалтууд</p>
       <div className="w-full rounded-2xl bg-white shadow-shadow-dashboard p-[30px]">
-        <div className="grid grid-cols-2 mb-[30px]">
-          <div className="w-1/2 border border-border-2 rounded-lg pl-[18px] flex items-center gap-5 text-text overflow-hidden focus-within:ring-2 focus-within:ring-color-1 duration-150">
+        <div className="grid grid-cols-1 md:grid-cols-2 mb-[30px]">
+          <div className="w-full lg:w-2/3 border border-border-2 rounded-lg pl-[18px] flex items-center gap-5 text-text overflow-hidden focus-within:ring-2 focus-within:ring-color-1 duration-150">
             <label className="text-xl" htmlFor="search">
               <HiMagnifyingGlass />
             </label>
@@ -221,3 +197,22 @@ export default InstructorCoursesPage;
 InstructorCoursesPage.getLayout = function getLayout(page): ReactNode {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
+
+interface CourseWrapperProps {
+  children: ReactNode;
+  sidebarShow: boolean;
+}
+
+const CourseWrapper: FC<CourseWrapperProps> = ({ children, sidebarShow }) => (
+  <div
+    className={classNames(
+      "grid gap-[30px] mb-[30px] -mt-[30px] grid-cols-1 md:grid-cols-2",
+      {
+        "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4": sidebarShow,
+      },
+      { "lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5": !sidebarShow }
+    )}
+  >
+    {children}
+  </div>
+);
