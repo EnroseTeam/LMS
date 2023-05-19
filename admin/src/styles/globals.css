@@ -4,43 +4,6 @@
 
 @layer base {
   body {
-    @apply bg-[#f7f8fb];
+    @apply z-1 bg-whiten font-satoshi text-base font-normal text-body dark:text-bodydark dark:bg-boxdark-2;
   }
-}
-
-/* Button Classes */
-.btn-1 {
-  @apply rounded-lg text-white bg-color-1 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
-}
-
-.btn-1-outline {
-  @apply rounded-lg text-color-1 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-1 hover:border-color-1 hover:text-white hover:bg-color-1 duration-300 disabled:border-transparent disabled:text-white disabled:bg-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/50 disabled:hover:border-transparent disabled:hover:text-white;
-}
-
-.btn-2 {
-  @apply rounded-lg text-color-2 bg-color-6 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-6 hover:text-color-6 hover:bg-transparent duration-300 disabled:bg-color-6/50 disabled:cursor-not-allowed disabled:hover:bg-color-6/50 disabled:hover:border-transparent disabled:hover:text-color-2;
-}
-
-.btn-2-outline {
-  @apply rounded-lg text-color-6 bg-transparent text-base-medium py-[22px] px-[55px] border-2 border-color-6 hover:border-transparent hover:text-color-2 hover:bg-color-6 duration-300 disabled:bg-color-6/50 disabled:cursor-not-allowed disabled:hover:bg-color-6/50 disabled:hover:border-transparent disabled:hover:text-color-2;
-}
-
-.btn-3 {
-  @apply rounded-lg text-white bg-color-2 text-base-medium py-[22px] px-[55px] border-2 border-transparent hover:border-color-2 hover:text-color-2 hover:bg-transparent duration-300 disabled:bg-color-2/50 disabled:cursor-not-allowed disabled:hover:bg-color-2/50 disabled:hover:border-transparent disabled:hover:text-white;
-}
-
-.btn-4 {
-  @apply rounded-lg text-color-1 bg-color-1/[.07] text-base-medium py-[22px] px-[55px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-color-1;
-}
-
-.arrow-btn-1 {
-  @apply bg-color-1/[.07] text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:bg-color-1/[.05] disabled:text-color-1/50 disabled:cursor-not-allowed disabled:hover:bg-color-1/[.05] disabled:hover:text-color-1/50;
-}
-
-.arrow-btn-2 {
-  @apply bg-color-1 text-white rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium flex items-center gap-[13px] border-2 border-transparent hover:border-color-1 hover:text-color-1 hover:bg-transparent duration-300 disabled:cursor-not-allowed disabled:bg-color-1/50  disabled:hover:bg-color-1/50 disabled:hover:text-white;
-}
-
-.arrow-btn-3 {
-  @apply bg-transparent text-color-1 rounded-lg pt-[17px] pb-[13px] px-[29px] text-md-medium border-2 border-color-1 flex items-center gap-[13px] hover:bg-color-1 hover:text-white duration-300 disabled:cursor-not-allowed disabled:border-color-1/50 disabled:text-color-1/50 disabled:hover:bg-transparent disabled:hover:text-color-1/50 disabled:hover:border-color-1/50;
 }
