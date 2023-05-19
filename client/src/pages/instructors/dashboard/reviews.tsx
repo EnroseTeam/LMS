@@ -8,7 +8,7 @@ import InstructorReviewCard from "@/components/Instructors/Dashboard/ReviewCard"
 import { NextPageWithLayout } from "@/pages/_app";
 import { fetcher } from "@/utils/fetcher";
 import { ICourseReview } from "@/interfaces/courses";
-import UserCourseSkeleton from "@/components/Skeletons/UserCourseSkeleton";
+import UserReviewSkeleton from "@/components/Skeletons/UserReviewSkeleton";
 import { useRouter } from "next/router";
 
 const sortItems = [
@@ -195,7 +195,11 @@ const InstructorReviewPage: NextPageWithLayout = () => {
             </div>
           </div>
           <div className="flex flex-col gap-[60px]">
-            {reviewsLoading && <UserCourseSkeleton />}
+            {reviewsLoading &&
+              Array.from(Array(6)).map((val, index) => (
+                <UserReviewSkeleton key={index} />
+              ))}
+
             {!reviewsLoading &&
               reviews.length > 0 &&
               reviews.map((review) => (
