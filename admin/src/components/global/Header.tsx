@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import classNames from "classnames";
 
 import plcHolder from "@/assets/placeholder.png";
@@ -12,7 +12,11 @@ import { MdOutlineContacts, MdLogout } from "react-icons/md";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Link from "next/link";
 
-const Header: FC = () => {
+interface HeaderProps {
+  setSidebarShow: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header: FC<HeaderProps> = ({ setSidebarShow }) => {
   const [userDropdownShow, setUserDropdownShow] = useState<boolean>(false);
   const [notificationDropdownShow, setNotificationDropdownShow] = useState<boolean>(false);
 
@@ -21,7 +25,12 @@ const Header: FC = () => {
       <div className="flex flex-grow items-center justify-between py-4 px-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* Hamburger Toggle BTN */}
-          <button className="z-99999 block rounded-lg border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden">
+          <button
+            onClick={(): void => {
+              setSidebarShow(true);
+            }}
+            className="z-99999 block rounded-lg border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+          >
             <HiOutlineMenuAlt2 size={20} />
           </button>
           {/* Hamburger Toggle BTN */}
