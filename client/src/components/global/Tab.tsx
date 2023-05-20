@@ -36,13 +36,14 @@ const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {
         </div>
         <div className="absolute bottom-0 w-full h-[2px] bg-border-1 z-[1]" />
       </div>
-      <div>
+      <div className="overflow-x-auto">
         {tabContents.map((tabContent, index) => (
           <div
             key={`tab-content-${index}`}
             className={classNames(
               { block: activeTab === tabHeaders[index].slug },
-              { hidden: activeTab !== tabHeaders[index].slug }
+              { hidden: activeTab !== tabHeaders[index].slug },
+              ""
             )}
           >
             {" "}
