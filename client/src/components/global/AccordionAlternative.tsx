@@ -14,7 +14,7 @@ const AccordionAlternative: FC<AccordionAlternativeProps> = ({
 }) => {
   const [show, setShow] = useState(state);
   return (
-    <div className="rounded-[16px] bg-white shadow-shadow-dashboard p-[21px]">
+    <div className="rounded-[16px] bg-white shadow-shadow-dashboard p-[21px] w-full">
       <button
         onClick={(): void => setShow(!show)}
         className="flex items-center gap-[22px] text-lg-medium text-head"
