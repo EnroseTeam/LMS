@@ -39,7 +39,9 @@ const CheckoutPage: NextPageWithLayout = () => {
   const [isCityExist, setIsCityExist] = useState<boolean>(true);
   const [isCountryExist, setIsCountryExist] = useState<boolean>(true);
 
-  const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
+  const [messageType, setMessageType] = useState<"Success" | "Error">(
+    "Success"
+  );
   const [message, setMessage] = useState<string>("");
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -60,12 +62,16 @@ const CheckoutPage: NextPageWithLayout = () => {
       setCountry(user.address.country);
 
       if (router.query.course) {
-        axiosInstance.get(`/api/courses/${router.query.course as string}`).then((res) => {
-          setCourses([res.data.body]);
-          setTotalPrice(
-            res.data.body.discountPrice > 0 ? res.data.body.discountPrice : res.data.body.price
-          );
-        });
+        axiosInstance
+          .get(`/api/courses/${router.query.course as string}`)
+          .then((res) => {
+            setCourses([res.data.body]);
+            setTotalPrice(
+              res.data.body.discountPrice > 0
+                ? res.data.body.discountPrice
+                : res.data.body.price
+            );
+          });
       } else {
         if (cartItems.length === 0) {
           router.push("/user/cart");
@@ -138,7 +144,10 @@ const CheckoutPage: NextPageWithLayout = () => {
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error))
-          setMessage(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+          setMessage(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
         else setMessage("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
       } finally {
         setIsSubmitting(false);
@@ -155,15 +164,20 @@ const CheckoutPage: NextPageWithLayout = () => {
           { title: "Захиалга хийх", link: "/cart/checkout" },
         ]}
       />
-      <div className="container mb-[120px]">
-        <h1 className="text-center text-head text-4x-bold mb-1">Захиалга хийх</h1>
+      <div className="container mb-[30px] sm:mb-[60px] lg:mb-[120px]">
+        <h1 className="text-center text-head text-4x-bold mb-1">
+          Захиалга хийх
+        </h1>
         <p className="text-center text-text text-lg-regular mb-[64px]">
-          We’re on a mission to deliver engaging, curated courses at a reasonable price.
+          We’re on a mission to deliver engaging, curated courses at a
+          reasonable price.
         </p>
 
-        {message && <MessageBox type={messageType} message={message} className="mb-5" />}
+        {message && (
+          <MessageBox type={messageType} message={message} className="mb-5" />
+        )}
 
-        <div className="grid grid-cols-5 gap-[30px]">
+        <div className="grid lg:grid-cols-5 gap-y-[30px] lg:gap-x-[30px]">
           {/* User Information */}
           <div className="col-span-3">
             <h2 className="mb-[38px] text-head text-xl font-medium leading-[23px]">
@@ -202,7 +216,9 @@ const CheckoutPage: NextPageWithLayout = () => {
                     )}
                   />
                   {!isFirstNameExist && (
-                    <p className="text-red-500 text-md-medium mt-2">Нэр заавал шаардлагатай.</p>
+                    <p className="text-red-500 text-md-medium mt-2">
+                      Нэр заавал шаардлагатай.
+                    </p>
                   )}
                 </div>
 
@@ -229,7 +245,9 @@ const CheckoutPage: NextPageWithLayout = () => {
                     )}
                   />
                   {!isLastNameExist && (
-                    <p className="text-red-500 text-md-medium mt-2">Овог заавал шаардлагатай.</p>
+                    <p className="text-red-500 text-md-medium mt-2">
+                      Овог заавал шаардлагатай.
+                    </p>
                   )}
                 </div>
               </div>
@@ -258,7 +276,9 @@ const CheckoutPage: NextPageWithLayout = () => {
                     )}
                   />
                   {!isEmailExist && (
-                    <p className="text-red-500 text-md-medium mt-2">И-мэйл заавал шаардлагатай.</p>
+                    <p className="text-red-500 text-md-medium mt-2">
+                      И-мэйл заавал шаардлагатай.
+                    </p>
                   )}
                 </div>
 
@@ -315,7 +335,9 @@ const CheckoutPage: NextPageWithLayout = () => {
                   )}
                 />
                 {!isApartmentExist && (
-                  <p className="text-red-500 text-md-medium mt-2">Байр заавал шаардлагатай.</p>
+                  <p className="text-red-500 text-md-medium mt-2">
+                    Байр заавал шаардлагатай.
+                  </p>
                 )}
               </div>
 
@@ -400,7 +422,9 @@ const CheckoutPage: NextPageWithLayout = () => {
                   )}
                 />
                 {!isCountryExist && (
-                  <p className="text-red-500 text-md-medium mt-2">Улс заавал шаардлагатай.</p>
+                  <p className="text-red-500 text-md-medium mt-2">
+                    Улс заавал шаардлагатай.
+                  </p>
                 )}
               </div>
             </form>
@@ -420,14 +444,22 @@ const CheckoutPage: NextPageWithLayout = () => {
 
               <div className="px-[30px] py-3 border-b border-b-border-1 flex flex-col gap-5 text-text text-md-regular">
                 {courses.map((course) => (
-                  <div key={course._id} className="flex items-center justify-between">
+                  <div
+                    key={course._id}
+                    className="flex items-center justify-between"
+                  >
                     <Link
                       className="hover:text-color-1 duration-300"
                       href={`/courses/${course._id}`}
                     >
                       {course.name}
                     </Link>
-                    <span>₮{course.discountPrice > 0 ? course.discountPrice : course.price}</span>
+                    <span>
+                      ₮
+                      {course.discountPrice > 0
+                        ? course.discountPrice
+                        : course.price}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -459,12 +491,16 @@ const CheckoutPage: NextPageWithLayout = () => {
                 />
 
                 <div>
-                  <label htmlFor="transfer" className="block text-head text-md-medium mb-6">
+                  <label
+                    htmlFor="transfer"
+                    className="block text-head text-md-medium mb-6"
+                  >
                     Банкны шилжүүлэг
                   </label>
                   <p className="text-text text-sm-regular">
-                    Та манай байгуулгын дансруу өөрийн захиалгын дугаараа гүйлгээний утган дээрээ
-                    бичэн мөнгөө шилжүүлснээр таны сургалт үзэх эрх нээгдэх болно.
+                    Та манай байгуулгын дансруу өөрийн захиалгын дугаараа
+                    гүйлгээний утган дээрээ бичэн мөнгөө шилжүүлснээр таны
+                    сургалт үзэх эрх нээгдэх болно.
                   </p>
                 </div>
               </div>
