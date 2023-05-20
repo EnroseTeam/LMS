@@ -31,20 +31,22 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
 const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
   <>
     <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
-    <div className="container mb lg: max-w-[1100px] mx-auto">
+    <div className="container mb lg:max-w-[1100px] mx-auto">
       <div className="flex flex-col items-center px-5 justify-center lg:px-[120px]">
-        <h1 className="text-4x-bold text-head lg:pt-[90px] pb-1">Онцлох мэдээ</h1>
+        <h1 className="text-4x-bold text-head lg:pt-[90px] pb-1">
+          Онцлох мэдээ
+        </h1>
         <p className="lg-regular text-text pb-[30px]">
           We’re on a mission to deliver engaging, curated courses at a
           reasonable price.
         </p>
-        <div className="relative bg-white w-full h-[60px]  rounded-md pl-[30px border border-solid text-sm-regular focus-within:ring-4 focus-within:ring-color-1 mb-[78px]">
+        <div className="relative bg-white w-full h-[60px] rounded-md pl-[30px] border border-solid text-sm-regular focus-within:ring-4 focus-within:ring-color-1 mb-8 lg:mb-[78px]">
           <input
             type="text"
             placeholder="Мэдээ хайх ... "
             className="w-[calc(100%_-_100px)] h-full pl-2 rounded-full text-text focus:outline-none placeholder:text-text"
           />
-          <button className="absolute top-[10px] right-[10px] bottom-[10px] py-[12px] px-6 text-white bg-color-1 rounded-md hover:bg-color-1/80 duration-300">
+          <button className="absolute top-[10px] right-[10px] bottom-[10px] lg:py-[12px] px-6 text-white bg-color-1 rounded-md hover:bg-color-1/80 duration-300">
             Хайх
           </button>
         </div>
