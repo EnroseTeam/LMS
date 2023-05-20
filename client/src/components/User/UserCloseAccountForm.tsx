@@ -76,7 +76,7 @@ const UserCloseAccountForm: FC = () => {
             }}
             type="password"
             id="password"
-            className={`px-[22px] py-[12px] w-1/2 rounded-lg border border-border-2 text-md-regular text-text focus:outline-none focus:ring-2 focus:ring-color-1 ${
+            className={`px-[22px] py-[12px] w-full sm:w-2/3 md:w-1/2 rounded-lg border border-border-2 text-md-regular text-text focus:outline-none focus:ring-2 focus:ring-color-1 ${
               !isPasswordExist ? "ring ring-red-500" : ""
             }`}
             placeholder="Нууц үг"

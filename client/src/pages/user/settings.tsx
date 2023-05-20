@@ -48,13 +48,23 @@ const SettingsPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <Breadcrumbs breadcrumbItems={[{ title: "Хэрэглэгчийн тохиргоо", link: "/user/settings" }]} />
+      <Breadcrumbs
+        breadcrumbItems={[
+          { title: "Хэрэглэгчийн тохиргоо", link: "/user/settings" },
+        ]}
+      />
       <div className="container mb-[120px] mt-[90px]">
-        <h1 className="text-head text-3xl-bold mb-[9px]">Хэрэглэгчийн тохиргоо</h1>
-        <p className="text-text text-md-regular mb-[60px]">Та өөрийн мэдээлээ солих боломжтой.</p>
+        <h1 className="text-head text-3xl-bold mb-[9px] text-center">
+          Хэрэглэгчийн тохиргоо
+        </h1>
+        <p className="text-text text-md-regular mb-[60px] text-center">
+          Та өөрийн мэдээлээ солих боломжтой.
+        </p>
         <div className="w-full rounded-2xl shadow-shadow-dashboard p-[30px]">
           {isUserLoading && <TabSkeleton />}
-          {user && !isUserLoading && <Tab tabHeaders={tabHeaders} tabContents={tabContents} />}
+          {user && !isUserLoading && (
+            <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
+          )}
         </div>
       </div>
     </>
