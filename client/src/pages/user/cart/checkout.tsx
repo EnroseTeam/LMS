@@ -1,19 +1,19 @@
 import Breadcrumbs from "@/components/global/Breadcrumbs";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useCart } from "@/hooks/useCart";
 import { ICourse } from "@/interfaces/courses";
 import { axiosInstance } from "@/utils/axiosInstance";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 import { NextPageWithLayout } from "@/pages/_app";
 import MessageBox from "@/components/global/MessageBox";
 import { isAxiosError } from "axios";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const CheckoutPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const { user, isLoading } = useAuthenticate();
+  const { user, isUserLoading } = useContext(AuthContext);
   const { cartItems, totalPrice: cartTotal, removeAllCartItems } = useCart();
 
   const [courses, setCourses] = useState<ICourse[]>([]);
@@ -45,11 +45,11 @@ const CheckoutPage: NextPageWithLayout = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isUserLoading && !user) {
       router.push("/auth/login");
     }
 
-    if (!isLoading && user) {
+    if (!isUserLoading && user) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
@@ -74,7 +74,7 @@ const CheckoutPage: NextPageWithLayout = () => {
         setTotalPrice(cartTotal);
       }
     }
-  }, [user, isLoading, router, cartItems, cartTotal]);
+  }, [user, isUserLoading, router, cartItems, cartTotal]);
 
   const submitHandler = async (): Promise<void> => {
     if (!isSubmitting) {
