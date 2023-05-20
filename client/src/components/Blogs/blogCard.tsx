@@ -8,7 +8,7 @@ interface BlogCardProps {
 }
 
 const BlogCard: FC<BlogCardProps> = ({ blog }) => (
-  <div className="grid grid-cols-2 gap-[93px] items-center">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-[93px] items-center">
     <Link
       target="_blank"
       href={`blogs/${blog._id}`}

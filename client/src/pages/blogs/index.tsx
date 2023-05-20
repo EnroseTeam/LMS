@@ -3,8 +3,8 @@ import Breadcrumbs from "@/components/global/Breadcrumbs";
 import BlogCard from "@/components/Blogs/blogCard";
 import { IBlog } from "@/interfaces/blogs";
 import { GetServerSideProps } from "next";
-import axios from "axios";
 import Pagination from "@/components/global/Pagination";
+import { axiosInstance } from "@/utils/axiosInstance";
 
 interface BlogPageProps {
   blogs: IBlog[];
@@ -16,8 +16,8 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
   query,
 }) => {
   const { page = "1", pageSize = "2" } = query;
-  const blogRes = await axios.get(
-    `http://localhost:5000/api/blogs?page=${page}&pageSize=${pageSize}`
+  const blogRes = await axiosInstance.get(
+    `/api/blogs?page=${page}&pageSize=${pageSize}`
   );
   return {
     props: {
@@ -31,9 +31,9 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
 const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
   <>
     <Breadcrumbs breadcrumbItems={[{ title: "Мэдээ", link: "/blogs" }]} />
-    <div className="max-w-[1100px] mx-auto">
-      <div className="flex flex-col items-center justify-center px-[120px]">
-        <h1 className="text-4x-bold text-head pt-[90px] pb-1">Онцлох мэдээ</h1>
+    <div className="container mb lg: max-w-[1100px] mx-auto">
+      <div className="flex flex-col items-center px-5 justify-center lg:px-[120px]">
+        <h1 className="text-4x-bold text-head lg:pt-[90px] pb-1">Онцлох мэдээ</h1>
         <p className="lg-regular text-text pb-[30px]">
           We’re on a mission to deliver engaging, curated courses at a
           reasonable price.
@@ -49,7 +49,7 @@ const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
           </button>
         </div>
       </div>
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-16 px-5">
         {blogs.map((blog) => (
           <BlogCard key={blog._id} blog={blog} />
         ))}
