@@ -19,12 +19,16 @@ const CartPage: NextPageWithLayout = () => {
         ]}
       />
       <div className="container mb-[120px]">
-        <div className="mx-[200px]">
+        <div className="mx-auto xl:mx-[200px]">
           <div className="text-center mb-12">
-            <h1 className="font-[700] text-[40px] leading-[46px] text-head mb-1">Сагс</h1>
-            <p className="text-text font-[400] text-[17px] leading-[36px]">Таны сагс</p>
+            <h1 className="font-[700] text-[40px] leading-[46px] text-head mb-1">
+              Сагс
+            </h1>
+            <p className="text-text font-[400] text-[17px] leading-[36px]">
+              Таны сагс
+            </p>
           </div>
-          <div className="mb-[25px]">
+          <div className="mb-[25px] overflow-x-auto">
             {/* Header */}
             <div className="w-full px-[30px] py-6 rounded-lg bg-bg-3 grid grid-cols-4 text-color-1 text-base-medium">
               <h1 className="col-span-2">Сургалт</h1>
@@ -63,9 +67,12 @@ const CartPage: NextPageWithLayout = () => {
                     </div>
 
                     <p className="self-center text-center text-text text-base-medium">
-                      ₮{item.discountPrice > 0 ? item.discountPrice : item.price}
+                      ₮
+                      {item.discountPrice > 0 ? item.discountPrice : item.price}
                       {item.discountPrice > 0 && (
-                        <span className="ml-3 line-through text-sm">₮{item.price}</span>
+                        <span className="ml-3 line-through text-sm">
+                          ₮{item.price}
+                        </span>
                       )}
                     </p>
 
@@ -90,23 +97,13 @@ const CartPage: NextPageWithLayout = () => {
             )}
           </div>
 
-          <div className="flex justify-between mb-[119px]">
-            <div className="relative flex items-center w-[370px] h-[60px] rounded-lg border border-[#DDDDDD] overflow-hidden focus-within:rounded-lg">
-              <input
-                type="text"
-                placeholder="Coupon Code"
-                className="w-full h-full py-[22px] pl-[24px] pr-[150px] focus:outline-none"
-              />
-              <button className=" absolute right-[24px] text-sm-medium text-color-1">
-                Apply Coupon
-              </button>
-            </div>
+          <div className="flex justify-between mb-[20px] lg:mb-[80px]">
             <Link href={"/courses"} className="btn-4">
               Сагс шинэчлэх
             </Link>
           </div>
-          <div className="w-full flex flex-col items-end">
-            <div className="w-2/5 pt-[34px] px-[30px] rounded-lg border border-border-1 mb-[30px]">
+          <div className="w-full flex flex-col sm:items-start md:items-end">
+            <div className="  sm:w-[400px] pt-[34px] px-[30px] rounded-lg border border-border-1 mb-[30px]">
               <h1 className="text-head font-[500] text-[20px] leading-[23px] mb-[16px] border-b pb-2">
                 Нийт үнэ
               </h1>
@@ -117,7 +114,10 @@ const CartPage: NextPageWithLayout = () => {
                 </span>
               </div>
             </div>
-            <Link href={"/user/cart/checkout"} className="btn-1 w-2/5 text-center">
+            <Link
+              href={"/user/cart/checkout"}
+              className="btn-1 sm:w-2/5 text-center"
+            >
               Худалдаж авах
             </Link>
           </div>
