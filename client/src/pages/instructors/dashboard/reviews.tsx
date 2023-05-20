@@ -1,15 +1,16 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import useSwr from "swr";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { BsChevronDown } from "react-icons/bs";
-import InstructorReviewCard from "@/components/Instructors/Dashboard/ReviewCard";
+import InstructorReviewCard from "@/components/Instructors/Dashboard/Reviews/ReviewCard";
 import { NextPageWithLayout } from "@/pages/_app";
 import { fetcher } from "@/utils/fetcher";
 import { ICourseReview } from "@/interfaces/courses";
 import UserReviewSkeleton from "@/components/Skeletons/UserReviewSkeleton";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const sortItems = [
   { title: "Шинэ", value: "dateDesc" },
@@ -20,9 +21,10 @@ const sortItems = [
 const InstructorReviewPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [dropSort, setDropSort] = useState(false);
-  // const [dropRate, setDropRate] = useState(false);
 
   const [reviews, setReviews] = useState<ICourseReview[]>([]);
+
+  const { user } = useContext(AuthContext);
 
   const { data: instructorReviews, isLoading: reviewsLoading } = useSwr(
     `/api/courses/reviews/instructor`,
@@ -46,12 +48,8 @@ const InstructorReviewPage: NextPageWithLayout = () => {
               review.user.fullName
                 .toLowerCase()
                 .includes((router.query.q as string).toLowerCase()) ||
-              review.text
-                ?.toLowerCase()
-                .includes((router.query.q as string).toLowerCase()) ||
-              review.title
-                .toLowerCase()
-                .includes((router.query.q as string).toLowerCase())
+              review.text?.toLowerCase().includes((router.query.q as string).toLowerCase()) ||
+              review.title.toLowerCase().includes((router.query.q as string).toLowerCase())
           )
         );
       } else {
@@ -80,17 +78,13 @@ const InstructorReviewPage: NextPageWithLayout = () => {
     if (instructorReviews) {
       if (value === "dateDesc") {
         const newReviews = [...instructorReviews.body];
-        newReviews.sort(
-          (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)
-        );
+        newReviews.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
         setReviews(newReviews);
       }
 
       if (value === "dateAsc") {
         const newReviews = [...instructorReviews.body];
-        newReviews.sort(
-          (a, b) => +new Date(a.createdAt) - +new Date(b.createdAt)
-        );
+        newReviews.sort((a, b) => +new Date(a.createdAt) - +new Date(b.createdAt));
         setReviews(newReviews);
       }
       if (value === "ratingDesc") {
@@ -103,12 +97,7 @@ const InstructorReviewPage: NextPageWithLayout = () => {
 
   const dropSortHandler = (): void => {
     setDropSort(!dropSort);
-    // setDropRate(!setDropSort);
   };
-  // const dropRateHandler = (): void => {
-  //   setDropRate(!dropRate);
-  //   setDropSort(!setDropRate);
-  // };
   return (
     <>
       <h1 className="text-head text-3xl-bold mb-[9px]">Сэтгэгдэлүүд</h1>
@@ -137,29 +126,6 @@ const InstructorReviewPage: NextPageWithLayout = () => {
               />
             </div>
             <div className="flex gap-[22px]">
-              {/* <div className="relative">
-                <button
-                  onClick={dropRateHandler}
-                  className="text-sm-regular text-text py-[17px] px-[15px] border border-border-2 rounded-lg flex items-center justify-between gap-[23px]"
-                >
-                  Үнэлгээ
-                  <BsChevronDown
-                    className={`duration-300 ${
-                      dropRate ? "rotate-[-180deg]" : "rotate-0"
-                    }`}
-                  />
-                </button>
-                <div
-                  className={`${
-                    dropRate ? "opacity-100" : "opacity-0 pointer-events-none"
-                  } absolute top-[60px] z-[10] border bg-white border-border-2 rounded-lg py-[17px] px-[15px] duration-300 shadow-sm w-full`}
-                >
-                  <ul className="flex flex-col gap-3 text-sm-regular text-text">
-                    <li>hi</li>
-                    <li>hello</li>
-                  </ul>
-                </div>
-              </div> */}
               <div className="relative">
                 <button
                   onClick={dropSortHandler}
@@ -167,9 +133,7 @@ const InstructorReviewPage: NextPageWithLayout = () => {
                 >
                   Эрэмбэ
                   <BsChevronDown
-                    className={`duration-300 ${
-                      dropSort ? "rotate-[-180deg]" : "rotate-0"
-                    }`}
+                    className={`duration-300 ${dropSort ? "rotate-[-180deg]" : "rotate-0"}`}
                   />
                 </button>
                 <div
@@ -196,18 +160,14 @@ const InstructorReviewPage: NextPageWithLayout = () => {
           </div>
           <div className="flex flex-col gap-[60px]">
             {reviewsLoading &&
-              Array.from(Array(6)).map((val, index) => (
-                <UserReviewSkeleton key={index} />
-              ))}
+              Array.from(Array(6)).map((val, index) => <UserReviewSkeleton key={index} />)}
 
             {!reviewsLoading &&
               reviews.length > 0 &&
               reviews.map((review) => (
-                <InstructorReviewCard key={review._id} review={review} />
+                <InstructorReviewCard key={review._id} review={review} avatar={user?.avatar} />
               ))}
-            {!reviewsLoading && reviews.length === 0 && (
-              <p>Танд ирсэн сэтгэгдэл байхгүй байна.</p>
-            )}
+            {!reviewsLoading && reviews.length === 0 && <p>Танд ирсэн сэтгэгдэл байхгүй байна.</p>}
           </div>
         </div>
       </div>

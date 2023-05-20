@@ -61,6 +61,8 @@ export const createCourseReviewAnswer: RequestHandler<
     isReviewExist.answer.push(newReviewAnswer._id);
     await isReviewExist.save({ session });
 
+    await session.commitTransaction();
+
     res
       .status(201)
       .json({ message: "Сэтгэгдэлд хариулт амжилттай нэмэгдлээ.", body: newReviewAnswer });
@@ -115,22 +117,40 @@ export const deleteCourseReviewAnswer: RequestHandler = async (req, res, next) =
   const { id } = req.params;
   const instructorId = req.session.userId;
 
+  const session = await mongoose.startSession();
+
   try {
     assertIsDefined(instructorId);
 
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
-    const reviewAnswer = await CourseReviewAnswerModel.findById(id);
+    session.startTransaction();
+
+    const reviewAnswer = await CourseReviewAnswerModel.findById(id, null, { session });
     if (!reviewAnswer) throw createHttpError(404, "Сэтгэгдлийн хариу олдсонгүй.");
 
     if (reviewAnswer.instructor?.toString() !== instructorId.toString()) {
       throw createHttpError(403, "Танд энэ сургалтын хариуг устгах эрх байхгүй байна.");
     }
 
-    await reviewAnswer.deleteOne();
+    const review = await CourseReviewModel.findById(reviewAnswer.review, null, { session });
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
+
+    review.answer = review.answer.filter(
+      (answer) => answer?._id.toString() !== reviewAnswer._id.toString()
+    );
+
+    await review.save({ session });
+
+    await reviewAnswer.deleteOne({ session });
+
+    await session.commitTransaction();
 
     res.sendStatus(204);
   } catch (error) {
+    await session.abortTransaction();
     next(error);
   }
+
+  session.endSession();
 };

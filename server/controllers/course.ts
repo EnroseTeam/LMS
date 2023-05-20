@@ -235,7 +235,7 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
       "instructor",
       "level",
       "category",
-      { path: "reviews", populate: { path: "user" } },
+      { path: "reviews", populate: ["user", "answer"] },
       { path: "sections", populate: { path: "lessons" } },
     ]);
     if (!course) throw createHttpError(404, "Цуврал хичээл олдсонгүй");

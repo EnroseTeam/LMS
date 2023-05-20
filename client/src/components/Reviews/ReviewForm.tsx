@@ -36,7 +36,7 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
       const res = await axiosInstance.post("/api/courses/reviews", {
         title,
         text: description,
-        rating,
+        rating: Number(rating),
         course: courseId,
       });
 

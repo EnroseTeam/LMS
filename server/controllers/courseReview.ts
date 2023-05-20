@@ -17,11 +17,7 @@ interface CourseReviewParams {
 }
 
 //GET REVIEWS BY INSTRUCTORS ID
-export const getReviewByInstructorId: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const getReviewByInstructorId: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
 
   try {
@@ -34,7 +30,7 @@ export const getReviewByInstructorId: RequestHandler = async (
 
     const courses: PopulatedCourse[] = await CourseModel.find({
       _id: { $in: user.ownCourses },
-    }).populate([{ path: "reviews", populate: "user" }]);
+    }).populate([{ path: "reviews", populate: ["user", "answer"] }]);
 
     const result: ICourseReview[] = [];
 
@@ -67,8 +63,7 @@ export const getSingleCourseReview: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
   try {
     // Хүсэлтээс ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id))
-      throw createHttpError(400, "Id буруу байна.");
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     // Id-р сэтгэгдлээ олоод буцаана. Буцаахдаа user хэсгийг populate хийнэ.
     const review = await CourseReviewModel.findById(id).populate("user");
@@ -97,51 +92,38 @@ export const createCourseReview: RequestHandler<
     if (!title) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
 
     if (!rating) throw createHttpError(400, "Үнэлгээ заавал шаардлагатай.");
-    if (!course)
-      throw createHttpError(400, "Сургалтын id заавал шаардлагатай.");
+    if (!course) throw createHttpError(400, "Сургалтын id заавал шаардлагатай.");
 
-    if (!mongoose.isValidObjectId(course))
-      throw createHttpError(400, "Сургалтын id буруу байна.");
+    if (!mongoose.isValidObjectId(course)) throw createHttpError(400, "Сургалтын id буруу байна.");
 
     session.startTransaction();
 
     // Хүсэлтээс орж ирсэн сургалтын id-тай сургалт байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const isCourseExist = await CourseModel.findById(course, null, { session });
-    if (!isCourseExist)
-      throw createHttpError(400, `${course} id-тай сургалт олдсонгүй.`);
+    if (!isCourseExist) throw createHttpError(400, `${course} id-тай сургалт олдсонгүй.`);
 
-    const isUserExist = await UserModel.findById(
-      isCourseExist.instructor,
-      null,
-      {
-        session,
-      }
-    ).select("+ownCourses");
+    const isUserExist = await UserModel.findById(isCourseExist.instructor, null, {
+      session,
+    }).select("+ownCourses +avgRating");
     if (!isUserExist)
-      throw createHttpError(
-        400,
-        `${isCourseExist.instructor} id-тай хэрэглэгч олдсонгүй.`
-      );
+      throw createHttpError(400, `${isCourseExist.instructor} id-тай хэрэглэгч олдсонгүй.`);
 
     // Сургалтын дундаж үнэлгээг шинэчлэнэ.
     const totalRating = isCourseExist.avgRating * isCourseExist.reviews.length;
-    isCourseExist.avgRating =
-      (totalRating + Number(rating)) / (isCourseExist.reviews.length + 1);
+    isCourseExist.avgRating = (totalRating + Number(rating)) / (isCourseExist.reviews.length + 1);
     await isCourseExist.save({ session });
 
     // Сургалтыг заасан багшийн дундаж үнэлгээг шинэчлэнэ.
     let totalReviewLength = 0;
     for (let i = 0; i < isUserExist.ownCourses.length; i++) {
-      const course = await CourseModel.findById(
-        isUserExist.ownCourses[i],
-        null,
-        { session }
-      );
+      const course = await CourseModel.findById(isUserExist.ownCourses[i], null, { session });
       if (course) totalReviewLength += course.reviews.length;
     }
+
     const totalUserRating = isUserExist.avgRating * totalReviewLength;
-    isUserExist.avgRating =
-      (totalUserRating + Number(rating)) / (totalReviewLength + 1);
+
+    isUserExist.avgRating = (totalUserRating + Number(rating)) / (totalReviewLength + 1);
+
     await isUserExist.save({ session });
 
     // Орж ирсэн мэдээллийн дагуу шинэ сэтгэгдэл үүсгэнэ.
@@ -184,8 +166,7 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id))
-      throw createHttpError(400, "Id буруу байна.");
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     session.startTransaction();
 
@@ -196,9 +177,7 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
     // Олдсон сэтгэгдэл дээр бүртгэлтэй байгаа сургалтын id-гаар сургалтаа олоод олдсон сургалтнаас устгагдаж буй сэтгэгдлийн id-г хасна.
     const course = await CourseModel.findById(review.course);
     if (course) {
-      course.reviews = course.reviews.filter(
-        (curReview) => curReview?._id !== review._id
-      );
+      course.reviews = course.reviews.filter((curReview) => curReview?._id !== review._id);
       await course.save({ session });
     }
 
@@ -229,8 +208,7 @@ export const updateCourseReview: RequestHandler<
     // Хүсэлтээс ирж буй мэдээлэл бүрэн эсэхийг шалгана.
     if (!title) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
     if (!rating) throw createHttpError(400, "Үнэлгээ заавал шаардлагатай.");
-    if (!mongoose.isValidObjectId(id))
-      throw createHttpError(400, "Id буруу байна.");
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     // Орж ирсэн id-тай сэтгэгдэл байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const review = await CourseReviewModel.findById(id);
