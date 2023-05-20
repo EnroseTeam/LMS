@@ -40,32 +40,32 @@ const AboutUsPage: NextPageWithLayout<AboutUsPageProps> = ({ instructors }) => (
         price.
       </p>
       <div className="flex flex-col lg:flex-cols-2 lg:gap-[172px] items-center lg:pr-[120px]">
-        <div className="flex gap-[30px] px-10 lg:px-0 items-center">
-          <div className="relative">
-            <div className="w-[300px] h-[400px] rounded-[16px] overflow-hidden">
+        <div className="flex gap-[30px] items-center">
+          <div className="relative pl-[10px]">
+            <div className="max-w-[300px] max-h-[400px] rounded-[16px] overflow-hidden">
               <Image src={big} alt="" className="w-full h-full bg-color-1" />
-              <div className="absolute bg-white -top-[50px] -right-[50px] w-[100px] h-[100px] rotate-45" />
+              <div className="absolute bg-white -top-[50px] -right-[50px] max-w-[100px] max-h-[100px] rotate-45" />
             </div>
           </div>
           <div className="flex flex-col gap-[30px]">
             <div className="relative">
-              <div className="w-[200px] h-[200px] rounded-[16px] overflow-hidden">
+              <div className="max-w-[200px] max-h-[200px] rounded-[16px] overflow-hidden">
                 <Image
                   src={about2}
                   alt=""
                   className="bg-color-1 w-full h-full"
                 />
-                <div className="absolute bg-white -top-[50px] -right-0 w-[90px] h-[90px] rotate-45" />
+                <div className="absolute bg-white -top-[50px] -right-0 max-w-[90px] max-h-[90px] rotate-45" />
               </div>
             </div>
             <div className="relative">
-              <div className="w-[255px] h-[250px] rounded-[16px] overflow-hidden">
+              <div className="max-w-[255px] max-h-[250px] rounded-[16px] overflow-hidden">
                 <Image
                   src={about3}
                   alt=""
                   className="bg-color-1 w-full h-full"
                 />
-                <div className="absolute bg-white -top-[50px] -right-[50px] w-[95px] h-[95px] rotate-45" />
+                <div className="absolute bg-white -top-[50px] -right-[50px] max-w-[95px] max-h-[95px] rotate-45" />
               </div>
             </div>
           </div>
