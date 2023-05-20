@@ -49,6 +49,13 @@ export const createCourseRequest: RequestHandler<
 
     if (!course) throw createHttpError(400, "Сургалт заавал шаардлагатай.");
 
+    const isRequestWithCourseExist = await CourseRequestModel.findOne({ course });
+    if (isRequestWithCourseExist)
+      throw createHttpError(
+        400,
+        "Та аль хэдийн энэ сургалтыг нийтлэх хүсэлт явуулсан байна. Та түр хүлээнэ үү."
+      );
+
     const isCourseExist = await CourseModel.findById(course);
     if (!isCourseExist) throw createHttpError(404, "Сургалт олдсонгүй.");
 
@@ -57,7 +64,10 @@ export const createCourseRequest: RequestHandler<
       instructor: instructorId,
     });
 
-    res.status(201).json({ message: "Хүсэлт амжилттай илгээгдлээ.", body: newCourseRequest });
+    res.status(201).json({
+      message: "Хүсэлт амжилттай илгээгдлээ. Таны хүсэлтийг шалгаад, удахгүй хариу илгээх болно.",
+      body: newCourseRequest,
+    });
   } catch (error) {
     next(error);
   }

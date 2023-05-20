@@ -7,6 +7,9 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdPublishedWithChanges, MdEdit, MdDelete, MdUnpublished } from "react-icons/md";
 import classNames from "classnames";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 interface CourseCardProps {
   course: ICourse;
@@ -15,6 +18,27 @@ interface CourseCardProps {
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const [dropDownShow, setDropDownShow] = useState<boolean>(false);
   const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const requestPublish = async (): Promise<void> => {
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
+
+        const res = await axiosInstance.post("/api/courses/requests", { course: course._id });
+        toast.success(res.data.message);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          toast.error(error.response?.data.error);
+        } else {
+          toast.error("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
 
   return (
     <div>
@@ -49,7 +73,14 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
             <div className="bg-white border border-border-1  rounded-lg py-5 px-8 mt-[5px] flex flex-col gap-5 text-text text-lg-medium shadow-shadow-dashboard">
               {!course.isPublished && (
-                <button className="flex items-center gap-3 hover:text-color-1 duration-300 group/button">
+                <button
+                  disabled={isSubmitting}
+                  onClick={(e): void => {
+                    e.preventDefault();
+                    requestPublish();
+                  }}
+                  className="flex items-center gap-3 hover:text-color-1 duration-300 group/button disabled:pointer-events-none"
+                >
                   <MdPublishedWithChanges
                     size={20}
                     className="text-icon group-hover/button:text-color-1 duration-300"
@@ -59,7 +90,10 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
               )}
 
               {course.isPublished && (
-                <button className="flex items-center gap-3 hover:text-color-1 duration-300 group/button">
+                <button
+                  disabled={isSubmitting}
+                  className="flex items-center gap-3 hover:text-color-1 duration-300 group/button disabled:pointer-events-none"
+                >
                   <MdUnpublished
                     size={20}
                     className="text-icon group-hover/button:text-color-1 duration-300"
@@ -68,20 +102,24 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
                 </button>
               )}
 
-              <button
-                onClick={(): void => {
-                  router.push(`/instructors/dashboard/my-courses/edit/${course._id}`);
-                }}
-                className="flex items-center gap-3 hover:text-color-1 duration-300 group/button"
+              <Link
+                href={`/instructors/dashboard/my-courses/edit/${course._id}`}
+                className={classNames(
+                  "flex items-center gap-3 hover:text-color-1 duration-300 group/button",
+                  { "pointer-events-none": isSubmitting }
+                )}
               >
                 <MdEdit
                   size={20}
                   className="text-icon group-hover/button:text-color-1 duration-300"
                 />
                 Засах
-              </button>
+              </Link>
 
-              <button className="flex items-center gap-3 hover:text-color-1 duration-300 group/button">
+              <button
+                disabled={isSubmitting}
+                className="flex items-center gap-3 hover:text-color-1 duration-300 group/button disabled:pointer-events-none"
+              >
                 <MdDelete
                   size={20}
                   className="text-icon group-hover/button:text-color-1 duration-300"
