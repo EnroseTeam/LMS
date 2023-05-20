@@ -13,7 +13,9 @@ interface UserPersonalInfoFormProps {
   user?: IUser;
 }
 
-const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUser }) => {
+const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({
+  user = {} as IUser,
+}) => {
   const { setUser } = useContext(AuthContext);
 
   const [profilePicture, setProfilePicture] = useState<string>(user.avatar);
@@ -76,7 +78,10 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
     } catch (error) {
       setType("Error");
       if (isAxiosError(error)) {
-        setMessage(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
+        setMessage(
+          error.response?.data.error ||
+            "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+        );
       } else {
         setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
       }
@@ -132,7 +137,8 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
         setType("Error");
         if (isAxiosError(error)) {
           setMessage(
-            error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
           );
         } else {
           setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
@@ -144,7 +150,7 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
   };
 
   return (
-    <div className="-mt-[30px]">
+    <div className="">
       {message && <MessageBox type={type} message={message} className="mb-5" />}
       <div className="pb-[30px] mb-[30px] border-b border-b-border-1 flex items-center gap-5">
         <div className="w-[100px] h-[100px] rounded-full overflow-hidden relative">
@@ -199,9 +205,9 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
           e.preventDefault();
           submitHandler();
         }}
-        className="grid grid-cols-2 gap-[30px] mb-[30px]"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-[30px] mb-[30px]"
       >
-        <div>
+        <div className="">
           <label
             className="text-head text-base-medium mb-[9px] block after:content-['*'] after:text-red-500 after:ml-1"
             htmlFor="firstName"
@@ -221,11 +227,13 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             placeholder="Нэр"
           />
           {!isFirstNameExist && (
-            <p className="text-red-500 text-md-medium mt-2">Нэр заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              Нэр заавал шаардлагатай.
+            </p>
           )}
         </div>
 
-        <div>
+        <div className="col-span-1">
           <label
             className="text-head text-base-medium mb-[9px] block after:content-['*'] after:text-red-500 after:ml-1"
             htmlFor="lastName"
@@ -245,7 +253,9 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             placeholder="Овог"
           />
           {!isLastNameExist && (
-            <p className="text-red-500 text-md-medium mt-2">Овог заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              Овог заавал шаардлагатай.
+            </p>
           )}
         </div>
 
@@ -269,7 +279,9 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             placeholder="И-мэйл"
           />
           {!isEmailExist && (
-            <p className="text-red-500 text-md-medium mt-2">И-мэйл заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              И-мэйл заавал шаардлагатай.
+            </p>
           )}
         </div>
 
@@ -293,7 +305,9 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             placeholder="Утасны дугаар"
           />
           {!isPhoneExist && (
-            <p className="text-red-500 text-md-medium mt-2">Утасны дугаар заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              Утасны дугаар заавал шаардлагатай.
+            </p>
           )}
         </div>
 
@@ -316,12 +330,17 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             }`}
           />
           {!isBirthdayExist && (
-            <p className="text-red-500 text-md-medium mt-2">Төрсөн өдөр заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              Төрсөн өдөр заавал шаардлагатай.
+            </p>
           )}
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="address">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="address"
+          >
             Хаяг
           </label>
           <input
@@ -337,7 +356,10 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="district">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="district"
+          >
             Дүүрэг /Сум/
           </label>
           <input
@@ -353,7 +375,10 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="city">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="city"
+          >
             Хот /Аймаг/
           </label>
           <input
@@ -368,8 +393,11 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
           />
         </div>
 
-        <div className="col-span-2">
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="country">
+        <div className="col-span-1">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="country"
+          >
             Улс
           </label>
           <input
@@ -384,8 +412,11 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
           />
         </div>
 
-        <div className="col-span-2">
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="bio">
+        <div className="col-span-1">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="bio"
+          >
             Хувийн тайлбар
           </label>
           <textarea

@@ -122,8 +122,8 @@ const UserPasswordForm: FC = () => {
   };
 
   return (
-    <div className="-mt-[30px] ">
-      <div className="grid grid-cols-2 gap-[100px]">
+    <div className="">
+      <div className="grid grid-cols-1 sm:grid-cols-2  sm:gap-[100px]">
         <form
           id="password-form"
           onSubmit={(e): void => {

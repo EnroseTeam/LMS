@@ -9,13 +9,21 @@ interface UserSocialAccountFormProps {
   user?: IUser;
 }
 
-const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IUser }) => {
+const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({
+  user = {} as IUser,
+}) => {
   const { setUser } = useContext(AuthContext);
 
-  const [facebook, setFacebook] = useState<string>(user.socialAccounts.facebook);
-  const [instagram, setInstagram] = useState<string>(user.socialAccounts.instagram);
+  const [facebook, setFacebook] = useState<string>(
+    user.socialAccounts.facebook
+  );
+  const [instagram, setInstagram] = useState<string>(
+    user.socialAccounts.instagram
+  );
   const [twitter, setTwitter] = useState<string>(user.socialAccounts.twitter);
-  const [linkedin, setLinkedin] = useState<string>(user.socialAccounts.linkedin);
+  const [linkedin, setLinkedin] = useState<string>(
+    user.socialAccounts.linkedin
+  );
 
   const [message, setMessage] = useState<string>("");
   const [type, setType] = useState<"Error" | "Success">("Success");
@@ -46,7 +54,8 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
         setType("Error");
         if (isAxiosError(error)) {
           setMessage(
-            error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
           );
         } else setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
       } finally {
@@ -56,7 +65,7 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
   };
 
   return (
-    <div className="-mt-[30px]">
+    <div className="">
       {message && <MessageBox type={type} message={message} className="mb-5" />}
       <form
         onSubmit={(e): void => {
@@ -64,10 +73,13 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
           submitHandler();
         }}
         id="social-account-form"
-        className="grid grid-cols-2 gap-[30px] mb-[30px]"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-[30px] mb-[30px]"
       >
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="facebook">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="facebook"
+          >
             Фэйсбүүк
           </label>
           <input
@@ -83,7 +95,10 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="instagram">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="instagram"
+          >
             Инстаграм
           </label>
           <input
@@ -99,7 +114,10 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="twitter">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="twitter"
+          >
             Твиттер
           </label>
           <input
@@ -115,7 +133,10 @@ const UserSocialAccountForm: FC<UserSocialAccountFormProps> = ({ user = {} as IU
         </div>
 
         <div>
-          <label className="text-head text-base-medium mb-[9px] block" htmlFor="linkedin">
+          <label
+            className="text-head text-base-medium mb-[9px] block"
+            htmlFor="linkedin"
+          >
             Линкэдин
           </label>
           <input
