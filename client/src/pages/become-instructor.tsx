@@ -1,3 +1,5 @@
+import "swiper/css";
+
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import { IInstructor } from "@/interfaces/user";
@@ -9,11 +11,12 @@ import science from "../assets/instructor-2.svg";
 import online from "../assets/instructor-3.svg";
 import certificate from "../assets/instructor-4.svg";
 import main from "../assets/instructor-5.svg";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { useRouter } from "next/router";
 import Tab, { TabHeaderItem } from "@/components/global/Tab";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "./_app";
+import { useContext } from "react";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface BecomeInstructorPageProps {
   instructors: IInstructor[];
@@ -46,18 +49,18 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
 
   const tabContents: JSX.Element[] = [tabOne];
 
-  const { user, isLoading, mutate } = useAuthenticate();
+  const { user, isUserLoading, setUser } = useContext(AuthContext);
   const router = useRouter();
 
   const submitHandler = (): void => {
-    if (!user && !isLoading) {
+    if (!user && !isUserLoading) {
       router.push("/auth/login");
     }
 
-    if (user && !isLoading) {
+    if (user && !isUserLoading) {
       axiosInstance.post(`/api/instructors/becomeInstructor`).then((res) => {
         if (res.status === 200) {
-          mutate({ ...user, role: { ...user.role, slug: "instructor" } });
+          setUser({ ...user, role: { ...user.role, slug: "instructor" } });
           router.push("/instructors/dashboard");
         }
       });

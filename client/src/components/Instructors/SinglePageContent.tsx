@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import CourseCard from "../../components/Courses/CourseCard";
 import { IInstructor } from "@/interfaces/user";
 import Tab, { TabHeaderItem } from "../global/Tab";
-import { useAuthenticate } from "@/hooks/useAuthenticate";
 import { ICourse } from "@/interfaces/courses";
 import { fetcher } from "@/utils/fetcher";
 import useSwr from "swr";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface SinglePageContentProps {
   instructor: IInstructor;
@@ -14,7 +14,7 @@ interface SinglePageContentProps {
 
 const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   const [descriptionHide, setDescriptionHide] = useState(true);
-  const { user } = useAuthenticate();
+  const { user } = useContext(AuthContext);
 
   const { data: boughtCourses, isLoading: boughtCoursesLoading } = useSwr(
     user && "/api/courses/user",
