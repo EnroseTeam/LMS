@@ -35,7 +35,9 @@ const Header: FC = () => {
 
   const { data: courses } = useSWR(
     categories &&
-      `/api/courses?category=${categories.body.map((category) => category.slug).join(",")}`,
+      `/api/courses?category=${categories.body
+        .map((category) => category.slug)
+        .join(",")}`,
     fetcher<{ body: ICourse[] }>
   );
 
@@ -46,7 +48,9 @@ const Header: FC = () => {
   const [userDropdown, setUserDropdown] = useState<boolean>(false);
   const [mobileMenuShow, setMobileMenuShow] = useState<boolean>(false);
 
-  const [headerCategories, setHeaderCategories] = useState<HeaderMenuItem[]>([]);
+  const [headerCategories, setHeaderCategories] = useState<HeaderMenuItem[]>(
+    []
+  );
 
   const HeaderMenuItems: HeaderMenuItem[] = [
     { title: "Нүүр хуудас", link: "/" },
@@ -58,6 +62,7 @@ const Header: FC = () => {
     { title: "Багш, сургагч", link: "/instructors" },
     { title: "Мэдээ", link: "/blogs" },
     { title: "Бидний тухай", link: "/about-us" },
+    { title: "Холбогдох", link: "/contact-us" },
   ];
 
   useEffect(() => {
@@ -110,7 +115,10 @@ const Header: FC = () => {
             <RiMenu4Fill size={24} />
             <span>Ангилалууд</span>
             {categories && courses && (
-              <NavbarDropdownLarge categories={categories.body} courses={courses.body} />
+              <NavbarDropdownLarge
+                categories={categories.body}
+                courses={courses.body}
+              />
             )}
           </div>
         </div>
@@ -125,7 +133,9 @@ const Header: FC = () => {
                   {menuItem.title}
                   {menuItem.children && <HiChevronDown size={18} />}
                 </Link>
-                {menuItem.children && <NavbarDroprown headerMenuChildren={menuItem.children} />}
+                {menuItem.children && (
+                  <NavbarDroprown headerMenuChildren={menuItem.children} />
+                )}
               </li>
             ))}
           </ul>
@@ -153,7 +163,10 @@ const Header: FC = () => {
               <FiShoppingBag />
             </button>
 
-            <OpenCart openCartShow={openCartShow} setOpenCartShow={setOpenCartShow} />
+            <OpenCart
+              openCartShow={openCartShow}
+              setOpenCartShow={setOpenCartShow}
+            />
           </div>
 
           <button
@@ -202,7 +215,10 @@ const Header: FC = () => {
           )}
         </div>
       </div>
-      <SearchBar searchBarShow={searchBarShow} setSearchBarShow={setSearchBarShow} />
+      <SearchBar
+        searchBarShow={searchBarShow}
+        setSearchBarShow={setSearchBarShow}
+      />
       <MobileMenu
         menuItems={HeaderMenuItems}
         mobileMenuShow={mobileMenuShow}

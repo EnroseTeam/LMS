@@ -4,19 +4,19 @@ import AccordionAlternative from "@/components/global/AccordionAlternative";
 const ContactUs: FC = () => (
   <>
     <div className="bg-bg-5">
-      <div className="container grid grid-cols-2 relative pt-[212px]">
-        <div className="flex flex-col gap-1 px-[70px]">
-          <h1 className="font-[700] text-[40px] leading-[46px]">
+      <div className="container grid grid-cols-1 xl:grid-cols-2 relative pt-[45px] sm:pt-[90px] xl:pt-[212px]">
+        <div className="flex flex-col items-center xl:items-start gap-1 px-5 md:px-[70px]">
+          <h1 className="font-[700] text-[40px] leading-[46px] text-center xl:text-left">
             Бидэнтэй холбогдох
           </h1>
-          <p className="text-lg-regular text-text mb-[175px] w-[70%]">
+          <p className="text-lg-regular text-text mb-[50px] xl:mb-[175px] text-center xl:text-left">
             We’re On A Mission To Deliver Engaging, Curated Courses At A
             Reasonable Price.
           </p>
         </div>
-        <div className="absolute bg-white flex flex-col rounded-lg top-[212px] right-0 p-[40px] shadow-shadow-3">
+        <div className="xl:absolute bg-white flex flex-col rounded-lg top-[212px] right-0 p-[40px] shadow-shadow-3 mb-5 mx-5">
           <h3 className="text-2xl-medium mb-[25px] text-head">Мессеж Илгээх</h3>
-          <p className="text-md-regular mb-[60px] text-text w-[80%]">
+          <p className="text-md-regular mb-[60px] text-text">
             Neque convallis a cras semper auctor. Libero id faucibus nisl
             tincidunt egetnvallis.
           </p>
@@ -69,10 +69,10 @@ const ContactUs: FC = () => (
         </div>
       </div>
     </div>
-    <div className="container px-[70px] mb-[124px] pt-[90px] grid grid-cols-2">
+    <div className="container px-[70px] mb-[60px] md:mb-[124px] pt-[90px] grid grid-cols-1 xl:grid-cols-2">
       <div>
         <h3 className="text-2xl-medium text-head mb-[40px]">Манай Оффисууд</h3>
-        <div className="grid grid-cols-2 gap-x-[90px] gap-y-[40px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[90px] gap-y-[40px]">
           <div>
             <h4 className="text-head text-[20px] font-[500] leading-[23px] mb-[20px]">
               Улаанбаатар
@@ -115,7 +115,7 @@ const ContactUs: FC = () => (
       </div>
     </div>
     <div className="bg-bg-1" id="faq">
-      <div className="container px-[270px] py-[120px]">
+      <div className="container px-[50px] md:[100px] py-[60px] lg:px-[170px] xl:px-[270px] md:py-[120px]">
         <h1 className="text-center text-head text-3xl-bold mb-[9px]">
           Түгээмэл Асуултууд
         </h1>
