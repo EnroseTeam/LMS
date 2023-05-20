@@ -21,6 +21,7 @@ import searchRoutes from "./routes/search";
 import blogRoutes from "./routes/blog";
 import userOrderRoutes from "./routes/userOrder";
 import instructorRoutes from "./routes/instructors";
+import courseReviewAnswerRoutes from "./routes/courseReviewAnswer";
 
 const app: Express = express();
 
@@ -62,6 +63,7 @@ app.use("/api/files", fileRoutes);
 app.use("/api/courses/categories", courseCategoryRoutes);
 app.use("/api/courses/lessons", courseLessonRoutes);
 app.use("/api/courses/levels", courseLevelRoutes);
+app.use("/api/courses/reviews/answers", courseReviewAnswerRoutes);
 app.use("/api/courses/reviews", courseReviewRoutes);
 app.use("/api/courses/sections", courseSectionRoutes);
 app.use("/api/courses", courseRoutes);
