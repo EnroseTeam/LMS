@@ -69,7 +69,7 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) =
         <h2 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Сэтгэгдлүүд</h2>
         <div className="flex flex-col gap-[30px] mb-[30px]">
           {intitalReviews.map((review) => (
-            <ReviewCard key={review._id} review={review} />
+            <ReviewCard key={review._id} review={review} instructor={course.instructor} />
           ))}
         </div>
 
