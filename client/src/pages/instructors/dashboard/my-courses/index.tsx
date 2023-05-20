@@ -206,7 +206,7 @@ interface CourseWrapperProps {
 const CourseWrapper: FC<CourseWrapperProps> = ({ children, sidebarShow }) => (
   <div
     className={classNames(
-      "grid gap-[30px] mb-[30px] -mt-[30px] grid-cols-1 md:grid-cols-2",
+      "grid gap-[30px] mb-[30px] grid-cols-1 md:grid-cols-2",
       {
         "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4": sidebarShow,
       },
