@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import MainLayout from "@/layouts/MainLayout";
 import { AuthProvider } from "@/contexts/AuthContext";
+import LoadingScreen from "@/components/utils/LoadingScreen";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -25,6 +26,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.E
       <AuthProvider>
         <ThemeProvider attribute="class">
           {getLayout(<Component {...pageProps} />)}
+          <LoadingScreen />
           <ToastContainer
             position="top-right"
             autoClose={5000}

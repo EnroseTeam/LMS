@@ -9,25 +9,29 @@ import classNames from "classnames";
 import SidebarMenuItem, { MenuItemType } from "./SidebarMenuItem";
 
 import { RxDashboard } from "react-icons/rx";
+import { MdOutlinePlayLesson, MdLogout } from "react-icons/md";
+import { HiOutlineNewspaper } from "react-icons/hi";
 
 interface SidebarProps {
   sidebarShow: boolean;
   setSidebarShow: Dispatch<SetStateAction<boolean>>;
 }
 
-const MenuItems: MenuItemType[] = [
-  { name: "Dashboard", link: "/", Icon: RxDashboard, child: [{ name: "Test", link: "/" }] },
-  { name: "Dashboard", link: "/", Icon: RxDashboard },
-  { name: "Dashboard", link: "/", Icon: RxDashboard },
-  { name: "Dashboard", link: "/", Icon: RxDashboard },
-  { name: "Dashboard", link: "/", Icon: RxDashboard },
-  { name: "Dashboard", link: "/", Icon: RxDashboard },
-  { name: "Dashboard", link: "/", Icon: RxDashboard, child: [{ name: "Test", link: "/" }] },
-  { name: "Dashboard", link: "/", Icon: RxDashboard, child: [{ name: "Test", link: "/" }] },
-];
-
 const Sidebar: FC<SidebarProps> = ({ sidebarShow, setSidebarShow }) => {
-  console.log("kkk");
+  const MenuItems: MenuItemType[] = [
+    { name: "Хянах самбар", link: "/", Icon: RxDashboard },
+    {
+      name: "Сургалт",
+      link: "/courses",
+      Icon: MdOutlinePlayLesson,
+      child: [
+        { name: "Хүсэлтүүд", link: "/courses/requests" },
+        { name: "Ангилалууд", link: "/courses/categories" },
+      ],
+    },
+    { name: "Мэдээ", link: "/blogs", Icon: HiOutlineNewspaper },
+    { name: "Гарах", link: "/auth/logout", Icon: MdLogout },
+  ];
 
   return (
     <>
@@ -57,7 +61,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarShow, setSidebarShow }) => {
           {/* Sidebar Menu */}
           <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
             {/* Menu Group */}
-            <ul className="mb-6 flex flex-col gap-1.5">
+            <ul className="mb-6 flex flex-col gap-3">
               {/* Menu Item Dashboard */}
               {MenuItems.map((item, index) => (
                 <SidebarMenuItem key={index} menuItem={item} />
