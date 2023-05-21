@@ -1,16 +1,14 @@
 import Image from "next/image";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
 import classNames from "classnames";
-
-import plcHolder from "@/assets/placeholder.png";
 import logo from "@/assets/logo-icon.svg";
-
 import { HiMagnifyingGlass, HiOutlineBell, HiOutlineCog6Tooth } from "react-icons/hi2";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { FiChevronDown, FiUser } from "react-icons/fi";
 import { MdOutlineContacts, MdLogout } from "react-icons/md";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Link from "next/link";
+import { AuthContext } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   setSidebarShow: Dispatch<SetStateAction<boolean>>;
@@ -19,6 +17,8 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ setSidebarShow }) => {
   const [userDropdownShow, setUserDropdownShow] = useState<boolean>(false);
   const [notificationDropdownShow, setNotificationDropdownShow] = useState<boolean>(false);
+
+  const { user, isUserLoading } = useContext(AuthContext);
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -158,81 +158,83 @@ const Header: FC<HeaderProps> = ({ setSidebarShow }) => {
             {/* Notification Menu Area */}
           </ul>
           {/* User Area */}
-          <div className="relative">
-            <div className="flex items-center gap-4">
-              <span className="hidden text-right lg:block">
-                <span className="block text-sm font-medium text-black dark:text-white">
-                  Thomas Anree
+          {!isUserLoading && user && (
+            <div className="relative">
+              <div className="flex items-center gap-4">
+                <span className="hidden text-right lg:block">
+                  <span className="block text-sm font-medium text-black dark:text-white">
+                    {user.fullName}
+                  </span>
+                  <span className="block text-xs font-medium">Админ</span>
                 </span>
-                <span className="block text-xs font-medium">UX Designer</span>
-              </span>
-              <button
-                onClick={(): void => {
-                  setUserDropdownShow(!userDropdownShow);
-                }}
-                className="flex items-center gap-2"
-              >
-                <span className="h-12 w-12 rounded-full overflow-hidden">
-                  <Image
-                    src={plcHolder}
-                    alt="User"
-                    width={96}
-                    height={96}
-                    className="w-full h-full aspect-square object-cover"
+                <button
+                  onClick={(): void => {
+                    setUserDropdownShow(!userDropdownShow);
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <span className="h-12 w-12 rounded-full overflow-hidden">
+                    <Image
+                      src={user.avatar}
+                      alt={user.fullName}
+                      width={96}
+                      height={96}
+                      className="w-full h-full aspect-square object-cover"
+                    />
+                  </span>
+                  <FiChevronDown
+                    size={20}
+                    className={classNames("hidden text-current sm:block duration-200", {
+                      "-rotate-180": userDropdownShow,
+                    })}
                   />
-                </span>
-                <FiChevronDown
-                  size={20}
-                  className={classNames("hidden text-current sm:block duration-200", {
-                    "-rotate-180": userDropdownShow,
-                  })}
-                />
-              </button>
+                </button>
+              </div>
+              {/* Dropdown Start */}
+              <div
+                className={classNames(
+                  "absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark duration-150",
+                  { "opacity-100": userDropdownShow },
+                  { "opacity-0 pointer-events-none": !userDropdownShow }
+                )}
+              >
+                <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark ">
+                  <li>
+                    <a
+                      href="profile.html"
+                      className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                    >
+                      <FiUser size={24} className="text-current" />
+                      My Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                    >
+                      <MdOutlineContacts size={24} className="text-current" />
+                      My Contacts
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="settings.html"
+                      className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                    >
+                      <HiOutlineCog6Tooth size={24} className="text-current" />
+                      Account Settings
+                    </a>
+                  </li>
+                </ul>
+                <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                  <MdLogout size={24} className="text-current" />
+                  Log Out
+                </button>
+              </div>
+              {/* Dropdown End */}
             </div>
-            {/* Dropdown Start */}
-            <div
-              className={classNames(
-                "absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark duration-150",
-                { "opacity-100": userDropdownShow },
-                { "opacity-0 pointer-events-none": !userDropdownShow }
-              )}
-            >
-              <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark ">
-                <li>
-                  <a
-                    href="profile.html"
-                    className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-                  >
-                    <FiUser size={24} className="text-current" />
-                    My Profile
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-                  >
-                    <MdOutlineContacts size={24} className="text-current" />
-                    My Contacts
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="settings.html"
-                    className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-                  >
-                    <HiOutlineCog6Tooth size={24} className="text-current" />
-                    Account Settings
-                  </a>
-                </li>
-              </ul>
-              <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
-                <MdLogout size={24} className="text-current" />
-                Log Out
-              </button>
-            </div>
-            {/* Dropdown End */}
-          </div>
+          )}
           {/* User Area */}
         </div>
       </div>

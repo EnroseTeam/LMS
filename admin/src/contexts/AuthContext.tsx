@@ -2,7 +2,15 @@ import { IUser } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { Dispatch, FC, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -20,14 +28,17 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("isLoggedIn") as string) : false
-  );
+
   const [user, setUser] = useState<IUser | undefined>(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("isAdminLoggedIn") as string)
+      : false
+  );
   const [isUserLoading, setIsUserLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    localStorage.setItem("isLoggedIn", "" + isLoggedIn);
+    localStorage.setItem("isAdminLoggedIn", "" + isLoggedIn);
 
     const fetchCurrent = async (): Promise<void> => {
       try {
