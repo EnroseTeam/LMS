@@ -39,11 +39,14 @@ const LoginPage: NextPageWithLayout = () => {
           return;
         }
 
-        await axiosInstance.post<{ message: string; body: IUser }>("/api/auth/login", {
-          email,
-          password,
-          remember,
-        });
+        await axiosInstance.post<{ message: string; body: IUser }>(
+          "/api/auth/login",
+          {
+            email,
+            password,
+            remember,
+          }
+        );
 
         setIsLoggedIn(true);
 
@@ -52,7 +55,10 @@ const LoginPage: NextPageWithLayout = () => {
         }, 400);
       } catch (error) {
         if (isAxiosError(error))
-          setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
         else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
       } finally {
         setIsSubmitting(false);
@@ -61,9 +67,11 @@ const LoginPage: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard">
+    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard mx-1 sm:mx-10">
       <div className="mb-[30px]">
-        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">Нэвтрэх</h1>
+        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">
+          Нэвтрэх
+        </h1>
         <p className="text-text text-md-regular">
           Манай сайтад бүртгэлгүй юу?{" "}
           <Link href="/auth/register" className="text-color-1">
@@ -71,7 +79,9 @@ const LoginPage: NextPageWithLayout = () => {
           </Link>
         </p>
       </div>
-      {errorMsg && <MessageBox className="mb-5" type="Error" message={errorMsg} />}
+      {errorMsg && (
+        <MessageBox className="mb-5" type="Error" message={errorMsg} />
+      )}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -97,7 +107,9 @@ const LoginPage: NextPageWithLayout = () => {
             placeholder="И-мэйл"
           />
           {!emailCorrect && (
-            <p className="text-red-500 text-md-medium mt-2">И-мэйл заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              И-мэйл заавал шаардлагатай.
+            </p>
           )}
         </div>
 
@@ -119,7 +131,9 @@ const LoginPage: NextPageWithLayout = () => {
             placeholder="Нууц үг"
           />
           {!passwordCorrect && (
-            <p className="text-red-500 text-md-medium mt-2">Нууц үг заавал шаардлагатай.</p>
+            <p className="text-red-500 text-md-medium mt-2">
+              Нууц үг заавал шаардлагатай.
+            </p>
           )}
         </div>
 
@@ -140,18 +154,25 @@ const LoginPage: NextPageWithLayout = () => {
             </label>
           </div>
 
-          <Link className="text-color-1 underline hover:text-color-1/70 duration-300" href="/">
+          <Link
+            className="text-color-1 underline hover:text-color-1/70 duration-300"
+            href="/"
+          >
             Нууц үгээ мартсан уу?
           </Link>
         </div>
 
-        <button type="submit" disabled={isSubmitting} className="block w-full py-4 btn-2 mb-5">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="block w-full py-4 btn-2 mb-5"
+        >
           Нэвтрэх
         </button>
 
         <p className="text-center text-md-medium mb-5">Эсвэл</p>
 
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col lg:flex-row items-center gap-5">
           <button className="flex items-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300">
             <FaFacebookF />
             Facebook-ээр нэвтрэх
