@@ -146,7 +146,7 @@ const RegisterPage: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard  sm:mx-10 md:mx-0">
+    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard mx-1 sm:mx-10 md:mx-0">
       <div className="mb-[30px]">
         <h1 className="text-head text-[30px] font-bold leading-9 mb-2">
           Бүртгүүлэх
