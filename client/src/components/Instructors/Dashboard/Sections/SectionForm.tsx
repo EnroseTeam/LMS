@@ -8,15 +8,17 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 
 interface SectionFormProps {
-  courseId: string;
-  afterCreate: (section: ICourseSection) => void;
+  courseId?: string;
+  section?: ICourseSection;
+  afterCreate?: (section: ICourseSection) => void;
+  afterUpdate?: (section: ICourseSection) => void;
 }
 
-const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate }) => {
+const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate, section, afterUpdate }) => {
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
 
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState<string>(section ? section.title : "");
   const [isNameExist, setIsNameExist] = useState<boolean>(true);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -32,17 +34,30 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate }) => {
           return setIsNameExist(false);
         }
 
-        const res = await axiosInstance.post<{ message: string; body: ICourseSection }>(
-          "/api/courses/sections",
-          {
-            title: name,
-            course: courseId,
-          }
-        );
+        if (courseId && afterCreate) {
+          const res = await axiosInstance.post<{ message: string; body: ICourseSection }>(
+            "/api/courses/sections",
+            {
+              title: name,
+              course: courseId,
+            }
+          );
 
-        toast.success(res.data.message);
-        afterCreate(res.data.body);
-        closeModal();
+          toast.success(res.data.message);
+          afterCreate(res.data.body);
+          closeModal();
+        }
+
+        if (section && afterUpdate) {
+          const res = await axiosInstance.patch<{ message: string; body: ICourseSection }>(
+            `/api/courses/sections/${section._id}`,
+            { title: name }
+          );
+
+          toast.success(res.data.message);
+          afterUpdate(res.data.body);
+          closeModal();
+        }
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error)) {
@@ -94,7 +109,7 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate }) => {
           }}
           className="btn-4 py-3 px-5 text-sm-medium"
         >
-          Нэмэх
+          {section ? "Хадгалах" : "Нэмэх"}
         </button>
         <button
           disabled={isSubmitting}

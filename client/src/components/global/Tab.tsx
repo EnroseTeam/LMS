@@ -36,7 +36,7 @@ const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {
         </div>
         <div className="absolute bottom-0 w-full h-[2px] bg-border-1 z-[1]" />
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-hidden">
         {tabContents.map((tabContent, index) => (
           <div
             key={`tab-content-${index}`}
