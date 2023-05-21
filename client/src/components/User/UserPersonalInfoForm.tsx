@@ -161,7 +161,7 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
             </div>
           )}
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="mb-[9px] text-head text-base-medium">Таны зураг</h3>
           <p className="mb-[14px] text-text text-sm-regular">
             2мб-ээс дээшгүй зурган файл байх ёстой.
