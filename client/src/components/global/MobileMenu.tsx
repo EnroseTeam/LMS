@@ -1,4 +1,3 @@
-import { IUser } from "@/interfaces/user";
 import Link from "next/link";
 import { FC, useState, useEffect, useContext } from "react";
 import { BsInstagram } from "react-icons/bs";
@@ -17,11 +16,17 @@ interface MobileMenuProps {
   closeMobileMenu: () => void;
 }
 
-const MobileMenu: FC<MobileMenuProps> = ({ menuItems, mobileMenuShow, closeMobileMenu }) => {
+const MobileMenu: FC<MobileMenuProps> = ({
+  menuItems,
+  mobileMenuShow,
+  closeMobileMenu,
+}) => {
   const router = useRouter();
   const { user, isLoggedIn } = useContext(AuthContext);
 
-  const [childrenStates, setChildrenStates] = useState<boolean[]>(menuItems.map(() => false));
+  const [childrenStates, setChildrenStates] = useState<boolean[]>(
+    menuItems.map(() => false)
+  );
   const [userMenuShow, setUserMenuShow] = useState<boolean>(false);
 
   const closeAllChildren = (): void => {
@@ -66,17 +71,26 @@ const MobileMenu: FC<MobileMenuProps> = ({ menuItems, mobileMenuShow, closeMobil
         <div className="py-5 pl-5 border-b border-b-border-1 flex items-center gap-[30px] text-md-regular">
           {(!isLoggedIn || !user) && (
             <>
-              <Link className="hover:text-color-1 duration-300" href="/auth/login">
+              <Link
+                className="hover:text-color-1 duration-300"
+                href="/auth/login"
+              >
                 Нэвтрэх
               </Link>
-              <Link className="hover:text-color-1 duration-300" href="/auth/register">
+              <Link
+                className="hover:text-color-1 duration-300"
+                href="/auth/register"
+              >
                 Бүртгүүлэх
               </Link>
             </>
           )}
           {isLoggedIn && user && (
             <>
-              <button className={`hover:text-color-1 duration-300`} onClick={showUserMenu}>
+              <button
+                className={`hover:text-color-1 duration-300`}
+                onClick={showUserMenu}
+              >
                 {user.fullName}
               </button>
               <UserMobileMenu
