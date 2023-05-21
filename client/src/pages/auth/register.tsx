@@ -36,7 +36,8 @@ const RegisterPage: NextPageWithLayout = () => {
 
   const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const [isPasswordRequirementMet, setIsPasswordRequirementMet] = useState<boolean>(false);
+  const [isPasswordRequirementMet, setIsPasswordRequirementMet] =
+    useState<boolean>(false);
 
   const [passwordRequirements, setPasswordRequirements] = useState([
     {
@@ -110,8 +111,12 @@ const RegisterPage: NextPageWithLayout = () => {
           if (!email) setEmailExist(false);
           if (!phone) setPhoneExist(false);
           if (!password) setPasswordExist(false);
-          if (!agreement) setErrorMsg("Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай.");
-          if (!isPasswordRequirementMet) setErrorMsg("Нууц үг шаардлага хангахгүй байна");
+          if (!agreement)
+            setErrorMsg(
+              "Үйлчилгээний нөхцөлийг заавал зөвшөөрөх шаардлагатай."
+            );
+          if (!isPasswordRequirementMet)
+            setErrorMsg("Нууц үг шаардлага хангахгүй байна");
 
           return;
         }
@@ -130,7 +135,10 @@ const RegisterPage: NextPageWithLayout = () => {
         router.back();
       } catch (error) {
         if (isAxiosError(error))
-          setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+          setErrorMsg(
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
+          );
       } finally {
         setIsSubmitting(false);
       }
@@ -138,9 +146,11 @@ const RegisterPage: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard">
+    <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard  sm:mx-10 md:mx-0">
       <div className="mb-[30px]">
-        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">Бүртгүүлэх</h1>
+        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">
+          Бүртгүүлэх
+        </h1>
         <p className="text-text text-md-regular">
           Манай сайтад бүртгэлтэй юу?{" "}
           <Link href="/auth/login" className="text-color-1">
@@ -148,7 +158,9 @@ const RegisterPage: NextPageWithLayout = () => {
           </Link>
         </p>
       </div>
-      {errorMsg && <MessageBox type="Error" message={errorMsg} className="mb-5" />}
+      {errorMsg && (
+        <MessageBox type="Error" message={errorMsg} className="mb-5" />
+      )}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -156,7 +168,7 @@ const RegisterPage: NextPageWithLayout = () => {
         }}
         className="text-head"
       >
-        <div className="grid grid-cols-2 gap-5 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
           <div className="w-full">
             <label className="block mb-2 text-lg-medium" htmlFor="firstName">
               Нэр
@@ -175,7 +187,9 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="Нэр"
             />
             {!firstNameExist && (
-              <p className="text-red-500 text-md-medium mt-2">Нэр заавал шаардлагатай.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                Нэр заавал шаардлагатай.
+              </p>
             )}
           </div>
 
@@ -197,7 +211,9 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="Овог"
             />
             {!lastNameExist && (
-              <p className="text-red-500 text-md-medium mt-2">Овог заавал шаардлагатай.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                Овог заавал шаардлагатай.
+              </p>
             )}
           </div>
 
@@ -219,7 +235,9 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="И-мэйл"
             />
             {!emailExist && (
-              <p className="text-red-500 text-md-medium mt-2">И-мэйл заавал шаардлагатай.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                И-мэйл заавал шаардлагатай.
+              </p>
             )}
           </div>
 
@@ -241,11 +259,13 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="Утасны дугаар"
             />
             {!phoneExist && (
-              <p className="text-red-500 text-md-medium mt-2">Утасны дугаар заавал шаардлагатай.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                Утасны дугаар заавал шаардлагатай.
+              </p>
             )}
           </div>
 
-          <div className="w-[300px]">
+          <div className="w-full">
             <label className="block mb-2 text-lg-medium" htmlFor="password">
               Нууц үг
             </label>
@@ -263,11 +283,13 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="Нууц үг"
             />
             {!passwordExist && (
-              <p className="text-red-500 text-md-medium mt-2">Нууц үг заавал шаардлагатай.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                Нууц үг заавал шаардлагатай.
+              </p>
             )}
           </div>
 
-          <div className="w-[300px]">
+          <div className="w-full">
             <label className="block mb-2 text-lg-medium" htmlFor="repassword">
               Нууц үг давтах
             </label>
@@ -284,7 +306,9 @@ const RegisterPage: NextPageWithLayout = () => {
               placeholder="Нууц үг давтах"
             />
             {!rePasswordMatch && (
-              <p className="text-red-500 text-md-medium mt-2">Давтан нууц үг таарахгүй байна.</p>
+              <p className="text-red-500 text-md-medium mt-2">
+                Давтан нууц үг таарахгүй байна.
+              </p>
             )}
           </div>
         </div>
@@ -322,13 +346,17 @@ const RegisterPage: NextPageWithLayout = () => {
           </label>
         </div>
 
-        <button disabled={isSubmitting} type="submit" className="w-full btn-2 block mb-5">
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          className="w-full btn-2 block mb-5"
+        >
           Бүртгүүлэх
         </button>
 
         <p className="text-center text-md-medium mb-5">Эсвэл</p>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Link
             href={"/"}
             className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300"

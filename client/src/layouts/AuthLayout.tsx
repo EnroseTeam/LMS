@@ -35,8 +35,8 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
   return (
     <div className={roboto.className}>
       <AuthNavbar />
-      <main className="min-w-screen min-h-screen grid grid-cols-3">
-        <div className="col-span-1 bg-head relative overflow-hidden grid place-items-center">
+      <main className="min-w-screen min-h-screen grid grid-cols-1 xl:grid-cols-3">
+        <div className="col-span-1 bg-head relative overflow-hidden hidden xl:grid place-items-center ">
           <Image
             src={authShapes}
             alt="Background shape"
@@ -44,7 +44,11 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
           />
           <div className="relative">
             <div className="w-[400px] h-[400px] bg-color-1 rounded-full overflow-hidden">
-              <Image src={authBg} alt="Studying" className="w-full aspect-square object-cover" />
+              <Image
+                src={authBg}
+                alt="Studying"
+                className="w-full aspect-square object-cover"
+              />
             </div>
 
             <div className="absolute overflow-hidden w-[90px] h-[90px] bg-[#efccc7] rounded-full top-20 -left-8">
@@ -72,7 +76,9 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
             </div>
           </div>
         </div>
-        <div className="col-span-2 bg-bg-5 grid place-items-center">{children}</div>
+        <div className="col-span-1 xl:col-span-2 bg-bg-5 grid place-items-center">
+          {children}
+        </div>
       </main>
     </div>
   );
