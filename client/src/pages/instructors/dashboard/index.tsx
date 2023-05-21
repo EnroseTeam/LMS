@@ -252,12 +252,9 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
               {latestReviews.map((review) => (
                 <div
                   key={review._id}
-                  className="pb-5 border-b border-border-1 grid grid-cols-6 gap-[15px]"
+                  className="pb-5 border-b border-border-1 flex items-center gap-6"
                 >
-                  <Link
-                    href={"/instructors/dashboard/reviews"}
-                    className="rounded-full overflow-hidden relative group w-full block"
-                  >
+                  <div className="rounded-full overflow-hidden w-[80px] h-[80px]">
                     <Image
                       src={review.user.avatar}
                       width={500}
@@ -265,22 +262,21 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
                       alt={review.user.fullName}
                       className="w-full h-full object-cover aspect-square"
                     />
-                    <div className="absolute top-0 left-0 right-0 bottom-0 w-full group-hover:bg-color-2/50 duration-300" />
-                  </Link>
+                  </div>
 
-                  <div className="col-span-4 space-y-[15px]">
-                    <h2 className="text-head text-md-medium">{review.user.fullName}</h2>
-
-                    <div className="flex flex-col gap-4">
-                      <div className="flex items-center gap-4">
-                        <h5 className="text-head text-base-medium">{review.title}</h5>
-                        <div className="flex items-center gap-1 leading-none">
-                          <span className="text-[#E59819] text-sm-medium">{review.rating}</span>
-                          <RatingStar count={5} rating={review.rating} gap={4} />
-                        </div>
-                      </div>
-                      {review.text && <p className="text-text text-sm-regular">{review.text}</p>}
+                  <div className="flex-1 flex flex-col gap-[15px]">
+                    <div className="flex items-center gap-[10px]">
+                      <span className="text-[#E59819] text-sm-medium">
+                        {review.rating.toFixed(1)}
+                      </span>
+                      <RatingStar count={5} rating={review.rating} size={12} gap={5} />
                     </div>
+
+                    <p className="text-text text-base-medium">
+                      <q>{review.text}</q>
+                    </p>
+
+                    <h5 className="text-head text-md-medium">{review.user.fullName}</h5>
                   </div>
                 </div>
               ))}
