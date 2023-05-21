@@ -1,36 +1,38 @@
-import { FC, useState } from "react";
-import { axiosInstance } from "@/utils/axiosInstance";
-import { IBlog } from "@/interfaces/blogs";
 import { useModal } from "@/hooks/useModal";
-import { isAxiosError } from "axios";
-
+import { ICourseCategory } from "@/interfaces/courses";
+import { FC, useState } from "react";
 import Image from "next/image";
-
 import { HiOutlineTrash } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineWarning } from "react-icons/ai";
-import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { axiosInstance } from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
+import { isAxiosError } from "axios";
 
 interface SingleBlogRowProps {
-  blog: IBlog;
+  category: ICourseCategory;
 }
 
-interface BlogDeleteModalContentProps {
-  blog: IBlog;
+interface CategoryDeleteModalContentProps {
+  category: ICourseCategory;
   closeModal: () => void;
 }
 
-const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
+const SingleCategoryRow: FC<SingleBlogRowProps> = ({ category }) => {
   const { showModal, closeModal } = useModal();
 
   const showDeletePrompt = (): void => {
     showModal({
-      title: "Мэдээ устгах",
-      content: <BlogDeleteModalContent blog={blog} closeModal={closeModal} />,
+      title: "Ангилал устгах",
+      content: (
+        <CategoryDeleteModalContent
+          category={category}
+          closeModal={closeModal}
+        />
+      ),
     });
   };
-
   return (
     <>
       <div className="grid grid-cols-6 gap-2 border-t border-stroke py-4.5 px-4 dark:border-strokedark md:px-6 2xl:px-7.5">
@@ -40,29 +42,29 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
               <Image
                 width={120}
                 height={100}
-                src={blog.picture}
+                src={category.image}
                 alt="Product"
                 className="w-full h-full object-cover aspect-[1.2/1]"
               />
             </div>
             <p className="font-medium text-sm text-black dark:text-white">
-              {blog.name}
+              {category.name}
             </p>
           </div>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
           <p className="font-medium text-sm text-black dark:text-white">
-            {blog.description}
+            {category.description}
           </p>
         </div>
         <div className="col-span-1 flex items-center">
           <p className="font-medium text-sm text-black dark:text-white">
-            {new Date(blog.updatedAt).toLocaleDateString()}
+            {category.courseCount}
           </p>
         </div>
         <div className="col-span-1 flex items-center">
           <p className="font-medium text-sm text-black dark:text-white">
-            {blog.user ? blog.user.fullName : ""}
+            {new Date(category.updatedAt).toLocaleDateString()}
           </p>
         </div>
         <div className="col-span-1 flex items-center gap-3 pl-4">
@@ -80,8 +82,8 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
   );
 };
 
-const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
-  blog,
+const CategoryDeleteModalContent: FC<CategoryDeleteModalContentProps> = ({
+  category,
   closeModal,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -91,12 +93,12 @@ const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
     try {
       setIsSubmitting(true);
 
-      await axiosInstance.delete(`/api/blogs/${blog._id}`);
+      await axiosInstance.delete(`/api/courses/categories/${category._id}`);
 
-      toast.success("Сэдэв амжилттай устлаа.");
+      toast.success("Ангилал амжилттай устлаа.");
       closeModal();
       router.push({
-        pathname: "/blogs",
+        pathname: "/courses/categories",
         query: { ...router.query },
       });
     } catch (error) {
@@ -119,7 +121,7 @@ const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
         <AiOutlineWarning size={35} />
       </div>
       <h5 className="text-md-medium text-head max-w-[45ch] text-center">
-        Та {blog.name} нэртэй мэдээг устгахдаа итгэлтэй байна уу?
+        Та {category.name} нэртэй ангилал устгахдаа итгэлтэй байна уу?
       </h5>
       <div className="flex items-center gap-3">
         <button
@@ -143,4 +145,4 @@ const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
   );
 };
 
-export default SingleBlogRow;
+export default SingleCategoryRow;
