@@ -78,7 +78,7 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({
           { title: "Багш, сургагчаар элсэх", link: "/become-instructor" },
         ]}
       />
-      <div className="container">
+      <div className="container px-10">
         <div className="flex flex-col text-center gap-1 mb-[60px]">
           <h1 className="font-[700] text-[40px] leading-[47px] pb-10 text-head">
             Багш, сургагчаар элсэх
@@ -135,7 +135,7 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({
         </div>
       </div>
       <div className="bg-bg-1 w-screen">
-        <div className="container flex-col pt-[120px] pb-24 lg:pb-[183px] flex gap-[174px] items-center">
+        <div className="container flex-col lg:flex-row pt-[120px] pb-24 lg:pb-[183px] flex gap-[174px] items-center">
           <div className="relative">
             <div className="max-w-[600px] max-h-[600px] rounded-full overflow-hidden bg-color-1">
               <Image
@@ -160,16 +160,16 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({
               </div>
             </div>
           </div>
-          <div className="w-[100%] lg:w-[50%]">
-            <h1 className="text-4xl-bold text-head lg:mb-[25px] w-[80%]">
+          <div className="w-[100%] lg:w-[50%] flex flex-col items-center lg:items-start lg:justify-start justify-center">
+            <h1 className="lg:text-4xl-bold text-3xl-bold text-head text-center lg:text-left mb-4  lg:mb-[25px] w-[80%]">
               <span className="text-color-1">Яг Одоо </span> <br />
               Багш болцгооё
             </h1>
-            <p className="text-md-regular text-head mb-[30px]  w-[60%]">
+            <p className="text-md-regular text-center lg:text-left text-head mb-[30px]  w-[60%]">
               Use the list below to bring attention to your product’s key
               differentiator.
             </p>
-            <button onClick={submitHandler} className="btn-3">
+            <button onClick={submitHandler} className=" btn-3 ">
               Манай Багт Нэгдээрэй
             </button>
           </div>
