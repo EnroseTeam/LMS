@@ -18,7 +18,7 @@ interface BlogParams {
 export const getBlogs: RequestHandler = async (req, res, next) => {
   try {
     //Хуудаслалт
-    const { pageSize = "2", page = "1" } = req.query;
+    const { pageSize = "10", page = "1" } = req.query;
 
     const blogs = await BlogModel.find()
       .populate("user")
@@ -78,15 +78,15 @@ export const createBlog: RequestHandler<
   try {
     if (!name) throw createHttpError(400, "Нэр заавал шаардлагатай");
     if (!text) throw createHttpError(400, "Нэр заавал шаардлагатай");
-    if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай.");
-    if (!user) throw createHttpError(400, "Хэрэглэгч заавал шаардлагатай");
+    // if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай.");
+    // if (!user) throw createHttpError(400, "Хэрэглэгч заавал шаардлагатай");
 
     const newBlog = await BlogModel.create({
       name,
       description,
       text,
-      picture,
-      user,
+      // picture,
+      // user,
     });
 
     res.status(201).json({

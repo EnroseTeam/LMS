@@ -41,7 +41,7 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => (
       </div>
       <div className="col-span-1 flex items-center">
         <p className="font-medium text-sm text-black dark:text-white">
-          {blog.user.fullName}
+          {blog.user ? blog.user.fullName : ""}
         </p>
       </div>
       <div className="col-span-1 flex items-center gap-3 pl-4">
