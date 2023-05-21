@@ -9,21 +9,17 @@ interface SinglePageSectionContentProps {
   course: ICourse;
 }
 
-const SinglePageSectionContent: FC<SinglePageSectionContentProps> = ({
-  course,
-}) => (
+const SinglePageSectionContent: FC<SinglePageSectionContentProps> = ({ course }) => (
   <div className="flex flex-col gap-[10px]">
     {course.sections.map((section, index) => (
       <Accordion
         key={section._id}
         state={index === 0}
         header={
-          <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col smallest:flex-row items-start smallest:items-center justify-between w-full">
             <h1 className="text-base-medium">{section.title}</h1>
             <div className="text-text text-md-regular flex items-center">
-              <p className='after:content-["•"] after:mx-2'>
-                {section.lessons.length} хичээл
-              </p>
+              <p className='after:content-["•"] after:mx-2'>{section.lessons.length} хичээл</p>
               <p>87 min</p>
             </div>
           </div>
@@ -34,9 +30,9 @@ const SinglePageSectionContent: FC<SinglePageSectionContentProps> = ({
               <Link
                 key={lesson._id}
                 href={`/lessons/${lesson._id}`}
-                className="flex items-center justify-between group"
+                className="flex flex-col smallest:flex-row items-start smallest:items-center justify-between group gap-2 smallest:gap-0"
               >
-                <span className="flex items-center gap-[10px] w-[50%]">
+                <span className="flex items-center gap-[10px] w-full smallest:w-1/2">
                   <div className="p-2 rounded-full bg-color-1/[.07] text-color-1 group-hover:bg-color-1 group-hover:text-white duration-300">
                     <BsPlayFill size={12} />
                   </div>
@@ -44,7 +40,7 @@ const SinglePageSectionContent: FC<SinglePageSectionContentProps> = ({
                     {lesson.name}
                   </h3>
                 </span>
-                <p className="text-text text-md-regular underline">
+                <p className="text-text text-md-regular underline self-end smallest:self-auto">
                   {lesson.length.hour > 0 && `${lesson.length.hour} цаг`}
                   {lesson.length.minute > 0 && `${lesson.length.minute} минут`}
                 </p>

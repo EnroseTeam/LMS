@@ -1,6 +1,6 @@
-import { IUser } from '@/interfaces/user';
-import Image from 'next/image';
-import { FC } from 'react';
+import { IUser } from "@/interfaces/user";
+import Image from "next/image";
+import { FC } from "react";
 
 interface SinglePageInstructorContentProps {
   instuctor: IUser;
@@ -9,7 +9,7 @@ interface SinglePageInstructorContentProps {
 const SinglePageInstructorContent: FC<SinglePageInstructorContentProps> = ({ instuctor }) => (
   <div className="flex flex-col gap-[30px]">
     <h1 className="text-head text-xl font-medium leading-[23px]">Instructor</h1>
-    <div className="flex items-center gap-5">
+    <div className="flex flex-col smallest:flex-row items-start smallest:items-center gap-5">
       <div className="w-[120px] h-[120px] rounded-full overflow-hidden">
         <Image
           alt="Instructor"
@@ -19,7 +19,7 @@ const SinglePageInstructorContent: FC<SinglePageInstructorContentProps> = ({ ins
           className="object-cover w-full aspect-square"
         />
       </div>
-      <div>
+      <div className="smallest:flex-1">
         <h2 className="text-head text-lg-medium mb-[5px]">{instuctor.firstName}</h2>
         <p className="text-text text-md-regular mb-[11px]">President of Sales</p>
         <div className="flex items-center gap-5 text-text text-xs-regular">
