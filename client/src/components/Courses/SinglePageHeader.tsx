@@ -39,11 +39,11 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
   const { user, isUserLoading } = useContext(AuthContext);
 
   const { data: userOwnCourses, isLoading: ownCoursesLoading } = useSwr(
-    user && "/api/courses/user",
+    user && "/api/courses/instructor",
     fetcher<{ body: ICourse[] }>
   );
   const { data: userBoughtCourses, isLoading: boughtCoursesLoading } = useSwr(
-    user && "/api/courses/instructor",
+    user && "/api/courses/user",
     fetcher<{ body: ICourse[] }>
   );
 

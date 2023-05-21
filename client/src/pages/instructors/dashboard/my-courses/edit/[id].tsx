@@ -6,8 +6,12 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { axiosInstance } from "@/utils/axiosInstance";
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import CourseInfoForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
+import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/AuthContext";
+import { fetcher } from "@/utils/fetcher";
+import useSwr from "swr";
 
 interface InstructorCoursesEditPageProps {
   course: ICourse;
@@ -53,10 +57,42 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
   levels,
   categories,
 }) => {
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
+
+  const {
+    data: userOwnCourses,
+    isLoading: ownCoursesLoading,
+    error: coursesError,
+  } = useSwr(user && "/api/courses/instructor", fetcher<{ body: ICourse[] }>);
+
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   const [activeStage, setActiveStage] = useState<"Info" | "Media">("Info");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
+
+  useEffect(() => {
+    if (!ownCoursesLoading && userOwnCourses && user) {
+      const ids: string[] = [];
+      for (const course of userOwnCourses.body) {
+        ids.push(course._id);
+      }
+
+      if (!ids.includes(course._id)) {
+        router.push("/instructors/dashboard/my-courses");
+      } else {
+        setIsReady(true);
+      }
+    }
+
+    if (!ownCoursesLoading && coursesError) {
+      router.push("/instructors/dashboard/my-courses");
+    }
+  }, [user, userOwnCourses, ownCoursesLoading, course, router, coursesError]);
+
+  if (!isReady) return <></>;
 
   return (
     <>
