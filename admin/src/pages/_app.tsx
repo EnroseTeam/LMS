@@ -1,9 +1,13 @@
-import MainLayout from "@/layouts/MainLayout";
+import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
+
 import { NextPage } from "next";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import { ReactNode } from "react";
+import { ToastContainer } from "react-toastify";
+import MainLayout from "@/layouts/MainLayout";
+
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -18,7 +22,21 @@ export default function App({ Component, pageProps }: AppPropsWithLayout): JSX.E
   const getLayout = Component.getLayout ?? ((page): ReactNode => <MainLayout>{page}</MainLayout>);
   return (
     <>
-      <ThemeProvider attribute="class">{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+      <ThemeProvider attribute="class">     
+          {getLayout(<Component {...pageProps} />)
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+      </ThemeProvider>
     </>
   );
 }
