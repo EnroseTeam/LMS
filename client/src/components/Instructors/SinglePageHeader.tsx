@@ -33,13 +33,13 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => {
   }, [instructor]);
 
   return (
-    <div className="container relative bg-color-1 pt-[69px] rounded-lg text-white mb-[30px]">
+    <div className="container relative bg-color-1 py-7 sm:py-9 md:py-[69px] rounded-lg text-white mb-[30px] mt-[-90px] sm:mt-[-60px] md:mt-[-30px]">
       <div className="absolute container top-0 right-0 left-0 bottom-0 pointer-events-none w-full h-full">
         <Image src={BgShape} alt="" className="w-full h-full object-cover" />
       </div>
 
-      <div className="px-[325px]">
-        <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px]">
+      <div className="md:px-[145px] lg:px-[245px] xl:px-[325px] md:block flex flex-col items-center">
+        <div className="rounded-full overflow-hidden w-[127px] h-[127px] mb-[20px] text-center">
           <Image
             src={instructor.avatar}
             width={127}
@@ -49,10 +49,12 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => {
           />
         </div>
 
-        <h1 className="font-[700] text-[30px] leading-[45px]">{instructor.fullName}</h1>
+        <h1 className="font-[700] text-[30px] leading-[45px]">
+          {instructor.fullName}
+        </h1>
         <p className="text-md-regular mb-[10px]">UX Designer</p>
 
-        <div className="flex items-center gap-5 pb-[30px]">
+        <div className="grid grid-cols-2 smallest:grid-cols-4 items-start sm:items-center gap-5 pb-[30px]">
           <span className="flex items-center gap-2">
             <div className="flex gap-[2px] text-[#E59819] text-sm-medium">
               <RatingStar rating={1} count={1} />
@@ -79,13 +81,15 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => {
 
           <span className="flex items-center gap-[10px]">
             <BiRightArrow />
-            <span className="text-xs-regular">{instructor.ownCourses.length} сургалт</span>
+            <span className="text-xs-regular">
+              {instructor.ownCourses.length} сургалт
+            </span>
           </span>
         </div>
 
-        <div className="flex items-center pb-[76px]">
+        <div className="flex flex-col smallest:flex-row gap-2 items-start">
           <button className="btn-2">Мессеж илгээх</button>
-          <div className="flex items-center ml-[30px] ">
+          <div className="flex justify-center items-center ml-[30px] ">
             {instructor.socialAccounts.facebook && (
               <Link
                 target="_blank"

@@ -31,13 +31,18 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
 
   const description = (
     <div className="mb-[60px]">
-      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Тайлбар</h1>
+      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">
+        Тайлбар
+      </h1>
       <div
         className={`text-text text-md-regular overflow-hidden mb-10 relative ${
           descriptionHide ? "h-[160px]" : "h-full"
         } `}
       >
-        <div className="[&>p]:mb-4" dangerouslySetInnerHTML={{ __html: instructor.bio || "" }} />
+        <div
+          className="[&>p]:mb-4"
+          dangerouslySetInnerHTML={{ __html: instructor.bio || "" }}
+        />
         {descriptionHide && (
           <div className="absolute w-full bottom-0 left-0 right-0 h-full pointer-events-none text-fade" />
         )}
@@ -63,7 +68,9 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
           />
         ))}
       {instructor.ownCourses.length === 0 && (
-        <p className="col-span-2 text-center text-text text-md-medium">Сургалт байхгүй байна.</p>
+        <p className="col-span-2 text-center text-text text-md-medium">
+          Сургалт байхгүй байна.
+        </p>
       )}
     </div>
   );
@@ -77,7 +84,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
 
   return (
     <>
-      <div className="container px-[325px] mb-[120px]">
+      <div className="container px-10 md:px-[145px] lg:px-[245px] xl:px-[325px] mb-[120px]">
         <Tab tabHeaders={tabHeaders} tabContents={tabContents} />
       </div>
     </>
