@@ -99,3 +99,11 @@ export interface LessonLength {
   minute: number;
   second: number;
 }
+
+export interface ICourseRequest {
+  _id: string;
+  course: ICourse;
+  instructor: IInstructor;
+  status: "Pending" | "Accepted" | "Rejected";
+  createdAt: string;
+}

@@ -7,7 +7,9 @@ import assertIsDefined from "../utils/assertIsDefined";
 
 export const getAllCourseRequests: RequestHandler = async (req, res, next) => {
   try {
-    const courseRequests = await CourseRequestModel.find();
+    const courseRequests = await CourseRequestModel.find()
+      .populate(["course", "instructor"])
+      .sort("-createdAt");
 
     res.status(200).json({ message: "Амжилттай", body: courseRequests });
   } catch (error) {
