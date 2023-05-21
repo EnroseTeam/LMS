@@ -7,9 +7,10 @@ import { isAxiosError } from "axios";
 import { SlTrash } from "react-icons/sl";
 import { toast } from "react-toastify";
 import { ICourse } from "@/interfaces/courses";
+import { useRouter } from "next/router";
 
 interface CourseMediaUploadProps {
-  setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
+  setActiveStage: Dispatch<SetStateAction<"Info" | "Media">>;
   courseId?: string;
   setMessage: Dispatch<SetStateAction<string>>;
   setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;
@@ -23,6 +24,8 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
   setMessageType,
   course,
 }) => {
+  const router = useRouter();
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const [image, setImage] = useState<string>("");
@@ -136,7 +139,9 @@ const CourseMediaUpload: FC<CourseMediaUploadProps> = ({
           video,
         });
         toast.success(res.data.message);
-        setActiveStage("Sections");
+        setTimeout(() => {
+          router.push(`/instructors/dashboard/my-courses/${course ? course._id : courseId}`);
+        }, 1000);
       } catch (error) {
         setMessageType("Error");
         if (isAxiosError(error)) {

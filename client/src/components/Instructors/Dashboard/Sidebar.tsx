@@ -23,7 +23,7 @@ const InstructorSidebar: FC<InstructorSidebarProps> = ({ MenuItems: SidebarItems
     <>
       <div
         className={classNames(
-          "bg-white pt-0 duration-300 fixed top-0 lg:static h-screen lg:h-auto lg:pt-[50px] z-50",
+          "bg-white pt-0 duration-300 fixed top-0 lg:static h-screen lg:h-auto lg:pt-[50px] z-40",
           {
             "px-[30px] max-w-[300px] min-w-[300px]": sidebarShow,
           },

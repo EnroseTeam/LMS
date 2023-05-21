@@ -1,18 +1,18 @@
 import { useModal } from "@/hooks/useModal";
-import { ICourse, ICourseSection } from "@/interfaces/courses";
+import { ICourseSection } from "@/interfaces/courses";
 import { FC, useState } from "react";
 import classNames from "classnames";
 import MessageBox from "@/components/global/MessageBox";
 import { isAxiosError } from "axios";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
 
 interface SectionFormProps {
-  courseId?: string;
-  course?: ICourse;
+  courseId: string;
   afterCreate: (section: ICourseSection) => void;
 }
 
-const SectionForm: FC<SectionFormProps> = ({ courseId, course, afterCreate }) => {
+const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate }) => {
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
 
@@ -36,10 +36,11 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, course, afterCreate }) =>
           "/api/courses/sections",
           {
             title: name,
-            course: course ? course._id : courseId,
+            course: courseId,
           }
         );
 
+        toast.success(res.data.message);
         afterCreate(res.data.body);
         closeModal();
       } catch (error) {

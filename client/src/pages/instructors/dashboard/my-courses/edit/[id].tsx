@@ -8,7 +8,6 @@ import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ReactNode, useState } from "react";
 import CourseInfoForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
-import CourseSectionForm from "@/components/Instructors/Dashboard/Courses/CourseSectionForm";
 
 interface InstructorCoursesEditPageProps {
   course: ICourse;
@@ -54,7 +53,7 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
   levels,
   categories,
 }) => {
-  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Info");
+  const [activeStage, setActiveStage] = useState<"Info" | "Media">("Info");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
@@ -89,9 +88,6 @@ const InstructorCoursesEditPage: NextPageWithLayout<InstructorCoursesEditPagePro
           setMessage={setMessage}
           setMessageType={setMessageType}
         />
-      )}
-      {activeStage === "Sections" && (
-        <CourseSectionForm setActiveStage={setActiveStage} course={course} />
       )}
     </>
   );
