@@ -35,7 +35,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ course }) => {
   ];
 
   return (
-    <div className="container py-[120px] ">
+    <div className="container py-[60px] lg:py-[120px] ">
       <TabAlternative tabHeaders={tabHeaders} tabContents={tabContents} />
     </div>
   );

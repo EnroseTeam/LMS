@@ -81,9 +81,10 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
         <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
       </div>
 
-      <div className="container grid grid-cols-2 gap-[145px] text-icon">
+      <div className="container grid grid-cols-1 lg:grid-cols-2 gap-[45px] lg:gap-[145px] text-icon">
         <div className="flex flex-col gap-[30px]">
           {/* Course Head */}
+
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-3">
               {course.discountPrice > 0 && (
@@ -95,6 +96,25 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
             <h1 className="text-3xl-bold text-white">{course.name}</h1>
 
+            <div className="lg:hidden rounded-lg overflow-hidden w-full relative">
+              <Image
+                src={course.picture}
+                width={513}
+                height={450}
+                alt="Video"
+                className="w-full aspect-auto object-contain"
+              />
+
+              <div
+                onClick={(): void => {
+                  setShowVideo(true);
+                }}
+                className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] p-5 bg-white rounded-full cursor-pointer hover:text-white hover:bg-icon duration-300"
+              >
+                <BsPlay size={40} />
+              </div>
+            </div>
+
             <div
               className="text-icon text-md-regular"
               dangerouslySetInnerHTML={{
@@ -102,7 +122,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               }}
             />
 
-            <div className="flex items-center gap-7">
+            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center gap-5 sm:gap-7 lg:gap-5 xl:gap-7">
               <div className="flex items-center gap-[10px]">
                 <p className="text-[#E59819] text-sm-medium mt-[2px]">
                   {course.avgRating.toFixed(1)}
@@ -245,7 +265,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
         </div>
 
         <div className="flex flex-col gap-[30px]">
-          <div className="rounded-lg overflow-hidden w-full relative">
+          <div className="hidden lg:block rounded-lg overflow-hidden w-full relative">
             <Image
               src={course.picture}
               width={513}
@@ -282,7 +302,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
           {(isUserLoading || ownCoursesLoading || boughtCoursesLoading) && <ButtonSkeleton />}
 
           {!user && !isUserLoading && (
-            <div className="grid grid-cols-2 gap-[35px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-[15px] sm:gap-[25px] lg:gap-[15px] xl:gap-[25px]">
               <button
                 onClick={(): void => {
                   addCartItem(course);
@@ -310,7 +330,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             !boughtCourses.includes(course._id) &&
             !ownCoursesLoading &&
             !boughtCoursesLoading && (
-              <div className="grid grid-cols-2 gap-[35px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-[15px] sm:gap-[25px] lg:gap-[15px] xl:gap-[25px]">
                 <button
                   onClick={(): void => {
                     addCartItem(course);
@@ -337,7 +357,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             (ownCourses.includes(course._id) || boughtCourses.includes(course._id)) &&
             !boughtCoursesLoading &&
             !ownCoursesLoading && (
-              <div className="grid grid-cols-2 gap-[35px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-[15px] sm:gap-[25px] lg:gap-[15px] xl:gap-[25px]">
                 <button className="btn-1">Үзэж эхлэх</button>
                 <button className="btn-2-outline">Сургалтуудруу буцах</button>
               </div>
