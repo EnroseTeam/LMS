@@ -9,7 +9,6 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "@/pages/_app";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import CourseMediaUpload from "@/components/Instructors/Dashboard/Courses/CourseMediaUpload";
-import CourseSectionForm from "@/components/Instructors/Dashboard/Courses/CourseSectionForm";
 
 interface InstructorCreateCoursePageProps {
   levels: ICourseLevel[];
@@ -35,7 +34,7 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
   categories,
 }) => {
   const [courseId, setCourseId] = useState<string>("");
-  const [activeStage, setActiveStage] = useState<"Info" | "Media" | "Sections">("Info");
+  const [activeStage, setActiveStage] = useState<"Info" | "Media">("Info");
 
   const [message, setMessage] = useState<string>("");
   const [messageType, setMessageType] = useState<"Success" | "Error">("Success");
@@ -70,9 +69,6 @@ const InstructorCreateCoursePage: NextPageWithLayout<InstructorCreateCoursePageP
           setMessage={setMessage}
           setMessageType={setMessageType}
         />
-      )}
-      {activeStage === "Sections" && (
-        <CourseSectionForm setActiveStage={setActiveStage} courseId={courseId} />
       )}
     </>
   );

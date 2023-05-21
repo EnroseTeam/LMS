@@ -1,31 +1,22 @@
 import { useModal } from "@/hooks/useModal";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import SectionForm from "../Sections/SectionForm";
 import { ICourse, ICourseSection } from "@/interfaces/courses";
-import { useRouter } from "next/router";
+
 import SectionAccordion from "../Sections/SectionAccordion";
 
 interface CourseSectionFormProps {
-  setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
-  courseId?: string;
-  course?: ICourse;
+  course: ICourse;
 }
 
-const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseId, course }) => {
-  const router = useRouter();
+const CourseSectionForm: FC<CourseSectionFormProps> = ({ course }) => {
   const { showModal } = useModal();
-  const [sections, setSections] = useState<ICourseSection[]>([]);
-
-  useEffect(() => {
-    if (course) {
-      setSections(course.sections);
-    }
-  }, [course]);
+  const [sections, setSections] = useState<ICourseSection[]>(course.sections);
 
   const showAddSectionModal = (): void => {
     showModal({
       title: "Хичээлийн сэдэв нэмэх",
-      content: <SectionForm courseId={courseId} course={course} afterCreate={afterCreate} />,
+      content: <SectionForm courseId={course._id} afterCreate={afterCreate} />,
     });
   };
 
@@ -51,28 +42,6 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ setActiveStage, courseI
           {sections.map((section) => (
             <SectionAccordion key={section._id} section={section} />
           ))}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <button
-            onClick={(): void => {
-              setActiveStage("Media");
-            }}
-            type="button"
-            className="btn-1-outline py-4"
-          >
-            Буцах
-          </button>
-          <button
-            onClick={(): void => {
-              router.push("/instructors/dashboard/my-courses");
-            }}
-            type="button"
-            form="course-create-form"
-            className="btn-1 py-4"
-          >
-            Нэмэх
-          </button>
         </div>
       </div>
     </div>

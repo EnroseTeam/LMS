@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 interface CourseInfoFormProps {
   levels: ICourseLevel[];
   categories: ICourseCategory[];
-  setActiveStage: Dispatch<SetStateAction<"Info" | "Media" | "Sections">>;
+  setActiveStage: Dispatch<SetStateAction<"Info" | "Media">>;
   setCourseId?: Dispatch<SetStateAction<string>>;
   setMessage: Dispatch<SetStateAction<string>>;
   setMessageType: Dispatch<SetStateAction<"Success" | "Error">>;

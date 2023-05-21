@@ -6,7 +6,6 @@ import { FC, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdPublishedWithChanges, MdEdit, MdDelete, MdUnpublished } from "react-icons/md";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
@@ -17,7 +16,6 @@ interface CourseCardProps {
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const [dropDownShow, setDropDownShow] = useState<boolean>(false);
-  const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -42,29 +40,32 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
   return (
     <div>
-      <Link href={"/"} className="w-full rounded-lg overflow-hidden mb-3 group relative block">
-        <Image
-          src={course.picture}
-          alt={course.name}
-          width={500}
-          height={500}
-          className="w-full aspect-[1.4/1] object-cover group-hover:scale-110 duration-300"
-        />
+      <div className="relative">
+        <Link
+          href={`/instructors/dashboard/my-courses/${course._id}`}
+          className="w-full rounded-lg overflow-hidden mb-3 group block"
+        >
+          <Image
+            src={course.picture}
+            alt={course.name}
+            width={500}
+            height={500}
+            className="w-full aspect-[1.4/1] object-cover group-hover:scale-110 duration-300"
+          />
 
-        <div className="absolute top-[10px] right-[10px] z-[10]">
           <button
             onClick={(e): void => {
               e.preventDefault();
               setDropDownShow(!dropDownShow);
             }}
-            className="p-3 bg-white rounded-lg shadow-shadow-1 text-icon  hover:text-white hover:bg-icon duration-300"
+            className="absolute top-[10px] right-[10px] z-[10] p-3 bg-white rounded-lg shadow-shadow-1 text-icon  hover:text-white hover:bg-icon duration-300"
           >
             <BiDotsVerticalRounded size={20} />
           </button>
 
           <div
             className={classNames(
-              "absolute top-full right-0 mt-2 duration-300 z-10",
+              "absolute top-[50px] right-[10px] mt-2 duration-300 z-10",
               { "opacity-100": dropDownShow },
               { "opacity-0 pointer-events-none": !dropDownShow }
             )}
@@ -92,7 +93,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
               {course.isPublished && (
                 <button
                   disabled={isSubmitting}
-                  className="flex items-center gap-3 hover:text-color-1 duration-300 group/button disabled:pointer-events-none"
+                  className="flex items-center gap-3 hover:text-color-1 duration-300 group/button disabled:pointer-events-none whitespace-nowrap"
                 >
                   <MdUnpublished
                     size={20}
@@ -128,14 +129,14 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
               </button>
             </div>
           </div>
-        </div>
 
-        <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full group-hover:bg-head/50 duration-300" />
-      </Link>
+          <div className="absolute top-0 left-0 right-0 bottom-0 w-full h-full group-hover:bg-head/50 duration-300" />
+        </Link>
+      </div>
 
       <Link
         className="block text-head text-base-medium hover:text-head/50 duration-300 mb-2"
-        href={"/"}
+        href={`/instructors/dashboard/my-courses/${course._id}`}
       >
         {course.name}
       </Link>

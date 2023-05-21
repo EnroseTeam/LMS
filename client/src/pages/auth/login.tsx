@@ -54,6 +54,7 @@ const LoginPage: NextPageWithLayout = () => {
           router.back();
         }, 400);
       } catch (error) {
+        console.log(error);
         if (isAxiosError(error))
           setErrorMsg(
             error.response?.data.error ||
