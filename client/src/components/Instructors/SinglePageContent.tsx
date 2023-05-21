@@ -57,7 +57,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   );
 
   const courseContent = (
-    <div className="grid grid-cols-2 gap-[30px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
       {instructor.ownCourses.length > 0 &&
         instructor.ownCourses.map((course) => (
           <CourseCard
