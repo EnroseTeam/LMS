@@ -39,7 +39,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <ModalProvider>
-      <div className="flex min-h-screen">
+      <div className="flex h-screen overflow-hidden">
         <Sidebar sidebarShow={sidebarShow} setSidebarShow={setSidebarShow} />
         <div className="relative flex-1 overflow-y-auto overflow-x-hidden">
           <Header setSidebarShow={setSidebarShow} />
