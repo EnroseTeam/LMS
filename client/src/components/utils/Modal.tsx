@@ -12,14 +12,22 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ show, setShow, title, content }) => (
   <>
     <div
+      onClick={(): void => {
+        setShow(false);
+      }}
       className={classNames(
         "z-50 fixed top-0 left-0 right-0 bottom-0 min-h-screen min-w-screen grid place-items-center",
         { block: show },
         { hidden: !show }
       )}
     >
-      <div className="p-4 overflow-x-hidden overflow-y-auto min-w-[500px]">
-        <div className="relative max-w-2xl">
+      <div
+        onClick={(e): void => {
+          e.stopPropagation();
+        }}
+        className="p-4 max-h-full overflow-y-auto min-w-[500px]"
+      >
+        <div className="relative max-w-[1000px]">
           {/* Modal content */}
           <div className="relative bg-white rounded-lg shadow">
             {/* Modal header */}

@@ -92,7 +92,7 @@ const SectionForm: FC<SectionFormProps> = ({ courseId, afterCreate, section, aft
           id="name"
           placeholder="Сэдвийн нэр"
           className={classNames(
-            "w-full border border-border-2 rounded-lg py-3 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150",
+            "w-full border border-border-2 rounded-lg py-2 px-[22px] text-text text-md-regular focus:outline-none focus:ring-2 focus:ring-color-1 duration-150",
             { "ring-2 ring-red-500": !isNameExist }
           )}
         />

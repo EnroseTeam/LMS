@@ -35,6 +35,7 @@ export const uploadVideo: RequestHandler = async (req, res, next) => {
     const result = await s3UploadVideo(file);
     res.status(201).json({ message: "Бичлэг амжилттай хуулагдлаа.", body: result.Location });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

@@ -1,11 +1,15 @@
 import CourseSectionForm from "@/components/Instructors/Dashboard/Courses/CourseSectionForm";
+import { AuthContext } from "@/contexts/AuthContext";
 import { ICourse } from "@/interfaces/courses";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { NextPageWithLayout } from "@/pages/_app";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { fetcher } from "@/utils/fetcher";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
-import { FC, ReactNode, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import useSwr from "swr";
 
 interface InstructorDashboardSingleCoursePageProps {
   course: ICourse;
@@ -57,6 +61,17 @@ interface CourseContentProps {
 }
 
 const CourseMediaContent: FC<CourseContentProps> = ({ course }) => {
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
+
+  const {
+    data: userOwnCourses,
+    isLoading: ownCoursesLoading,
+    error: coursesError,
+  } = useSwr(user && "/api/courses/instructor", fetcher<{ body: ICourse[] }>);
+
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -64,6 +79,27 @@ const CourseMediaContent: FC<CourseContentProps> = ({ course }) => {
       videoRef.current.load();
     }
   }, [course]);
+
+  useEffect(() => {
+    if (!ownCoursesLoading && userOwnCourses && user) {
+      const ids: string[] = [];
+      for (const course of userOwnCourses.body) {
+        ids.push(course._id);
+      }
+
+      if (!ids.includes(course._id)) {
+        router.push("/instructors/dashboard/my-courses");
+      } else {
+        setIsReady(true);
+      }
+    }
+
+    if (!ownCoursesLoading && coursesError) {
+      router.push("/instructors/dashboard/my-courses");
+    }
+  }, [user, userOwnCourses, ownCoursesLoading, course, router, coursesError]);
+
+  if (!isReady) return <></>;
 
   return (
     <div className="rounded-2xl shadow-shadow-dashboard bg-white">
