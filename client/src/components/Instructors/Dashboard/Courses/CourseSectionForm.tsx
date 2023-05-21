@@ -24,6 +24,12 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ course }) => {
     setSections([...sections, section]);
   };
 
+  const afterUpdate = (section: ICourseSection): void => {
+    setSections(
+      sections.map((curSection) => (curSection._id === section._id ? section : curSection))
+    );
+  };
+
   return (
     <div className="bg-white shadow-shadow-dashboard rounded-2xl">
       <div className="px-[30px] py-5 border-b border-b-border-1 flex items-center justify-between">
@@ -40,7 +46,7 @@ const CourseSectionForm: FC<CourseSectionFormProps> = ({ course }) => {
       <div className="p-[30px]">
         <div className="flex flex-col gap-[10px] mb-[30px]">
           {sections.map((section) => (
-            <SectionAccordion key={section._id} section={section} />
+            <SectionAccordion key={section._id} section={section} afterUpdate={afterUpdate} />
           ))}
         </div>
       </div>
