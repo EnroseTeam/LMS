@@ -4,6 +4,8 @@ import UserRoleModel from "../models/userRole";
 import UserModel from "../models/user";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 export const becomeInstructor: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
@@ -13,6 +15,19 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
     await UserModel.findByIdAndUpdate(userId, {
       role: instructorRole?._id,
     });
+
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+        env.REVALIDATE_SECRET
+      }&path=${`/instructors/${userId}`}`
+    );
 
     res.sendStatus(200);
   } catch (error) {

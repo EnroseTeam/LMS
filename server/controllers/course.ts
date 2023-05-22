@@ -5,10 +5,12 @@ import CourseLevelModel from "../models/courseLevel";
 import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 export const getCourseCounts: RequestHandler = async (req, res, next) => {
   try {
-    const courses = await CourseModel.find();
+    const courses = await CourseModel.find({ isPublished: true });
 
     const ratingCount = [
       { rating: 4.5, count: 0 },
@@ -105,7 +107,7 @@ export const getCourseByInstructorId: RequestHandler = async (req, res, next) =>
 
 export const getCourseIds: RequestHandler = async (req, res, next) => {
   try {
-    const courses = await CourseModel.find().select({ _id: 1 });
+    const courses = await CourseModel.find({ isPublished: true }).select({ _id: 1 });
     const courseIds = courses.map((course) => course._id);
 
     res.status(200).json({ body: courseIds });
@@ -186,6 +188,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       price: { $gte: minPrice, $lte: maxPrice },
       level: { $in: levels },
       "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
+      isPublished: true,
     })
       .sort(order)
       .limit(Number(pageSize))
@@ -205,6 +208,7 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       price: { $gte: minPrice, $lte: maxPrice },
       level: { $in: levels },
       "totalLessonLength.hour": { $gte: minLength, $lte: maxLength },
+      isPublished: true,
     }).count();
 
     const totalPages = Math.ceil(totalCourses / Number(pageSize));
@@ -335,6 +339,10 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
 
     await session.commitTransaction();
 
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${newCourse._id}`
+    );
+
     res
       .status(201)
       .json({ message: `${name} нэртэй цуврал хичээл амжилттай нэмэгдлээ`, body: newCourse });
@@ -376,6 +384,14 @@ export const addMediaToCourse: RequestHandler<CourseParams, unknown, CourseBody,
     course.video = video;
 
     await course.save();
+
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+    );
 
     res.status(200).json({ message: "Зураг болон бичлэг амжилттай нэмэгдлээ." });
   } catch (error) {
@@ -461,6 +477,14 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
 
     await session.commitTransaction();
 
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+    );
+
     res.status(200).json({ message: "Амжилттай" });
   } catch (error) {
     await session.abortTransaction();
@@ -512,6 +536,16 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
     await course.deleteOne({ session });
 
     await session.commitTransaction();
+
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+    );
+
+    res.sendStatus(204);
   } catch (error) {
     await session.abortTransaction();
     next(error);

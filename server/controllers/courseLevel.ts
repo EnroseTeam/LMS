@@ -1,8 +1,10 @@
-import CourseLevelModel from '../models/courseLevel';
-import createHttpError from 'http-errors';
-import slugify from 'slugify';
-import mongoose from 'mongoose';
-import { RequestHandler } from 'express';
+import CourseLevelModel from "../models/courseLevel";
+import createHttpError from "http-errors";
+import slugify from "slugify";
+import mongoose from "mongoose";
+import { RequestHandler } from "express";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 interface CourseLevelBody {
   name?: string;
@@ -17,7 +19,7 @@ export const getCourseLevels: RequestHandler = async (req, res, next) => {
   try {
     // Бүртгэлтэй бүх сургалтын түвшингүүдээ олоод буцаана. Ямар нэгэн филтэр байх шаардлагагүй.
     const courseLevels = await CourseLevelModel.find();
-    res.status(200).json({ message: 'Амжилттай', body: courseLevels });
+    res.status(200).json({ message: "Амжилттай", body: courseLevels });
   } catch (error) {
     next(error);
   }
@@ -28,13 +30,13 @@ export const getSingleCourseLevel: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     // Орж ирсэн id-тай түвшин байгаа эсэхийг шалгана. Байвал буцаана.
     const courseLevel = await CourseLevelModel.findById(id);
-    if (!courseLevel) throw createHttpError(404, 'Түвшин олдсонгүй');
+    if (!courseLevel) throw createHttpError(404, "Түвшин олдсонгүй");
 
-    res.status(200).json({ message: 'Амжилттай', body: courseLevel });
+    res.status(200).json({ message: "Амжилттай", body: courseLevel });
   } catch (error) {
     next(error);
   }
@@ -51,7 +53,7 @@ export const createCourseLevel: RequestHandler<unknown, unknown, CourseLevelBody
 
   try {
     // Хүсэлтээс орж ирсэн мэдээлэл бүрэн эсэхийг шалгана.
-    if (!name) throw createHttpError(400, 'Нэр заавал шаардлагатай.');
+    if (!name) throw createHttpError(400, "Нэр заавал шаардлагатай.");
 
     // Slug үүсгээд өмнө нь адил slug-тай түвшин бүртгэгдсэн эсэхийг шалгана. Бүртгэгдсэн байвал алдаа буцаана.
     const slug = slugify(name).toLowerCase();
@@ -66,6 +68,10 @@ export const createCourseLevel: RequestHandler<unknown, unknown, CourseLevelBody
       slug,
       description,
     });
+
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/create-course`
+    );
 
     res.status(201).json({
       message: `${name} нэртэй түвшин амжилттай нэмэгдлээ.`,
@@ -86,8 +92,8 @@ export const updateCourseLevel: RequestHandler<
   const { name, description } = req.body;
   try {
     // Хүсэлтээс орж ирж буй мэдээлэл бүрэн эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
-    if (!name) throw createHttpError(400, 'Нэр заавал шаардлагатай.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+    if (!name) throw createHttpError(400, "Нэр заавал шаардлагатай.");
 
     // Slug үүсгэнэ. Үүсгэхдээ хүсэлтээс ирж буй шинэ нэрээр үүсгэнэ. Үүсгэсэн slug давхцаж буй эсэхийг шалгана. Нэр өөрчлөгдөөгүй тохиолдолд өөрийгөө давхардсан гэж тооцох тул хайхдаа өөрийн id-тай тэнцэхгүй гэсэн нөхцөл тавьж өгсөн.
     const slug = slugify(name).toLowerCase();
@@ -100,7 +106,7 @@ export const updateCourseLevel: RequestHandler<
 
     // Хүсэлтээс орж ирсэн id-тай түвшин бүртгэлтэй байгаа эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
     const courseLevel = await CourseLevelModel.findById(id);
-    if (!courseLevel) throw createHttpError(404, 'Түвшин олдсонгүй');
+    if (!courseLevel) throw createHttpError(404, "Түвшин олдсонгүй");
 
     // Мэдээллүүдийг нь хүсэлтээс орж ирсэн мэдээллүддээр шинэчлэнэ.
     courseLevel.name = name;
@@ -109,6 +115,10 @@ export const updateCourseLevel: RequestHandler<
 
     // Шинэчлэсэн түвшингээ хадгална.
     const editedCourseLevel = await courseLevel.save();
+
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/create-course`
+    );
 
     res.status(200).json({
       message: `${name} нэртэй түвшин амжилттай шинэчлэгдлээ.`,
@@ -124,14 +134,18 @@ export const deleteCourseLevel: RequestHandler = async (req, res, next) => {
 
   try {
     // Хүсэлтээс орж ирсэн id зөв байгаа эсэхийг шалгана.
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, 'Id буруу байна.');
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     // Орж ирсэн id-тай түвшин бүртгэлтэй байгаа эсэхийг шалгана.
     const courseLevel = await CourseLevelModel.findById(id);
-    if (!courseLevel) throw createHttpError(404, 'Түвшин олдсонгүй');
+    if (!courseLevel) throw createHttpError(404, "Түвшин олдсонгүй");
 
     // Олдсон түвшингээ устгана.
     await courseLevel.deleteOne();
+
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/create-course`
+    );
     res.sendStatus(204);
   } catch (error) {
     next(error);
