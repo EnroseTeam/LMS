@@ -54,6 +54,11 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
     const courseLesson = await CourseLessonModel.findById(id).populate("section");
     if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй");
 
+    const boughtCourses = user.boughtCourses;
+    const ownCourses = user.ownCourses;
+    console.log("boughtCourses:", boughtCourses);
+    console.log("ownCourses:", ownCourses);
+    console.log("courseLesson.section.course:", courseLesson.section.course);
     if (
       !user.boughtCourses.includes(courseLesson.section.course) &&
       !user.ownCourses.includes(courseLesson.section.course)
