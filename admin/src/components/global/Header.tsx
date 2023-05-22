@@ -5,7 +5,7 @@ import logo from "@/assets/logo-icon.svg";
 import { HiMagnifyingGlass, HiOutlineBell, HiOutlineCog6Tooth } from "react-icons/hi2";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { FiChevronDown, FiUser } from "react-icons/fi";
-import { MdOutlineContacts, MdLogout } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import ThemeSwitcher from "./ThemeSwitcher";
 import Link from "next/link";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -200,37 +200,31 @@ const Header: FC<HeaderProps> = ({ setSidebarShow }) => {
               >
                 <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark ">
                   <li>
-                    <a
-                      href="profile.html"
+                    <Link
+                      href="/users"
                       className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       <FiUser size={24} className="text-current" />
-                      My Profile
-                    </a>
+                      Хэрэглэгчид
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-                    >
-                      <MdOutlineContacts size={24} className="text-current" />
-                      My Contacts
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="settings.html"
+                    <Link
+                      href="/user/settings"
                       className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                     >
                       <HiOutlineCog6Tooth size={24} className="text-current" />
-                      Account Settings
-                    </a>
+                      Тохиргоо
+                    </Link>
                   </li>
                 </ul>
-                <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                <Link
+                  href={"/auth/logout"}
+                  className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                >
                   <MdLogout size={24} className="text-current" />
-                  Log Out
-                </button>
+                  Гарах
+                </Link>
               </div>
               {/* Dropdown End */}
             </div>
