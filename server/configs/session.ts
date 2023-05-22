@@ -9,6 +9,7 @@ const cookieConfig: CookieOptions = {
 if (env.NODE_ENV === "production") {
   cookieConfig.secure = true;
   cookieConfig.sameSite = "none";
+  cookieConfig.domain = env.PUBLIC_SITE_URL;
 }
 
 const sessionConfig: SessionOptions = {
