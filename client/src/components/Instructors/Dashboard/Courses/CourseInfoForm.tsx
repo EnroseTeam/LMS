@@ -175,8 +175,8 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
             <input
               value={name}
               onChange={(e): void => {
-                setIsNameExist(true);
                 setName(e.target.value);
+                setIsNameExist(true);
               }}
               type="text"
               id="name"

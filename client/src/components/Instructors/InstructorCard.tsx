@@ -98,7 +98,9 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
         <div className="flex items-center gap-[20px]">
           <span className="flex items-center  gap-2 text-md">
             <RatingStar count={1} rating={1} />
-            <p className="text-[#E59819] text-sm-medium mt-[2px]">{instructor.avgRating}</p>
+            <p className="text-[#E59819] text-sm-medium mt-[2px]">
+              {instructor.avgRating.toFixed(1)}
+            </p>
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <AiOutlineUser />
