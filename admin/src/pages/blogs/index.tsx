@@ -30,7 +30,7 @@ const AdminBlogPage: FC<AdminBlogsPageProps> = ({ blogs }) => {
           onClick={(): void => {
             router.push({ pathname: "/blogs/create" });
           }}
-          className="w-fit inline-flex items-center justify-center gap-2.5 border border-text-primary rounded-md bg-transparent py-4 px-10 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10 dark:border-meta-2 dark:text-meta-2"
+          className="border border-primary rounded-md bg-transparent py-3 px-5 text-sm text-center font-medium text-primary hover:bg-opacity-90  dark:border-meta-2 dark:text-meta-2 hover:bg-primary hover:border-primary hover:text-white dark:hover:bg-meta-2 dark:hover:text-primary duration-300"
         >
           Мэдээ нэмэх
         </button>
