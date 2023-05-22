@@ -217,7 +217,7 @@ const CoursesPage: FC<CoursesPageProps> = ({
 
           {/* Mobile Filter */}
           <div
-            className={`fixed top-0 bottom-0 w-[70vw] min-h-screen bg-white z-[1000] p-5 overflow-auto ${
+            className={`fixed top-0 bottom-0 w-[70vw] min-h-screen bg-white z-[1000] p-5 overflow-auto lg:hidden ${
               filterShow ? "right-0" : "-right-full"
             } duration-300`}
           >
@@ -233,7 +233,7 @@ const CoursesPage: FC<CoursesPageProps> = ({
           {/* Backdrop */}
           <div
             onClick={closeFilter}
-            className={`fixed top-0 right-0 bottom-0 left-0 w-screen h-screen bg-[#18181a]/70 z-[999] ${
+            className={`fixed top-0 right-0 bottom-0 left-0 w-screen h-screen bg-[#18181a]/70 z-[999] lg:hidden ${
               filterShow ? "opacity-100" : "opacity-0 pointer-events-none"
             } duration-300`}
           />
