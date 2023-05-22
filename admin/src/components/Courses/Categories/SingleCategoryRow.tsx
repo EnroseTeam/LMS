@@ -22,6 +22,8 @@ interface CategoryDeleteModalContentProps {
 const SingleCategoryRow: FC<SingleBlogRowProps> = ({ category }) => {
   const { showModal, closeModal } = useModal();
 
+  const router = useRouter();
+
   const showDeletePrompt = (): void => {
     showModal({
       title: "Ангилал устгах",
@@ -68,7 +70,15 @@ const SingleCategoryRow: FC<SingleBlogRowProps> = ({ category }) => {
           </p>
         </div>
         <div className="col-span-1 flex items-center gap-3 pl-4">
-          <FiEdit size={20} className="text-meta-5" />
+          <button
+            onClick={(): void => {
+              router.push({
+                pathname: `/courses/categories/update/${category._id}`,
+              });
+            }}
+          >
+            <FiEdit size={20} className="text-meta-5" />
+          </button>
           <button
             onClick={(): void => {
               showDeletePrompt();

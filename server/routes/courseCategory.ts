@@ -1,21 +1,24 @@
-import express from 'express';
+import express from "express";
 import {
   createCourseCategory,
   deleteCourseCategory,
+  getAllCourseCategoriesId,
   getCourseCategories,
   getSingleCourseCategory,
   updateCourseCategory,
-} from '../controllers/courseCategory';
+} from "../controllers/courseCategory";
 
 const courseCategoryRouter = express.Router();
 
-courseCategoryRouter.get('/', getCourseCategories);
-courseCategoryRouter.get('/:id', getSingleCourseCategory);
+courseCategoryRouter.get("/id", getAllCourseCategoriesId);
 
-courseCategoryRouter.post('/', createCourseCategory);
+courseCategoryRouter.get("/", getCourseCategories);
+courseCategoryRouter.get("/:id", getSingleCourseCategory);
 
-courseCategoryRouter.patch('/:id', updateCourseCategory);
+courseCategoryRouter.post("/", createCourseCategory);
 
-courseCategoryRouter.delete('/:id', deleteCourseCategory);
+courseCategoryRouter.patch("/:id", updateCourseCategory);
+
+courseCategoryRouter.delete("/:id", deleteCourseCategory);
 
 export default courseCategoryRouter;

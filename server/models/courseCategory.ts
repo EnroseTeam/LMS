@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model, Types, Document } from "mongoose";
 
 export interface ICourseCategory extends Document<Types.ObjectId> {
   name: string;
@@ -18,7 +18,7 @@ const CourseCategorySchema = new Schema<ICourseCategory>(
     },
     image: {
       type: String,
-      required: true,
+      // required: true,
     },
     slug: {
       type: String,
@@ -34,4 +34,4 @@ const CourseCategorySchema = new Schema<ICourseCategory>(
   { timestamps: true }
 );
 
-export default model<ICourseCategory>('Course_Category', CourseCategorySchema);
+export default model<ICourseCategory>("Course_Category", CourseCategorySchema);
