@@ -11,6 +11,7 @@ if (env.NODE_ENV === "production") {
   cookieConfig.sameSite = "none";
   cookieConfig.httpOnly = false;
   // cookieConfig.domain = "enrose-lms-project.vercel.app";
+
 }
 
 const sessionConfig: SessionOptions = {
