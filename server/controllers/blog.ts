@@ -15,6 +15,21 @@ interface BlogBody {
 interface BlogParams {
   id: string;
 }
+
+export const getAllBlogId: RequestHandler = async (req, res, next) => {
+  try {
+    const blogs = await BlogModel.find().select({
+      _id: 1,
+    });
+
+    const ids = blogs.map((blog) => blog._id);
+
+    res.status(200).json({ body: ids });
+  } catch (error) {
+    next(error);
+  }
+};
+
 //бүх мэдээг авч байгаа -
 export const getBlogs: RequestHandler = async (req, res, next) => {
   try {
@@ -44,15 +59,17 @@ export const getBlogs: RequestHandler = async (req, res, next) => {
 };
 
 // ID-гаар авч байгаа мэдээ
-export const getSingleBlog: RequestHandler<BlogParams, unknown, unknown, unknown> = async (
-  req,
-  res,
-  next
-) => {
+export const getSingleBlog: RequestHandler<
+  BlogParams,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна");
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна");
 
     const blog = await BlogModel.findById(id);
     if (!blog) throw createHttpError(404, "Мэдээ олдсонгүй");
@@ -64,11 +81,12 @@ export const getSingleBlog: RequestHandler<BlogParams, unknown, unknown, unknown
 };
 
 //Мэдээ шинээр үүсгэх
-export const createBlog: RequestHandler<unknown, unknown, BlogBody, unknown> = async (
-  req,
-  res,
-  next
-) => {
+export const createBlog: RequestHandler<
+  unknown,
+  unknown,
+  BlogBody,
+  unknown
+> = async (req, res, next) => {
   const { name, picture, text, description } = req.body;
 
   const userId = req.session.userId;
@@ -99,16 +117,18 @@ export const createBlog: RequestHandler<unknown, unknown, BlogBody, unknown> = a
 };
 
 //Мэдээг шинэчлэх
-export const updateBlog: RequestHandler<BlogParams, unknown, BlogBody, unknown> = async (
-  req,
-  res,
-  next
-) => {
+export const updateBlog: RequestHandler<
+  BlogParams,
+  unknown,
+  BlogBody,
+  unknown
+> = async (req, res, next) => {
   const { id } = req.params;
   const { name, picture, description, text, user } = req.body;
 
   try {
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна.");
 
     if (!name) throw createHttpError(400, "Нэр заавал шаардлагатай");
 
@@ -116,9 +136,11 @@ export const updateBlog: RequestHandler<BlogParams, unknown, BlogBody, unknown> 
 
     if (!picture) throw createHttpError(400, "Зураг заавал шаардлагатай.");
 
-    if (!text) throw createHttpError(400, "мэдээний агуулга заавал шаардлагатай.");
+    if (!text)
+      throw createHttpError(400, "мэдээний агуулга заавал шаардлагатай.");
 
-    if (!description) throw createHttpError(400, "мэдээний тайлбар заавал шаардлагатай.");
+    if (!description)
+      throw createHttpError(400, "мэдээний тайлбар заавал шаардлагатай.");
 
     const blog = await BlogModel.findById(id);
     if (!blog) throw createHttpError(404, "Ангилал олдсонгүй.");
@@ -143,7 +165,8 @@ export const deleteBlog: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+    if (!mongoose.isValidObjectId(id))
+      throw createHttpError(400, "Id буруу байна.");
 
     const blog = await BlogModel.findById(id);
     if (!blog) throw createHttpError(404, "мэдээ олдсонгүй.");
