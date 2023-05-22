@@ -33,6 +33,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     if (!isUserLoading && user && user.role.slug === "admin") {
       setIsAuthenticated(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isUserLoading]);
 
   if (!isAuthenticated) return <></>;

@@ -62,6 +62,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     } else {
       setIsUserLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   const value = { user, setUser, isLoggedIn, setIsLoggedIn, isUserLoading };
