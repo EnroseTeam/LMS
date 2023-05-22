@@ -11,6 +11,7 @@ if (env.NODE_ENV === "production") {
   cookieConfig.sameSite = "none";
   cookieConfig.httpOnly = false;
   cookieConfig.domain = "vercel.app";
+
 }
 
 const sessionConfig: SessionOptions = {
