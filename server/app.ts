@@ -30,7 +30,7 @@ if (env.NODE_ENV === "production") {
   app.set("trust proxy", true);
 }
 
-const allowedDomains = [env.ADMIN_SITE_URL, env.PUBLIC_SITE_URL];
+const allowedDomains = [env.ADMIN_SITE_URL, env.PUBLIC_SITE_URL, "http://localhost:3000"];
 app.use(
   cors({
     origin: function (origin, callback) {
