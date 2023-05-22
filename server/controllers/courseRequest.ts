@@ -4,6 +4,8 @@ import CourseModel from "../models/course";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
 import assertIsDefined from "../utils/assertIsDefined";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 export const getAllCourseRequests: RequestHandler = async (req, res, next) => {
   try {
@@ -96,6 +98,8 @@ export const updateCourseRequest: RequestHandler<
 
     session.startTransaction();
 
+    let courseId;
+
     const isCourseReqExist = await CourseRequestModel.findById(id, null, { session });
     if (!isCourseReqExist) throw createHttpError(404, "Хүсэлт олдсонгүй.");
 
@@ -105,12 +109,25 @@ export const updateCourseRequest: RequestHandler<
     if (status === "Accepted") {
       const course = await CourseModel.findById(isCourseReqExist.course, null, { session });
       if (course) {
+        courseId = course._id;
         course.isPublished = true;
         await course.save({ session });
       }
     }
 
     await session.commitTransaction();
+
+    if (status === "Accepted") {
+      await axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`
+      );
+      await axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${courseId}`
+      );
+      await axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${courseId}`
+      );
+    }
 
     res.status(200).json({ message: "Хүсэлтийн төлөв амжилттай шинэчлэгдлээ." });
   } catch (error) {

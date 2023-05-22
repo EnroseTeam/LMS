@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import axios from "axios";
+import env from "../configs/validateEnv";
 
 interface UserBody {
   firstName?: string;
@@ -87,9 +88,17 @@ export const updateUserPersonalInfo: RequestHandler<unknown, unknown, UserBody, 
       avatar,
     });
 
-    await axios.get(`http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=/`);
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
     await axios.get(
-      `http://localhost:3000/api/revalidate?secret=IntelliSenseTeamEnrose&path=${`/instructors/${user._id}`}`
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+        env.REVALIDATE_SECRET
+      }&path=${`/instructors/${user._id}`}`
     );
 
     res.status(200).json({ message: "Хэрэглэгчийн хувийн мэдээлэл амжилттай шинэчлэгдлээ" });
@@ -179,6 +188,19 @@ export const updateUserSocialAccounts: RequestHandler<
 
     await user.save();
 
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+        env.REVALIDATE_SECRET
+      }&path=${`/instructors/${user._id}`}`
+    );
+
     res.status(200).json({ message: "Сошиол хаягууд амжилттай шинэчлэгдлээ." });
   } catch (error) {
     next(error);
@@ -211,12 +233,24 @@ export const deleteUser: RequestHandler<unknown, unknown, UserDeleteBody, unknow
 
     await user.deleteOne();
 
+    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+    );
+    await axios.get(
+      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+        env.REVALIDATE_SECRET
+      }&path=${`/instructors/${user._id}`}`
+    );
+
     req.session.destroy((error) => {
       if (error) next(error);
       else res.sendStatus(204);
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
