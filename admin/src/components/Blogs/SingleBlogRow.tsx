@@ -31,6 +31,8 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
     });
   };
 
+  const router = useRouter();
+
   return (
     <>
       <div className="grid grid-cols-6 gap-2 border-t border-stroke py-4.5 px-4 dark:border-strokedark md:px-6 2xl:px-7.5">
@@ -66,7 +68,14 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
           </p>
         </div>
         <div className="col-span-1 flex items-center gap-3 pl-4">
-          <FiEdit size={20} className="text-meta-5" />
+          <button
+            onClick={(): void => {
+              router.push({ pathname: `/blogs/update/${blog._id}` });
+            }}
+          >
+            <FiEdit size={20} className="text-meta-5" />
+          </button>
+
           <button
             onClick={(): void => {
               showDeletePrompt();
