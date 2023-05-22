@@ -9,7 +9,9 @@ const cookieConfig: CookieOptions = {
 if (env.NODE_ENV === "production") {
   cookieConfig.secure = true;
   cookieConfig.sameSite = "none";
-  cookieConfig.domain = env.PUBLIC_SITE_URL;
+  cookieConfig.httpOnly = false;
+  cookieConfig.domain = "vercel.app";
+
 }
 
 const sessionConfig: SessionOptions = {
