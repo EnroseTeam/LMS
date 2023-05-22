@@ -54,6 +54,7 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
     const courseLesson = await CourseLessonModel.findById(id).populate("section");
     if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй");
 
+
     const boughtCourses = user.boughtCourses.map((courseId) => courseId?.toString());
     const ownCourses = user.ownCourses.map((courseId) => courseId?.toString());
     console.log("boughtCourses:", boughtCourses);
