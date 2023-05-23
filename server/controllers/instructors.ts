@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import createHttpError from "http-errors";
 import axios from "axios";
 import env from "../configs/validateEnv";
+import { ICourse } from "../models/course";
 
 export const becomeInstructor: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
@@ -57,7 +58,7 @@ export const getSingleInstructor: RequestHandler = async (req, res, next) => {
 
     const instructor = await UserModel.findById(id)
       .select("+ownCourses +avgRating")
-      .populate({ path: "ownCourses", populate: "level" });
+      .populate({ path: "ownCourses", populate: "level", match: { isPublished: true } });
     if (!instructor) throw createHttpError(404, "Багш олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: instructor });
