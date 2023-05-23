@@ -7,11 +7,10 @@ const cookieConfig: CookieOptions = {
 };
 
 if (env.NODE_ENV === "production") {
-  cookieConfig.secure = true;
+  // cookieConfig.secure = true;
   cookieConfig.sameSite = "none";
   cookieConfig.httpOnly = false;
   // cookieConfig.domain = "enrose-lms-project.vercel.app";
-
 }
 
 const sessionConfig: SessionOptions = {
