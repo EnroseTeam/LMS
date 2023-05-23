@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<SingleLessonPageProps> = asy
         return {
           redirect: {
             destination: "/auth/login",
-            permanent: false,
+            permanent: true,
           },
         };
       }
@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<SingleLessonPageProps> = asy
         return {
           redirect: {
             destination: "/",
-            permanent: false,
+            permanent: true,
           },
         };
       }

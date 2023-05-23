@@ -25,9 +25,9 @@ const UserCoursesPage: NextPageWithLayout = () => {
       if (isAxiosError(userCourseError)) {
         if (userCourseError.response?.status === 401) {
           toast.warning("Та эхлээд нэвтэрнэ үү!");
-          router.push("/auth/login");
+          router.replace("/auth/login");
         }
-      } else router.push("/");
+      } else router.replace("/");
     }
 
     if (!isCoursesLoading && userCourses) {

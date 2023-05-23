@@ -18,7 +18,7 @@ const GoogleLoginPage: NextPageWithLayout = () => {
         .then((res) => {
           if (res.status === 201) {
             setIsLoggedIn(true);
-            router.push("/");
+            router.replace("/");
           }
         })
         .catch((err) => console.log(err));

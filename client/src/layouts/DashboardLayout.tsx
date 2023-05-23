@@ -59,10 +59,10 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (!user && !isUserLoading) {
-      router.push("/");
+      router.replace("/");
     }
     if (user && !isUserLoading && user.role.slug === "student") {
-      router.push("/");
+      router.replace("/");
     }
 
     if (!isUserLoading && user && user.role.slug !== "student") {

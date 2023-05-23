@@ -46,7 +46,7 @@ const CheckoutPage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      router.push("/auth/login");
+      router.replace("/auth/login");
     }
 
     if (!isUserLoading && user) {
@@ -68,7 +68,7 @@ const CheckoutPage: NextPageWithLayout = () => {
         });
       } else {
         if (cartItems.length === 0 && !isSubmitting) {
-          router.push("/user/cart");
+          router.replace("/user/cart");
         }
         setCourses(cartItems);
         setTotalPrice(cartTotal);

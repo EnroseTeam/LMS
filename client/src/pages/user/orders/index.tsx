@@ -17,10 +17,7 @@ const UserOrdersPage: NextPageWithLayout = () => {
     data: userOrders,
     isLoading: isOrdersLoading,
     error: userOrderError,
-  } = useSwr(
-    "/api/users/orders/user",
-    fetcher<{ message: string; body: IUserOrder[] }>
-  );
+  } = useSwr("/api/users/orders/user", fetcher<{ message: string; body: IUserOrder[] }>);
 
   const [allOrders, setAllOrders] = useState<IUserOrder[]>([]);
   const [acceptedOrders, setAcceptedOrders] = useState<IUserOrder[]>([]);
@@ -29,20 +26,16 @@ const UserOrdersPage: NextPageWithLayout = () => {
   useEffect(() => {
     if (!isOrdersLoading && userOrderError) {
       if (isAxiosError(userOrderError)) {
-        if (userOrderError.response?.status === 401) router.push("/auth/login");
+        if (userOrderError.response?.status === 401) router.replace("/auth/login");
       } else {
-        router.push("/");
+        router.replace("/");
       }
     }
 
     if (!isOrdersLoading && userOrders) {
       setAllOrders(userOrders.body);
-      setAcceptedOrders(
-        userOrders.body.filter((order) => order.status === "Accepted")
-      );
-      setPendingOrders(
-        userOrders.body.filter((order) => order.status === "Pending")
-      );
+      setAcceptedOrders(userOrders.body.filter((order) => order.status === "Accepted"));
+      setPendingOrders(userOrders.body.filter((order) => order.status === "Pending"));
     }
   }, [router, userOrders, isOrdersLoading, userOrderError]);
 
@@ -62,9 +55,7 @@ const UserOrdersPage: NextPageWithLayout = () => {
       {HeaderContent}
       <div className="flex flex-col gap-5">
         {isOrdersLoading &&
-          Array.from(Array(5)).map((val, index) => (
-            <UserOrderSkeleton key={index} />
-          ))}
+          Array.from(Array(5)).map((val, index) => <UserOrderSkeleton key={index} />)}
         {!isOrdersLoading &&
           allOrders.length > 0 &&
           allOrders.map((order) => <OrderItem key={order._id} order={order} />)}
@@ -87,9 +78,7 @@ const UserOrdersPage: NextPageWithLayout = () => {
           </p>
         )}
         {acceptedOrders.length > 0 &&
-          acceptedOrders.map((order) => (
-            <OrderItem key={order._id} order={order} />
-          ))}
+          acceptedOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );
@@ -104,9 +93,7 @@ const UserOrdersPage: NextPageWithLayout = () => {
           </p>
         )}
         {pendingOrders.length > 0 &&
-          pendingOrders.map((order) => (
-            <OrderItem key={order._id} order={order} />
-          ))}
+          pendingOrders.map((order) => <OrderItem key={order._id} order={order} />)}
       </div>
     </>
   );
@@ -132,9 +119,7 @@ const UserOrdersPage: NextPageWithLayout = () => {
         ]}
       />
       <div className="container mb-[120px]">
-        <h1 className="text-head text-3xl-bold text-center mb-[9px]">
-          Миний захиалгууд
-        </h1>
+        <h1 className="text-head text-3xl-bold text-center mb-[9px]">Миний захиалгууд</h1>
         <p className="text-text text-md-regular text-center mb-[60px]">
           Миний захиалсан сургалтуудын мэдээлэл.
         </p>
