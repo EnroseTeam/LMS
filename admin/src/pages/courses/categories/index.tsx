@@ -31,7 +31,7 @@ const CourseCategoryPage: FC<CourseCategoryPageProps> = ({ categories }) => {
         </h4>
         <button
           onClick={(): void => {
-            router.push({ pathname: "/categories/create" });
+            router.push({ pathname: "/courses/categories/create" });
           }}
           className="w-fit inline-flex items-center justify-center gap-2.5 border border-text-primary rounded-md bg-transparent py-4 px-10 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10 dark:border-meta-2 dark:text-meta-2"
         >

@@ -45,7 +45,9 @@ const BlogCreatePage: FC = () => {
         toast.success(res.data.message);
       } catch (error) {
         if (isAxiosError(error)) {
-          toast.error(error.response?.data.error || "Тодорхойгүй алдаа гарлаа.");
+          toast.error(
+            error.response?.data.error || "Тодорхойгүй алдаа гарлаа."
+          );
         } else {
           toast.error("Тодорхойгүй алдаа гарлаа.");
         }
@@ -71,7 +73,9 @@ const BlogCreatePage: FC = () => {
         router.push("/blogs");
       } catch (error) {
         if (isAxiosError(error)) {
-          toast.error(error.response?.data.error || "Тодорхойгүй алдаа гарлаа.");
+          toast.error(
+            error.response?.data.error || "Тодорхойгүй алдаа гарлаа."
+          );
         } else {
           toast.error("Тодорхойгүй алдаа гарлаа.");
         }
@@ -86,10 +90,13 @@ const BlogCreatePage: FC = () => {
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">Мэдээ нэмэх</h3>
+              <h3 className="font-medium text-black dark:text-white">
+                Мэдээ нэмэх
+              </h3>
             </div>
 
             <div className="flex flex-col gap-5.5 p-6.5">
+              {/* Мэдээний нэр */}
               <div>
                 <label className="mb-3 block font-medium text-sm text-black dark:text-white">
                   Гарчиг
@@ -104,6 +111,7 @@ const BlogCreatePage: FC = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
               </div>
+              {/* Мэдээний тайлбар */}
               <div>
                 <label className="mb-3 block font-medium text-sm text-black dark:text-white">
                   Тайлбар
@@ -119,6 +127,7 @@ const BlogCreatePage: FC = () => {
                   defaultValue={""}
                 />
               </div>
+              {/* Мэдээний тайлбар */}
               <div>
                 <label className="mb-3 block font-medium text-sm text-black dark:text-white">
                   Мэдээний дэлгэрэнгүй...
@@ -134,6 +143,7 @@ const BlogCreatePage: FC = () => {
                   defaultValue={""}
                 />
               </div>
+              {/* Мэдээний зурагs */}
               <div>
                 <label className="mb-3 block font-medium text-sm text-black dark:text-white">
                   Мэдээний зураг оруулах
@@ -171,7 +181,10 @@ const BlogCreatePage: FC = () => {
 
                   {!image && !isImageLoading && (
                     <div className="text-center">
-                      <HiPhoto className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                      <HiPhoto
+                        className="mx-auto h-12 w-12 text-gray-300"
+                        aria-hidden="true"
+                      />
                       <div className="mt-4 flex justify-center text-sm leading-6 text-gray-600">
                         <label
                           htmlFor="file-upload"
@@ -188,7 +201,9 @@ const BlogCreatePage: FC = () => {
                           />
                         </label>
                       </div>
-                      <p className="text-xs leading-5 text-gray-600">PNG, JPG өргөтгөлтэй файл</p>
+                      <p className="text-xs leading-5 text-gray-600">
+                        PNG, JPG өргөтгөлтэй файл
+                      </p>
                     </div>
                   )}
 

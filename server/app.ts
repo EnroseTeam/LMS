@@ -79,6 +79,8 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   let errorMessage = "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.";
   let statusCode = 500;
 
+  console.log(error);
+
   if (isHttpError(error)) {
     statusCode = error.status;
     errorMessage = error.message;
@@ -86,9 +88,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 
   if (error instanceof MulterError) {
     statusCode = 400;
-    if (error.code === "LIMIT_UNEXPECTED_FILE") errorMessage = "Буруу өргөтгөлтэй файл байна.";
+    if (error.code === "LIMIT_UNEXPECTED_FILE")
+      errorMessage = "Буруу өргөтгөлтэй файл байна.";
     if (error.code === "LIMIT_FILE_SIZE")
-      errorMessage = "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
+      errorMessage =
+        "Файлын хэмжээ хэтэрсэн байна. 1GB-аас доош хэмжээтэй файл оруулна уу.";
   }
 
   res.status(statusCode).json({ error: errorMessage });
