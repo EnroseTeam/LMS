@@ -30,7 +30,10 @@ if (env.NODE_ENV === "production") {
   app.set("trust proxy", true);
 }
 
-const allowedDomains = [env.ADMIN_SITE_URL, env.PUBLIC_SITE_URL, "http://localhost:3000"];
+const allowedDomains = [
+  env.NODE_ENV === "production" ? "http://intellisense.e-cpta.mn/" : "http://localhost:3000",
+  env.NODE_ENV === "production" ? "http://admin-intellisense.e-cpta.mn" : "http://localhost:3001",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
