@@ -112,7 +112,7 @@ export const updateCourseCategory: RequestHandler<
 
     if (!name) throw createHttpError(400, "Нэр заавал шаардлагатай");
 
-    // if (!image) throw createHttpError(400, "Зураг заавал шаардлагатай.");
+    if (!image) throw createHttpError(400, "Зураг заавал шаардлагатай.");
 
     const slug = slugify(name).toLowerCase();
     const isSlugExist = await CourseCategoryModel.findOne({
@@ -129,7 +129,7 @@ export const updateCourseCategory: RequestHandler<
     if (!courseCategory) throw createHttpError(404, "Ангилал олдсонгүй.");
 
     courseCategory.name = name;
-    // courseCategory.image = image;
+    courseCategory.image = image;
     courseCategory.description = description;
     courseCategory.slug = slug;
 
