@@ -48,7 +48,7 @@ const UserCoursesPage: NextPageWithLayout = () => {
           </div>
         )}
         {!isCoursesLoading && courses.length > 0 && (
-          <div className="grid grid-cols-2 gap-[30px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
             {courses.map((course) => (
               <UserCourseCard key={course._id} course={course} />
             ))}
