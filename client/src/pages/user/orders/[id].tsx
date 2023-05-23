@@ -12,9 +12,10 @@ interface SingleOrderPageProps {
   order: IUserOrder;
 }
 
-export const getServerSideProps: GetServerSideProps<
-  SingleOrderPageProps
-> = async ({ params, req }) => {
+export const getServerSideProps: GetServerSideProps<SingleOrderPageProps> = async ({
+  params,
+  req,
+}) => {
   try {
     const res = await axiosInstance.get(`/api/users/orders/${params?.id}`, {
       headers: {
@@ -33,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<
         return {
           redirect: {
             destination: "/auth/login",
-            permanent: false,
+            permanent: true,
           },
         };
       }
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<
         return {
           redirect: {
             destination: "/user/orders",
-            permanent: false,
+            permanent: true,
           },
         };
       }
@@ -54,9 +55,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
-const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
-  order,
-}) => (
+const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({ order }) => (
   <div>
     <Breadcrumbs
       breadcrumbItems={[
@@ -69,24 +68,17 @@ const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
       ]}
     />
     <div className="max-w-[1100px] mx-auto mb-[120px] px-5">
-      <h1 className="text-center text-head text-4x-bold mb-1">
-        Захиалга #{order.orderNumber}
-      </h1>
+      <h1 className="text-center text-head text-4x-bold mb-1">Захиалга #{order.orderNumber}</h1>
       <p className="text-text text-lg-regular mb-[30px] sm:mb-[90px] text-center">
-        We’re on a mission to deliver engaging, curated courses at a reasonable
-        price.
+        We’re on a mission to deliver engaging, curated courses at a reasonable price.
       </p>
 
       <div className="flex flex-col gap-5 items-center mb-[30px] sm:mb-[70px]">
         <div className="bg-color-1 p-4 rounded-full overflow-hidden text-white text-5xl">
           <BsCheckLg />
         </div>
-        <h2 className="text-head text-3xl-bold text-center">
-          Таны захиалга амжилттай.
-        </h2>
-        <p className="text-text text-md-regular">
-          Баярлалаа. Таны захиалгыг бид хүлээж авлаа.
-        </p>
+        <h2 className="text-head text-3xl-bold text-center">Таны захиалга амжилттай.</h2>
+        <p className="text-text text-md-regular">Баярлалаа. Таны захиалгыг бид хүлээж авлаа.</p>
       </div>
 
       <div
@@ -99,9 +91,7 @@ const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-5 text-head text-md-regular md:h-[65px] gap-2">
           <div className="flex flex-row md:flex-col items-center justify-between gap-2">
             <span>Захиалгын дугаар</span>
-            <span className="text-color-1 text-md-medium">
-              #{order.orderNumber}
-            </span>
+            <span className="text-color-1 text-md-medium">#{order.orderNumber}</span>
           </div>
 
           <div className="flex flex-row md:flex-col items-center justify-between gap-2">
@@ -113,9 +103,7 @@ const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
 
           <div className="flex flex-row md:flex-col items-center justify-between gap-2">
             <span>Нийт үнэ</span>
-            <span className="text-color-1 text-md-medium">
-              ₮{order.totalAmount}
-            </span>
+            <span className="text-color-1 text-md-medium">₮{order.totalAmount}</span>
           </div>
 
           <div className="flex flex-row md:flex-col items-center justify-between gap-2">
@@ -174,15 +162,13 @@ const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
 
       {order.status === "Pending" && (
         <div className="text-center text-text text-md-medium mb-[30px]">
-          Хэрэв та төлбөрөө шилжүүлээгүй бол Голомт банкны 4605111981 дугаарт
-          дансруу шилжүүлснээр таны захиалга баталгаажих болно.
+          Хэрэв та төлбөрөө шилжүүлээгүй бол Голомт банкны 4605111981 дугаарт дансруу шилжүүлснээр
+          таны захиалга баталгаажих болно.
         </div>
       )}
 
       <div className="bg-bg-1 border border-border-1 rounded-lg p-[60px]">
-        <h2 className="mb-10 text-head text-xl font-medium leading-[23px]">
-          Захиалгын мэдээлэл
-        </h2>
+        <h2 className="mb-10 text-head text-xl font-medium leading-[23px]">Захиалгын мэдээлэл</h2>
         <div className="flex items-center justify-between pb-[15px] border-b border-b-border-1 text-head text-md-medium">
           <h5>Сургалт</h5>
           <h5>Үнэ</h5>
@@ -191,16 +177,10 @@ const SingleOrderPage: NextPageWithLayout<SingleOrderPageProps> = ({
         <div className="py-3 border-b border-b-border-1 flex flex-col gap-5 text-text text-md-regular">
           {order.courses.map((course) => (
             <div key={course._id} className="flex items-center justify-between">
-              <Link
-                className="hover:text-color-1 duration-300"
-                href={`/courses/${course._id}`}
-              >
+              <Link className="hover:text-color-1 duration-300" href={`/courses/${course._id}`}>
                 {course.name}
               </Link>
-              <span>
-                ₮
-                {course.discountPrice > 0 ? course.discountPrice : course.price}
-              </span>
+              <span>₮{course.discountPrice > 0 ? course.discountPrice : course.price}</span>
             </div>
           ))}
         </div>

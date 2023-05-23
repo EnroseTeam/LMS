@@ -26,7 +26,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isUserLoading && user) router.push("/");
+    if (!isUserLoading && user) router.replace("/");
     if (!isUserLoading && !user) setIsReady(true);
   }, [router, isUserLoading, user]);
 
@@ -44,11 +44,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
           />
           <div className="relative">
             <div className="w-[400px] h-[400px] bg-color-1 rounded-full overflow-hidden">
-              <Image
-                src={authBg}
-                alt="Studying"
-                className="w-full aspect-square object-cover"
-              />
+              <Image src={authBg} alt="Studying" className="w-full aspect-square object-cover" />
             </div>
 
             <div className="absolute overflow-hidden w-[90px] h-[90px] bg-[#efccc7] rounded-full top-20 -left-8">
@@ -76,9 +72,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
             </div>
           </div>
         </div>
-        <div className="col-span-1 xl:col-span-2 bg-bg-5 grid place-items-center">
-          {children}
-        </div>
+        <div className="col-span-1 xl:col-span-2 bg-bg-5 grid place-items-center">{children}</div>
       </main>
     </div>
   );

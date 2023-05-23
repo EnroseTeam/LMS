@@ -39,7 +39,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         if (isAxiosError(error) && error.response?.status === 401) {
           setIsLoggedIn(false);
           setUser(undefined);
-          router.push("/auth/login");
+          router.replace("/auth/login");
         }
       } finally {
         setIsUserLoading(false);

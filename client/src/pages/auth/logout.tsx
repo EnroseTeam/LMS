@@ -18,7 +18,7 @@ const LogoutPage: NextPageWithLayout = () => {
         setUser(undefined);
 
         setTimeout(() => {
-          router.push("/");
+          router.replace("/");
         }, 400);
       } catch (error) {
         console.log(error);
