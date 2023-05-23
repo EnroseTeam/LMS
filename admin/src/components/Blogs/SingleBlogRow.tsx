@@ -47,15 +47,11 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
                 className="w-full h-full object-cover aspect-[1.2/1]"
               />
             </div>
-            <p className="font-medium text-sm text-black dark:text-white">
-              {blog.name}
-            </p>
+            <p className="font-medium text-sm text-black dark:text-white">{blog.name}</p>
           </div>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
-          <p className="font-medium text-sm text-black dark:text-white">
-            {blog.description}
-          </p>
+          <p className="font-medium text-sm text-black dark:text-white">{blog.description}</p>
         </div>
         <div className="col-span-1 flex items-center">
           <p className="font-medium text-sm text-black dark:text-white">
@@ -63,9 +59,7 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
           </p>
         </div>
         <div className="col-span-1 flex items-center">
-          <p className="font-medium text-sm text-black dark:text-white">
-            {blog.user ? blog.user.fullName : ""}
-          </p>
+          <p className="font-medium text-sm text-black dark:text-white">{blog.user.fullName}</p>
         </div>
         <div className="col-span-1 flex items-center gap-3 pl-4">
           <button
@@ -89,10 +83,7 @@ const SingleBlogRow: FC<SingleBlogRowProps> = ({ blog }) => {
   );
 };
 
-const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
-  blog,
-  closeModal,
-}) => {
+const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({ blog, closeModal }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
@@ -111,8 +102,7 @@ const BlogDeleteModalContent: FC<BlogDeleteModalContentProps> = ({
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(
-          error.response?.data.error ||
-            "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+          error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
         );
       } else {
         toast.error("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");

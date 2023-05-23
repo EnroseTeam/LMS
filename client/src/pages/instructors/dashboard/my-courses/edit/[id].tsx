@@ -5,7 +5,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import { NextPageWithLayout } from "@/pages/_app";
 import { axiosInstance } from "@/utils/axiosInstance";
 import axios from "axios";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import CourseInfoForm from "@/components/Instructors/Dashboard/Courses/CourseInfoForm";
 import { useRouter } from "next/router";
@@ -19,16 +19,7 @@ interface InstructorCoursesEditPageProps {
   categories: ICourseCategory[];
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axiosInstance.get("/api/courses/id");
-  const paths = res.data.body.map((id: string) => ({ params: { id } }));
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps: GetStaticProps<InstructorCoursesEditPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<InstructorCoursesEditPageProps> = async ({
   params,
 }) => {
   try {

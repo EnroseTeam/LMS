@@ -3,7 +3,6 @@ import cors from "cors";
 import createHttpError, { isHttpError } from "http-errors";
 import { MulterError } from "multer";
 import session from "express-session";
-import MongoStore from "connect-mongo";
 
 import env from "./configs/validateEnv";
 
@@ -23,12 +22,17 @@ import userOrderRoutes from "./routes/userOrder";
 import instructorRoutes from "./routes/instructors";
 import courseReviewAnswerRoutes from "./routes/courseReviewAnswer";
 import courseRequestRoutes from "./routes/courseRequest";
+import sessionConfig from "./configs/session";
 
 const app: Express = express();
 
+if (env.NODE_ENV === "production") {
+  app.set("trust proxy", true);
+}
+
 const allowedDomains = [
-  "https://intellisense-lilac.vercel.app/",
-  "http://localhost:3000",
+  env.NODE_ENV === "production" ? "http://intellisense.e-cpta.mn/" : "http://localhost:3000",
+  env.NODE_ENV === "production" ? "http://admin-intellisense.e-cpta.mn" : "http://localhost:3001",
 ];
 app.use(
   cors({
@@ -46,21 +50,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(
-  session({
-    secret: env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 60 * 60 * 1000,
-      // sameSite: "none",
-    },
-    rolling: true,
-    store: MongoStore.create({
-      mongoUrl: env.MONGO_CONNECTION_STRING,
-    }),
-  })
-);
+app.use(session(sessionConfig));
 
 // Routes
 app.use("/api/files", fileRoutes);

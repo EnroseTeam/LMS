@@ -31,18 +31,13 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
 
   const description = (
     <div className="mb-[60px]">
-      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">
-        Тайлбар
-      </h1>
+      <h1 className="text-head text-xl font-medium leading-[23px] mb-[30px]">Тайлбар</h1>
       <div
         className={`text-text text-md-regular overflow-hidden mb-10 relative ${
           descriptionHide ? "h-[160px]" : "h-full"
         } `}
       >
-        <div
-          className="[&>p]:mb-4"
-          dangerouslySetInnerHTML={{ __html: instructor.bio || "" }}
-        />
+        <div className="[&>p]:mb-4" dangerouslySetInnerHTML={{ __html: instructor.bio || "" }} />
         {descriptionHide && (
           <div className="absolute w-full bottom-0 left-0 right-0 h-full pointer-events-none text-fade" />
         )}
@@ -57,7 +52,7 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
   );
 
   const courseContent = (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px] overflow-x-hidden overflow-y-hidden">
       {instructor.ownCourses.length > 0 &&
         instructor.ownCourses.map((course) => (
           <CourseCard
@@ -65,12 +60,11 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
             course={{ ...course, instructor }}
             user={user}
             boughtCourses={boughtCoursesIds}
+            showHover={false}
           />
         ))}
       {instructor.ownCourses.length === 0 && (
-        <p className="col-span-2 text-center text-text text-md-medium">
-          Сургалт байхгүй байна.
-        </p>
+        <p className="col-span-2 text-center text-text text-md-medium">Сургалт байхгүй байна.</p>
       )}
     </div>
   );

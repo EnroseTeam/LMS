@@ -30,6 +30,7 @@ const LogoutPage: NextPageWithLayout = () => {
     };
 
     logout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <></>;

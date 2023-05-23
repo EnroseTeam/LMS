@@ -103,7 +103,7 @@ export const createUserOrder: RequestHandler<unknown, unknown, UserOrderBody, un
 
     session.startTransaction();
 
-    const isUserExist = await UserModel.findById(userId, null, { session });
+    const isUserExist = await UserModel.findById(userId, null, { session }).select("+orders");
     if (!isUserExist) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     let totalAmount = 0;
@@ -141,6 +141,7 @@ export const createUserOrder: RequestHandler<unknown, unknown, UserOrderBody, un
       body: newOrder._id,
     });
   } catch (error) {
+    console.log(error);
     await session.abortTransaction();
     next(error);
   }

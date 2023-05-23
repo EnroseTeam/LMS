@@ -92,7 +92,7 @@ const PopularCoursesSection: FC<PopularCoursesProps> = ({ courses, categories })
         ))}
       </Swiper>
 
-      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[30px]">
+      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[30px]">
         {initialCourses.map((course) => (
           <CourseCard
             key={course._id}

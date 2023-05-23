@@ -18,29 +18,30 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => {
 
   useEffect(() => {
     setOpenCartShow(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   return (
     <div
       className={classNames(
-        "absolute -right-7 top-full mt-5 duration-300",
+        "absolute left-0 right-0 smallest:-right-7 smallest:left-auto top-full mt-0 smallest:mt-5 duration-300",
         {
           "opacity-100": openCartShow,
         },
         { "opacity-0 pointer-events-none": !openCartShow }
       )}
     >
-      <div className="bg-white w-[10px] h-[10px] rotate-45 ml-[367px]" />
-      <div className="bg-white  rounded-lg shadow-shadow-4 min-w-[410px] -mt-[6px] text-head">
+      <div className="bg-white w-[10px] h-[10px] rotate-45 ml-[367px] hidden smallest:block" />
+      <div className="bg-white  rounded-lg shadow-shadow-4 smallets:min-w-[410px] -mt-[6px] text-head">
         {cartItems.length > 0 && (
-          <div className="flex flex-col gap-5 px-[30px] pt-[30px] mb-[30px]">
+          <div className="flex flex-col gap-5 px-[15px] smallest:px-[30px] pt-[15px] smallest:pt-[30px] mb-[15px] smallest:mb-[30px]">
             {cartItems.map((item) => (
-              <div key={item._id} className="grid grid-cols-3 gap-5 relative">
+              <div key={item._id} className="grid grid-cols-1 smallest:grid-cols-3 gap-5 relative">
                 <button
                   onClick={(): void => {
                     removeCartItem(item);
                   }}
-                  className="text-md text-color-1 absolute top-0 right-0"
+                  className="text-md text-color-1 absolute bottom-5 smallest:bottom-auto smallest:top-0 right-0"
                 >
                   <AiOutlineClose />
                 </button>
@@ -48,13 +49,13 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => {
                   <Image
                     src={item.picture}
                     alt={item.name}
-                    width={160}
-                    height={160}
+                    width={640}
+                    height={640}
                     className="w-full aspect-square object-cover"
                   />
                 </div>
 
-                <div className="col-span-2 self-center flex flex-col flex-1 gap-[10px]">
+                <div className="col-span-1 smallest:col-span-2 self-center flex flex-col flex-1 gap-[10px]">
                   <Link
                     href={`/courses/${item._id}`}
                     className="text-head text-xl-medium leading-6 text-left hover:opacity-70 duration-300"
@@ -77,20 +78,20 @@ const OpenCart: FC<OpenCartProps> = ({ openCartShow, setOpenCartShow }) => {
         )}
 
         {cartItems.length === 0 && (
-          <p className="text-base-medium text-icon text-center p-[30px]">
+          <p className="text-base-medium text-icon text-center p-[15px] smallest:p-[30px]">
             Таны сагсанд сургалт байхгүй байна.
           </p>
         )}
-        <div className="pt-[20px] pb-[30px] px-[30px] border-t border-t-border-1">
-          <div className="flex items-center justify-between text-xl-medium mb-[30px]">
+        <div className="pt-[20px] pb-[15px] smallest:pb-[30px] px-[15px] smallest:px-[30px] border-t border-t-border-1">
+          <div className="flex flex-col smallest:flex-row items-start smallest:items-center justify-between text-xl-medium mb-[30px]">
             <h3>Нийт дүн:</h3>
             <p>₮{totalPrice}</p>
           </div>
-          <div className="flex items-center gap-5 whitespace-nowrap">
-            <Link href="/user/cart" className="btn-3 px-[35px] py-4">
+          <div className="flex flex-col smallest:flex-row items-center gap-2 smallest:gap-5 whitespace-nowrap">
+            <Link href="/user/cart" className="btn-3 px-[35px] py-4 w-full text-center">
               Сагс үзэх
             </Link>
-            <Link href="/user/cart/checkout" className="btn-1 px-[35px] py-4">
+            <Link href="/user/cart/checkout" className="btn-1 px-[35px] py-4 w-full text-center">
               Худалдаж авах
             </Link>
           </div>
