@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import useSWR from "swr";
 
-// import mainLogo from "@/assets/logo-main.svg";
+import mainLogo from "@/assets/logo-main.svg";
 import darkLogo from "@/assets/logo-dark.svg";
 import { useRouter } from "next/router";
 import MobileMenu from "../global/MobileMenu";
@@ -26,9 +26,7 @@ const AuthNavbar: FC = () => {
   // const { user, isLoggedIn, isUserLoading } = useContext(AuthContext);
 
   const router = useRouter();
-  const [headerCategories, setHeaderCategories] = useState<HeaderMenuItem[]>(
-    []
-  );
+  const [headerCategories, setHeaderCategories] = useState<HeaderMenuItem[]>([]);
   const [mobileMenuShow, setMobileMenuShow] = useState<boolean>(false);
 
   const HeaderMenuItems: HeaderMenuItem[] = [
@@ -74,15 +72,19 @@ const AuthNavbar: FC = () => {
         </button>
 
         <div className="hidden sm:block lg:col-span-1 bg-bg-5 xl:bg-head pt-0 xl:pt-5">
-          <Link
-            href="/"
-            className="block w-full lg:w-2/3 xl:w-[200px] ml-0 lg:ml-[60px]"
-          >
+          <Link href="/" className="block w-full lg:w-2/3 xl:w-[200px] ml-0 lg:ml-[60px]">
             <Image
               src={darkLogo}
               width={135}
               height={50}
-              className="w-full aspect-[2.7/1] object-contain"
+              className="block w-full aspect-[2.7/1] object-contain xl:hidden"
+              alt="Main Logo"
+            />
+            <Image
+              src={mainLogo}
+              width={135}
+              height={50}
+              className="w-full aspect-[2.7/1] object-contain hidden xl:block"
               alt="Main Logo"
             />
           </Link>

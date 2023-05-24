@@ -2,6 +2,7 @@ import { IUser } from "@/interfaces/user";
 import Link from "next/link";
 import { FC } from "react";
 import { HiChevronLeft } from "react-icons/hi";
+import classNames from "classnames";
 
 interface UserMobileMenuProps {
   user: IUser;
@@ -11,9 +12,11 @@ interface UserMobileMenuProps {
 
 const UserMobileMenu: FC<UserMobileMenuProps> = ({ user, userMenuShow, closeUserMenu }) => (
   <div
-    className={`fixed top-0 bottom-0 min-h-screen w-[70vw] bg-white z-[1000] text-head duration-300 p-5 ${
-      userMenuShow ? "left-0" : "-left-full"
-    }`}
+    className={classNames(
+      "fixed top-0 bottom-0 min-h-screen w-[70vw] bg-white z-[1000] text-head duration-300 p-5",
+      { "left-0": userMenuShow },
+      { "-left-full": !userMenuShow }
+    )}
   >
     <button
       onClick={closeUserMenu}
@@ -30,7 +33,7 @@ const UserMobileMenu: FC<UserMobileMenuProps> = ({ user, userMenuShow, closeUser
         Миний сагс
       </Link>
       <Link className="hover:text-color-1 duration-300" href={"/user/orders"}>
-        Миний сагс
+        Захиалгууд
       </Link>
       {user.role.slug !== "student" && (
         <Link className="hover:text-color-1 duration-300" href={"/instructors/dashboard"}>
