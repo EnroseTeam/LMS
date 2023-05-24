@@ -53,7 +53,9 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
 
       <div className="flex items-center gap-[30px]">
         <div className="items-center gap-[10px] hidden xs:flex">
-          <Link href="/">Сайтруу буцах</Link>
+          <Link className="text-text text-md-medium hover:text-icon duration-300" href="/">
+            Сайтруу буцах
+          </Link>
           <button className="text-xl text-icon p-[15px] rounded-2xl hover:bg-bg-1 hover:text-color-1 duration-300">
             <BiBell />
           </button>

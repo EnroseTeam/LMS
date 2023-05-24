@@ -12,9 +12,10 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import MessageBox from "@/components/global/MessageBox";
 import { AuthContext } from "@/contexts/AuthContext";
 import { IUser } from "@/interfaces/user";
+import { toast } from "react-toastify";
 
 const LoginPage: NextPageWithLayout = () => {
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -39,27 +40,23 @@ const LoginPage: NextPageWithLayout = () => {
           return;
         }
 
-        await axiosInstance.post<{ message: string; body: IUser }>(
-          "/api/auth/login",
-          {
-            email,
-            password,
-            remember,
-          }
-        );
+        const res = await axiosInstance.post<{ message: string; body: IUser }>("/api/auth/login", {
+          email,
+          password,
+          remember,
+        });
 
         setIsLoggedIn(true);
+        setUser(res.data.body);
+
+        toast.success(res.data.message);
 
         setTimeout(() => {
           router.back();
         }, 400);
       } catch (error) {
-        console.log(error);
         if (isAxiosError(error))
-          setErrorMsg(
-            error.response?.data.error ||
-              "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу."
-          );
+          setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
         else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
       } finally {
         setIsSubmitting(false);
@@ -70,9 +67,7 @@ const LoginPage: NextPageWithLayout = () => {
   return (
     <div className="p-[50px] bg-white rounded-2xl shadow-shadow-dashboard mx-1 sm:mx-10">
       <div className="mb-[30px]">
-        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">
-          Нэвтрэх
-        </h1>
+        <h1 className="text-head text-[30px] font-bold leading-9 mb-2">Нэвтрэх</h1>
         <p className="text-text text-md-regular">
           Манай сайтад бүртгэлгүй юу?{" "}
           <Link href="/auth/register" className="text-color-1">
@@ -80,9 +75,7 @@ const LoginPage: NextPageWithLayout = () => {
           </Link>
         </p>
       </div>
-      {errorMsg && (
-        <MessageBox className="mb-5" type="Error" message={errorMsg} />
-      )}
+      {errorMsg && <MessageBox className="mb-5" type="Error" message={errorMsg} />}
       <form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -108,9 +101,7 @@ const LoginPage: NextPageWithLayout = () => {
             placeholder="И-мэйл"
           />
           {!emailCorrect && (
-            <p className="text-red-500 text-md-medium mt-2">
-              И-мэйл заавал шаардлагатай.
-            </p>
+            <p className="text-red-500 text-md-medium mt-2">И-мэйл заавал шаардлагатай.</p>
           )}
         </div>
 
@@ -132,9 +123,7 @@ const LoginPage: NextPageWithLayout = () => {
             placeholder="Нууц үг"
           />
           {!passwordCorrect && (
-            <p className="text-red-500 text-md-medium mt-2">
-              Нууц үг заавал шаардлагатай.
-            </p>
+            <p className="text-red-500 text-md-medium mt-2">Нууц үг заавал шаардлагатай.</p>
           )}
         </div>
 
@@ -155,19 +144,12 @@ const LoginPage: NextPageWithLayout = () => {
             </label>
           </div>
 
-          <Link
-            className="text-color-1 underline hover:text-color-1/70 duration-300"
-            href="/"
-          >
+          <Link className="text-color-1 underline hover:text-color-1/70 duration-300" href="/">
             Нууц үгээ мартсан уу?
           </Link>
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="block w-full py-4 btn-2 mb-5"
-        >
+        <button type="submit" disabled={isSubmitting} className="block w-full py-4 btn-2 mb-5">
           Нэвтрэх
         </button>
 
