@@ -329,14 +329,6 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     isInstructorExist.ownCourses.push(newCourse._id);
     await isInstructorExist.save({ session });
 
-    // Шинээр үүссэний дараа бүртгэлтэй ангилалын сургалтын тоог нэгээр нэмнэ.
-    isCategoryExist.courseCount += 1;
-    await isCategoryExist.save({ session });
-
-    // Шинээр үүссэний дараа бүртгэлтэй түвшингийн сургалтын тоог нэгээр нэмнэ.
-    isLevelExist.courseCount += 1;
-    await isLevelExist.save({ session });
-
     await session.commitTransaction();
 
     await axios.get(
