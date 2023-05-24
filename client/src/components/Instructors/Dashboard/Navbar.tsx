@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
-import { BiBell, BiMessageSquareDetail } from "react-icons/bi";
+import { BiBell } from "react-icons/bi";
 
 import logoDark from "@/assets/logo-dark.svg";
 import Image from "next/image";
@@ -40,7 +40,7 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
         >
           <RiMenu4Fill />
         </button>
-        <Link href="/instructors/dashboard" className="w-[171px] h-[50px]">
+        <Link href="/" className="w-[171px] h-[50px]">
           <Image
             src={logoDark}
             width={171}
@@ -53,9 +53,7 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
 
       <div className="flex items-center gap-[30px]">
         <div className="items-center gap-[10px] hidden xs:flex">
-          <button className="text-xl text-icon p-[15px] rounded-2xl hover:bg-bg-1 hover:text-color-1 duration-300">
-            <BiMessageSquareDetail />
-          </button>
+          <Link href="/">Сайтруу буцах</Link>
           <button className="text-xl text-icon p-[15px] rounded-2xl hover:bg-bg-1 hover:text-color-1 duration-300">
             <BiBell />
           </button>
