@@ -17,7 +17,7 @@ const Tab: FC<TabProps> = ({ tabHeaders, tabContents }) => {
   return (
     <div className="w-full">
       <div className="mb-[60px] relative">
-        <div className="w-full text-text text-md-medium flex items-center gap-[30px]">
+        <div className="w-full text-text text-md-medium flex items-center gap-[30px] overflow-x-auto">
           {tabHeaders.map((header, index) => (
             <button
               onClick={(): void => {
