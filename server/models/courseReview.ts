@@ -9,6 +9,7 @@ export interface ICourseReview extends Document<Types.ObjectId> {
   user: IUser["_id"];
   course: ICourse["_id"];
   rating: number;
+  testimonial: boolean;
   answer: ICourseReviewAnswer["_id"][];
   createdAt: Date;
   updatedAt: Date;
@@ -25,6 +26,10 @@ const CourseReviewSchema = new Schema<ICourseReview>(
       type: [Schema.Types.ObjectId],
       ref: "Course_Review_Answer",
       default: [],
+    },
+    testimonial: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

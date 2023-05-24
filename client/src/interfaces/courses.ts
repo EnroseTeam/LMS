@@ -56,6 +56,7 @@ export interface ICourseReview {
   course: ICourse;
   rating: number;
   answer: ICourseReviewAnswer[];
+  testimonial: boolean;
   createdAt: string;
   updatedAt: string;
 }
