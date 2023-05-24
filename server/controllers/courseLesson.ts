@@ -56,10 +56,6 @@ export const getSingleCourseLesson: RequestHandler = async (req, res, next) => {
 
     const boughtCourses = user.boughtCourses.map((courseId) => courseId?.toString());
     const ownCourses = user.ownCourses.map((courseId) => courseId?.toString());
-    console.log("boughtCourses:", boughtCourses);
-    console.log("ownCourses:", ownCourses);
-    console.log("courseLesson.section.course:", courseLesson.section.course);
-    console.log(boughtCourses.includes(courseLesson.section.course?.toString()));
 
     if (
       !boughtCourses.includes(courseLesson.section.course?.toString()) &&
