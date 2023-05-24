@@ -173,17 +173,20 @@ const LoginPage: NextPageWithLayout = () => {
 
         <p className="text-center text-md-medium mb-5">Эсвэл</p>
 
-        <div className="flex flex-col lg:flex-row items-center gap-5">
-          <button className="flex items-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <Link
+            href={"/"}
+            className="flex items-center justify-center gap-2 text-[#1967d2] py-3 px-5 rounded-lg border-2 border-[#1967d2] hover:bg-[#1967d2] hover:text-white duration-300"
+          >
             <FaFacebookF />
-            Facebook-ээр нэвтрэх
-          </button>
+            Facebook-ээр бүртгүүлэх
+          </Link>
           <Link
             href={getGoogleOAuthURL()}
-            className="flex items-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
+            className="flex items-center justify-center gap-2 text-[#D93025] py-3 px-5 rounded-lg border-2 border-[#D93025] hover:bg-[#d93025] hover:text-white duration-300"
           >
             <FaGoogle />
-            Google-ээр нэвтрэх
+            Google-ээр бүртгүүлэх
           </Link>
         </div>
       </form>
