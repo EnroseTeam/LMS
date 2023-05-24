@@ -17,7 +17,10 @@ const UserOrdersPage: NextPageWithLayout = () => {
     data: userOrders,
     isLoading: isOrdersLoading,
     error: userOrderError,
-  } = useSwr("/api/users/orders/user", fetcher<{ message: string; body: IUserOrder[] }>);
+  } = useSwr(
+    "/api/users/orders/user",
+    fetcher<{ message: string; body: IUserOrder[] }>
+  );
 
   const [allOrders, setAllOrders] = useState<IUserOrder[]>([]);
   const [acceptedOrders, setAcceptedOrders] = useState<IUserOrder[]>([]);
@@ -26,7 +29,8 @@ const UserOrdersPage: NextPageWithLayout = () => {
   useEffect(() => {
     if (!isOrdersLoading && userOrderError) {
       if (isAxiosError(userOrderError)) {
-        if (userOrderError.response?.status === 401) router.replace("/auth/login");
+        if (userOrderError.response?.status === 401)
+          router.replace("/auth/login");
       } else {
         router.replace("/");
       }
@@ -34,8 +38,12 @@ const UserOrdersPage: NextPageWithLayout = () => {
 
     if (!isOrdersLoading && userOrders) {
       setAllOrders(userOrders.body);
-      setAcceptedOrders(userOrders.body.filter((order) => order.status === "Accepted"));
-      setPendingOrders(userOrders.body.filter((order) => order.status === "Pending"));
+      setAcceptedOrders(
+        userOrders.body.filter((order) => order.status === "Accepted")
+      );
+      setPendingOrders(
+        userOrders.body.filter((order) => order.status === "Pending")
+      );
     }
   }, [router, userOrders, isOrdersLoading, userOrderError]);
 
@@ -55,7 +63,9 @@ const UserOrdersPage: NextPageWithLayout = () => {
       {HeaderContent}
       <div className="flex flex-col gap-5">
         {isOrdersLoading &&
-          Array.from(Array(5)).map((val, index) => <UserOrderSkeleton key={index} />)}
+          Array.from(Array(5)).map((val, index) => (
+            <UserOrderSkeleton key={index} />
+          ))}
         {!isOrdersLoading &&
           allOrders.length > 0 &&
           allOrders.map((order) => <OrderItem key={order._id} order={order} />)}
@@ -69,33 +79,37 @@ const UserOrdersPage: NextPageWithLayout = () => {
   );
 
   const AcceptedOrdersContent = (
-    <>
+    <div className="w-[1080px] xl:w-full">
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
         {acceptedOrders.length === 0 && (
-          <p className="text-text text-center text-md-medium mt-5">
+          <p className="text-text text-start xl:text-center text-md-medium mt-5">
             Танд одоогоор захиалга байхгүй байна.
           </p>
         )}
         {acceptedOrders.length > 0 &&
-          acceptedOrders.map((order) => <OrderItem key={order._id} order={order} />)}
+          acceptedOrders.map((order) => (
+            <OrderItem key={order._id} order={order} />
+          ))}
       </div>
-    </>
+    </div>
   );
 
   const PendingOrdersContent = (
-    <>
+    <div className="w-[1080px] xl:w-full">
       {HeaderContent}
       <div className="flex flex-col gap-5 ">
         {pendingOrders.length === 0 && (
-          <p className="text-text text-center text-md-medium mt-5">
+          <p className="text-text text-start xl:text-center text-md-medium mt-5">
             Танд одоогоор захиалга байхгүй байна.
           </p>
         )}
         {pendingOrders.length > 0 &&
-          pendingOrders.map((order) => <OrderItem key={order._id} order={order} />)}
+          pendingOrders.map((order) => (
+            <OrderItem key={order._id} order={order} />
+          ))}
       </div>
-    </>
+    </div>
   );
 
   const tabHeaders: TabHeaderItem[] = [
@@ -119,7 +133,9 @@ const UserOrdersPage: NextPageWithLayout = () => {
         ]}
       />
       <div className="container mb-[120px]">
-        <h1 className="text-head text-3xl-bold text-center mb-[9px]">Миний захиалгууд</h1>
+        <h1 className="text-head text-3xl-bold text-center mb-[9px]">
+          Миний захиалгууд
+        </h1>
         <p className="text-text text-md-regular text-center mb-[60px]">
           Миний захиалсан сургалтуудын мэдээлэл.
         </p>
