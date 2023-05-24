@@ -14,6 +14,7 @@ export interface IUser extends Document<Types.ObjectId> {
   firstName: string;
   lastName: string;
   fullName: string;
+  title?: string;
   birthDate?: Date;
   email: string;
   phone?: string;
@@ -23,8 +24,11 @@ export interface IUser extends Document<Types.ObjectId> {
   role: IUserRole;
   orders: IUserOrder["_id"][];
   boughtCourses: ICourse["_id"][];
+  ownPublishedCourses: ICourse["_id"][];
   ownCourses: ICourse["_id"][];
   avgRating: number;
+  reviewCount: number;
+  studentCount: number;
   socialAccounts: {
     facebook: string;
     twitter: string;
@@ -43,6 +47,10 @@ const UserSchema = new Schema<IUser>(
     fullName: {
       type: String,
       required: true,
+    },
+    title: {
+      type: String,
+      default: "",
     },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
@@ -77,7 +85,23 @@ const UserSchema = new Schema<IUser>(
       default: [],
       select: false,
     },
+    ownPublishedCourses: {
+      type: [Schema.Types.ObjectId],
+      ref: "Course",
+      default: [],
+      select: false,
+    },
     avgRating: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    reviewCount: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    studentCount: {
       type: Number,
       default: 0,
       select: false,
