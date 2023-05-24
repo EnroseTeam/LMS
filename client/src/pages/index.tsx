@@ -4,7 +4,7 @@ import axios from "axios";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
-import { ICourse, ICourseCategory } from "@/interfaces/courses";
+import { ICourse, ICourseCategory, ICourseReview } from "@/interfaces/courses";
 import NewsSection from "@/components/Home/NewsSection";
 import AdvantageSection from "@/components/Home/AdvantageSection";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
@@ -22,14 +22,16 @@ interface HomeProps {
   courses: ICourse[];
   instructors: IInstructor[];
   blogs: IBlog[];
+  testimonials: ICourseReview[];
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  const [categoryRes, coursesRes, instructorRes, blogRes] = await axios.all([
+  const [categoryRes, coursesRes, instructorRes, blogRes, testimonialRes] = await axios.all([
     axiosInstance.get("/api/courses/categories"),
     axiosInstance.get(`/api/courses`),
     axiosInstance.get("/api/instructors"),
     axiosInstance.get("/api/blogs?pageSize=5"),
+    axiosInstance.get("/api/courses/reviews/testimonials"),
   ]);
 
   return {
@@ -38,11 +40,12 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
       courses: coursesRes.data.body,
       instructors: instructorRes.data.body,
       blogs: blogRes.data.body,
+      testimonials: testimonialRes.data.body,
     },
   };
 };
 
-const Home: NextPage<HomeProps> = ({ categories, courses, instructors, blogs }) => (
+const Home: NextPage<HomeProps> = ({ categories, courses, instructors, blogs, testimonials }) => (
   <>
     <Head>
       <title key="title">Нүүр хуудас | IntelliSense</title>
@@ -51,7 +54,7 @@ const Home: NextPage<HomeProps> = ({ categories, courses, instructors, blogs }) 
     <PartnerSection />
     <TopCategoriesSection categories={categories} />
     <PopularCoursesSection courses={courses} categories={categories} />
-    <UsersCommentSection />
+    <UsersCommentSection testimonials={testimonials} />
     <BestInstructorSection instructors={instructors} />
     <AdvantageSection />
     <NewsSection blogs={blogs} />

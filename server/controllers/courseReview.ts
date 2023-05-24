@@ -46,6 +46,16 @@ export const getReviewByInstructorId: RequestHandler = async (req, res, next) =>
   }
 };
 
+export const getTestimonials: RequestHandler = async (req, res, next) => {
+  try {
+    const testimonials = await CourseReviewModel.find({ testimonial: true }).populate("user");
+
+    res.status(200).json({ message: "Амжилттай", body: testimonials });
+  } catch (error) {
+    next(error);
+  }
+};
+
 //GET ALL REVIEWS
 export const getCourseReviews: RequestHandler = async (req, res, next) => {
   try {
@@ -70,6 +80,44 @@ export const getSingleCourseReview: RequestHandler = async (req, res, next) => {
     if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: review });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const makeTestimonial: RequestHandler = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+
+    const review = await CourseReviewModel.findById(id);
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
+
+    review.testimonial = true;
+    await review.save();
+
+    res.status(200).json({ message: "Сэтгэгдэл амжилттай нүүр хэсэгт гарлаа." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeTestimonial: RequestHandler = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
+
+    const review = await CourseReviewModel.findById(id);
+    if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
+    if (!review.testimonial)
+      throw createHttpError(400, "Сэтгэгдэл нүүр хуудсан дээр байхгүй байна.");
+
+    review.testimonial = false;
+    await review.save();
+
+    res.status(200).json({ message: "Сэтгэгдэл нүүр хуудаснаас амжилттай устлаа." });
   } catch (error) {
     next(error);
   }
