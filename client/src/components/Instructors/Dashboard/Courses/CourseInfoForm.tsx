@@ -2,7 +2,14 @@ import { ICourse, ICourseCategory, ICourseLevel } from "@/interfaces/courses";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/router";
-import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { HiChevronDown } from "react-icons/hi";
 import { toast } from "react-toastify";
 
@@ -33,7 +40,8 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
   const [discountPrice, setDiscountPrice] = useState<number>(0);
 
   const [levelDropDownShow, setLevelDropDownShow] = useState<boolean>(false);
-  const [categoryDropDownShow, setCategoryDropDownShow] = useState<boolean>(false);
+  const [categoryDropDownShow, setCategoryDropDownShow] =
+    useState<boolean>(false);
 
   const [selectedLevel, setSelectedLevel] = useState<{
     name: string;
@@ -69,7 +77,10 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
       setDescription(course.description);
       setPrice(course.price);
       course.discountPrice > 0 && setDiscountPrice(course.discountPrice);
-      setSelectedCategory({ name: course.category.name, _id: course.category._id });
+      setSelectedCategory({
+        name: course.category.name,
+        _id: course.category._id,
+      });
       setSelectedLevel({ name: course.level.name, _id: course.level._id });
       setGoals(course.goals);
       setRequirements(course.requirements);
@@ -120,16 +131,19 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
         }
 
         if (course) {
-          const res = await axiosInstance.patch<{ message: string }>(`/api/courses/${course._id}`, {
-            name,
-            description,
-            level: selectedLevel._id,
-            category: selectedCategory._id,
-            requirements,
-            goals,
-            price,
-            discountPrice,
-          });
+          const res = await axiosInstance.patch<{ message: string }>(
+            `/api/courses/${course._id}`,
+            {
+              name,
+              description,
+              level: selectedLevel._id,
+              category: selectedCategory._id,
+              requirements,
+              goals,
+              price,
+              discountPrice,
+            }
+          );
 
           toast.success(res.data.message);
           setActiveStage("Media");
@@ -139,7 +153,8 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
         setMessageType("Error");
         if (isAxiosError(error)) {
           setMessage(
-            error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
+            error.response?.data.error ||
+              "Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу."
           );
         } else {
           setMessage("Тодорхойгүй алдаа гарлаа. Та дахин оролдоно уу.");
@@ -186,7 +201,9 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
               placeholder="Сургалтын нэр"
             />
             {!isNameExist && (
-              <p className="mt-2 text-red-500 text-md-medium">Сургалтын нэр заавал шаардлагатай.</p>
+              <p className="mt-2 text-red-500 text-md-medium">
+                Сургалтын нэр заавал шаардлагатай.
+              </p>
             )}
           </div>
 
@@ -212,7 +229,9 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
               rows={10}
             />
             {!isDescriptionExist && (
-              <p className="mt-2 text-red-500 text-md-medium">Тайлбар заавал шаардлагатай.</p>
+              <p className="mt-2 text-red-500 text-md-medium">
+                Тайлбар заавал шаардлагатай.
+              </p>
             )}
           </div>
 
@@ -236,7 +255,11 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
             >
               {selectedLevel.name ? selectedLevel.name : "Түвшин сонгох"}
               <HiChevronDown
-                className={levelDropDownShow ? "-rotate-180 duration-300" : "duration-300"}
+                className={
+                  levelDropDownShow
+                    ? "-rotate-180 duration-300"
+                    : "duration-300"
+                }
                 size={18}
               />
             </button>
@@ -288,7 +311,11 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
             >
               {selectedCategory.name ? selectedCategory.name : "Ангилал сонгох"}
               <HiChevronDown
-                className={categoryDropDownShow ? "-rotate-180 duration-300" : "duration-300"}
+                className={
+                  categoryDropDownShow
+                    ? "-rotate-180 duration-300"
+                    : "duration-300"
+                }
                 size={18}
               />
             </button>
@@ -347,7 +374,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
                 Сургалтын зорилго заавал шаардалагатай.
               </p>
             )}
-            <div className="flex items-center gap-5">
+            <div className="flex flex-col smallest:flex-row smallest:items-center gap-5">
               <div className="flex-1 flex items-center gap-2">
                 <input
                   ref={newGoal}
@@ -409,7 +436,7 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
                 Тавигдах шаардлага заавал хэрэгтэй.
               </p>
             )}
-            <div className="flex items-center gap-5">
+            <div className="flex flex-col smallest:flex-row smallest:items-center gap-5">
               <div className="flex-1 flex items-center gap-2">
                 <input
                   ref={newRequirement}
@@ -420,9 +447,15 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
                   onKeyDown={(e): void => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      if (newRequirement.current !== null && newRequirement.current.value) {
+                      if (
+                        newRequirement.current !== null &&
+                        newRequirement.current.value
+                      ) {
                         setIsRequirementsExist(true);
-                        setRequirements([...requirements, newRequirement.current.value]);
+                        setRequirements([
+                          ...requirements,
+                          newRequirement.current.value,
+                        ]);
                         newRequirement.current.value = "";
                         newRequirement.current.focus();
                       }
@@ -432,9 +465,15 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
               </div>
               <button
                 onClick={(): void => {
-                  if (newRequirement.current !== null && newRequirement.current.value) {
+                  if (
+                    newRequirement.current !== null &&
+                    newRequirement.current.value
+                  ) {
                     setIsRequirementsExist(true);
-                    setRequirements([...requirements, newRequirement.current.value]);
+                    setRequirements([
+                      ...requirements,
+                      newRequirement.current.value,
+                    ]);
                     newRequirement.current.value = "";
                     newRequirement.current.focus();
                   }
@@ -469,13 +508,18 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
               placeholder="Үндсэн үнэ"
             />
             {!isPriceExist && (
-              <p className="mt-2 text-red-500 text-md-medium">Үндсэн үнэ заавал шаардалагатай.</p>
+              <p className="mt-2 text-red-500 text-md-medium">
+                Үндсэн үнэ заавал шаардалагатай.
+              </p>
             )}
           </div>
 
           {/* Discount Price */}
           <div className="col-span-2 md:col-span-1">
-            <label htmlFor="discountPrice" className="block mb-[9px] text-head text-base-medium">
+            <label
+              htmlFor="discountPrice"
+              className="block mb-[9px] text-head text-base-medium"
+            >
               Хямдралтай үнэ
             </label>
             <input
@@ -492,24 +536,24 @@ const CourseInfoForm: FC<CourseInfoFormProps> = ({
         </form>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col smallest:flex-row gap-5  items-center justify-between">
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            form="course-create-form"
+            className="btn-1 py-4 w-full smallest:w-fit"
+          >
+            Дараах
+          </button>
           <button
             disabled={isSubmitting}
             onClick={(): void => {
               router.back();
             }}
             type="button"
-            className="btn-1-outline py-4"
+            className="btn-1-outline py-4 w-full smallest:w-fit"
           >
             Болих
-          </button>
-          <button
-            disabled={isSubmitting}
-            type="submit"
-            form="course-create-form"
-            className="btn-1 py-4"
-          >
-            Дараах
           </button>
         </div>
       </div>
