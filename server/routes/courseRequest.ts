@@ -4,7 +4,8 @@ import {
   createCourseRequest,
   getAllCourseRequests,
   getSingleCourseRequest,
-  updateCourseRequest,
+  acceptCourseRequest,
+  rejectCourseRequest,
 } from "../controllers/courseRequest";
 
 const courseRequestRouter = express.Router();
@@ -14,6 +15,7 @@ courseRequestRouter.get("/:id", authenticateUser, authorizeAdmin, getSingleCours
 
 courseRequestRouter.post("/", authenticateUser, authorizeInstructor, createCourseRequest);
 
-courseRequestRouter.patch("/:id", authenticateUser, authorizeAdmin, updateCourseRequest);
+courseRequestRouter.patch("/:id/accept", authenticateUser, authorizeAdmin, acceptCourseRequest);
+courseRequestRouter.patch("/:id/reject", authenticateUser, authorizeAdmin, rejectCourseRequest);
 
 export default courseRequestRouter;
