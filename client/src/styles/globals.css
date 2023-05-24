@@ -65,11 +65,11 @@ body {
 
 /* Slider Navigation 1 */
 .slider-style-1-prev {
-  @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
+  @apply text-xl text-head p-[13px] bg-white border-2 border-transparent rounded-full hover:border-white hover:bg-transparent hover:text-white duration-300 disabled:bg-gray-400 disabled:pointer-events-none;
 }
 
 .slider-style-1-next {
-  @apply text-xl text-head p-[15px] bg-white rounded-full hover:bg-white/80 duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed;
+  @apply text-xl text-head p-[13px] bg-white border-2 border-transparent rounded-full hover:border-white hover:bg-transparent hover:text-white duration-300 disabled:bg-gray-400 disabled:pointer-events-none;
 }
 
 /* Slider Navigation 2 and Pagination */
