@@ -49,7 +49,7 @@ const UserCloseAccountForm: FC = () => {
         <MessageBox type="Error" message={message} className="mb-5" />
       )}
       <h1 className="mb-[9px] text-head text-base-medium">Хаяг устгах</h1>
-      <p className="mb-[30px] text-text text-md-regular">
+      <p className="mb-[30px] text-red-500 text-md-regular">
         Анхааруулга: Хэрвээ та хаягаа устгавал, худалдаж авсан бүх сургалтын
         эрхээ алдах болно.
       </p>
