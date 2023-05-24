@@ -236,7 +236,7 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
 
     // Орж ирсэн id-тай сургалт байгаа эсэхийг шалгаад байвал буцаана.
     const course = await CourseModel.findById(id).populate([
-      "instructor",
+      { path: "instructor", select: "+ownCourses +avgRating" },
       "level",
       "category",
       { path: "reviews", populate: ["user", "answer"] },
