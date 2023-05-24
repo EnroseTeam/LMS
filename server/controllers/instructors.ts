@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import createHttpError from "http-errors";
 import axios from "axios";
 import env from "../configs/validateEnv";
-import { ICourse } from "../models/course";
 
 export const becomeInstructor: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
@@ -38,7 +37,10 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
 
 export const getAllInsturctorIds: RequestHandler = async (req, res, next) => {
   try {
-    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
+    const instructorRole = await UserRoleModel.findOne({
+      slug: "instructor",
+      "ownPublishedCourses.0": { $exists: true },
+    });
 
     const instructors = await UserModel.find({ role: instructorRole?._id }).select({ _id: 1 });
 
@@ -93,6 +95,7 @@ export const getInstructors: RequestHandler = async (req, res, next) => {
         { firstName: new RegExp("^" + search, "i") },
         { lastName: new RegExp("^" + search, "i") },
       ],
+      "ownPublishedCourses.0": { $exists: true },
     })
       .select("+avgRating +ownCourses")
       .populate(["role", { path: "ownCourses", populate: ["instructor", "level"] }])
