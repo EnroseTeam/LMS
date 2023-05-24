@@ -27,6 +27,7 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
     });
     const courses = await CourseModel.find({
       name: new RegExp(search + "", "i"),
+      isPublished: true,
     });
 
     const result: SearchItem[] = [];
