@@ -358,8 +358,22 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
             !boughtCoursesLoading &&
             !ownCoursesLoading && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-[15px] sm:gap-[25px] lg:gap-[15px] xl:gap-[25px]">
-                <button className="btn-1">Үзэж эхлэх</button>
-                <button className="btn-2-outline">Сургалтуудруу буцах</button>
+                <button
+                  onClick={(): void => {
+                    router.push(`/lessons/${course.sections[0].lessons[0]._id}`);
+                  }}
+                  className="btn-1"
+                >
+                  Үзэж эхлэх
+                </button>
+                <button
+                  onClick={(): void => {
+                    router.push("/courses");
+                  }}
+                  className="btn-2-outline"
+                >
+                  Сургалтуудруу буцах
+                </button>
               </div>
             )}
         </div>
