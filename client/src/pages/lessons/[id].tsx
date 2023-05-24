@@ -79,59 +79,33 @@ const SingleLessonPage: NextPageWithLayout<SingleLessonPageProps> = ({ lesson, c
   const [currentSectionPosition, setCurrentSectionPosition] = useState<number>(0);
 
   useEffect(() => {
-    let curSectionPos = 0;
-    let curLessonPos = 0;
+    const lessons: ICourseLesson[] = [];
 
-    course.sections.map((section, secIndex) => {
-      section.lessons.map((curLesson, lesIndex) => {
-        if (curLesson._id === lesson._id) {
-          curLessonPos = lesIndex;
-          curSectionPos = secIndex;
-        }
+    course.sections.map((section, index) => {
+      section.lessons.map((curLesson) => {
+        lessons.push(curLesson);
+        if (curLesson._id === lesson._id) setCurrentSectionPosition(index);
       });
     });
 
-    setCurrentSectionPosition(curSectionPos);
-
-    if (curSectionPos === 0 && curLessonPos === 0) {
+    if (lessons[0]._id === lesson._id) {
       setIsFirstLesson(true);
-      setNextUrl(course.sections[curSectionPos].lessons[curLessonPos + 1]._id);
-    } else if (
-      curSectionPos === course.sections.length - 1 &&
-      curLessonPos === course.sections[curSectionPos].lessons.length - 1
-    ) {
-      setIsLastLesson(true);
-      if (curLessonPos === 0) {
-        setPrevUrl(
-          course.sections[curSectionPos - 1].lessons[
-            course.sections[curSectionPos - 1].lessons.length - 1
-          ]._id
-        );
-      } else {
-        setPrevUrl(course.sections[curSectionPos].lessons[curLessonPos - 1]._id);
-      }
-    } else if (curLessonPos === 0) {
-      setPrevUrl(
-        course.sections[curSectionPos - 1].lessons[
-          course.sections[curSectionPos - 1].lessons.length - 1
-        ]._id
-      );
-      setNextUrl(course.sections[curSectionPos].lessons[curLessonPos + 1]._id);
-    } else if (curLessonPos === course.sections[curSectionPos].lessons.length - 1) {
-      setPrevUrl(course.sections[curSectionPos].lessons[curLessonPos - 1]._id);
-      setNextUrl(course.sections[curSectionPos + 1].lessons[0]._id);
     } else {
-      setPrevUrl(course.sections[curSectionPos].lessons[curLessonPos - 1]._id);
-      setNextUrl(course.sections[curSectionPos].lessons[curLessonPos + 1]._id);
+      setIsFirstLesson(false);
     }
 
-    return () => {
-      setIsFirstLesson(false);
+    if (lessons[lessons.length - 1]._id === lesson._id) {
+      setIsLastLesson(true);
+    } else {
       setIsLastLesson(false);
-      setPrevUrl("");
-      setNextUrl("");
-      setCurrentSectionPosition(0);
-    };
+    }
+
+    lessons.map((curLesson, index) => {
+      if (curLesson._id === lesson._id) {
+        lessons[index + 1] && setNextUrl(lessons[index + 1]._id);
+        lessons[index - 1] && setPrevUrl(lessons[index - 1]._id);
+      }
+    });
   }, [lesson, course.sections]);
 
   useEffect(() => {
