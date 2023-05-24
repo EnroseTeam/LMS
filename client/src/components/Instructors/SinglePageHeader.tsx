@@ -49,7 +49,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ instructor }) => {
           />
         </div>
 
-        <h1 className="font-[700] text-[30px] leading-[45px]">
+        <h1 className="font-[700] text-center md:text-start text-[30px] leading-[45px]">
           {instructor.fullName}
         </h1>
         <p className="text-md-regular mb-[10px]">UX Designer</p>
