@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
 import { BiBell, BiMessageSquareDetail } from "react-icons/bi";
 
@@ -10,16 +10,22 @@ import { DashboardSidebarContext } from "@/contexts/DashboardSidebarContext";
 import { IconType } from "react-icons";
 
 import classNames from "classnames";
+import { useRouter } from "next/router";
 
 interface InstructorNavbarProps {
   MenuItems: { title: string; link: string; Icon: IconType }[];
 }
 
 const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
+  const router = useRouter();
   const { user } = useContext(AuthContext);
   const { setSidebarShow, sidebarShow } = useContext(DashboardSidebarContext);
 
   const [userMenuShow, setUserMenuShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    setUserMenuShow(false);
+  }, [router]);
 
   if (!user) return <></>;
 
