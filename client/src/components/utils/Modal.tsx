@@ -16,7 +16,7 @@ const Modal: FC<ModalProps> = ({ show, setShow, title, content }) => (
         setShow(false);
       }}
       className={classNames(
-        "z-50 fixed top-0 left-0 right-0 bottom-0 min-h-screen min-w-screen grid place-items-center",
+        "z-[999] fixed top-0 left-0 right-0 bottom-0 min-h-screen min-w-screen grid place-items-center",
         { block: show },
         { hidden: !show }
       )}
@@ -54,7 +54,7 @@ const Modal: FC<ModalProps> = ({ show, setShow, title, content }) => (
         setShow(false);
       }}
       className={classNames(
-        "fixed top-0 left-0 right-0 bottom-0 min-h-screen min-w-screen bg-black/20 z-40",
+        "fixed top-0 left-0 right-0 bottom-0 min-h-screen min-w-screen bg-black/20 z-50",
         { block: show },
         { hidden: !show }
       )}
