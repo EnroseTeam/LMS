@@ -61,11 +61,11 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     if (!user && !isUserLoading) {
       router.replace("/");
     }
-    if (user && !isUserLoading && user.role.slug === "student") {
+    if (user && !isUserLoading && (user.role === "Student" || user.role === "Moderator")) {
       router.replace("/");
     }
 
-    if (!isUserLoading && user && user.role.slug !== "student") {
+    if (!isUserLoading && user && (user.role === "Instructor" || user.role === "Admin")) {
       setIsAuthenticated(true);
     }
   }, [router, isUserLoading, user]);

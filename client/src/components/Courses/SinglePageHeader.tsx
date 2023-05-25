@@ -12,9 +12,7 @@ import {
   BsInstagram,
   BsPlay,
 } from "react-icons/bs";
-import { HiOutlinePuzzle } from "react-icons/hi";
 import { ImFacebook, ImTwitter, ImLinkedin2 } from "react-icons/im";
-import { MdOutlineAssignment } from "react-icons/md";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import RatingStar from "@/components/global/RatingStar";
@@ -133,7 +131,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
 
               <div className="flex items-center gap-[10px]">
                 <BsPersonWorkspace size={16} />
-                <p className=" text-sm-regular">{course.purchaseCount} сурагч элссэн</p>
+                <p className=" text-sm-regular">{course.students.length} сурагч элссэн</p>
               </div>
 
               <div className="flex items-center gap-[10px]">
@@ -153,7 +151,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                 <Image
                   src={course.instructor.avatar}
-                  alt="Ali Tufan"
+                  alt={course.instructor.fullName}
                   width={30}
                   height={30}
                   className="w-full object-cover aspect-square"
@@ -172,24 +170,6 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
               </span>
 
               <h2>{course.lessonCount}</h2>
-            </div>
-
-            <div className="flex items-center justify-between border-b border-b-white/[.15]">
-              <span className="flex items-center gap-[10px]">
-                <HiOutlinePuzzle size={16} />
-                <h1>Шалгалтын тоо</h1>
-              </span>
-
-              <h2>{course.quizCount}</h2>
-            </div>
-
-            <div className="flex items-center justify-between border-b border-b-white/[.15]">
-              <span className="flex items-center gap-[10px]">
-                <MdOutlineAssignment size={16} />
-                <h1>Даалгаварын тоо</h1>
-              </span>
-
-              <h2>{course.assignmentCount}</h2>
             </div>
 
             <div className="flex items-center justify-between border-b border-b-white/[.15]">

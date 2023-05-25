@@ -19,14 +19,12 @@ export interface ICourse extends Document<Types.ObjectId> {
   reviews: ICourseReview["_id"][];
   sections: ICourseSection["_id"][];
   readCount: number;
-  purchaseCount: number;
   price: number;
   discountPrice: number;
   isPublished: boolean;
   avgRating: number;
   lessonCount: number;
-  quizCount: number;
-  assignmentCount: number;
+  students: IUser["_id"][];
   totalLessonLength: LessonLength;
   createdAt: Date;
   updatedAt: Date;
@@ -87,10 +85,6 @@ const CourseSchema = new Schema<ICourse>(
       type: Number,
       default: 0,
     },
-    purchaseCount: {
-      type: Number,
-      default: 0,
-    },
     price: {
       type: Number,
       required: true,
@@ -111,13 +105,10 @@ const CourseSchema = new Schema<ICourse>(
       type: Number,
       default: 0,
     },
-    quizCount: {
-      type: Number,
-      default: 0,
-    },
-    assignmentCount: {
-      type: Number,
-      default: 0,
+    students: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
     },
     totalLessonLength: {
       hour: {

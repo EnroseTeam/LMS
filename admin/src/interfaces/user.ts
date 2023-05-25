@@ -30,14 +30,6 @@ export interface IUserOrder {
   updatedAt: string;
 }
 
-export interface IUserRole {
-  _id: string;
-  role: string;
-  slug: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface IUser {
   _id: string;
   firstName: string;
@@ -48,7 +40,7 @@ export interface IUser {
   phone: string;
   address: UserAddress;
   avatar: string;
-  role: IUserRole;
+  role: "Admin" | "Instructor" | "Moderator" | "Student";
   socialAccounts: {
     facebook: string;
     twitter: string;

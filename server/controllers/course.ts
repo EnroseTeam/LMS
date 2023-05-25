@@ -7,6 +7,7 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import axios from "axios";
 import env from "../configs/validateEnv";
+import assertIsDefined from "../utils/assertIsDefined";
 
 export const getCourseCounts: RequestHandler = async (req, res, next) => {
   try {
@@ -94,7 +95,7 @@ export const getCourseByInstructorId: RequestHandler = async (req, res, next) =>
   const userId = req.session.userId;
 
   try {
-    const user = await UserModel.findById(userId).select("+ownCourses");
+    const user = await UserModel.findById(userId).select({ ownCourses: 1 });
     if (!user) throw createHttpError(404, "Хэрэглэгч олдсонгүй.");
 
     const courses = await CourseModel.find({ _id: { $in: user.ownCourses } }).populate(["level"]);
@@ -194,11 +195,9 @@ export const getCourses: RequestHandler<unknown, unknown, unknown, CoursesQuerie
       .limit(Number(pageSize))
       .skip((Number(page) - 1) * Number(pageSize))
       .populate([
-        "instructor",
-        "level",
-        "category",
-        { path: "reviews", populate: { path: "user" } },
-        { path: "sections", populate: { path: "lessons" } },
+        { path: "instructor", select: { fullName: 1, avatar: 1 } },
+        { path: "level", select: { name: 1 } },
+        { path: "category", select: { name: 1, slug: 1 } },
       ]);
 
     const totalCourses = await CourseModel.find({
@@ -236,7 +235,7 @@ export const getSingleCourse: RequestHandler = async (req, res, next) => {
 
     // Орж ирсэн id-тай сургалт байгаа эсэхийг шалгаад байвал буцаана.
     const course = await CourseModel.findById(id).populate([
-      { path: "instructor", select: "+ownCourses +avgRating" },
+      { path: "instructor" },
       "level",
       "category",
       { path: "reviews", populate: ["user", "answer"] },
@@ -294,9 +293,7 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
     session.startTransaction();
 
     // Хүсэлтээр орж ирсэн багшийн id-тай багш бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const isInstructorExist = await UserModel.findById(instructorId, null, { session }).select(
-      "+ownCourses"
-    );
+    const isInstructorExist = await UserModel.findById(instructorId, null, { session });
     if (!isInstructorExist) throw createHttpError(404, "Багш олдсонгүй");
 
     // Хүсэлтээр орж ирсэн түвшингийн id-тай түвшин бүртгэлтэй байгааг шалгана. Байвал цааш үргэлжлүүлнэ.
@@ -339,7 +336,6 @@ export const createCourse: RequestHandler<unknown, unknown, CourseBody, unknown>
       .status(201)
       .json({ message: `${name} нэртэй цуврал хичээл амжилттай нэмэгдлээ`, body: newCourse });
   } catch (error) {
-    console.log(error);
     await session.abortTransaction();
     next(error);
   }
@@ -440,7 +436,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     const isCategorySame = course.category?.toString() === category;
 
     // Хүсэлтээр орж ирсэн түвшин болон өмнө нь бүртгэлтэй байсан түвшин өөр байвал хуучин түвшний сургалтын тооноос нэгийг хасаад шинэ дээр нь нэгийг нэмнэ
-    if (!isLevelSame) {
+    if (!isLevelSame && course.isPublished) {
       const oldLevel = await CourseLevelModel.findById(course.level, null, { session });
       if (oldLevel) {
         oldLevel.courseCount -= 1;
@@ -451,7 +447,7 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
     }
 
     // Хүсэлтээр орж ирсэн ангилал болон өмнө нь бүртгэлтэй байсан ангилал өөр байвал хуучин түвшний сургалтын тооноос нэгийг хасаад шинэ дээр нь нэгийг нэмнэ
-    if (!isCategorySame) {
+    if (!isCategorySame && course.isPublished) {
       const oldCategory = await CourseCategoryModel.findById(course.category, null, { session });
       if (oldCategory) {
         oldCategory.courseCount -= 1;
@@ -489,9 +485,13 @@ export const updateCourse: RequestHandler<CourseParams, unknown, CourseBody, unk
 export const deleteCourse: RequestHandler = async (req, res, next) => {
   const { id } = req.params;
 
+  const instructorId = req.session.userId;
+
   const session = await mongoose.startSession();
 
   try {
+    assertIsDefined(instructorId);
+
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
@@ -501,6 +501,12 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
     const course = await CourseModel.findById(id, null, { session });
     if (!course) throw createHttpError(404, "Сургалт олдсонгүй.");
 
+    if (instructorId.toString() !== course.instructor?.toString()) {
+      throw createHttpError(403, "Танд энэ сургалтыг устгах эрх байхгүй байна.");
+    }
+
+    if (course.isPublished) throw createHttpError(400, "Нийтлэгдсэн сургалтыг устгах боломжгүй!");
+
     // Сургалтанд бүртгэлтэй байгаа багшийг олоод сургалтын жагсаалтаас устгах сургалтын id-г хасна.
     const instructor = await UserModel.findById(course.instructor, null, { session });
     if (instructor) {
@@ -508,20 +514,6 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
         (instCourse) => instCourse?._id !== course._id
       );
       await instructor.save({ session });
-    }
-
-    // Сургалтан дээр бүртгэлтэй байгаа түвшинг олоод сургалтын тооноос нэгийг хасна.
-    const level = await CourseLevelModel.findById(course.level, null, { session });
-    if (level) {
-      level.courseCount -= 1;
-      await level.save({ session });
-    }
-
-    // Сургалтан дээр бүртгэлтэй байгаа ангилалыг олоод сургалтын тооноос нэгийг хасна.
-    const category = await CourseCategoryModel.findById(course.category, null, { session });
-    if (category) {
-      category.courseCount -= 1;
-      await category.save({ session });
     }
 
     // Сургалтаа устгах

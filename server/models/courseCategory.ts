@@ -18,7 +18,7 @@ const CourseCategorySchema = new Schema<ICourseCategory>(
     },
     image: {
       type: String,
-      // required: true,
+      required: true,
     },
     slug: {
       type: String,

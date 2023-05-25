@@ -13,7 +13,7 @@ interface CourseCategoryBody {
 }
 
 interface CourseCategoryParams {
-  id: string;
+  id?: string;
 }
 
 export const getAllCourseCategoriesId: RequestHandler = async (req, res, next) => {
@@ -154,6 +154,10 @@ export const deleteCourseCategory: RequestHandler = async (req, res, next) => {
 
     const courseCategory = await CourseCategoryModel.findById(id);
     if (!courseCategory) throw createHttpError(404, "Ангилал олдсонгүй.");
+
+    if (courseCategory.courseCount > 0) {
+      throw createHttpError(403, "Нэг болон түүнээс дээш сургалттай ангилалыг устгах боломжгүй.");
+    }
 
     await courseCategory.deleteOne();
 

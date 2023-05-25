@@ -1,4 +1,4 @@
-import { IInstructor, IUser } from "./user";
+import { IUser } from "./user";
 
 export interface ICourseCategory {
   _id: string;
@@ -17,7 +17,7 @@ export interface ICourse {
   picture: string;
   video: string;
   description: string;
-  instructor: IInstructor;
+  instructor: IUser;
   level: ICourseLevel;
   category: ICourseCategory;
   requirements: string[];
@@ -25,14 +25,12 @@ export interface ICourse {
   reviews: ICourseReview[];
   sections: ICourseSection[];
   readCount: number;
-  purchaseCount: number;
+  students: IUser[];
   price: number;
   discountPrice: number;
   isPublished: boolean;
   avgRating: number;
   lessonCount: number;
-  quizCount: number;
-  assignmentCount: number;
   totalLessonLength: LessonLength;
   createdAt: string;
   updatedAt: string;
@@ -64,7 +62,7 @@ export interface ICourseReview {
 export interface ICourseReviewAnswer {
   _id: string;
   text: string;
-  instructor: IInstructor;
+  instructor: IUser;
   review: string;
   createdAt: string;
   updatedAt: string;

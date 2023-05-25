@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { IUser } from "../models/user";
-import UserRoleModel from "../models/userRole";
 import UserModel from "../models/user";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
@@ -11,9 +10,8 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
   const userId = req.session.userId;
 
   try {
-    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
     await UserModel.findByIdAndUpdate(userId, {
-      role: instructorRole?._id,
+      role: "Instructor",
     });
 
     await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
@@ -37,12 +35,10 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
 
 export const getAllInsturctorIds: RequestHandler = async (req, res, next) => {
   try {
-    const instructorRole = await UserRoleModel.findOne({
-      slug: "instructor",
+    const instructors = await UserModel.find({
+      role: "Instructor",
       "ownPublishedCourses.0": { $exists: true },
-    });
-
-    const instructors = await UserModel.find({ role: instructorRole?._id }).select({ _id: 1 });
+    }).select({ _id: 1 });
 
     const ids = instructors.map((instuctor) => instuctor._id);
 
@@ -59,8 +55,7 @@ export const getSingleInstructor: RequestHandler = async (req, res, next) => {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     const instructor = await UserModel.findById(id)
-      .select("+ownCourses +avgRating")
-      .populate({ path: "ownCourses", populate: "level", match: { isPublished: true } });
+    .populate({ path: "ownPublishedCourses", populate: "level" });
     if (!instructor) throw createHttpError(404, "Багш олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: instructor });
@@ -90,18 +85,17 @@ export const getInstructors: RequestHandler = async (req, res, next) => {
         break;
     }
 
-    const users: IUser[] = await UserModel.find({
+    const instructors: IUser[] = await UserModel.find({
+      role: "Instructor",
       $or: [
         { firstName: new RegExp("^" + search, "i") },
         { lastName: new RegExp("^" + search, "i") },
       ],
       "ownPublishedCourses.0": { $exists: true },
     })
-      .select("+avgRating +ownCourses")
-      .populate(["role", { path: "ownCourses", populate: ["instructor", "level"] }])
+      .select("+avgRating +studentCount +reviewCount")
       .sort(order);
 
-    const instructors = users.filter((user) => user.role.slug === "instructor");
     res.status(200).json({ message: "Амжилттай", body: instructors });
   } catch (error) {
     console.log(error);

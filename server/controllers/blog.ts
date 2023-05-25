@@ -15,7 +15,7 @@ interface BlogBody {
 }
 
 interface BlogParams {
-  id: string;
+  id?: string;
 }
 
 export const getAllBlogId: RequestHandler = async (req, res, next) => {

@@ -1,21 +1,22 @@
-import express from 'express';
+import express from "express";
 import {
   createCourseSection,
   deleteCourseSection,
   getCourseSetions,
   getSingleCourseSection,
   updateCourseSection,
-} from '../controllers/courseSection';
+} from "../controllers/courseSection";
+import { authenticateUser, authorizeInstructor } from "../middlewares/auth";
 
 const courseSectionRouter = express.Router();
 
-courseSectionRouter.get('/', getCourseSetions);
-courseSectionRouter.get('/:id', getSingleCourseSection);
+courseSectionRouter.get("/", getCourseSetions);
+courseSectionRouter.get("/:id", getSingleCourseSection);
 
-courseSectionRouter.post('/', createCourseSection);
+courseSectionRouter.post("/", authenticateUser, authorizeInstructor, createCourseSection);
 
-courseSectionRouter.patch('/:id', updateCourseSection);
+courseSectionRouter.patch("/:id", authenticateUser, authorizeInstructor, updateCourseSection);
 
-courseSectionRouter.delete('/:id', deleteCourseSection);
+courseSectionRouter.delete("/:id", authenticateUser, authorizeInstructor, deleteCourseSection);
 
 export default courseSectionRouter;

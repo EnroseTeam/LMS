@@ -21,7 +21,7 @@ interface UserBody {
 //GET ALL USER
 export const getUsers: RequestHandler = async (req, res, next) => {
   try {
-    const users = await UserModel.find().populate("role");
+    const users = await UserModel.find();
     res.status(200).json({ message: "Амжилттай", body: users });
   } catch (error) {
     next(error);
@@ -36,7 +36,6 @@ export const getSingleUser: RequestHandler = async (req, res, next) => {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
     const user = await UserModel.findById(id).populate([
-      "role",
       { path: "boughtCourses", populate: ["instructor", "level"] },
       { path: "ownCourses", populate: ["instructor", "level"] },
     ]);

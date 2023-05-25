@@ -52,7 +52,7 @@ const LoginPage: NextPageWithLayout = () => {
         toast.success(res.data.message);
 
         setTimeout(() => {
-          router.back();
+          router.replace("/user/courses");
         }, 400);
       } catch (error) {
         if (isAxiosError(error))

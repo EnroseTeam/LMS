@@ -183,7 +183,7 @@ export const updateUserOrder: RequestHandler<
     for (const courseId of order.courses) {
       const course = await CourseModel.findById(courseId, null, { session });
       if (course) {
-        course.purchaseCount += 1;
+        // course.purchaseCount += 1;
         await course.save({ session });
       }
     }

@@ -2,7 +2,6 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
-import UserRoleModel from "../models/userRole";
 import { getGoogleAuthTokens, getGoogleUser } from "../services/google";
 
 interface SignUpBody {
@@ -23,7 +22,16 @@ interface LogInBody {
 // Get authenticated user info
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.session.userId).populate("role");
+    const user = await UserModel.findById(req.session.userId).select({
+      password: 0,
+      orders: 0,
+      boughtCourses: 0,
+      ownCourses: 0,
+      ownPublishedCourses: 0,
+      avgRating: 0,
+      reviewCount: 0,
+      studentCount: 0,
+    });
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -66,8 +74,6 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
 
     const hashedPassword = await bcrypt.hash(rawPassword, 12);
 
-    const studentRole = await UserRoleModel.findOne({ slug: "student" });
-
     const newUser = await UserModel.create({
       firstName,
       lastName,
@@ -75,7 +81,6 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
       email,
       phone,
       password: hashedPassword,
-      role: studentRole?._id,
     });
 
     req.session.userId = newUser._id;
@@ -106,7 +111,7 @@ export const logIn: RequestHandler<unknown, unknown, LogInBody, unknown> = async
     req.session.userId = user._id;
     if (remember) req.session.cookie.maxAge = 60 * 60 * 1000 * 24;
 
-    res.status(200).json({ message: "Амжилттай нэвтэрлээ", body: user });
+    res.status(200).json({ message: "Амжилттай нэвтэрлээ" });
   } catch (error) {
     next(error);
   }
@@ -133,8 +138,6 @@ export const googleOAuthHandler: RequestHandler = async (req, res, next) => {
       throw createHttpError(400, "Хэрэглэчийн и-мэйл баталгаажаагүй байна.");
     }
 
-    const studentRole = await UserRoleModel.findOne({ slug: "student" });
-
     const user = await UserModel.findOneAndUpdate(
       { email: googleUser.email },
       {
@@ -143,7 +146,6 @@ export const googleOAuthHandler: RequestHandler = async (req, res, next) => {
         lastName: googleUser.family_name,
         fullName: googleUser.family_name + " " + googleUser.given_name,
         avatar: googleUser.picture,
-        role: studentRole?._id,
       },
       {
         upsert: true,

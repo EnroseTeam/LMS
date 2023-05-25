@@ -1,15 +1,15 @@
 import { FC, useContext, useEffect, useState } from "react";
 
 import CourseCard from "../../components/Courses/CourseCard";
-import { IInstructor } from "@/interfaces/user";
 import Tab, { TabHeaderItem } from "../global/Tab";
 import { ICourse } from "@/interfaces/courses";
 import { fetcher } from "@/utils/fetcher";
 import useSwr from "swr";
 import { AuthContext } from "@/contexts/AuthContext";
+import { IUser } from "@/interfaces/user";
 
 interface SinglePageContentProps {
-  instructor: IInstructor;
+  instructor: IUser;
 }
 
 const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
@@ -53,8 +53,8 @@ const SinglePageContent: FC<SinglePageContentProps> = ({ instructor }) => {
 
   const courseContent = (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px] overflow-x-hidden overflow-y-hidden">
-      {instructor.ownCourses.length > 0 &&
-        instructor.ownCourses.map((course) => (
+      {instructor.ownPublishedCourses.length > 0 &&
+        instructor.ownPublishedCourses.map((course) => (
           <CourseCard
             key={course._id}
             course={{ ...course, instructor }}

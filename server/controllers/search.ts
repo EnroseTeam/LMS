@@ -1,6 +1,5 @@
 import UserModel from "../models/user";
 import CourseModel from "../models/course";
-import UserRoleModel from "../models/userRole";
 import { RequestHandler } from "express";
 import { Types } from "mongoose";
 
@@ -16,14 +15,13 @@ export const searchEverything: RequestHandler = async (req, res, next) => {
   try {
     const { q: search = "", pageSize = "9", page = "1" } = req.query;
 
-    const instructorRole = await UserRoleModel.findOne({ slug: "instructor" });
-
     const users = await UserModel.find({
       $or: [
         { firstName: new RegExp(search + "", "i") },
         { lastName: new RegExp(search + "", "i") },
       ],
-      role: instructorRole?._id,
+      role: "Instructor",
+      "ownPublishedCourses.0": { $exists: true },
     });
     const courses = await CourseModel.find({
       name: new RegExp(search + "", "i"),
