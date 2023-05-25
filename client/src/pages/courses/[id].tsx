@@ -11,7 +11,7 @@ interface SingleCoursePageProps {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axiosInstance.get("/api/courses/id");
+  const res = await axiosInstance.get("/api/courses/publishedIds");
   const paths = res.data.body.map((id: string) => ({ params: { id } }));
 
   return {

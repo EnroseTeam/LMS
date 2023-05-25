@@ -14,18 +14,20 @@ export const becomeInstructor: RequestHandler = async (req, res, next) => {
       role: "Instructor",
     });
 
-    await axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`);
-    await axios.get(
-      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
-    );
-    await axios.get(
-      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
-    );
-    await axios.get(
-      `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
-        env.REVALIDATE_SECRET
-      }&path=${`/instructors/${userId}`}`
-    );
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+          env.REVALIDATE_SECRET
+        }&path=${`/instructors/${userId}`}`
+      ),
+    ]);
 
     res.sendStatus(200);
   } catch (error) {
@@ -54,8 +56,10 @@ export const getSingleInstructor: RequestHandler = async (req, res, next) => {
   try {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
-    const instructor = await UserModel.findById(id)
-    .populate({ path: "ownPublishedCourses", populate: "level" });
+    const instructor = await UserModel.findById(id).populate({
+      path: "ownPublishedCourses",
+      populate: "level",
+    });
     if (!instructor) throw createHttpError(404, "Багш олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: instructor });

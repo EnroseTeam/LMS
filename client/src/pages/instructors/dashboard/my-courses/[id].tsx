@@ -16,7 +16,7 @@ interface InstructorDashboardSingleCoursePageProps {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axiosInstance.get("/api/courses/id");
+  const res = await axiosInstance.get("/api/courses/allIds");
   const paths = res.data.body.map((id: string) => ({ params: { id } }));
   return {
     paths,

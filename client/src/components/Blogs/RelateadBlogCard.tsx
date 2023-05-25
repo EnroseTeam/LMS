@@ -3,11 +3,11 @@ import Image from "next/image";
 import { IBlog } from "@/interfaces/blogs";
 import Link from "next/link";
 
-interface relateadBlogCard {
+interface RelatedBlogCardProps {
   blog: IBlog;
 }
 
-const RelateadBlogCard: FC<relateadBlogCard> = ({ blog }) => (
+const RelatedBlogCard: FC<RelatedBlogCardProps> = ({ blog }) => (
   <div className="md:grid-cols-2 md:gap-12 lg:gap-[40px] items-center">
     <Link
       target="_blank"
@@ -48,4 +48,4 @@ const RelateadBlogCard: FC<relateadBlogCard> = ({ blog }) => (
   </div>
 );
 
-export default RelateadBlogCard;
+export default RelatedBlogCard;

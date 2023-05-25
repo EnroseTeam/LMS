@@ -4,6 +4,8 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
 import assertIsDefined from "../utils/assertIsDefined";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 export const getCourseSetions: RequestHandler = async (req, res, next) => {
   try {
@@ -76,6 +78,15 @@ export const createCourseSection: RequestHandler<
 
     await session.commitTransaction();
 
+    await axios.all([
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${isCourseExist._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${isCourseExist._id}`
+      ),
+    ]);
+
     res.status(201).json({ message: "Амжилттай", body: newCourseSection });
   } catch (error) {
     console.log(error);
@@ -123,6 +134,21 @@ export const updateCourseSection: RequestHandler<
     courseSection.title = title;
     const editedCourseSection = await courseSection.save();
 
+    await axios.all([
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${
+          env.REVALIDATE_SECRET
+        }&path=/instructors/dashboard/my-courses/${
+          (courseSection.course as unknown as ICourse)._id
+        }`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${
+          (courseSection.course as unknown as ICourse)._id
+        }`
+      ),
+    ]);
+
     res.status(200).json({ message: "Амжилттай", body: editedCourseSection });
   } catch (error) {
     next(error);
@@ -166,6 +192,17 @@ export const deleteCourseSection: RequestHandler = async (req, res, next) => {
     await courseSection.deleteOne({ session });
 
     await session.commitTransaction();
+
+    if (course) {
+      await axios.all([
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+        ),
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+        ),
+      ]);
+    }
 
     res.sendStatus(204);
   } catch (error) {
