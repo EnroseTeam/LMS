@@ -3,12 +3,12 @@ import Image from "next/image";
 import { IBlog } from "@/interfaces/blogs";
 import Link from "next/link";
 
-interface BlogCardProps {
+interface relateadBlogCard {
   blog: IBlog;
 }
 
-const BlogCard: FC<BlogCardProps> = ({ blog }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 lg:gap-[40px] items-center">
+const RelateadBlogCard: FC<relateadBlogCard> = ({ blog }) => (
+  <div className="md:grid-cols-2 md:gap-12 lg:gap-[40px] items-center">
     <Link
       target="_blank"
       href={`blogs/${blog._id}`}
@@ -31,15 +31,15 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => (
         </span>
       </div>
       <div>
-        <h1 className="text-[#242239] text-2xl-medium py-[20px]">
+        <h1 className="text-[#242239] text-xs-medium py-[20px]">
           <Link
             href={`blogs/${blog._id}`}
-            className="block text-head hover:text-head/80 duration-300 mb-[5px]"
+            className="block text-sx hover:text-head/80 duration-300 mb-[5px]"
           >
             {blog.name}
           </Link>
         </h1>
-        <p className="text-text text-sm-medium pb-[20px]">{blog.description}</p>
+        <p className="text-text text-xs pb-[20px]">{blog.description}</p>
       </div>
       <Link href={`blogs/${blog._id}`}>
         <button className="py-4 px-7 btn-4">Цааш унших...</button>
@@ -48,4 +48,4 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => (
   </div>
 );
 
-export default BlogCard;
+export default RelateadBlogCard;

@@ -19,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<BlogPageProps> = async ({
   const blogRes = await axiosInstance.get(
     `/api/blogs?page=${page}&pageSize=${pageSize}`
   );
+  console.log("blogs.length", blogRes.data.body.length);
   return {
     props: {
       blogs: blogRes.data.body,
@@ -36,10 +37,7 @@ const BlogPage: FC<BlogPageProps> = ({ blogs, totalPages, totalBlogs }) => (
         <h1 className="text-4x-bold text-head lg:pt-[90px] pb-1">
           Онцлох мэдээ
         </h1>
-        <p className="lg-regular text-text pb-[30px]">
-          We’re on a mission to deliver engaging, curated courses at a
-          reasonable price.
-        </p>
+        <p className="lg-regular text-text pb-[30px]">мэдээ, мэдээлэл</p>
         <div className="relative bg-white w-full h-[60px] rounded-md pl-[30px] border border-solid text-sm-regular focus-within:ring-4 focus-within:ring-color-1 mb-8 lg:mb-[78px]">
           <input
             type="text"
