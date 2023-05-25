@@ -6,6 +6,8 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
 import assertIsDefined from "../utils/assertIsDefined";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 interface CourseLessonBody {
   name?: string;
@@ -119,6 +121,8 @@ export const createCourseLesson: RequestHandler<
 
     // Сургалтан дээр байгаа нийт хичээлийн уртыг нэмэх
     if (course) {
+      course.lessonCount += 1;
+
       course.totalLessonLength.second += length.second;
       course.totalLessonLength.minute += length.minute;
       course.totalLessonLength.hour += length.hour;
@@ -134,6 +138,17 @@ export const createCourseLesson: RequestHandler<
     }
 
     await session.commitTransaction();
+
+    if (course) {
+      await axios.all([
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+        ),
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+        ),
+      ]);
+    }
 
     res
       .status(201)
@@ -157,6 +172,8 @@ export const updateCourseLesson: RequestHandler<
 
   const instructorId = req.session.userId;
 
+  const session = await mongoose.startSession();
+
   try {
     assertIsDefined(instructorId);
 
@@ -166,33 +183,74 @@ export const updateCourseLesson: RequestHandler<
     if (!length) throw createHttpError(400, "Хичээлийн хугацаа заавал шаардлагатай.");
     if (!type) throw createHttpError(400, "Хичээлийн төрөл заавал шаардлагатай.");
 
+    session.startTransaction();
+
     // Орж ирсэн id-тай хичээл бүртгэлтэй эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const courseLesson = await CourseLessonModel.findById(id).populate({
+    const courseLesson = await CourseLessonModel.findById(id, null, { session }).populate({
       path: "section",
     });
     if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй.");
 
-    const course = await CourseModel.findById(courseLesson.section.course);
+    const course = await CourseModel.findById(courseLesson.section.course, null, { session });
 
     if (instructorId.toString() !== course?.instructor?.toString()) {
       throw createHttpError(403, "Танд энэ хичээлийг засах эрх байхгүй байна.");
     }
 
+    if (course) {
+      course.totalLessonLength.hour =
+        course.totalLessonLength.hour + (length.hour - courseLesson.length.hour);
+      course.totalLessonLength.minute =
+        course.totalLessonLength.minute + (length.minute - courseLesson.length.minute);
+      course.totalLessonLength.second =
+        course.totalLessonLength.second + (length.second - courseLesson.length.second);
+
+      if (course.totalLessonLength.second >= 60) {
+        course.totalLessonLength.second -= 60;
+        course.totalLessonLength.minute += 1;
+      }
+
+      if (course.totalLessonLength.minute >= 60) {
+        course.totalLessonLength.minute -= 60;
+        course.totalLessonLength.hour += 1;
+      }
+
+      await course.save({ session });
+    }
+
     // Хичээлийн мэдээллийг хүсэлтээс орж ирсэн мэдээллээр солино.
+    courseLesson.name = name;
     courseLesson.description = description;
     courseLesson.video = video;
     courseLesson.length = length;
     courseLesson.type = type;
 
     // Өөрчлөлтөө хадгална.
-    const editedCourseLesson = await courseLesson.save();
+    const editedCourseLesson = await courseLesson.save({ session });
+
+    await session.commitTransaction();
+
+    if (course) {
+      await axios.all([
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+        ),
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+        ),
+      ]);
+    }
+
     res.status(200).json({
       message: `${name} нэртэй хичээлийн мэдээлэл амжилттай шинэчлэгдлээ.`,
       body: editedCourseLesson,
     });
   } catch (error) {
+    await session.abortTransaction();
     next(error);
   }
+
+  session.endSession();
 };
 
 export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
@@ -224,6 +282,26 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
       throw createHttpError(403, "Танд энэ хичээлийг устгах эрх байхгүй байна.");
     }
 
+    if (course) {
+      course.lessonCount -= 1;
+
+      course.totalLessonLength.second -= courseLesson.length.second;
+      course.totalLessonLength.minute -= courseLesson.length.minute;
+      course.totalLessonLength.hour -= courseLesson.length.hour;
+
+      if (course.totalLessonLength.second < 0) {
+        course.totalLessonLength.second += 60;
+        course.totalLessonLength.minute -= 1;
+      }
+
+      if (course.totalLessonLength.minute < 0) {
+        course.totalLessonLength.minute += 60;
+        course.totalLessonLength.hour -= 1;
+      }
+
+      await course.save({ session });
+    }
+
     if (courseSection) {
       courseSection.lessons = courseSection.lessons.filter(
         (lesson) => lesson?._id !== courseLesson._id
@@ -232,9 +310,20 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
     }
 
     // Хичээлээ устгана
-    await courseLesson.deleteOne();
+    await courseLesson.deleteOne({ session });
 
     await session.commitTransaction();
+
+    if (course) {
+      await axios.all([
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+        ),
+        axios.get(
+          `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+        ),
+      ]);
+    }
 
     res.sendStatus(204);
   } catch (error) {

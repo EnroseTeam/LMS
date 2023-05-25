@@ -4,6 +4,8 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
+import axios from "axios";
+import env from "../configs/validateEnv";
 
 interface CourseReviewBody {
   title?: string;
@@ -97,6 +99,13 @@ export const makeTestimonial: RequestHandler = async (req, res, next) => {
     review.testimonial = true;
     await review.save();
 
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+    ]);
+
     res.status(200).json({ message: "Сэтгэгдэл амжилттай нүүр хэсэгт гарлаа." });
   } catch (error) {
     next(error);
@@ -152,7 +161,7 @@ export const createCourseReview: RequestHandler<
 
     const isUserExist = await UserModel.findById(isCourseExist.instructor, null, {
       session,
-    }).select("+ownCourses +avgRating");
+    });
     if (!isUserExist)
       throw createHttpError(400, `${isCourseExist.instructor} id-тай хэрэглэгч олдсонгүй.`);
 
@@ -163,8 +172,10 @@ export const createCourseReview: RequestHandler<
 
     // Сургалтыг заасан багшийн дундаж үнэлгээг шинэчлэнэ.
     let totalReviewLength = 0;
-    for (let i = 0; i < isUserExist.ownCourses.length; i++) {
-      const course = await CourseModel.findById(isUserExist.ownCourses[i], null, { session });
+    for (let i = 0; i < isUserExist.ownPublishedCourses.length; i++) {
+      const course = await CourseModel.findById(isUserExist.ownPublishedCourses[i], null, {
+        session,
+      });
       if (course) totalReviewLength += course.reviews.length;
     }
 
@@ -194,7 +205,26 @@ export const createCourseReview: RequestHandler<
     isCourseExist.reviews.push(newReview._id);
     await isCourseExist.save({ session });
 
+    isUserExist.reviewCount += 1;
+    await isUserExist.save({ session });
+
     await session.commitTransaction();
+
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${isCourseExist._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/${isUserExist._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+      ),
+    ]);
 
     res.status(200).json({ message: "Амжилттай нэмэгдлээ.", body: newReview });
   } catch (error) {
@@ -223,7 +253,7 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
     if (!review) throw createHttpError(404, "Сэтгэгдэл олдсонгүй.");
 
     // Олдсон сэтгэгдэл дээр бүртгэлтэй байгаа сургалтын id-гаар сургалтаа олоод олдсон сургалтнаас устгагдаж буй сэтгэгдлийн id-г хасна.
-    const course = await CourseModel.findById(review.course);
+    const course = await CourseModel.findById(review.course, null, { session });
     if (course) {
       course.reviews = course.reviews.filter((curReview) => curReview?._id !== review._id);
       await course.save({ session });
@@ -233,6 +263,22 @@ export const deleteCourseReview: RequestHandler = async (req, res, next) => {
     await review.deleteOne({ session });
 
     await session.commitTransaction();
+
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course?._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/${course?.instructor?._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+      ),
+    ]);
 
     res.sendStatus(204);
   } catch (error) {

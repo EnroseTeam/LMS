@@ -6,7 +6,8 @@ import {
   getCourseByInstructorId,
   getCourseByUserId,
   getCourseCounts,
-  getCourseIds,
+  getPublishedCourseIds,
+  getAllCourseIds,
   getCourses,
   getSingleCourse,
   updateCourse,
@@ -16,7 +17,8 @@ import { authenticateUser, authorizeAdmin, authorizeInstructor } from "../middle
 const courseRouter = express.Router();
 
 courseRouter.get("/counts", getCourseCounts);
-courseRouter.get("/id", getCourseIds);
+courseRouter.get("/publishedIds", getPublishedCourseIds);
+courseRouter.get("/allIds", getAllCourseIds);
 courseRouter.get("/user", authenticateUser, getCourseByUserId);
 courseRouter.get("/instructor", authenticateUser, authorizeInstructor, getCourseByInstructorId);
 

@@ -25,7 +25,7 @@ const HoverCourseCard: FC<HoverCourseCardProps> = ({
   return (
     <div
       className={classNames(
-        "absolute text-head top-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto flex z-[1000]",
+        "absolute text-head top-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto duration-300 cursor-auto hidden sm:flex z-[1000] ",
         { "left-full": position === "Right" },
         { "right-full": position === "Left" }
       )}

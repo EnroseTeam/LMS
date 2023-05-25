@@ -2,30 +2,24 @@ import "swiper/css/pagination";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import blogCard from "@/components/blogs";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import Image from "next/image";
 import { FC } from "react";
-// import { TbGridDots } from "react-icons/tb";
-// import IconH from "../../assets/“.svg";
 import Link from "next/link";
 import { ImFacebook, ImLinkedin2, ImTwitter } from "react-icons/im";
 import { BsArrowLeft, BsArrowRight, BsInstagram } from "react-icons/bs";
-// import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import axios from "axios";
 import { IBlog } from "@/interfaces/blogs";
 import { GetServerSideProps } from "next";
 import { axiosInstance } from "@/utils/axiosInstance";
-import RelateadBlogCard from "@/components/Blogs/relateadBlogCard";
+import RelatedBlogCard from "@/components/Blogs/RelateadBlogCard";
 
 interface SingleBlogPageProps {
   blog: IBlog;
   blogs: IBlog[];
 }
 
-export const getServerSideProps: GetServerSideProps<
-  SingleBlogPageProps
-> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<SingleBlogPageProps> = async ({ params }) => {
   const [blogRes, blogsRes] = await axios.all([
     axiosInstance.get(`/api/blogs/${params?.id}`),
     axiosInstance.get("/api/blogs?pageSize=6"),
@@ -44,9 +38,7 @@ const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
     <div>
       <div className="lg:max-w-[1100px] mx-auto lg:px-[120px] text-center bg-white">
         <h1 className="text-head text-4x-bold ">{blog.name}</h1>
-        <p className="text-lg-regular text-text pb-10 lg:pb-[90px]">
-          {blog.updatedAt}
-        </p>
+        <p className="text-lg-regular text-text pb-10 lg:pb-[90px]">{blog.updatedAt}</p>
       </div>
       <div className="rounded-lg overflow-hidden group relative lg:px-[315px] ">
         <Image
@@ -152,45 +144,19 @@ const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
             <h3 className="text-head text-lg-medium pb-[5px]">Ганболд</h3>
             <p className="text-text text-sm-regular pb-6">Программист</p>
             <p className="text-text text-md-regular pb-[30px]">
-              Энэ нь статик вэб хуудас болон React-д суурилсан онлайн
-              програмуудыг хурдан бөгөөд хялбар бүтээх JavaScript-ийн хүрээ юм.
+              Энэ нь статик вэб хуудас болон React-д суурилсан онлайн програмуудыг хурдан бөгөөд
+              хялбар бүтээх JavaScript-ийн хүрээ юм.
             </p>
           </div>
         </div>
         <div className="border-t-2 lg:py-[30px]" />
-        {/* <div className="grid grid-cols-3 items-center py-8">
-          <div>
-            <div className="flex items-center text-lg-medium justify-start cursor-pointer hover:text-color-1 gap-2">
-              <AiOutlineArrowLeft />
-              <h3>Prev</h3>
-            </div>
-
-            <p className="invisible lg:visible">
-              5 awesome steps to get rid of stress and routine
-            </p>
-          </div>
-          <div className="flex items-center justify-center text-[#404046] text-3xl">
-            <TbGridDots />
-          </div>
-          <div className="flex flex-col">
-            <div className="flex items-center text-lg-medium justify-end cursor-pointer hover:text-color-1 gap-2">
-              <h3>Next</h3>
-              <AiOutlineArrowRight />
-            </div>
-            <p className="invisible lg:visible text-end">
-              Happy clients leave positive feedback less often{" "}
-            </p>
-          </div>
-        </div> */}
       </div>
     </div>
     <div className="bg-bg-1 px-8 pb-10 lg:pb-[120px] lg:px-[300px]">
       <h1 className="text-center text-head text-3xl-bold pt-16 lg:pt-[120px] pb-[9px]">
         Холбоотой мэдээнүүд
       </h1>
-      <p className="text-center text-text text-md-regular pb-[60px]">
-        мэдээ, мэдээлэл
-      </p>
+      <p className="text-center text-text text-md-regular pb-[60px]">мэдээ, мэдээлэл</p>
       <Swiper
         grabCursor={true}
         spaceBetween={8}
@@ -210,7 +176,7 @@ const SingleBlogPage: FC<SingleBlogPageProps> = ({ blog, blogs }) => (
       >
         {blogs.map((blog) => (
           <SwiperSlide key={blog._id}>
-            <RelateadBlogCard blog={blog} />
+            <RelatedBlogCard blog={blog} />
           </SwiperSlide>
         ))}
 

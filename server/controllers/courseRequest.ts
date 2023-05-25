@@ -71,6 +71,9 @@ export const createCourseRequest: RequestHandler<
     const isCourseExist = await CourseModel.findById(course);
     if (!isCourseExist) throw createHttpError(404, "Сургалт олдсонгүй.");
 
+    if (isCourseExist.isPublished)
+      throw createHttpError(400, "Энэ сургалт аль хэдийн нийтлэгдсэн байна.");
+
     const newCourseRequest = await CourseRequestModel.create({
       course,
       instructor: instructorId,
@@ -97,6 +100,9 @@ export const acceptCourseRequest: RequestHandler = async (req, res, next) => {
 
     const courseReq = await CourseRequestModel.findById(id, null, { session });
     if (!courseReq) throw createHttpError(404, "Хүсэлт олдсонгүй.");
+
+    if (courseReq.status === "Accepted")
+      throw createHttpError(400, "Энэ сургалт аль хэдийн нийтлэгдсэн байна.");
 
     const course = await CourseModel.findById(courseReq.course, null, { session });
     if (!course) throw createHttpError(404, "Хүсэлтийн сургалт олдсонгүй.");
@@ -129,9 +135,27 @@ export const acceptCourseRequest: RequestHandler = async (req, res, next) => {
 
     await session.commitTransaction();
 
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${course._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/dashboard/my-courses/${course._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/${instructor._id}`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+      ),
+    ]);
+
     res.status(200).json({ message: "Хүсэлт амжилттай зөвшөөрөгдлөө." });
   } catch (error) {
-    console.log(error);
     await session.abortTransaction();
     next(error);
   }

@@ -5,6 +5,8 @@ import createHttpError from "http-errors";
 import UserModel from "../models/user";
 import CourseModel from "../models/course";
 import { customAlphabet } from "nanoid";
+import axios from "axios";
+import env from "../configs/validateEnv";
 //GET ALL ORDER
 
 export const getUserOrders: RequestHandler = async (req, res, next) => {
@@ -180,15 +182,47 @@ export const updateUserOrder: RequestHandler<
     });
     await user.save({ session });
 
+    const instructorIds = [];
+
     for (const courseId of order.courses) {
       const course = await CourseModel.findById(courseId, null, { session });
       if (course) {
-        // course.purchaseCount += 1;
+        course.students.push(user._id);
         await course.save({ session });
+
+        instructorIds.push(course.instructor);
+
+        const instructor = await UserModel.findById(course.instructor, null, { session });
+        if (instructor) {
+          instructor.studentCount += 1;
+          await instructor.save({ session });
+        }
       }
     }
 
     await session.commitTransaction();
+
+    for (const courseId of order.courses) {
+      await axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/courses/${courseId}`
+      );
+    }
+
+    for (const instId of instructorIds) {
+      await axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/instructors/${instId}`
+      );
+    }
+
+    await axios.all([
+      axios.get(`${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/`),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/become-instructor`
+      ),
+      axios.get(
+        `${env.PUBLIC_SITE_URL}/api/revalidate?secret=${env.REVALIDATE_SECRET}&path=/about-us`
+      ),
+    ]);
 
     res.status(200).json({ message: "Амжилттай." });
   } catch (error) {
