@@ -79,7 +79,7 @@ const SinglePageHeader: FC<SinglePageHeaderProps> = ({ course }) => {
         <Image src={shape} alt="Shape" className="w-full aspect-auto object-contain" />
       </div>
 
-      <div className="container grid grid-cols-1 lg:grid-cols-2 gap-[45px] lg:gap-[145px] text-icon">
+      <div className="container grid grid-cols-1 lg:grid-cols-2 items-center gap-[45px] lg:gap-[145px] text-icon">
         <div className="flex flex-col gap-[30px]">
           {/* Course Head */}
 

@@ -2,11 +2,12 @@ import { FC, useContext, useState } from "react";
 import RatingStar from "../global/RatingStar";
 import Link from "next/link";
 import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton";
-import MessageBox from "../global/MessageBox";
+
 import { isAxiosError } from "axios";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { ICourseReview } from "@/interfaces/courses";
 import { AuthContext } from "@/contexts/AuthContext";
+import { toast } from "react-toastify";
 
 interface ReviewFormProps {
   courseId: string;
@@ -16,8 +17,6 @@ interface ReviewFormProps {
 const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
   const { user, isUserLoading } = useContext(AuthContext);
 
-  const [errorMsg, setErrorMsg] = useState<string>("");
-
   const [rating, setRating] = useState<number>(5);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -25,26 +24,34 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
   const [isRatingCorrect, setIsRatingCorrect] = useState<boolean>(true);
   const [isTitleExist, setIsTitleExist] = useState<boolean>(true);
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const formSubmitHandler = async (): Promise<void> => {
-    try {
-      if (!title || rating > 5 || rating < 0) {
-        if (!title) setIsTitleExist(false);
-        if (rating > 5 || rating < 0) setIsRatingCorrect(false);
-        return;
+    if (!isSubmitting) {
+      try {
+        setIsSubmitting(true);
+
+        if (!title || rating > 5 || rating < 0) {
+          if (!title) setIsTitleExist(false);
+          if (rating > 5 || rating < 0) setIsRatingCorrect(false);
+          return;
+        }
+
+        const res = await axiosInstance.post("/api/courses/reviews", {
+          title,
+          text: description,
+          rating: Number(rating),
+          course: courseId,
+        });
+
+        afterSubmit(res.data.body);
+      } catch (error) {
+        if (isAxiosError(error))
+          toast.error(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+        else toast.error("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
+      } finally {
+        setIsSubmitting(false);
       }
-
-      const res = await axiosInstance.post("/api/courses/reviews", {
-        title,
-        text: description,
-        rating: Number(rating),
-        course: courseId,
-      });
-
-      afterSubmit(res.data.body);
-    } catch (error) {
-      if (isAxiosError(error))
-        setErrorMsg(error.response?.data.error || "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
-      else setErrorMsg("Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.");
     }
   };
 
@@ -76,8 +83,6 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
           className="text-head mb-[119px] flex flex-col gap-[30px]"
         >
           <h1 className="text-xl font-medium leading-[23px]">Сэтгэгдэл бичих</h1>
-
-          {errorMsg && <MessageBox type="Error" message={errorMsg} />}
 
           <div>
             <label htmlFor="rating" className="mb-[9px] inline-block text-base-medium">
@@ -144,7 +149,7 @@ const ReviewForm: FC<ReviewFormProps> = ({ courseId, afterSubmit }) => {
             />
           </div>
 
-          <button type="submit" className="btn-1 self-start py-4">
+          <button disabled={isSubmitting} type="submit" className="btn-1 self-start py-4">
             Сэтгэгдэл нэмэх
           </button>
         </form>

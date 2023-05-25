@@ -52,8 +52,8 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
       let newStudents = 0;
       let newReviews = 0;
       for (const course of instructor.body.ownPublishedCourses) {
-        if (course.discountPrice > 0) newSales += course.discountPrice;
-        else newSales += course.price;
+        if (course.discountPrice > 0) newSales += course.discountPrice * course.students.length;
+        else newSales += course.price * course.students.length;
 
         newStudents += course.students.length;
         newReviews += course.reviews.length;

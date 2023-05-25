@@ -13,10 +13,10 @@ const DropdownLarge: FC<DropdownLargeProps> = ({ categories, courses }) => (
       <div className="w-[10px] h-[10px] rotate-45 bg-white" />
     </div>
     <div className="w-screen fixed left-0 right-0 -mt-[5px]">
-      <div className="grid grid-cols-6 gap-[60px] bg-white w-[1399px] mx-auto rounded-lg shadow-shadow-4 p-[30px] text-head">
+      <div className="grid grid-cols-5 gap-[60px] bg-white w-[1399px] mx-auto rounded-lg shadow-shadow-4 p-[30px] text-head">
         {categories
           .sort((a, b) => b.courseCount - a.courseCount)
-          .slice(0, 6)
+          .slice(0, 5)
           .map((category) => (
             <div key={category._id} className="text-center">
               <h2 className="mb-5 text-lg-medium">{category.name}</h2>

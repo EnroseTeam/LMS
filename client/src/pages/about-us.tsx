@@ -14,6 +14,7 @@ import { axiosInstance } from "@/utils/axiosInstance";
 import { NextPageWithLayout } from "./_app";
 import axios from "axios";
 import { ICourseReview } from "@/interfaces/courses";
+import Link from "next/link";
 
 interface AboutUsPageProps {
   instructors: IUser[];
@@ -41,9 +42,9 @@ const AboutUsPage: NextPageWithLayout<AboutUsPageProps> = ({ instructors, testim
         Бидний тухай
       </h1>
       <p className="text-lg-regular px-8 lg:px-0 mb-14 text-text text-center lg:mb-[86px]">
-        We’re on a mission to deliver engaging, curated courses at a reasonable price.
+        Стандарт хангасан, боломжийн үнэтэй сургалтуудыг зөвхөн манайхаас авах боломжтой
       </p>
-      <div className="flex flex-col lg:flex-cols-2 lg:gap-[172px] items-center lg:pr-[120px]">
+      <div className="grid grid-cols-1 xl:grid-cols-2 place-items-center text-center xl:text-left gap-[50px] xl:gap-[100px]">
         <div className="flex gap-[30px] items-center">
           <div className="relative pl-[10px]">
             <div className="max-w-[300px] max-h-[400px] rounded-[16px] overflow-hidden">
@@ -67,19 +68,20 @@ const AboutUsPage: NextPageWithLayout<AboutUsPageProps> = ({ instructors, testim
           </div>
         </div>
         <div className="px-8 mt-6 lg:mt-0 lg:px-0">
-          <h1 className="font-[700] leading-[50px] text-[30px] text-head mb-[30px]">
-            Welcome to Educrat Enhance your skills with best Online courses
+          <h1 className="font-[700] leading-[40px] text-[30px] text-head mb-[30px]">
+            Тавтай морилно уу. Онлайнаар өөрийн чадвараа IntelliSense-тэй хамт дээшлүүлээрэй.
           </h1>
           <p className="text-md-regular text-head mb-[28px]">
-            You can start and finish one of these popular courses in under a day – for free! Check
-            out the list below.. Take the course for free
+            Манайд байгаа топ сургалтуудаас суралцах боломжтой.
           </p>
-          <p className="text-md-regular text-text mb-[30px] w-[85%]">
+          <p className="text-md-regular text-text mb-[30px] w-full xl:w-[85%]">
             Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt egetnvallis a
             cras semper auctonvallis a cras semper aucto. Neque convallis a cras semper auctor.
             Liberoe convallis a cras semper atincidunt egetnval
           </p>
-          <button className="btn-1">Start Learning For Free</button>
+          <Link href="/courses" className="btn-1 block w-fit">
+            Суралцаж эхлэх
+          </Link>
         </div>
       </div>
     </div>
