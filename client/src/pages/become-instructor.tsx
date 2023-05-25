@@ -22,8 +22,12 @@ interface BecomeInstructorPageProps {
   instructors: IUser[];
 }
 
-export const getStaticProps: GetStaticProps<BecomeInstructorPageProps> = async () => {
-  const instructorRes = await axiosInstance.get<{ body: IUser[] }>(`/api/instructors`);
+export const getStaticProps: GetStaticProps<
+  BecomeInstructorPageProps
+> = async () => {
+  const instructorRes = await axiosInstance.get<{ body: IUser[] }>(
+    `/api/instructors`
+  );
   return {
     props: {
       instructors: instructorRes.data.body,
@@ -31,9 +35,11 @@ export const getStaticProps: GetStaticProps<BecomeInstructorPageProps> = async (
   };
 };
 
-const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ instructors }) => {
+const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({
+  instructors,
+}) => {
   const data =
-    "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.";
+    "Бид таны хичээлүүдийг таны зөвшөөрөлгүй https://intellisense.e-cpta.mn/ сайтаас өөр газар, өөр байдлаар ашиглахгүй. Та өөрийн видеонуудыг https://intellisense.e-cpta.mn/ сайтаас өөр газарт байрлуулах, хувилан зарах бүрэн эрхтэй. Таны видеонуудыг өөр хүмүүс ямар нэг байдлаар https://intellisense.e-cpta.mn/ сайтаас хуулбарлан авсан тохиолдолд бид хариуцлага хүлээхгүй болно. Учир нь ийм боломж үргэлж байдаг. Та дээрх нөхцлийг зөвшөөрсний үндсэн дээр багш болох боломжтой. ";
 
   const tabOne = (
     <div className="text-text text-md-regular">
@@ -70,7 +76,9 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
   return (
     <>
       <Breadcrumbs
-        breadcrumbItems={[{ title: "Багш, сургагчаар элсэх", link: "/become-instructor" }]}
+        breadcrumbItems={[
+          { title: "Багш, сургагчаар элсэх", link: "/become-instructor" },
+        ]}
       />
       <div className="container px-10">
         <div className="flex flex-col text-center gap-1 mb-[60px]">
@@ -78,7 +86,8 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
             Багш, сургагчаар элсэх
           </h1>
           <p className="text-lg-regular text-text">
-            We’re on a mission to deliver engaging, curated courses at a reasonable price.
+            Таны сургалтыг худалдаж авсан хүн бүрээс та 50%-70% цэвэр ашиг авах
+            болно! Та хичээлээ оруулаад л боллоо.
           </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-[50px] mb-[60px]">
@@ -88,15 +97,18 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
               Мэргэжилтнүүдтэй хамт суралц
             </h1>
             <p className="text-center text-text font-[400] text-[14px] leading-[24px]">
-              Grursus mal suada faci lisis that ipsum ameti consecte.
+              Өөрийгөө хөгжүүлэх нь чиний зорилго болж, хөгжүүлэхийн тулд юу юу
+              хийх вэ гэдэг нь төлөвлөгөө чинь болно.
             </p>
           </div>
 
           <div className="rounded-lg flex flex-col items-center px-[34px] py-[42px] hover:bg-[#FFFFFF] hover:shadow-shadow-4 cursor-pointer">
             <Image src={science} alt="" className="mb-5" />
-            <h1 className="text-xl-medium text-head text-center mb-[9px]">Хүссэн бүхнээ сур</h1>
+            <h1 className="text-xl-medium text-head text-center mb-[9px]">
+              Хүссэн бүхнээ сур
+            </h1>
             <p className="text-center text-text font-[400] text-[14px] leading-[24px]">
-              Grursus mal suada faci lisis that ipsum ameti consecte.
+              Ямар ч сэдвээр зааж болох бөгөөд Та хэдэн ч сургалт явуулж болно.
             </p>
           </div>
 
@@ -106,15 +118,18 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
               Багш нарыг дэмжих арга зам
             </h1>
             <p className="text-center text-text font-[400] text-[14px] leading-[24px]">
-              Grursus mal suada faci lisis that ipsum ameti consecte.
+              Худалдан авалт бүрээс 50%-70% цэвэр ашиг
             </p>
           </div>
 
           <div className="rounded-lg flex flex-col items-center px-[34px] py-[42px] hover:bg-[#FFFFFF] hover:shadow-shadow-4 cursor-pointer">
             <Image src={certificate} alt="" className="mb-5" />
-            <h1 className="text-xl-medium text-head text-center mb-[9px]">Дэлхийн стандарт</h1>
+            <h1 className="text-xl-medium text-head text-center mb-[9px]">
+              Дэлхийн стандарт
+            </h1>
             <p className="text-center text-text font-[400] text-[14px] leading-[24px]">
-              Grursus mal suada faci lisis that ipsum ameti consecte.
+              Олон улсын ISO/IEC 29110 стандарт нь бичил нэгжид (цаашид БН гэнэ)
+              хэрэглэгдэнэ.
             </p>
           </div>
         </div>
@@ -124,21 +139,27 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
         </div>
       </div>
       <div className="bg-bg-1 w-screen">
-        <div className="container flex-col lg:flex-row pt-[120px] pb-24 lg:pb-[183px] flex gap-[174px] items-center">
+        <div className="container flex-col lg:flex-row lg:items-center lg:justify-center pt-[120px] pb-24 lg:pb-[183px] flex gap-44 items-center">
           <div className="relative">
-            <div className="max-w-[600px] max-h-[600px] rounded-full overflow-hidden bg-color-1">
-              <Image src={main} alt="" className="w-full aspect-square object-cover " />
+            <div className="md:ml-40 max-w-[600px] max-h-[600px] rounded-full overflow-hidden bg-color-1">
+              <Image
+                src={main}
+                alt=""
+                className="w-full aspect-square object-cover "
+              />
             </div>
             <div className="absolute flex flex-col p-[40px] bg-white right-[-5px] lg:right-[-60px] bottom-[-70px] rounded-lg w-64 lg:w-[360px] gap-4 lg:gap-[30px] text-head shadow-shadow-4">
               <div className="bg-[#E8543E] rounded-[60px] text-white font-[500] leading-[13px] text-[11px] px-3 py-1 lg:px-[17px] lg:py-2 w-[80%] lg:w-[50%] text-center">
                 ОНЦЛОХ БАГШ
               </div>
               <p className="font-[500] leading-[30px] text-[18px]">
-                “Teaching on Intellisense platform has been an amazing experience”
+                Nextjs, tailwindcss, typescript
               </p>
               <div>
-                <p className="text-md-medium">Ali Tufan</p>
-                <span className="text-sm-regular text-texts">Designer, Apple Inc</span>
+                <p className="text-md-medium">Цогт Биндэръяа</p>
+                <span className="text-sm-regular text-texts">
+                  Програм хөгжүүлэгч
+                </span>
               </div>
             </div>
           </div>
@@ -148,7 +169,11 @@ const BecomeInstructorPage: NextPageWithLayout<BecomeInstructorPageProps> = ({ i
               Багш болцгооё
             </h1>
             <p className="text-md-regular text-center lg:text-left text-head mb-[30px]  w-[60%]">
-              Use the list below to bring attention to your product’s key differentiator.
+              Танд бусадтай хуваалцах мэдлэг туршлага байгаа юу? өн заримдаа
+              харьяа салбар, хэлтсийнхэнтэй харилцахгүй, мэдлэг болон мэдээллээ
+              хуваалцахгүй байх үзэгдэл олон ажиглагддаг. Энэ нь мөн л
+              байгууллагын эрүүл өрсөлдөөнд тооцогдохгүй. Үүнийг даршилсан
+              сэтгэхүй/ гэж хэлж болно.
             </p>
             <button onClick={submitHandler} className=" btn-3 ">
               Манай Багт Нэгдээрэй

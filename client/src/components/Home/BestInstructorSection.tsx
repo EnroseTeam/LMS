@@ -10,13 +10,15 @@ interface BestInstructorSectionProps {
   instructors: IUser[];
 }
 
-const BestInstructorSection: FC<BestInstructorSectionProps> = ({ instructors }) => (
+const BestInstructorSection: FC<BestInstructorSectionProps> = ({
+  instructors,
+}) => (
   <>
     <div className="container mb-[111px] mt-[120px]">
       <div className="flex flex-col gap-y-[30px] justify-between items-start md:flex-row md:items-center mb-[43px]">
         <div>
           <h1 className="text-3xl-bold text-head">Шилдэг багш, сургагч нар</h1>
-          <p className="text-text">Lorem ipsum dolor sit amet, consectetur.</p>
+          <p className="text-text">...</p>
         </div>
         <Link href="/instructors" className="arrow-btn-1">
           Бүх багш, сургагчид
