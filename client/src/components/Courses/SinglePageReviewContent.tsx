@@ -3,12 +3,16 @@ import RatingStar from "../global/RatingStar";
 import ReviewCard from "../Reviews/ReviewCard";
 import { ICourse, ICourseReview } from "@/interfaces/courses";
 import ReviewForm from "../Reviews/ReviewForm";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface SinglePageReviewContentProps {
   course: ICourse;
 }
 
 const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) => {
+  const router = useRouter();
+
   const [intitalReviews, setInitialReviews] = useState<ICourseReview[]>(
     course.reviews.reverse().slice(0, 2)
   );
@@ -33,6 +37,10 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) =
 
   const afterSubmit = (review: ICourseReview): void => {
     setInitialReviews([review, ...intitalReviews]);
+    toast.success("Сэтгэгдэл амжилттай нэмэгдлээ.");
+    setTimeout(() => {
+      router.replace(`/courses/${course._id}`);
+    }, 400);
   };
 
   return (
@@ -49,7 +57,9 @@ const SinglePageReviewContent: FC<SinglePageReviewContentProps> = ({ course }) =
 
         <div className="bg-bg-3 rounded-lg py-[15px] px-[30px] flex-1 flex flex-col gap-0 text-right w-full sm:w-fit">
           {ratingCount.map((count, index) => {
-            const percentage = ((count * 100) / course.reviews.length).toFixed(1);
+            const percentage =
+              course.reviews.length === 0 ? 0 : ((count * 100) / course.reviews.length).toFixed(1);
+
             return (
               <div key={`rating-count-${index}`} className="flex items-center gap-4">
                 <div className="flex-1 relative w-full h-[5px] rounded-[4px] bg-[#CCE0F8]">

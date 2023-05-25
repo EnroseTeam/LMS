@@ -1,6 +1,5 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { RiMenu4Fill } from "react-icons/ri";
-import { BiBell } from "react-icons/bi";
 
 import logoDark from "@/assets/logo-dark.svg";
 import Image from "next/image";
@@ -52,16 +51,14 @@ const InstructorNavbar: FC<InstructorNavbarProps> = ({ MenuItems }) => {
       </div>
 
       <div className="flex items-center gap-[30px]">
-        <div className="items-center gap-[10px] hidden xs:flex">
-          <Link className="text-text text-md-medium hover:text-icon duration-300" href="/">
-            Сайтруу буцах
-          </Link>
-          <button className="text-xl text-icon p-[15px] rounded-2xl hover:bg-bg-1 hover:text-color-1 duration-300">
-            <BiBell />
-          </button>
-        </div>
-
-        <div className="relative">
+        <div className="relative flex items-center gap-3">
+          <div className="flex flex-col items-end">
+            <h1 className="text-head text-md-medium">{user.firstName}</h1>
+            <p className="text-icon text-sm-medium">
+              {user.role === "Admin" && "Админ"}
+              {user.role === "Instructor" && "Багш"}
+            </p>
+          </div>
           <button
             onClick={(): void => {
               setUserMenuShow(!userMenuShow);

@@ -25,6 +25,7 @@ export interface HeaderMenuItem {
   title: string;
   link: string;
   children?: HeaderMenuItem[];
+  showLarge?: boolean;
 }
 
 const Header: FC = () => {
@@ -53,7 +54,7 @@ const Header: FC = () => {
     {
       title: "Сургалт",
       link: "/courses",
-      children: headerCategories,
+      showLarge: true,
     },
     { title: "Багш, сургагч", link: "/instructors" },
     { title: "Мэдээ", link: "/blogs" },
@@ -110,9 +111,7 @@ const Header: FC = () => {
           <div className="py-2 px-2 hover:bg-white/[.15] rounded-lg text-color-6 items-center gap-2 text-md-regular hover:text-color-6/70 duration-300 group relative cursor-pointer hidden xl:flex">
             <RiMenu4Fill size={24} />
             <span>Ангилалууд</span>
-            {categories && courses && (
-              <NavbarDropdownLarge categories={categories.body} courses={courses.body} />
-            )}
+            <NavbarDroprown headerMenuChildren={headerCategories} />
           </div>
         </div>
         <nav className="hidden xl:block">
@@ -124,8 +123,11 @@ const Header: FC = () => {
               >
                 <Link className="flex items-center gap-1" href={menuItem.link}>
                   {menuItem.title}
-                  {menuItem.children && <HiChevronDown size={18} />}
+                  {(menuItem.showLarge || menuItem.children) && <HiChevronDown size={18} />}
                 </Link>
+                {categories && courses && menuItem.showLarge && (
+                  <NavbarDropdownLarge categories={categories.body} courses={courses.body} />
+                )}
                 {menuItem.children && <NavbarDroprown headerMenuChildren={menuItem.children} />}
               </li>
             ))}
