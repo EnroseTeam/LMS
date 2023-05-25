@@ -3,12 +3,12 @@ import { FC } from "react";
 import RatingStar from "../global/RatingStar";
 
 import { ICourseReview } from "@/interfaces/courses";
-import { IInstructor } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import ReviewAnswerCard from "./ReviewAnswerCard";
 
 interface ReviewCardProps {
   review: ICourseReview;
-  instructor: IInstructor;
+  instructor: IUser;
 }
 
 const ReviewCard: FC<ReviewCardProps> = ({ review, instructor }) => (

@@ -35,12 +35,12 @@ const UserMobileMenu: FC<UserMobileMenuProps> = ({ user, userMenuShow, closeUser
       <Link className="hover:text-color-1 duration-300" href={"/user/orders"}>
         Захиалгууд
       </Link>
-      {user.role.slug !== "student" && (
+      {(user.role === "Admin" || user.role === "Instructor") && (
         <Link className="hover:text-color-1 duration-300" href={"/instructors/dashboard"}>
           Багшийн булан
         </Link>
       )}
-      {user.role.slug === "student" && (
+      {user.role === "Student" && (
         <Link className="hover:text-color-1 duration-300" href={"/become-instructor"}>
           Багш болох
         </Link>

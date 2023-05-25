@@ -53,7 +53,7 @@ const CheckoutPage: NextPageWithLayout = () => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setEmail(user.email);
-      setPhone(user.phone);
+      setPhone(user.phone || "");
       setApartment(user.address.apartment);
       setDistrict(user.address.district);
       setCity(user.address.city);

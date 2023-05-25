@@ -4,13 +4,13 @@ import { BsSearch } from "react-icons/bs";
 
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import InstructorCard from "@/components/Instructors/InstructorCard";
-import { IInstructor } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import { useRouter } from "next/router";
 import SortDropDown from "@/components/global/SortDropDown";
 import { axiosInstance } from "@/utils/axiosInstance";
 
 interface InstructorsPageProps {
-  instructors: IInstructor[];
+  instructors: IUser[];
 }
 
 export const getServerSideProps: GetServerSideProps<InstructorsPageProps> = async ({ query }) => {

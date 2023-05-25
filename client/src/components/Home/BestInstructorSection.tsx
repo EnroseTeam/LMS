@@ -2,12 +2,12 @@ import { FC } from "react";
 import Link from "next/link";
 
 import InstructorCard from "../Instructors/InstructorCard";
-import { IInstructor } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface BestInstructorSectionProps {
-  instructors: IInstructor[];
+  instructors: IUser[];
 }
 
 const BestInstructorSection: FC<BestInstructorSectionProps> = ({ instructors }) => (

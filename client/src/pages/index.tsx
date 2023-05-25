@@ -13,14 +13,14 @@ import PartnerSection from "@/components/Home/PartnerSection";
 import PopularCoursesSection from "@/components/Home/PopularCoursesSection";
 import TopCategoriesSection from "@/components/Home/TopCategoriesSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { IInstructor } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
 import { IBlog } from "@/interfaces/blogs";
 
 interface HomeProps {
   categories: ICourseCategory[];
   courses: ICourse[];
-  instructors: IInstructor[];
+  instructors: IUser[];
   blogs: IBlog[];
   testimonials: ICourseReview[];
 }
