@@ -1,5 +1,4 @@
 import { Schema, Document, Types, model } from "mongoose";
-import { IUserRole } from "./userRole";
 import { ICourse } from "./course";
 import { IUserOrder } from "./userOrder";
 
@@ -14,28 +13,28 @@ export interface IUser extends Document<Types.ObjectId> {
   firstName: string;
   lastName: string;
   fullName: string;
-  title?: string;
   birthDate?: Date;
   email: string;
   phone?: string;
   address: UserAddress;
   avatar: string;
   password: string;
-  role: IUserRole;
+  role: "Admin" | "Moderator" | "Instructor" | "Student";
   orders: IUserOrder["_id"][];
   boughtCourses: ICourse["_id"][];
-  ownPublishedCourses: ICourse["_id"][];
-  ownCourses: ICourse["_id"][];
-  avgRating: number;
-  reviewCount: number;
-  studentCount: number;
   socialAccounts: {
     facebook: string;
     twitter: string;
     linkedin: string;
     instagram: string;
   };
-  bio?: string;
+  ownCourses: ICourse["_id"][];
+  ownPublishedCourses: ICourse["_id"][];
+  avgRating: number;
+  reviewCount: number;
+  studentCount: number;
+  title: string;
+  bio: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,14 +47,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    title: {
-      type: String,
-      default: "",
-    },
     birthDate: { type: Date },
     email: { type: String, required: true, unique: true },
     phone: { type: String, unique: true },
-    orders: { type: [Schema.Types.ObjectId], ref: "User_Order", default: [], select: false },
+    orders: { type: [Schema.Types.ObjectId], ref: "User_Order", default: [] },
     address: {
       country: { type: String, default: "" },
       city: { type: String, default: "" },
@@ -67,52 +62,54 @@ const UserSchema = new Schema<IUser>(
       default:
         "https://team-enrose-s3-bucket.s3.ap-northeast-1.amazonaws.com/images/T_Rpl0_PKsXMrHoPphE91-default-profile.jpg",
     },
-    password: { type: String, required: true, select: false },
+    password: { type: String, required: true },
     role: {
-      type: Schema.Types.ObjectId,
-      ref: "User_Role",
-      required: true,
+      type: String,
+      enum: ["Admin", "Moderator", "Instructor", "Student"],
+      default: "Student",
     },
     boughtCourses: {
       type: [Schema.Types.ObjectId],
       ref: "Course",
       default: [],
-      select: false,
     },
-    ownCourses: {
-      type: [Schema.Types.ObjectId],
-      ref: "Course",
-      default: [],
-      select: false,
-    },
-    ownPublishedCourses: {
-      type: [Schema.Types.ObjectId],
-      ref: "Course",
-      default: [],
-      select: false,
-    },
-    avgRating: {
-      type: Number,
-      default: 0,
-      select: false,
-    },
-    reviewCount: {
-      type: Number,
-      default: 0,
-      select: false,
-    },
-    studentCount: {
-      type: Number,
-      default: 0,
-      select: false,
-    },
+
     socialAccounts: {
       facebook: { type: String, default: "" },
       linkedin: { type: String, default: "" },
       twitter: { type: String, default: "" },
       instagram: { type: String, default: "" },
     },
-    bio: String,
+    bio: {
+      type: String,
+      default: "",
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    ownCourses: {
+      type: [Schema.Types.ObjectId],
+      ref: "Course",
+      default: [],
+    },
+    ownPublishedCourses: {
+      type: [Schema.Types.ObjectId],
+      ref: "Course",
+      default: [],
+    },
+    avgRating: {
+      type: Number,
+      default: 0,
+    },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
+    studentCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

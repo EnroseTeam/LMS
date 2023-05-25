@@ -17,20 +17,18 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(user);
-
     if (!isUserLoading && !user) {
       router.push("/auth/login");
     }
 
-    if (!isUserLoading && user && user.role.slug !== "admin") {
+    if (!isUserLoading && user && (user.role === "Student" || user.role === "Instructor")) {
       toast.error("Танд нэвтрэх эрх байхгүй байна.");
       setIsLoggedIn(false);
       setUser(undefined);
       router.push("/auth/login");
     }
 
-    if (!isUserLoading && user && user.role.slug === "admin") {
+    if (!isUserLoading && user && (user.role === "Admin" || user.role === "Moderator")) {
       setIsAuthenticated(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

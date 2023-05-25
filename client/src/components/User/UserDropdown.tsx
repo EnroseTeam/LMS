@@ -60,14 +60,14 @@ const UserDropdown: FC<UserDropDownProps> = ({ user, userDropdown, setUserDropdo
               Захиалгууд
             </Link>
           </li>
-          {user.role.slug !== "student" && (
+          {user.role !== "Student" && (
             <li>
               <Link className="hover:text-text/70 duration-300" href="/instructors/dashboard">
                 Багшийн булан
               </Link>
             </li>
           )}
-          {user.role.slug === "student" && (
+          {user.role === "Student" && (
             <li>
               <Link className="hover:text-text/70 duration-300" href="/become-instructor">
                 Багш болох

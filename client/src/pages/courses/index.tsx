@@ -12,7 +12,6 @@ import RadioButtonFilter from "@/components/global/RadioButtonFilter";
 import { ICheckBoxFilterItem, IRadioButtonFilterItem } from "@/interfaces/components";
 import RatingStar from "@/components/global/RatingStar";
 import SortDropDown from "@/components/global/SortDropDown";
-import { IInstructor } from "@/interfaces/user";
 import Pagination from "@/components/global/Pagination";
 import { axiosInstance } from "@/utils/axiosInstance";
 
@@ -21,11 +20,12 @@ import { HiChevronRight } from "react-icons/hi";
 import { fetcher } from "@/utils/fetcher";
 import useSwr from "swr";
 import { AuthContext } from "@/contexts/AuthContext";
+import { IUser } from "@/interfaces/user";
 
 interface CoursesPageProps {
   categories: ICourseCategory[];
   courses: ICourse[];
-  instructors: IInstructor[];
+  instructors: IUser[];
   levels: ICourseLevel[];
   courseCount: {
     ratingCount: {

@@ -7,7 +7,7 @@ import {
   getSingleCourseLesson,
   updateCourseLesson,
 } from "../controllers/courseLesson";
-import { authenticateUser } from "../middlewares/auth";
+import { authenticateUser, authorizeAdmin, authorizeInstructor } from "../middlewares/auth";
 
 const courseLessonRouter = express.Router();
 
@@ -15,10 +15,10 @@ courseLessonRouter.get("/ids", getLessonIds);
 courseLessonRouter.get("/", getCourseLessons);
 courseLessonRouter.get("/:id", authenticateUser, getSingleCourseLesson);
 
-courseLessonRouter.post("/", createCourseLesson);
+courseLessonRouter.post("/", authenticateUser, authorizeInstructor, createCourseLesson);
 
-courseLessonRouter.patch("/:id", updateCourseLesson);
+courseLessonRouter.patch("/:id", authenticateUser, authorizeAdmin, updateCourseLesson);
 
-courseLessonRouter.delete("/:id", deleteCourseLesson);
+courseLessonRouter.delete("/:id", authenticateUser, authorizeAdmin, deleteCourseLesson);
 
 export default courseLessonRouter;

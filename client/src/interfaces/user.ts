@@ -30,14 +30,6 @@ export interface IUserOrder {
   updatedAt: string;
 }
 
-export interface IUserRole {
-  _id: string;
-  role: string;
-  slug: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface IUser {
   _id: string;
   firstName: string;
@@ -45,24 +37,26 @@ export interface IUser {
   fullName: string;
   birthDate?: string;
   email: string;
-  phone: string;
+  phone?: string;
   address: UserAddress;
   avatar: string;
-  role: IUserRole;
+  password: string;
+  role: "Admin" | "Moderator" | "Instructor" | "Student";
+  orders: IUserOrder[];
+  boughtCourses: ICourse[];
   socialAccounts: {
     facebook: string;
     twitter: string;
     linkedin: string;
     instagram: string;
   };
-  bio?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IInstructor extends IUser {
   ownCourses: ICourse[];
+  ownPublishedCourses: ICourse[];
   avgRating: number;
   reviewCount: number;
   studentCount: number;
+  title: string;
+  bio: string;
+  createdAt: string;
+  updatedAt: string;
 }

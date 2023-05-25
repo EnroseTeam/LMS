@@ -7,7 +7,7 @@ import {
   getSingleBlog,
   updateBlog,
 } from "../controllers/blog";
-import { authenticateUser, authorizeAdmin } from "../middlewares/auth";
+import { authenticateUser, authorizeModerator } from "../middlewares/auth";
 
 const blogRouter = express.Router();
 
@@ -19,10 +19,10 @@ blogRouter.get("/", getBlogs);
 
 blogRouter.get("/:id", getSingleBlog);
 
-blogRouter.post("/", authenticateUser, authorizeAdmin, createBlog);
+blogRouter.post("/", authenticateUser, authorizeModerator, createBlog);
 
-blogRouter.delete("/:id", deleteBlog);
+blogRouter.delete("/:id", authenticateUser, authorizeModerator, deleteBlog);
 
-blogRouter.patch("/:id", updateBlog);
+blogRouter.patch("/:id", authenticateUser, authorizeModerator, updateBlog);
 
 export default blogRouter;

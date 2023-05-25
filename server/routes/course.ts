@@ -11,7 +11,7 @@ import {
   getSingleCourse,
   updateCourse,
 } from "../controllers/course";
-import { authenticateUser, authorizeInstructor } from "../middlewares/auth";
+import { authenticateUser, authorizeAdmin, authorizeInstructor } from "../middlewares/auth";
 
 const courseRouter = express.Router();
 
@@ -28,6 +28,6 @@ courseRouter.post("/", authenticateUser, authorizeInstructor, createCourse);
 courseRouter.patch("/:id", authenticateUser, authorizeInstructor, updateCourse);
 courseRouter.patch("/:id/media", authenticateUser, authorizeInstructor, addMediaToCourse);
 
-courseRouter.delete("/:id", deleteCourse);
+courseRouter.delete("/:id", authenticateUser, authorizeAdmin, deleteCourse);
 
 export default courseRouter;

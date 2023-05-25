@@ -8,11 +8,12 @@ import { BiRightArrow } from "react-icons/bi";
 import { BsInstagram } from "react-icons/bs";
 
 import RatingStar from "../global/RatingStar";
-import { IInstructor } from "@/interfaces/user";
+
 import { useRouter } from "next/router";
+import { IUser } from "@/interfaces/user";
 
 interface InstructorCardProps {
-  instructor: IInstructor;
+  instructor: IUser;
 }
 
 const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
@@ -94,7 +95,7 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           {instructor.fullName}
         </Link>
         {/* сервэр дээр instructor-т title өгөх */}
-        <p className="text-text mb-[11px]">President of Sales</p>
+        <p className="text-text mb-[11px]">{instructor.title}</p>
         <div className="flex items-center gap-[20px]">
           <span className="flex items-center  gap-2 text-md">
             <RatingStar count={1} rating={1} />
@@ -105,11 +106,13 @@ const InstructorCard: FC<InstructorCardProps> = ({ instructor }) => {
           <span className="flex items-center  gap-2 text-md text-icon">
             <AiOutlineUser />
             {/* сурагчидын тоог оруулах */}
-            <span className="text-text text-sm-regular">365 Students</span>
+            <span className="text-text text-sm-regular">{instructor.studentCount} сурагч</span>
           </span>
           <span className="flex items-center  gap-2 text-md text-icon">
             <BiRightArrow />
-            <span className="text-text text-sm-regular">{instructor.ownCourses.length} хичээл</span>
+            <span className="text-text text-sm-regular">
+              {instructor.ownPublishedCourses.length} хичээл
+            </span>
           </span>
         </div>
       </div>

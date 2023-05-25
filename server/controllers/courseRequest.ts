@@ -28,7 +28,10 @@ export const getSingleCourseRequest: RequestHandler = async (req, res, next) => 
   try {
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
-    const courseRequest = await CourseRequestModel.findById(id);
+    const courseRequest = await CourseRequestModel.findById(id).populate([
+      { path: "course", populate: { path: "sections", populate: ["lessons"] } },
+      "instructor",
+    ]);
     if (!courseRequest) throw createHttpError(404, "Хүсэлт олдсонгүй.");
 
     res.status(200).json({ message: "Амжилттай", body: courseRequest });
@@ -128,6 +131,7 @@ export const acceptCourseRequest: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({ message: "Хүсэлт амжилттай зөвшөөрөгдлөө." });
   } catch (error) {
+    console.log(error);
     await session.abortTransaction();
     next(error);
   }

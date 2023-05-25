@@ -5,6 +5,7 @@ import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
+import assertIsDefined from "../utils/assertIsDefined";
 
 interface CourseLessonBody {
   name?: string;
@@ -16,7 +17,7 @@ interface CourseLessonBody {
 }
 
 interface CourseLessonParams {
-  id: string;
+  id?: string;
 }
 
 export const getLessonIds: RequestHandler = async (req, res, next) => {
@@ -115,12 +116,6 @@ export const createCourseLesson: RequestHandler<
 
     // Сургалтан дээр байгаа хичээлийн тоог нэмэх
     const course = await CourseModel.findById(isSectionExist.course, null, { session });
-    if (course) {
-      if (type === "Lesson") course.lessonCount += 1;
-      if (type === "Assignment") course.assignmentCount += 1;
-      if (type === "Quiz") course.quizCount += 1;
-      await course.save({ session });
-    }
 
     // Сургалтан дээр байгаа нийт хичээлийн уртыг нэмэх
     if (course) {
@@ -160,7 +155,11 @@ export const updateCourseLesson: RequestHandler<
   const { id } = req.params;
   const { name, description, video, length, type } = req.body;
 
+  const instructorId = req.session.userId;
+
   try {
+    assertIsDefined(instructorId);
+
     // Хүсэлтээс ирж буй мэдээлэл бүрэн эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна");
     if (!name) throw createHttpError(400, "Гарчиг заавал шаардлагатай.");
@@ -168,11 +167,18 @@ export const updateCourseLesson: RequestHandler<
     if (!type) throw createHttpError(400, "Хичээлийн төрөл заавал шаардлагатай.");
 
     // Орж ирсэн id-тай хичээл бүртгэлтэй эсэхийг шалгана. Байвал цааш үргэлжлүүлнэ.
-    const courseLesson = await CourseLessonModel.findById(id);
+    const courseLesson = await CourseLessonModel.findById(id).populate({
+      path: "section",
+    });
     if (!courseLesson) throw createHttpError(404, "Хичээл олдсонгүй.");
 
+    const course = await CourseModel.findById(courseLesson.section.course);
+
+    if (instructorId.toString() !== course?.instructor?.toString()) {
+      throw createHttpError(403, "Танд энэ хичээлийг засах эрх байхгүй байна.");
+    }
+
     // Хичээлийн мэдээллийг хүсэлтээс орж ирсэн мэдээллээр солино.
-    courseLesson.name = name;
     courseLesson.description = description;
     courseLesson.video = video;
     courseLesson.length = length;
@@ -194,7 +200,11 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
 
   const session = await mongoose.startSession();
 
+  const instructorId = req.session.userId;
+
   try {
+    assertIsDefined(instructorId);
+
     // Хүсэлтээс орж ирсэн id зөв эсэхийг шалгана.
     if (!mongoose.isValidObjectId(id)) throw createHttpError(400, "Id буруу байна.");
 
@@ -208,6 +218,12 @@ export const deleteCourseLesson: RequestHandler = async (req, res, next) => {
     const courseSection = await CourseSectionModel.findById(courseLesson.section, null, {
       session,
     });
+
+    const course = await CourseModel.findById(courseSection?.course, null, { session });
+    if (instructorId.toString() !== course?.instructor?.toString()) {
+      throw createHttpError(403, "Танд энэ хичээлийг устгах эрх байхгүй байна.");
+    }
+
     if (courseSection) {
       courseSection.lessons = courseSection.lessons.filter(
         (lesson) => lesson?._id !== courseLesson._id

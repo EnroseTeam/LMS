@@ -7,6 +7,7 @@ import {
   getSingleCourseCategory,
   updateCourseCategory,
 } from "../controllers/courseCategory";
+import { authenticateUser, authorizeAdmin } from "../middlewares/auth";
 
 const courseCategoryRouter = express.Router();
 
@@ -15,10 +16,10 @@ courseCategoryRouter.get("/id", getAllCourseCategoriesId);
 courseCategoryRouter.get("/", getCourseCategories);
 courseCategoryRouter.get("/:id", getSingleCourseCategory);
 
-courseCategoryRouter.post("/", createCourseCategory);
+courseCategoryRouter.post("/", authenticateUser, authorizeAdmin, createCourseCategory);
 
-courseCategoryRouter.patch("/:id", updateCourseCategory);
+courseCategoryRouter.patch("/:id", authenticateUser, authorizeAdmin, updateCourseCategory);
 
-courseCategoryRouter.delete("/:id", deleteCourseCategory);
+courseCategoryRouter.delete("/:id", authenticateUser, authorizeAdmin, deleteCourseCategory);
 
 export default courseCategoryRouter;

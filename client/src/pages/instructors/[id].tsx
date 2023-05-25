@@ -4,11 +4,11 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import SinglePageHeader from "@/components/Instructors/SinglePageHeader";
 import Breadcrumbs from "@/components/global/Breadcrumbs";
 import SinglePageContent from "@/components/Instructors/SinglePageContent";
-import { IInstructor } from "@/interfaces/user";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { IUser } from "@/interfaces/user";
 
 interface SingleInstructorPageProps {
-  instructor: IInstructor;
+  instructor: IUser;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
