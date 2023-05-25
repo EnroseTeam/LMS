@@ -16,11 +16,11 @@ import plcHolder from "@/assets/placeholder.png";
 import DashboardBoxSkeleton from "@/components/Skeletons/DashboardBoxSkeleton";
 import useSwr from "swr";
 import { fetcher } from "@/utils/fetcher";
-import { IInstructor } from "@/interfaces/user";
 import { ICourse, ICourseReview } from "@/interfaces/courses";
 import DashboardLatestCourseSkeleton from "@/components/Skeletons/DashboardLatestCourseSkeleton";
 import RatingStar from "@/components/global/RatingStar";
 import DashboardLatestReviewSkeleton from "@/components/Skeletons/DashboardLatestReviewSkeleton";
+import { IUser } from "@/interfaces/user";
 
 const InstructorDashboardPage: NextPageWithLayout = () => {
   const { user } = useContext(AuthContext);
@@ -29,7 +29,7 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
 
   const { data: instructor, isLoading: instructorLoading } = useSwr(
     user && `/api/instructors/${user._id}`,
-    fetcher<{ body: IInstructor }>
+    fetcher<{ body: IUser }>
   );
 
   const { data: instructorReviews, isLoading: reviewsLoading } = useSwr(
@@ -47,15 +47,15 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (!instructorLoading && instructor && instructorReviews) {
-      setTotalCourses(instructor.body.ownCourses.length);
+      setTotalCourses(instructor.body.ownPublishedCourses.length);
       let newSales = 0;
       let newStudents = 0;
       let newReviews = 0;
-      for (const course of instructor.body.ownCourses) {
+      for (const course of instructor.body.ownPublishedCourses) {
         if (course.discountPrice > 0) newSales += course.discountPrice;
         else newSales += course.price;
 
-        newStudents += course.purchaseCount;
+        newStudents += course.students.length;
         newReviews += course.reviews.length;
       }
 
@@ -63,7 +63,7 @@ const InstructorDashboardPage: NextPageWithLayout = () => {
       setTotalStudents(newStudents);
       setTotalReviews(newReviews);
       setLatestCourses(
-        instructor.body.ownCourses
+        instructor.body.ownPublishedCourses
           .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
           .slice(0, 4)
       );
