@@ -23,7 +23,7 @@ const UserPersonalInfoForm: FC<UserPersonalInfoFormProps> = ({ user = {} as IUse
   const [firstName, setFirstName] = useState<string>(user.firstName);
   const [lastName, setLastName] = useState<string>(user.lastName);
   const [email, setEmail] = useState<string>(user.email);
-  const [phone, setPhone] = useState<string>(user.phone);
+  const [phone, setPhone] = useState<string>(user.phone || "");
   const [birthday, setBirthday] = useState<string>(
     user.birthDate ? new Date(user.birthDate).toISOString().split("T")[0] : ""
   );

@@ -6,7 +6,7 @@ import about2 from "../assets/about-1.svg";
 import about3 from "../assets/about-3.svg";
 import AdvantageSection from "@/components/Home/AdvantageSection";
 import UsersCommentSection from "@/components/Home/UsersCommentSection";
-import { IInstructor } from "@/interfaces/user";
+import { IUser } from "@/interfaces/user";
 import { GetStaticProps } from "next";
 import BestInstructorSection from "@/components/Home/BestInstructorSection";
 import PartnerSection from "@/components/Home/PartnerSection";
@@ -16,7 +16,7 @@ import axios from "axios";
 import { ICourseReview } from "@/interfaces/courses";
 
 interface AboutUsPageProps {
-  instructors: IInstructor[];
+  instructors: IUser[];
   testimonials: ICourseReview[];
 }
 
